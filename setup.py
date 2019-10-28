@@ -14,11 +14,10 @@ def get_requirements():
 setup(
     name='orca',
     version='0.1.0',
-    description='',
     long_description=readme(),
     url='https://github.com/openrca/orca',
-    author='',
-    license='MIT',
+    author='ORCA',
+    license='Apache License 2.0',
     install_requires=get_requirements(),
     packages=find_packages(),
     zip_safe=False)
