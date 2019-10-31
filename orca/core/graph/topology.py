@@ -13,7 +13,7 @@ def generate(num_nodes=10, num_masters=3, num_deployments=3,
         {'id': "cluster-0", 'label': "CLUSTER"})
 
     # nodes
-    for i in xrange(num_nodes):
+    for i in range(num_nodes):
         graph_nodes.append(
             {'id': "node-%i" % i,
              'label': "NODE",
@@ -25,7 +25,7 @@ def generate(num_nodes=10, num_masters=3, num_deployments=3,
              'distance': distance})
 
     # master nodes
-    for i in xrange(num_masters):
+    for i in range(num_masters):
         graph_nodes.append(
             {'id': "master-%i" % i,
              'label': "MASTER",
@@ -37,7 +37,7 @@ def generate(num_nodes=10, num_masters=3, num_deployments=3,
              'strength': strength, 'distance': distance})
 
     # worker nodes
-    for i in xrange(num_masters, num_nodes):
+    for i in range(num_masters, num_nodes):
         graph_nodes.append(
             {'id': "worker-%i" % i,
              'label': "WORKER",
@@ -50,7 +50,7 @@ def generate(num_nodes=10, num_masters=3, num_deployments=3,
              'distance': distance})
 
     # deployments
-    for i in xrange(num_deployments):
+    for i in range(num_deployments):
         deployment_id = "deployment-%i" % i
         service_id = "service-%i" % i
         graph_nodes.append(
@@ -63,7 +63,7 @@ def generate(num_nodes=10, num_masters=3, num_deployments=3,
              'label': "DEPLOYMENT",
              'group': 0,
              'level': 1})
-        for j in xrange(pods_per_deployment):
+        for j in range(pods_per_deployment):
             pod_id = "pod-%i%i" % (i, j)
             graph_nodes.append(
                 {'id': pod_id,
