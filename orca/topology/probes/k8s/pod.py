@@ -5,7 +5,7 @@ from orca.topology.probes.k8s import client as k8s_client
 class PodProbe(probe.K8SProbe):
 
     def run(self):
-        resource_api = self.client.list_pods_for_all_namespaces
+        resource_api = self._client.list_pods_for_all_namespaces
         handler = PodHandler()
         k8s_client.Watch(resource_api, handler).run()
 
