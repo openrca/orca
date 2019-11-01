@@ -1,7 +1,7 @@
-from orca.topology.probes import probe
+from orca.topology.probes.k8s import probe
 
 
-class ServiceProbe(probe.Probe):
+class ServiceProbe(probe.K8SProbe):
 
     def run(self):
         while True:

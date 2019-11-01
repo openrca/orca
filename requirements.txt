@@ -2,3 +2,4 @@ flask
 flask_restplus
 honcho
 cotyledon
+kubernetes
