@@ -1,6 +1,6 @@
 from flask import Flask
 
-from orca.apis import blueprint as api_bp
+from orca.api import blueprint as api_bp
 
 
 def create_app():
