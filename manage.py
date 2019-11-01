@@ -1,6 +1,6 @@
 from flask_script import Manager
 
-from orca.app import create_app
+from orca.api.app import create_app
 
 app = create_app()
 
