@@ -7,10 +7,10 @@ class PodProbe(probe.K8SProbe):
     def run(self):
         resource_api = self.client.list_pods_for_all_namespaces
         handler = PodHandler()
-        k8s_client.K8SWatch(resource_api, handler).run()
+        k8s_client.Watch(resource_api, handler).run()
 
 
-class PodHandler(k8s_client.K8SHandler):
+class PodHandler(k8s_client.EventHandler):
 
     def on_add(self, obj):
         pass

@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from kubernetes import client, config, watch
 
 
-class K8SClientFactory(object):
+class ClientFactory(object):
 
     @staticmethod
     def get_client():
@@ -11,7 +11,7 @@ class K8SClientFactory(object):
         return client.CoreV1Api()
 
 
-class K8SWatch(object):
+class Watch(object):
 
     def __init__(self, resource_api, handler):
         self._resource_api = resource_api
@@ -35,7 +35,7 @@ class K8SWatch(object):
             raise Exception("Unknown event type: %s" % event_type)
 
 
-class K8SHandler(ABC):
+class EventHandler(ABC):
 
     @abstractmethod
     def on_add(self, obj):

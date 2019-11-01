@@ -11,5 +11,5 @@ class K8SProbe(probe.Probe):
     @property
     def client(self):
         if not self._client:
-            self._client = k8s_client.K8SClientFactory.get_client()
+            self._client = k8s_client.ClientFactory.get_client()
         return self._client
