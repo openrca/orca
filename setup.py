@@ -23,6 +23,7 @@ setup(
     entry_points={
         'console_scripts': [
             'orca-api = orca.cmd.api:main',
+            'orca-probe = orca.cmd.probe:main',
         ]
     },
     zip_safe=False)
