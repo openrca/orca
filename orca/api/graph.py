@@ -1,6 +1,6 @@
 from flask_restplus import Namespace, Resource, fields
 
-from orca.core.graph import topology
+from orca.graph import topology
 
 api = Namespace('graph', description='Graph API')
 
