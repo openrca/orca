@@ -1,1 +1,1 @@
-api: python manage.py run
+api: orca-api
