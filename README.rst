@@ -1,6 +1,9 @@
 ORCA
 ==============================================
 
+.. image:: https://img.shields.io/travis/openrca/orca.svg
+    :target: https://travis-ci.org/openrca/orca
+
 Installation
 ------------
 
