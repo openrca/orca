@@ -2,10 +2,10 @@ FROM python:3.7-alpine
 
 MAINTAINER OpenRCA
 
-WORKDIR /app
-
 RUN apk update && \
     apk add --no-cache gcc musl-dev
+
+WORKDIR /app
 
 ADD ./requirements.txt /app/requirements.txt
 
