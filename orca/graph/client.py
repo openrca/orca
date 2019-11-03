@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
 
-# from orca.graph import drivers
-
 
 class GraphObject(ABC):
 
@@ -74,12 +72,3 @@ class Client(ABC):
     @abstractmethod
     def delete_link(self, id):
         """Delete a graph link."""
-
-
-# class ClientFactory(object):
-
-#     @staticmethod
-#     def get_client(backend='neo4j'):
-#         if backend == 'neo4j':
-#             uri = None  # config.get('NEO4J_URI')
-#             return drivers.Neo4jClient(uri)
