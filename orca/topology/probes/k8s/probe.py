@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 
 from orca.topology.probes import probe
 from orca.topology.probes.k8s import client as k8s_client
-from orca.graph import client as graph_client
 
 
 class K8SProbe(probe.Probe):
