@@ -3,3 +3,4 @@ flask_restplus
 honcho
 cotyledon
 kubernetes
+py2neo
