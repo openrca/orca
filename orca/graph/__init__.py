@@ -7,7 +7,7 @@ class ClientFactory(object):
     def get_client(backend='neo4j'):
         if backend == 'neo4j':
             # TODO: read graph creds from config
-            host = "localhost"
+            host = "orca-neo4j.rca"
             port = 7687
             user = "neo4j"
             password = "admin"
