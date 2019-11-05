@@ -17,4 +17,9 @@ class PodProbe(probe.K8SProbe):
 class PodHandler(probe.K8SHandler):
 
     def _extract_properties(self, obj):
-        return (123, {})
+        id = obj.metadata.uid
+        properties = {}
+        properties['name'] = obj.metadata.name
+        properties['namespace'] = obj.metadata.namespace
+        properties['ip'] = obj.status.pod_ip
+        return (id, properties)
