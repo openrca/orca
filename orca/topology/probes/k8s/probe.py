@@ -17,7 +17,7 @@ class K8SHandler(k8s_client.EventHandler, ABC):
     def __init__(self, graph):
         self._graph = graph
 
-    def on_add(self, obj):
+    def on_added(self, obj):
         (id, metadata) = self._extract_properties(obj)
         # TODO: use GraphObject
         # TODO: catch exceptions

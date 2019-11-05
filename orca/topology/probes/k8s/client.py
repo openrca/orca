@@ -25,7 +25,7 @@ class Watch(object):
 
     def _get_handler_func_mapping(self):
         return {
-            'ADDED': self._handler.on_add,
+            'ADDED': self._handler.on_added,
             'UPDATE': self._handler.on_update,
             'DELETE': self._handler.on_delete
         }
@@ -43,7 +43,7 @@ class Watch(object):
 class EventHandler(ABC):
 
     @abstractmethod
-    def on_add(self, obj):
+    def on_added(self, obj):
         pass
 
     @abstractmethod
