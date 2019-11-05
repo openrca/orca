@@ -25,7 +25,7 @@ class Watch(object):
 
     def _get_handler_func_mapping(self):
         return {
-            'ADD': self._handler.on_add,
+            'ADDED': self._handler.on_add,
             'UPDATE': self._handler.on_update,
             'DELETE': self._handler.on_delete
         }
