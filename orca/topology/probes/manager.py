@@ -2,7 +2,7 @@ import cotyledon
 
 from orca.topology.probes import k8s as k8s_probe
 from orca.topology.probes.k8s import client as k8s_client
-from orca import graph as graph_client
+from orca.graph import drivers as graph_client
 
 
 class Manager(cotyledon.ServiceManager):
