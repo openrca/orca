@@ -37,7 +37,7 @@ class Neo4jClient(client.Client):
         node = self._get_node(id)
         return self._build_node_obj(node)
 
-    def create_node(self, id, metadata):
+    def add_node(self, id, metadata):
         properties = copy.deepcopy(metadata)
         properties['_id'] = id
         node = graph_lib.Node(**properties)

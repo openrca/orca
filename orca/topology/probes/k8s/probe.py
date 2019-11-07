@@ -21,7 +21,7 @@ class K8SHandler(k8s_client.EventHandler, ABC):
         (id, metadata) = self._extract_properties(obj)
         # TODO: use GraphObject
         # TODO: catch exceptions
-        self._graph.create_node(id, metadata)
+        self._graph.add_node(id, metadata)
 
     def on_update(self, obj):
         (id, metadata) = self._extract_properties(obj)

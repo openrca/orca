@@ -42,7 +42,7 @@ class Client(ABC):
         """Get graph node details."""
 
     @abstractmethod
-    def create_node(self, id, metadata):
+    def add_node(self, id, metadata):
         """Create a graph node."""
 
     @abstractmethod
