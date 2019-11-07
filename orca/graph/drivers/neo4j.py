@@ -2,7 +2,7 @@ import copy
 
 import py2neo as graph_lib
 
-from orca.graph import client
+from orca.graph.drivers import client
 
 
 class Neo4jClient(client.Client):
@@ -30,32 +30,27 @@ class Neo4jClient(client.Client):
     def get_nodes(self, metadata=None):
         if not metadata:
             metadata = {}
-        nodes = self.client.nodes.match(**metadata)
-        return list(map(self._build_node_obj, nodes))
+        lib_nodes = self.client.nodes.match(**metadata)
+        return list(map(self._build_node_obj, lib_nodes))
 
     def get_node(self, id):
-        node = self._get_node(id)
-        return self._build_node_obj(node)
+        lib_node = self._get_node(id)
+        return self._build_node_obj(lib_node)
 
-    def add_node(self, id, metadata):
-        properties = copy.deepcopy(metadata)
-        properties['_id'] = id
-        node = graph_lib.Node(**properties)
-        self.client.create(node)
-        return self._build_node_obj(node)
+    def add_node(self, node):
+        properties = copy.deepcopy(node.metadata)
+        properties['_id'] = node.id
+        lib_node = graph_lib.Node(**properties)
+        self.client.create(lib_node)
 
-    def update_node(self, id, metadata):
-        node = self._get_node(id)
-        node.update(metadata)
-        self.client.push(node)
-        return self._build_node_obj(node)
+    def update_node(self, node):
+        lib_node = self._get_node(node.id)
+        lib_node.update(node.metadata)
+        self.client.push(lib_node)
 
-    def delete_node(self, id):
-        node = self._get_node(id)
-        rels = self._get_node_rels(node)
-        for rel in rels:
-            self.client.separate(rel)
-        self.client.delete(node)
+    def delete_node(self, node):
+        lib_node = self._get_node(node.id)
+        self.client.delete(lib_node)
 
     def get_links(self, metadata=None):
         if not metadata:
@@ -67,43 +62,47 @@ class Neo4jClient(client.Client):
         rel = self._get_rel(id)
         return self._build_link_obj(rel)
 
-    def create_link(self, id, source_id, target_id, metadata):
-        properties = copy.deepcopy(metadata)
-        properties['_id'] = id
-        source_node = self._get_node(source_id)
-        target_node = self._get_node(target_id)
-        rel = graph_lib.Relationship(source_node, target_node, **properties)
+    def add_link(self, link):
+        properties = copy.deepcopy(link.metadata)
+        properties['_id'] = link.id
+        source_lib_node = self._get_node(link.source.id)
+        target_lib_node = self._get_node(link.target.id)
+        rel = graph_lib.Relationship(
+            source_lib_node, target_lib_node, **properties)
         self.client.create(rel)
-        return self._build_link_obj(rel)
 
-    def update_link(self, id, metadata):
-        rel = self._get_rel(id)
-        rel.update(metadata)
+    def update_link(self, link):
+        rel = self._get_rel(link.id)
+        rel.update(link.metadata)
         self.client.push(rel)
-        return self._build_link_obj(rel)
 
     def delete_link(self, id):
         rel = self._get_rel(id)
         self.client.separate(rel)
 
+    def get_node_links(self, node):
+        lib_node = self._get_node(node.id)
+        rels = self._get_node_rels(lib_node)
+        return list(map(self._build_link_obj, rels))
+
     def _get_node(self, id):
         return self.client.nodes.match(_id=id).first()
 
-    def _get_node_rels(self, node):
-        rels = self.client.relationships.match([node])
+    def _get_node_rels(self, lib_node):
+        rels = self.client.relationships.match([lib_node])
         return list(rels)
 
     def _get_rel(self, id):
         return self.client.relationships.match(_id=id)
 
-    def _build_node_obj(self, node):
-        properties = dict(node)
+    def _build_node_obj(self, lib_node):
+        properties = dict(lib_node)
         id = properties.pop('_id')
-        return client.Node(id, properties)
+        return graph.Node(id, properties)
 
     def _build_link_obj(self, rel):
         properties = dict(rel)
         id = properties.pop('_id')
         source = self._build_node_obj(rel.start_node)
         target = self._build_node_obj(rel.end_node)
-        return client.Link(id, properties, source, target)
+        return graph.Link(id, properties, source, target)

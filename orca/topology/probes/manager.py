@@ -2,7 +2,8 @@ import cotyledon
 
 from orca.topology.probes import k8s as k8s_probe
 from orca.topology.probes.k8s import client as k8s_client
-from orca.graph import drivers as graph_client
+from orca.graph import drivers as graph_drivers
+from orca.graph import Graph
 
 
 class Manager(cotyledon.ServiceManager):
@@ -14,8 +15,8 @@ class Manager(cotyledon.ServiceManager):
 
     def _init_graph(self):
         # TODO: read graph backend from config
-        graph_backend = 'neo4j'
-        return graph_client.ClientFactory.get_client(graph_backend)
+        graph_client = graph_drivers.ClientFactory.get_client('neo4j')
+        return Graph(graph_client)
 
     def _add_k8s_probes(self, graph):
         client = k8s_client.ClientFactory.get_client()

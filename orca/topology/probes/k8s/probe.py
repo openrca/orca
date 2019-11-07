@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 from orca.topology.probes import probe
 from orca.topology.probes.k8s import client as k8s_client
+from orca import graph
 
 
 class K8SProbe(probe.Probe):
@@ -19,22 +20,19 @@ class K8SHandler(k8s_client.EventHandler, ABC):
 
     def on_added(self, obj):
         (id, metadata) = self._extract_properties(obj)
-        # TODO: use GraphObject
-        # TODO: catch exceptions
-        self._graph.add_node(id, metadata)
+        node = graph.Graph.create_node(id, metadata)
+        self._graph.add_node(node)
 
     def on_update(self, obj):
         (id, metadata) = self._extract_properties(obj)
-        # TODO: use GraphObject
-        # TODO: catch exceptions
-        self._graph.update_node(id, metadata)
+        node = graph.Graph.create_node(id, metadata)
+        self._graph.update_node(node)
 
     def on_delete(self, obj):
-        (id, _metadata) = self._extract_properties(obj)
-        # TODO: use GraphObject
-        # TODO: catch exceptions
-        self._graph.delete_node(id)
+        (id, metadata) = self._extract_properties(obj)
+        node = graph.Graph.create_node(id, metadata)
+        self._graph.delete_node(node)
 
     @abstractmethod
     def _extract_properties(self, obj):
-        """Extracts properties from raw K8S resource object."""
+        """Extracts properties from K8S resource object."""
