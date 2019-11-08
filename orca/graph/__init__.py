@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from enum import Enum
 
 
 class GraphObject(ABC):
@@ -33,7 +34,7 @@ class Graph(object):
 
     def __init__(self, client):
         self._client = client
-        self._handlers = []
+        self._listeners = []
 
     @staticmethod
     def create_node(id, metadata):
@@ -51,21 +52,18 @@ class Graph(object):
 
     def add_node(self, node):
         self._client.add_node(node)
-        for handler in self._handlers:
-            handler.on_node_added(node)
+        self._notify_listeners(GraphEvent.NODE_ADDED, node)
 
     def update_node(self, node):
         self._client.update_node(node)
-        for handler in self._handlers:
-            handler.on_node_updatedd(node)
+        self._notify_listeners(GraphEvent.NODE_UPDATED, node)
 
     def delete_node(self, node):
         links = self._client.get_node_links(node)
         for link in links:
             self._client.delete_link(link)
         self._client.delete(node)
-        for handler in self._handlers:
-            handler.on_node_deletedd(node)
+        self._notify_listeners(GraphEvent.NODE_DELETED, node)
 
     def get_links(self, metadata):
         self._client.get_links(metadata)
@@ -75,30 +73,72 @@ class Graph(object):
 
     def add_link(self, link):
         self._client.add_link(link)
+        self._notify_listeners(GraphEvent.LINK_ADDED, link)
 
     def update_link(self, link):
         self._client.update_link(link)
+        self._notify_listeners(GraphEvent.LINK_UPDATED, link)
 
     def delete_link(self, link):
         self._client.delete_link(link)
+        self._notify_listeners(GraphEvent.LINK_DELETED, link)
 
-    def add_handler(self, handler):
-        self._handlers.append(handler)
+    def add_listener(self, listener):
+        self._listeners.append(listener)
+
+    def _notify_listeners(self, event_type, graph_obj):
+        for listener in self._listeners:
+            if event_type == GraphEvent.NODE_ADDED:
+                listener.on_node_added(graph_obj)
+            elif event_type == GraphEvent.NODE_UPDATED:
+                listener.on_node_updated(graph_obj)
+            elif event_type == GraphEvent.NODE_DELETED:
+                listener.on_node_deleted(graph_obj)
+            elif event_type == GraphEvent.LINK_ADDED:
+                listener.on_link_added(graph_obj)
+            elif event_type == GraphEvent.LINK_UPDATED:
+                listener.on_link_updated(graph_obj)
+            elif event_type == GraphEvent.LINK_DELETED:
+                listener.on_link_deleted(graph_obj)
+            else:
+                raise Exception("Unknown event type: %s" % event_type)
 
 
-class EventHandler(ABC):
+class GraphEvent(Enum):
+
+    NODE_ADDED = 1
+    NODE_UPDATED = 2
+    NODE_DELETED = 3
+    LINK_ADDED = 4
+    LINK_UPDATED = 5
+    LINK_DELETED = 6
+
+
+class EventListener(ABC):
 
     def __init__(self, graph):
         self._graph = graph
 
     @abstractmethod
-    def on_node_added(self, obj):
+    def on_node_added(self, node):
         pass
 
     @abstractmethod
-    def on_node_updated(self, obj):
+    def on_node_updated(self, node):
         pass
 
     @abstractmethod
-    def on_node_deleted(self, obj):
+    def on_node_deleted(self, node):
+        pass
+
+    @abstractmethod
+    def on_link_added(self, link):
+        pass
+
+    @abstractmethod
+    def on_link_updated(self, link):
+        pass
+
+    @abstractmethod
+    def on_link_deleted(self, link):
         pass
