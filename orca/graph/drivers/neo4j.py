@@ -3,6 +3,7 @@ import copy
 import py2neo as graph_lib
 
 from orca.graph.drivers import client
+from orca import graph
 
 
 class Neo4jClient(client.Client):
@@ -35,7 +36,8 @@ class Neo4jClient(client.Client):
 
     def get_node(self, id):
         lib_node = self._get_node(id)
-        return self._build_node_obj(lib_node)
+        if lib_node:
+            return self._build_node_obj(lib_node)
 
     def add_node(self, node):
         properties = copy.deepcopy(node.metadata)
@@ -60,7 +62,8 @@ class Neo4jClient(client.Client):
 
     def get_link(self, id):
         rel = self._get_rel(id)
-        return self._build_link_obj(rel)
+        if rel:
+            return self._build_link_obj(rel)
 
     def add_link(self, link):
         properties = copy.deepcopy(link.metadata)
@@ -93,7 +96,7 @@ class Neo4jClient(client.Client):
         return list(rels)
 
     def _get_rel(self, id):
-        return self.client.relationships.match(_id=id)
+        return self.client.relationships.match(_id=id).first()
 
     def _build_node_obj(self, lib_node):
         properties = dict(lib_node)
