@@ -81,6 +81,17 @@ class K8SLinker(linker.Linker, ABC):
                 links.append(link)
         return links
 
+    def _match_namespace(self, resource_a, resource_b):
+        return resource_a.metadata.namespace == resource_b.metadata.namespace
+
+    def _match_selector(self, resource, selector):
+        labels = resource.metadata.labels
+        if not selector:
+            return True
+        if not labels:
+            return False
+        return all(item in labels.items() for item in selector.items())
+
     @abstractmethod
     def _are_linked(self, resource_a, resource_b):
         """Determines whether two K8S resources are interconnected."""
