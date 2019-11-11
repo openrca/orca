@@ -23,7 +23,7 @@ class PodHandler(probe.K8SHandler):
         properties['name'] = obj.metadata.name
         properties['namespace'] = obj.metadata.namespace
         properties['ip'] = obj.status.pod_ip
-        return (id, properties)
+        return (id, 'pod', properties)
 
 
 class PodToServiceLinker(linker.K8SLinker):
@@ -50,7 +50,7 @@ class PodToDeploymentLinker(linker.K8SLinker):
 
     @staticmethod
     def create(graph, client):
-        return PodToServiceLinker(
+        return PodToDeploymentLinker(
             graph,
             k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'),
             k8s_client.ResourceAPI(client.AppsV1Api(), 'deployment'))

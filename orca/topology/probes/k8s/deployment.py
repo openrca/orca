@@ -21,4 +21,4 @@ class DeploymentHandler(probe.K8SHandler):
         properties = {}
         properties['name'] = obj.metadata.name
         properties['namespace'] = obj.metadata.namespace
-        return (id, properties)
+        return (id, 'deployment', properties)

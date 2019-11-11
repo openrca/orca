@@ -35,7 +35,8 @@ class K8SListener(graph.EventListener):
 
     def _link_node(self, node):
         for linker in self._linkers:
-            linker.link(node)
+            if node.kind in linker.resource_types:
+                linker.link(node)
 
 
 class K8SLinker(linker.Linker, ABC):
@@ -44,6 +45,11 @@ class K8SLinker(linker.Linker, ABC):
         super().__init__(graph)
         self._resource_a_api = resource_a_api
         self._resource_b_api = resource_b_api
+
+    @property
+    def resource_types(self):
+        return [self._resource_a_api.resource_type,
+                self._resource_b_api.resource_type]
 
     def _get_new_links(self, node):
         links = []

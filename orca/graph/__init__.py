@@ -13,11 +13,13 @@ class GraphObject(ABC):
 
 class Node(GraphObject):
 
-    def __init__(self, id, metadata):
+    def __init__(self, id, metadata, kind):
         super().__init__(id, metadata)
+        self.kind = kind
 
     def __repr__(self):
-        return "<Node id=%s metadata=%s>" % (self.id, self.metadata)
+        return "<Node id=%s metadata=%s kind=%s>" % (
+            self.id, self.metadata, self.kind)
 
 
 class Link(GraphObject):
@@ -105,8 +107,8 @@ class Graph(object):
                 raise Exception("Unknown event type: %s" % event_type)
 
     @staticmethod
-    def create_node(id, metadata):
-        return Node(id, metadata)
+    def create_node(id, kind, metadata):
+        return Node(id, metadata, kind)
 
     @staticmethod
     def create_link(metadata, source, target):

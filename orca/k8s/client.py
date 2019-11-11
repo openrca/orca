@@ -20,8 +20,13 @@ class ResourceProxy(object):
 
     def __init__(self, client, resource_type):
         self._client = client
+        self._resource_type = resource_type
         self._list_fn = self._get_list_fn(resource_type)
         self._read_fn = self._get_read_fn(resource_type)
+
+    @property
+    def resource_type(self):
+        return self._resource_type
 
     def _get_list_fn(self, resource_type):
         return getattr(

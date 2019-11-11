@@ -23,4 +23,4 @@ class ServiceHandler(probe.K8SHandler):
         properties['namespace'] = obj.metadata.namespace
         properties['type'] = obj.spec.type
         properties['ip'] = obj.spec.cluster_ip
-        return (id, properties)
+        return (id, 'service', properties)

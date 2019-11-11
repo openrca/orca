@@ -42,6 +42,7 @@ class Neo4jClient(client.Client):
     def add_node(self, node):
         properties = copy.deepcopy(node.metadata)
         properties['_id'] = node.id
+        properties['_kind'] = node.kind
         lib_node = graph_lib.Node(**properties)
         self.client.create(lib_node)
 
@@ -79,8 +80,8 @@ class Neo4jClient(client.Client):
         rel.update(link.metadata)
         self.client.push(rel)
 
-    def delete_link(self, id):
-        rel = self._get_rel(id)
+    def delete_link(self, link):
+        rel = self._get_rel(link.id)
         self.client.separate(rel)
 
     def get_node_links(self, node):
@@ -101,7 +102,8 @@ class Neo4jClient(client.Client):
     def _build_node_obj(self, lib_node):
         properties = dict(lib_node)
         id = properties.pop('_id')
-        return graph.Node(id, properties)
+        kind = properties.pop('_kind')
+        return graph.Node(id, properties, kind)
 
     def _build_link_obj(self, rel):
         properties = dict(rel)

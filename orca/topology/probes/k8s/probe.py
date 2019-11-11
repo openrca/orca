@@ -19,18 +19,18 @@ class K8SHandler(k8s_client.EventHandler, ABC):
         self._graph = graph
 
     def on_added(self, obj):
-        (id, metadata) = self._extract_properties(obj)
-        node = graph.Graph.create_node(id, metadata)
+        (id, kind, metadata) = self._extract_properties(obj)
+        node = graph.Graph.create_node(id, kind, metadata)
         self._graph.add_node(node)
 
     def on_updated(self, obj):
-        (id, metadata) = self._extract_properties(obj)
-        node = graph.Graph.create_node(id, metadata)
+        (id, kind, metadata) = self._extract_properties(obj)
+        node = graph.Graph.create_node(id, kind, metadata)
         self._graph.update_node(node)
 
     def on_deleted(self, obj):
-        (id, metadata) = self._extract_properties(obj)
-        node = graph.Graph.create_node(id, metadata)
+        (id, kind, metadata) = self._extract_properties(obj)
+        node = graph.Graph.create_node(id, kind, metadata)
         self._graph.delete_node(node)
 
     @abstractmethod
