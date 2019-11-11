@@ -9,5 +9,6 @@ PROBES = [
 ]
 
 LINKERS = [
-    pod.PodToServiceLinker
+    pod.PodToServiceLinker,
+    pod.PodToDeploymentLinker
 ]

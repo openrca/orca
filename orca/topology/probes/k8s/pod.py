@@ -39,3 +39,18 @@ class PodToServiceLinker(linker.K8SLinker):
             graph,
             k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'),
             k8s_client.ResourceAPI(client.CoreV1Api(), 'service'))
+
+
+class PodToDeploymentLinker(linker.K8SLinker):
+
+    def _are_linked(self, pod, deployment):
+        match_namespace = self._match_namespace(pod, deployment)
+        match_selector = self._match_selector(pod, deployment.spec.selector.match_labels)
+        return match_namespace and match_selector
+
+    @staticmethod
+    def create(graph, client):
+        return PodToServiceLinker(
+            graph,
+            k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'),
+            k8s_client.ResourceAPI(client.AppsV1Api(), 'deployment'))
