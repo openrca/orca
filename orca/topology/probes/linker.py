@@ -8,10 +8,6 @@ class Linker(ABC):
     def __init__(self, graph):
         self._graph = graph
 
-    @staticmethod
-    def _build_link_lookup(links):
-        return {link.id: link for link in links}
-
     def link(self, node):
         current_links = Linker._build_link_lookup(
             self._get_current_links(node))
@@ -32,3 +28,7 @@ class Linker(ABC):
     @abstractmethod
     def _get_new_links(self, node):
         """Returns a snapshot of graph links for a given node."""
+
+    @staticmethod
+    def _build_link_lookup(links):
+        return {link.id: link for link in links}

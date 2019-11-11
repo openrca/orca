@@ -2,8 +2,8 @@ from abc import ABC, abstractmethod
 
 from orca.topology.probes import linker
 from orca import graph
-
 from orca.common import logger
+
 log = logger.get_logger(__name__)
 
 
@@ -81,6 +81,10 @@ class K8SLinker(linker.Linker, ABC):
                 links.append(link)
         return links
 
+    @abstractmethod
+    def _are_linked(self, resource_a, resource_b):
+        """Determines whether two K8S resources are interconnected."""
+
     def _match_namespace(self, resource_a, resource_b):
         return resource_a.metadata.namespace == resource_b.metadata.namespace
 
@@ -92,10 +96,6 @@ class K8SLinker(linker.Linker, ABC):
             return False
         return all(item in labels.items() for item in selector.items())
 
-    @abstractmethod
-    def _are_linked(self, resource_a, resource_b):
-        """Determines whether two K8S resources are interconnected."""
-
 
 class K8SResourceAPI(object):
 
@@ -106,7 +106,6 @@ class K8SResourceAPI(object):
     def get_by_node(self, node):
         name = node.metadata['name']
         namespace = node.metadata['namespace']
-        log.info("Getting node, name=%s, namespace=%s", name, namespace)
         resource = None
         try:
             resource = self._read_fn(name, namespace)

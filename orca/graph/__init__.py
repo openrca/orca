@@ -38,25 +38,6 @@ class Graph(object):
         self._client = client
         self._listeners = []
 
-    @staticmethod
-    def create_node(id, metadata):
-        return Node(id, metadata)
-
-    @staticmethod
-    def create_link(metadata, source, target):
-        id = Graph.generate_id(source.id, target.id)
-        return Link(id, metadata, source, target)
-
-    @staticmethod
-    def generate_id(*names):
-        if names:
-            namespace = uuid.NAMESPACE_OID
-            name = "/".join(names)
-            id = uuid.uuid5(namespace, name)
-        else:
-            id = uuid.uuid4()
-        return str(id)
-
     def get_nodes(self, metadata):
         return self._client.get_nodes(metadata)
 
@@ -122,6 +103,25 @@ class Graph(object):
                 listener.on_link_deleted(graph_obj)
             else:
                 raise Exception("Unknown event type: %s" % event_type)
+
+    @staticmethod
+    def create_node(id, metadata):
+        return Node(id, metadata)
+
+    @staticmethod
+    def create_link(metadata, source, target):
+        id = Graph.generate_id(source.id, target.id)
+        return Link(id, metadata, source, target)
+
+    @staticmethod
+    def generate_id(*names):
+        if names:
+            namespace = uuid.NAMESPACE_OID
+            name = "/".join(names)
+            id = uuid.uuid5(namespace, name)
+        else:
+            id = uuid.uuid4()
+        return str(id)
 
 
 class GraphEvent(Enum):

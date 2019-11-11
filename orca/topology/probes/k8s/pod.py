@@ -28,6 +28,11 @@ class PodHandler(probe.K8SHandler):
 
 class PodToServiceLinker(linker.K8SLinker):
 
+    def _are_linked(self, pod, service):
+        match_namespace = self._match_namespace(pod, service)
+        match_selector = self._match_selector(pod, service.spec.selector)
+        return match_namespace and match_selector
+
     @staticmethod
     def create(graph, k8s_client):
         resource_a_api = linker.K8SResourceAPI(
@@ -40,8 +45,3 @@ class PodToServiceLinker(linker.K8SLinker):
         )
         return PodToServiceLinker(
             graph, resource_a_api, resource_b_api)
-
-    def _are_linked(self, pod, service):
-        match_namespace = self._match_namespace(pod, service)
-        match_selector = self._match_selector(pod, service.spec.selector)
-        return match_namespace and match_selector
