@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from orca.topology.probes import probe
-from orca.topology.probes.k8s import client as k8s_client
+from orca.k8s import client as k8s_client
 from orca import graph
 
 
@@ -23,12 +23,12 @@ class K8SHandler(k8s_client.EventHandler, ABC):
         node = graph.Graph.create_node(id, metadata)
         self._graph.add_node(node)
 
-    def on_update(self, obj):
+    def on_updated(self, obj):
         (id, metadata) = self._extract_properties(obj)
         node = graph.Graph.create_node(id, metadata)
         self._graph.update_node(node)
 
-    def on_delete(self, obj):
+    def on_deleted(self, obj):
         (id, metadata) = self._extract_properties(obj)
         node = graph.Graph.create_node(id, metadata)
         self._graph.delete_node(node)

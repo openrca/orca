@@ -1,5 +1,5 @@
 from orca.topology.probes.k8s import probe
-from orca.topology.probes.k8s import client as k8s_client
+from orca.k8s import client as k8s_client
 from orca.common import logger
 
 log = logger.get_logger(__name__)
@@ -8,10 +8,10 @@ log = logger.get_logger(__name__)
 class ServiceProbe(probe.K8SProbe):
 
     def run(self):
-        resource_api = self._client.list_service_for_all_namespaces
-        handler = ServiceHandler(self._graph)
         log.info("Starting K8S watch on resource: service")
-        k8s_client.Watch(resource_api, handler).run()
+        watch = k8s_client.ResourceWatch(self._client.CoreV1Api(), 'service')
+        watch.add_handler(ServiceHandler(self._graph))
+        watch.run()
 
 
 class ServiceHandler(probe.K8SHandler):

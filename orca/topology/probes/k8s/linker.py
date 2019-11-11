@@ -53,7 +53,9 @@ class K8SLinker(linker.Linker, ABC):
 
     def _get_ab_links(self, node_a):
         links = []
-        resource_a = self._resource_a_api.get_by_node(node_a)
+        resource_a = self._resource_a_api.get(
+            node_a.metadata['namespace'],
+            node_a.metadata['name'])
         if not resource_a:
             return links
         for resource_b in self._resource_b_api.get_all():
@@ -68,7 +70,9 @@ class K8SLinker(linker.Linker, ABC):
 
     def _get_ba_links(self, node_b):
         links = []
-        resource_b = self._resource_b_api.get_by_node(node_b)
+        resource_b = self._resource_b_api.get(
+            node_b.metadata['namespace'],
+            node_b.metadata['name'])
         if not resource_b:
             return links
         for resource_a in self._resource_a_api.get_all():
@@ -90,28 +94,6 @@ class K8SLinker(linker.Linker, ABC):
 
     def _match_selector(self, resource, selector):
         labels = resource.metadata.labels
-        if not selector:
-            return True
-        if not labels:
-            return False
-        return all(item in labels.items() for item in selector.items())
-
-
-class K8SResourceAPI(object):
-
-    def __init__(self, read_fn, list_fn):
-        self._read_fn = read_fn
-        self._list_fn = list_fn
-
-    def get_by_node(self, node):
-        name = node.metadata['name']
-        namespace = node.metadata['namespace']
-        resource = None
-        try:
-            resource = self._read_fn(name, namespace)
-        except Exception as ex:
-            log.error(str(ex))
-        return resource
-
-    def get_all(self):
-        return self._list_fn().items
+        if selector and labels:
+            return all(item in labels.items() for item in selector.items())
+        return False
