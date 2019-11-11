@@ -64,6 +64,8 @@ class Graph(object):
         return self._client.get_node(id)
 
     def add_node(self, node):
+        if self.get_node(node.id):
+            return
         self._client.add_node(node)
         self._notify_listeners(GraphEvent.NODE_ADDED, node)
 
@@ -85,6 +87,8 @@ class Graph(object):
         return self._client.get_link(id)
 
     def add_link(self, link):
+        if self.get_link(link.id):
+            return
         self._client.add_link(link)
         self._notify_listeners(GraphEvent.LINK_ADDED, link)
 
