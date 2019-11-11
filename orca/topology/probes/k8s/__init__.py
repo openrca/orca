@@ -7,3 +7,7 @@ PROBES = [
     deployment.DeploymentProbe,
     service.ServiceProbe
 ]
+
+LINKERS = [
+    pod.PodToServiceLinker
+]

@@ -1,3 +1,5 @@
+import uuid
+
 from abc import ABC, abstractmethod
 from enum import Enum
 
@@ -41,8 +43,19 @@ class Graph(object):
         return Node(id, metadata)
 
     @staticmethod
-    def create_link(id, metadata, source, target):
+    def create_link(metadata, source, target):
+        id = Graph.generate_id(source.id, target.id)
         return Link(id, metadata, source, target)
+
+    @staticmethod
+    def generate_id(*names):
+        if names:
+            namespace = uuid.NAMESPACE_OID
+            name = "/".join(names)
+            id = uuid.uuid5(namespace, name)
+        else:
+            id = uuid.uuid4()
+        return str(id)
 
     def get_nodes(self, metadata):
         return self._client.get_nodes(metadata)
@@ -66,10 +79,10 @@ class Graph(object):
         self._notify_listeners(GraphEvent.NODE_DELETED, node)
 
     def get_links(self, metadata):
-        self._client.get_links(metadata)
+        return self._client.get_links(metadata)
 
     def get_link(self, id):
-        self._client.get_link(id)
+        return self._client.get_link(id)
 
     def add_link(self, link):
         self._client.add_link(link)
@@ -82,6 +95,9 @@ class Graph(object):
     def delete_link(self, link):
         self._client.delete_link(link)
         self._notify_listeners(GraphEvent.LINK_DELETED, link)
+
+    def get_node_links(self, node):
+        return self._client.get_node_links(node)
 
     def add_listener(self, listener):
         self._listeners.append(listener)

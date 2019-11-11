@@ -2,6 +2,7 @@ import cotyledon
 
 from orca.topology.probes import k8s as k8s_probe
 from orca.topology.probes.k8s import client as k8s_client
+from orca.topology.probes.k8s import linker as k8s_linker
 from orca.graph import drivers as graph_drivers
 from orca.graph import Graph
 
@@ -20,5 +21,10 @@ class Manager(cotyledon.ServiceManager):
 
     def _add_k8s_probes(self, graph):
         client = k8s_client.ClientFactory.get_client()
+        graph_listener = k8s_linker.K8SListener()
+        for linker in k8s_probe.LINKERS:
+            graph_listener.add_linker(
+                linker.create(graph, client))
+        graph.add_listener(graph_listener)
         for probe in k8s_probe.PROBES:
             self.add(probe, workers=1, args=(graph, client))
