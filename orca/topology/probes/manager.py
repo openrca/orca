@@ -5,6 +5,7 @@ from orca.k8s import client as k8s_client
 from orca.topology.probes.k8s import linker as k8s_linker
 from orca.graph import drivers as graph_drivers
 from orca.graph import Graph
+from orca.topology.probes.linker import GraphListener
 
 
 class Manager(cotyledon.ServiceManager):
@@ -21,7 +22,7 @@ class Manager(cotyledon.ServiceManager):
 
     def _add_k8s_probes(self, graph):
         client = k8s_client.ClientFactory.get_client()
-        graph_listener = k8s_linker.K8SListener()
+        graph_listener = GraphListener()
         for linker in k8s_probe.LINKERS:
             graph_listener.add_linker(
                 linker.create(graph, client))

@@ -7,49 +7,12 @@ from orca.common import logger
 log = logger.get_logger(__name__)
 
 
-class K8SListener(graph.EventListener):
-
-    def __init__(self):
-        self._linkers = []
-
-    def add_linker(self, linker):
-        self._linkers.append(linker)
-
-    def on_node_added(self, node):
-        self._link_node(node)
-
-    def on_node_updated(self, node):
-        self._link_node(node)
-
-    def on_node_deleted(self, node):
-        return
-
-    def on_link_added(self, link):
-        return
-
-    def on_link_updated(self, link):
-        return
-
-    def on_link_deleted(self, link):
-        return
-
-    def _link_node(self, node):
-        for linker in self._linkers:
-            if node.kind in linker.resource_types:
-                linker.link(node)
-
-
 class K8SLinker(linker.Linker, ABC):
 
-    def __init__(self, graph, resource_a_api, resource_b_api):
-        super().__init__(graph)
+    def __init__(self, graph, kind_a, resource_a_api, kind_b, resource_b_api):
+        super().__init__(graph, kind_a, kind_b)
         self._resource_a_api = resource_a_api
         self._resource_b_api = resource_b_api
-
-    @property
-    def resource_types(self):
-        return [self._resource_a_api.resource_type,
-                self._resource_b_api.resource_type]
 
     def _get_new_links(self, node):
         links = []
@@ -74,7 +37,7 @@ class K8SLinker(linker.Linker, ABC):
 
     def _get_ba_links(self, node_b):
         links = []
-        resource_b = self._resource_a_api.get_by_node(node_b)
+        resource_b = self._resource_b_api.get_by_node(node_b)
         if not resource_b:
             return links
         for resource_a in self._resource_a_api.get_all():

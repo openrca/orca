@@ -18,23 +18,18 @@ class ClientFactory(object):
 
 class ResourceProxy(object):
 
-    def __init__(self, client, resource_type):
+    def __init__(self, client, resource_kind):
         self._client = client
-        self._resource_type = resource_type
-        self._list_fn = self._get_list_fn(resource_type)
-        self._read_fn = self._get_read_fn(resource_type)
+        self._list_fn = self._get_list_fn(resource_kind)
+        self._read_fn = self._get_read_fn(resource_kind)
 
-    @property
-    def resource_type(self):
-        return self._resource_type
-
-    def _get_list_fn(self, resource_type):
+    def _get_list_fn(self, resource_kind):
         return getattr(
-            self._client, "list_%s_for_all_namespaces" % resource_type)
+            self._client, "list_%s_for_all_namespaces" % resource_kind)
 
-    def _get_read_fn(self, resource_type):
+    def _get_read_fn(self, resource_kind):
         return getattr(
-            self._client, "read_namespaced_%s" % resource_type)
+            self._client, "read_namespaced_%s" % resource_kind)
 
 
 class ResourceAPI(ResourceProxy):
@@ -58,8 +53,8 @@ class ResourceAPI(ResourceProxy):
 
 class ResourceWatch(ResourceProxy):
 
-    def __init__(self, client, resource_type):
-        super().__init__(client, resource_type)
+    def __init__(self, client, resource_kind):
+        super().__init__(client, resource_kind)
         self._handlers = []
 
     def add_handler(self, handler):

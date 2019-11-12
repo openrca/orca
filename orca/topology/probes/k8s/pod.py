@@ -37,8 +37,8 @@ class PodToServiceLinker(linker.K8SLinker):
     def create(graph, client):
         return PodToServiceLinker(
             graph,
-            k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'),
-            k8s_client.ResourceAPI(client.CoreV1Api(), 'service'))
+            'pod', k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'),
+            'service', k8s_client.ResourceAPI(client.CoreV1Api(), 'service'))
 
 
 class PodToDeploymentLinker(linker.K8SLinker):
@@ -52,5 +52,5 @@ class PodToDeploymentLinker(linker.K8SLinker):
     def create(graph, client):
         return PodToDeploymentLinker(
             graph,
-            k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'),
-            k8s_client.ResourceAPI(client.AppsV1Api(), 'deployment'))
+            'pod', k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'),
+            'deployment', k8s_client.ResourceAPI(client.AppsV1Api(), 'deployment'))
