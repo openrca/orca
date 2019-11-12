@@ -42,13 +42,18 @@ class ResourceAPI(ResourceProxy):
     def get_all(self):
         return self._list_fn().items
 
-    def get(self, namespace, name):
+    def get(self, name, namespace):
         resource_obj = None
         try:
             resource_obj = self._read_fn(name, namespace)
         except Exception as ex:
             log.error(str(ex))
         return resource_obj
+
+    def get_by_node(self, node):
+        name = node.metadata['name']
+        namespace = node.metadata['namespace']
+        return self.get(name, namespace)
 
 
 class ResourceWatch(ResourceProxy):

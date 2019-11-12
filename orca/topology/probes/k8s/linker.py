@@ -59,9 +59,7 @@ class K8SLinker(linker.Linker, ABC):
 
     def _get_ab_links(self, node_a):
         links = []
-        resource_a = self._resource_a_api.get(
-            node_a.metadata['namespace'],
-            node_a.metadata['name'])
+        resource_a = self._resource_a_api.get_by_node(node_a)
         if not resource_a:
             return links
         for resource_b in self._resource_b_api.get_all():
@@ -76,9 +74,7 @@ class K8SLinker(linker.Linker, ABC):
 
     def _get_ba_links(self, node_b):
         links = []
-        resource_b = self._resource_b_api.get(
-            node_b.metadata['namespace'],
-            node_b.metadata['name'])
+        resource_b = self._resource_a_api.get_by_node(node_b)
         if not resource_b:
             return links
         for resource_a in self._resource_a_api.get_all():
