@@ -23,6 +23,7 @@ class PodHandler(probe.K8SHandler):
         properties['name'] = obj.metadata.name
         properties['namespace'] = obj.metadata.namespace
         properties['ip'] = obj.status.pod_ip
+        properties['node'] = obj.spec.node_name
         return (id, 'pod', properties)
 
 
@@ -54,3 +55,16 @@ class PodToDeploymentLinker(linker.K8SLinker):
             graph,
             'pod', k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'),
             'deployment', k8s_client.ResourceAPI(client.AppsV1Api(), 'deployment'))
+
+
+class PodToNodeLinker(linker.K8SLinker):
+
+    def _are_linked(self, pod, node):
+        return pod.spec.node_name == node.metadata.name
+
+    @staticmethod
+    def create(graph, client):
+        return PodToNodeLinker(
+            graph,
+            'pod', k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'),
+            'node', k8s_client.ResourceAPI(client.CoreV1Api(), 'node', namespaced=False))

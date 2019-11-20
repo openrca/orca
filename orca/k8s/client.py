@@ -18,43 +18,59 @@ class ClientFactory(object):
 
 class ResourceProxy(object):
 
-    def __init__(self, client, resource_kind):
+    def __init__(self, client, resource_kind, namespaced=True):
         self._client = client
-        self._list_fn = self._get_list_fn(resource_kind)
-        self._read_fn = self._get_read_fn(resource_kind)
+        self._resource_kind = resource_kind
+        self._namespaced = namespaced
+        self._list_fn = self._get_list_fn()
+        self._read_fn = self._get_read_fn()
 
-    def _get_list_fn(self, resource_kind):
-        return getattr(
-            self._client, "list_%s_for_all_namespaces" % resource_kind)
+    def _list(self):
+        return self._list_fn()
 
-    def _get_read_fn(self, resource_kind):
-        return getattr(
-            self._client, "read_namespaced_%s" % resource_kind)
+    def _read(self, name, namespace=None):
+        if self._namespaced:
+            return self._read_fn(name, namespace)
+        else:
+            return self._read_fn(name)
+
+    def _get_list_fn(self):
+        fn_name = "list_%s" % self._resource_kind
+        if self._namespaced:
+            fn_name += "_for_all_namespaces"
+        return getattr(self._client, fn_name)
+
+    def _get_read_fn(self):
+        fn_name = "read_"
+        if self._namespaced:
+            fn_name += "namespaced_"
+        fn_name += self._resource_kind
+        return getattr(self._client, fn_name)
 
 
 class ResourceAPI(ResourceProxy):
 
     def get_all(self):
-        return self._list_fn().items
+        return self._list().items
 
     def get(self, name, namespace):
         resource_obj = None
         try:
-            resource_obj = self._read_fn(name, namespace)
+            resource_obj = self._read(name, namespace)
         except Exception as ex:
             log.error(str(ex))
         return resource_obj
 
     def get_by_node(self, node):
         name = node.metadata['name']
-        namespace = node.metadata['namespace']
+        namespace = node.metadata.get('namespace')
         return self.get(name, namespace)
 
 
 class ResourceWatch(ResourceProxy):
 
-    def __init__(self, client, resource_kind):
-        super().__init__(client, resource_kind)
+    def __init__(self, client, resource_kind, namespaced=True):
+        super().__init__(client, resource_kind, namespaced)
         self._handlers = []
 
     def add_handler(self, handler):
