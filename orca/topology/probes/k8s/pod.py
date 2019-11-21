@@ -42,19 +42,19 @@ class PodToServiceLinker(linker.K8SLinker):
             'service', k8s_client.ResourceAPI(client.CoreV1Api(), 'service'))
 
 
-class PodToDeploymentLinker(linker.K8SLinker):
+class PodToReplicaSetLinker(linker.K8SLinker):
 
-    def _are_linked(self, pod, deployment):
-        match_namespace = self._match_namespace(pod, deployment)
-        match_selector = self._match_selector(pod, deployment.spec.selector.match_labels)
+    def _are_linked(self, pod, replica_set):
+        match_namespace = self._match_namespace(pod, replica_set)
+        match_selector = self._match_selector(pod, replica_set.spec.selector.match_labels)
         return match_namespace and match_selector
 
     @staticmethod
     def create(graph, client):
-        return PodToDeploymentLinker(
+        return PodToReplicaSetLinker(
             graph,
             'pod', k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'),
-            'deployment', k8s_client.ResourceAPI(client.AppsV1Api(), 'deployment'))
+            'replica_set', k8s_client.ResourceAPI(client.AppsV1Api(), 'replica_set'))
 
 
 class PodToNodeLinker(linker.K8SLinker):

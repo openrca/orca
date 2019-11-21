@@ -14,7 +14,7 @@ PROBES = [
 
 LINKERS = [
     pod.PodToServiceLinker,
-    pod.PodToDeploymentLinker,
+    pod.PodToReplicaSetLinker,
     pod.PodToNodeLinker,
     replica_set.ReplicaSetToDeploymentLinker
 ]
