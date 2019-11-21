@@ -29,8 +29,24 @@ class SecretToPodLinker(linker.K8SLinker):
 
     def _are_linked(self, secret, pod):
         match_namespace = self._match_namespace(secret, pod)
+        match_env = self._match_env(secret, pod)
         match_volume = self._match_volume(secret, pod)
-        return match_namespace and match_volume
+        return match_namespace and (match_env or match_volume)
+
+    def _match_env(self, secret, pod):
+        for container in pod.spec.containers:
+            if container.env:
+                for env_var in container.env:
+                    if env_var.value_from and \
+                        env_var.value_from.secret_key_ref and \
+                        env_var.value_from.secret_key_ref.name == secret.metadata.name:
+                        return True
+            if container.env_from:
+                for env_from in container.env_from:
+                    if env_from.secret_ref and \
+                        env_from.secret_ref.name == secret.metadata.name:
+                        return True
+        return False
 
     def _match_volume(self, secret, pod):
         for volume in pod.spec.volumes:
