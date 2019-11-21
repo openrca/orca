@@ -3,5 +3,4 @@ flask_restplus
 honcho
 cotyledon
 kubernetes
-py2neo
-urllib3<1.25
+neo4j

@@ -119,7 +119,7 @@ class Graph(object):
     def generate_id(*names):
         if names:
             namespace = uuid.NAMESPACE_OID
-            name = "/".join(names)
+            name = "/".join([str(name) for name in names])
             id = uuid.uuid5(namespace, name)
         else:
             id = uuid.uuid4()

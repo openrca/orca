@@ -6,11 +6,11 @@ class Client(ABC):
     """Abstract Graph DB client."""
 
     @abstractmethod
-    def get_nodes(self, metadata):
+    def get_nodes(self, kind, metadata):
         """Get all graph nodes."""
 
     @abstractmethod
-    def get_node(self, id):
+    def get_node(self, id, kind, metadata):
         """Get graph node details."""
 
     @abstractmethod
@@ -26,11 +26,11 @@ class Client(ABC):
         """Delete a graph node."""
 
     @abstractmethod
-    def get_links(self, metadata):
+    def get_links(self, kind, metadata):
         """Get all graph links."""
 
     @abstractmethod
-    def get_link(self, id):
+    def get_link(self, id, kind, metadata):
         """Get graph link details."""
 
     @abstractmethod
