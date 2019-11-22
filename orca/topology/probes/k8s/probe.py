@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+import abc
 
 from orca import graph
 from orca.k8s import client as k8s_client
@@ -13,7 +13,7 @@ class K8SProbe(probe.Probe):
         self._client = client
 
 
-class K8SHandler(k8s_client.EventHandler, ABC):
+class K8SHandler(k8s_client.EventHandler, abc.ABC):
 
     def __init__(self, graph):
         self._graph = graph
@@ -33,6 +33,6 @@ class K8SHandler(k8s_client.EventHandler, ABC):
         node = graph.Graph.create_node(id, kind, metadata)
         self._graph.delete_node(node)
 
-    @abstractmethod
+    @abc.abstractmethod
     def _extract_properties(self, obj):
         """Extracts properties from K8S resource object."""

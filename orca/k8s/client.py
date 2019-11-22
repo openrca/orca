@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+import abc
 
 from kubernetes import client, config, watch
 
@@ -87,16 +87,16 @@ class ResourceWatch(ResourceProxy):
                 handler.on_deleted(resource_obj)
 
 
-class EventHandler(ABC):
+class EventHandler(abc.ABC):
 
-    @abstractmethod
+    @abc.abstractmethod
     def on_added(self, obj):
         """Triggered when a K8S resource is added."""
 
-    @abstractmethod
+    @abc.abstractmethod
     def on_updated(self, obj):
         """Triggered when a K8S resource is updated."""
 
-    @abstractmethod
+    @abc.abstractmethod
     def on_deleted(self, obj):
         """Triggered when a K8S resource is deleted."""

@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+import abc
 
 from orca import graph
 from orca.common import logger
@@ -7,7 +7,7 @@ from orca.topology.probes import linker
 log = logger.get_logger(__name__)
 
 
-class K8SLinker(linker.Linker, ABC):
+class K8SLinker(linker.Linker, abc.ABC):
 
     def __init__(self, graph, kind_a, indexer_a, kind_b, indexer_b):
         super().__init__(graph, kind_a, kind_b)
@@ -50,7 +50,7 @@ class K8SLinker(linker.Linker, ABC):
                 links.append(link)
         return links
 
-    @abstractmethod
+    @abc.abstractmethod
     def _are_linked(self, resource_a, resource_b):
         """Determines whether two K8S resources are interconnected."""
 

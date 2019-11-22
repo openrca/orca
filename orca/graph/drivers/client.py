@@ -1,50 +1,50 @@
-from abc import ABC, abstractmethod
+import abc
 
 
-class Client(ABC):
+class Client(abc.ABC):
 
     """Abstract Graph DB client."""
 
-    @abstractmethod
+    @abc.abstractmethod
     def get_nodes(self, kind, metadata):
         """Get all graph nodes."""
 
-    @abstractmethod
+    @abc.abstractmethod
     def get_node(self, id, kind, metadata):
         """Get graph node details."""
 
-    @abstractmethod
+    @abc.abstractmethod
     def add_node(self, node):
         """Create a graph node."""
 
-    @abstractmethod
+    @abc.abstractmethod
     def update_node(self, node):
         """Update a graph node."""
 
-    @abstractmethod
+    @abc.abstractmethod
     def delete_node(self, node):
         """Delete a graph node."""
 
-    @abstractmethod
+    @abc.abstractmethod
     def get_links(self, metadata):
         """Get all graph links."""
 
-    @abstractmethod
+    @abc.abstractmethod
     def get_link(self, id, metadata):
         """Get graph link details."""
 
-    @abstractmethod
+    @abc.abstractmethod
     def add_link(self, link):
         """Create a graph link."""
 
-    @abstractmethod
+    @abc.abstractmethod
     def update_link(self, link):
         """Update a graph link."""
 
-    @abstractmethod
+    @abc.abstractmethod
     def delete_link(self, link):
         """Delete a graph link."""
 
-    @abstractmethod
+    @abc.abstractmethod
     def get_node_links(self, node):
         """Get links connected to a node."""

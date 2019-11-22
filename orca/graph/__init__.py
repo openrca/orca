@@ -1,9 +1,9 @@
 import uuid
-from abc import ABC, abstractmethod
+import abc
 from enum import Enum
 
 
-class GraphObject(ABC):
+class GraphObject(abc.ABC):
 
     def __init__(self, id, metadata):
         self.id = id
@@ -135,31 +135,31 @@ class GraphEvent(Enum):
     LINK_DELETED = 6
 
 
-class EventListener(ABC):
+class EventListener(abc.ABC):
 
     def __init__(self, graph):
         self._graph = graph
 
-    @abstractmethod
+    @abc.abstractmethod
     def on_node_added(self, node):
         pass
 
-    @abstractmethod
+    @abc.abstractmethod
     def on_node_updated(self, node):
         pass
 
-    @abstractmethod
+    @abc.abstractmethod
     def on_node_deleted(self, node):
         pass
 
-    @abstractmethod
+    @abc.abstractmethod
     def on_link_added(self, link):
         pass
 
-    @abstractmethod
+    @abc.abstractmethod
     def on_link_updated(self, link):
         pass
 
-    @abstractmethod
+    @abc.abstractmethod
     def on_link_deleted(self, link):
         pass

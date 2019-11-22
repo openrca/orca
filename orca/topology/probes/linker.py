@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+import abc
 
 from orca import graph
 
@@ -34,7 +34,7 @@ class GraphListener(graph.EventListener):
             linker.link(node)
 
 
-class Linker(ABC):
+class Linker(abc.ABC):
 
     def __init__(self, graph, kind_a, kind_b):
         self._graph = graph
@@ -81,7 +81,7 @@ class Linker(ABC):
             lambda link: (link.target.kind == target_node_kind),
             links)
 
-    @abstractmethod
+    @abc.abstractmethod
     def _get_new_links(self, node):
         """Returns a snapshot of graph links for a given node."""
 
