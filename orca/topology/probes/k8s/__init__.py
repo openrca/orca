@@ -24,5 +24,6 @@ LINKERS = [
     pod.PodToNodeLinker,
     replica_set.ReplicaSetToDeploymentLinker,
     config_map.ConfigMapToPodLinker,
-    secret.SecretToPodLinker
+    secret.SecretToPodLinker,
+    node.NodeToClusterLinker
 ]

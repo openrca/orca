@@ -2,6 +2,8 @@
 from orca.topology.probes.k8s import probe
 from orca.k8s import client as k8s_client
 from orca.topology.probes.k8s import linker
+from orca.topology.probes.k8s import indexer as k8s_indexer
+from orca.topology.probes import indexer
 from orca.common import logger
 
 log = logger.get_logger(__name__)
@@ -24,3 +26,16 @@ class NodeHandler(probe.K8SHandler):
         properties = {}
         properties['name'] = obj.metadata.name
         return (id, 'node', properties)
+
+
+class NodeToClusterLinker(linker.K8SLinker):
+
+    def _are_linked(self, node, cluster):
+        return True
+
+    @staticmethod
+    def create(graph, client):
+        node_indexer = k8s_indexer.K8SIndexer(
+            k8s_client.ResourceAPI(client.CoreV1Api(), 'node', namespaced=False))
+        cluster_indexer = indexer.GraphIndexer(graph, 'cluster')
+        return NodeToClusterLinker(graph, 'node', node_indexer, 'cluster', cluster_indexer)
