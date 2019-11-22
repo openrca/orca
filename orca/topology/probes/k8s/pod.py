@@ -1,6 +1,7 @@
 from orca.topology.probes.k8s import probe
 from orca.k8s import client as k8s_client
 from orca.topology.probes.k8s import linker
+from orca.topology.probes.k8s import indexer as k8s_indexer
 from orca.common import logger
 
 log = logger.get_logger(__name__)
@@ -36,10 +37,11 @@ class PodToServiceLinker(linker.K8SLinker):
 
     @staticmethod
     def create(graph, client):
-        return PodToServiceLinker(
-            graph,
-            'pod', k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'),
-            'service', k8s_client.ResourceAPI(client.CoreV1Api(), 'service'))
+        pod_indexer = k8s_indexer.K8SIndexer(
+            k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'))
+        service_indexer = k8s_indexer.K8SIndexer(
+            k8s_client.ResourceAPI(client.CoreV1Api(), 'service'))
+        return PodToServiceLinker(graph, 'pod', pod_indexer, 'service', service_indexer)
 
 
 class PodToReplicaSetLinker(linker.K8SLinker):
@@ -51,10 +53,11 @@ class PodToReplicaSetLinker(linker.K8SLinker):
 
     @staticmethod
     def create(graph, client):
-        return PodToReplicaSetLinker(
-            graph,
-            'pod', k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'),
-            'replica_set', k8s_client.ResourceAPI(client.AppsV1Api(), 'replica_set'))
+        pod_indexer = k8s_indexer.K8SIndexer(
+            k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'))
+        replica_set_indexer = k8s_indexer.K8SIndexer(
+            k8s_client.ResourceAPI(client.ExtensionsV1beta1Api(), 'replica_set'))
+        return PodToReplicaSetLinker(graph, 'pod', pod_indexer, 'replica_set', replica_set_indexer)
 
 
 class PodToNodeLinker(linker.K8SLinker):
@@ -64,7 +67,8 @@ class PodToNodeLinker(linker.K8SLinker):
 
     @staticmethod
     def create(graph, client):
-        return PodToNodeLinker(
-            graph,
-            'pod', k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'),
-            'node', k8s_client.ResourceAPI(client.CoreV1Api(), 'node', namespaced=False))
+        pod_indexer = k8s_indexer.K8SIndexer(
+            k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'))
+        node_indexer = k8s_indexer.K8SIndexer(
+            k8s_client.ResourceAPI(client.CoreV1Api(), 'node', namespaced=False))
+        return PodToNodeLinker(graph, 'pod', pod_indexer, 'node', node_indexer)

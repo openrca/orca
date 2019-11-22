@@ -9,10 +9,10 @@ log = logger.get_logger(__name__)
 
 class K8SLinker(linker.Linker, ABC):
 
-    def __init__(self, graph, kind_a, resource_a_api, kind_b, resource_b_api):
+    def __init__(self, graph, kind_a, indexer_a, kind_b, indexer_b):
         super().__init__(graph, kind_a, kind_b)
-        self._resource_a_api = resource_a_api
-        self._resource_b_api = resource_b_api
+        self._indexer_a = indexer_a
+        self._indexer_b = indexer_b
 
     def _get_new_links(self, node):
         links = []
@@ -22,11 +22,11 @@ class K8SLinker(linker.Linker, ABC):
 
     def _get_ab_links(self, node_a):
         links = []
-        resource_a = self._resource_a_api.get_by_node(node_a)
+        resource_a = self._indexer_a.get_by_node(node_a)
         if not resource_a:
             return links
-        for resource_b in self._resource_b_api.get_all():
-            node_b_id = resource_b.metadata.uid
+        for resource_b in self._indexer_b.get_all():
+            node_b_id = resource_b.get_id()
             node_b = self._graph.get_node(node_b_id)
             if not node_b:
                 continue
@@ -37,11 +37,11 @@ class K8SLinker(linker.Linker, ABC):
 
     def _get_ba_links(self, node_b):
         links = []
-        resource_b = self._resource_b_api.get_by_node(node_b)
+        resource_b = self._indexer_b.get_by_node(node_b)
         if not resource_b:
             return links
-        for resource_a in self._resource_a_api.get_all():
-            node_a_id = resource_a.metadata.uid
+        for resource_a in self._indexer_a.get_all():
+            node_a_id = resource_a.get_id()
             node_a = self._graph.get_node(node_a_id)
             if not node_a:
                 continue

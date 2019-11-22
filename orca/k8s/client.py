@@ -61,11 +61,6 @@ class ResourceAPI(ResourceProxy):
             log.error(str(ex))
         return resource_obj
 
-    def get_by_node(self, node):
-        name = node.metadata['name']
-        namespace = node.metadata.get('namespace')
-        return self.get(name, namespace)
-
 
 class ResourceWatch(ResourceProxy):
 
