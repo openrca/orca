@@ -5,6 +5,7 @@ from orca.topology.probes.k8s import config_map
 from orca.topology.probes.k8s import secret
 from orca.topology.probes.k8s import replica_set
 from orca.topology.probes.k8s import node
+from orca.topology.probes.k8s import cluster
 
 PROBES = [
     pod.PodProbe,
@@ -12,6 +13,7 @@ PROBES = [
     service.ServiceProbe,
     replica_set.ReplicaSetProbe,
     node.NodeProbe,
+    cluster.ClusterProbe,
     config_map.ConfigMapProbe,
     secret.SecretProbe
 ]
