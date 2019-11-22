@@ -1,6 +1,6 @@
-import uuid
 import abc
-from enum import Enum
+import enum
+import uuid
 
 
 class GraphObject(abc.ABC):
@@ -125,7 +125,7 @@ class Graph(object):
         return str(id)
 
 
-class GraphEvent(Enum):
+class GraphEvent(enum.Enum):
 
     NODE_ADDED = 1
     NODE_UPDATED = 2
