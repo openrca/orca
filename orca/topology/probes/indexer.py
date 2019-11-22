@@ -24,7 +24,9 @@ class GraphIndexer(Indexer):
         return [GraphResourceProxy(node) for node in nodes]
 
     def get_by_node(self, node):
-        return GraphResourceProxy(node)
+        node = self._graph.get_node(id=node.id, kind=self._resource_kind)
+        if node:
+            return GraphResourceProxy(node)
 
 
 class ResourceProxy(abc.ABC):
@@ -46,4 +48,3 @@ class GraphResourceProxy(ResourceProxy):
 
     def get_id(self):
         return self._resource.id
-
