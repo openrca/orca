@@ -40,11 +40,11 @@ class Graph(object):
         self._client = client
         self._listeners = []
 
-    def get_nodes(self, metadata):
-        return self._client.get_nodes(metadata)
+    def get_nodes(self, kind=None, metadata=None):
+        return self._client.get_nodes(kind, metadata)
 
-    def get_node(self, id):
-        return self._client.get_node(id)
+    def get_node(self, id, kind=None, metadata=None):
+        return self._client.get_node(id, kind, metadata)
 
     def add_node(self, node):
         if self.get_node(node.id):
@@ -63,11 +63,11 @@ class Graph(object):
         self._client.delete(node)
         self._notify_listeners(GraphEvent.NODE_DELETED, node)
 
-    def get_links(self, metadata):
+    def get_links(self, metadata=None):
         return self._client.get_links(metadata)
 
-    def get_link(self, id):
-        return self._client.get_link(id)
+    def get_link(self, id, metadata=None):
+        return self._client.get_link(id, metadata)
 
     def add_link(self, link):
         if self.get_link(link.id):
