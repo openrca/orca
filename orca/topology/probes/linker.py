@@ -1,6 +1,6 @@
 import abc
 
-from orca import graph
+from orca.graph import graph
 
 
 class GraphListener(graph.EventListener):

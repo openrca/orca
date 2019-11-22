@@ -2,7 +2,7 @@ import copy
 
 import neo4j as graph_lib
 
-from orca import graph
+from orca.graph import graph
 from orca.graph.drivers import client
 
 

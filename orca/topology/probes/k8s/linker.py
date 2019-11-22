@@ -1,6 +1,6 @@
 import abc
 
-from orca import graph
+from orca.graph import graph
 from orca.common import logger
 from orca.topology.probes import linker
 

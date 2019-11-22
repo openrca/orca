@@ -1,6 +1,6 @@
 import abc
 
-from orca import graph
+from orca.graph import graph
 from orca.k8s import client as k8s_client
 from orca.topology.probes import probe
 

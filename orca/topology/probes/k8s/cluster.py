@@ -1,4 +1,4 @@
-from orca import graph
+from orca.graph import graph
 from orca.common import logger
 from orca.topology.probes.k8s import probe
 
