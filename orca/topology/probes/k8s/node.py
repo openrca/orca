@@ -1,10 +1,9 @@
 
-from orca.topology.probes.k8s import probe
-from orca.k8s import client as k8s_client
-from orca.topology.probes.k8s import linker
-from orca.topology.probes.k8s import indexer as k8s_indexer
-from orca.topology.probes import indexer
 from orca.common import logger
+from orca.k8s import client as k8s_client
+from orca.topology.probes import indexer
+from orca.topology.probes.k8s import indexer as k8s_indexer
+from orca.topology.probes.k8s import linker, probe
 
 log = logger.get_logger(__name__)
 

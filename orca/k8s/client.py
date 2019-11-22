@@ -101,7 +101,3 @@ class EventHandler(ABC):
     @abstractmethod
     def on_deleted(self, obj):
         """Triggered when a K8S resource is deleted."""
-
-
-
-

@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 
-from orca.topology.probes import linker
 from orca import graph
 from orca.common import logger
+from orca.topology.probes import linker
 
 log = logger.get_logger(__name__)
 

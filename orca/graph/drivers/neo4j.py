@@ -2,8 +2,8 @@ import copy
 
 import neo4j as graph_lib
 
-from orca.graph.drivers import client
 from orca import graph
+from orca.graph.drivers import client
 
 
 class Neo4jClient(client.Client):
