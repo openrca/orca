@@ -38,13 +38,13 @@ class ConfigMapToPodLinker(linker.K8SLinker):
             if container.env:
                 for env_var in container.env:
                     if env_var.value_from and \
-                        env_var.value_from.config_map_key_ref and \
-                        env_var.value_from.config_map_key_ref.name == config_map.metadata.name:
+                       env_var.value_from.config_map_key_ref and \
+                       env_var.value_from.config_map_key_ref.name == config_map.metadata.name:
                         return True
             if container.env_from:
                 for env_from in container.env_from:
                     if env_from.config_map_ref and \
-                        env_from.config_map_ref.name == config_map.metadata.name:
+                       env_from.config_map_ref.name == config_map.metadata.name:
                         return True
         return False
 

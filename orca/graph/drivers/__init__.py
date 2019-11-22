@@ -13,5 +13,3 @@ class ClientFactory(object):
             password = "admin"
             return Neo4jClient(
                 host=host, port=port, user=user, password=password)
-
-

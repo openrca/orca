@@ -38,13 +38,13 @@ class SecretToPodLinker(linker.K8SLinker):
             if container.env:
                 for env_var in container.env:
                     if env_var.value_from and \
-                        env_var.value_from.secret_key_ref and \
-                        env_var.value_from.secret_key_ref.name == secret.metadata.name:
+                       env_var.value_from.secret_key_ref and \
+                       env_var.value_from.secret_key_ref.name == secret.metadata.name:
                         return True
             if container.env_from:
                 for env_from in container.env_from:
                     if env_from.secret_ref and \
-                        env_from.secret_ref.name == secret.metadata.name:
+                       env_from.secret_ref.name == secret.metadata.name:
                         return True
         return False
 

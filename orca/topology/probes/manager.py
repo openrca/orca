@@ -4,7 +4,6 @@ from orca.graph import Graph
 from orca.graph import drivers as graph_drivers
 from orca.k8s import client as k8s_client
 from orca.topology.probes import k8s as k8s_probe
-from orca.topology.probes.k8s import linker as k8s_linker
 from orca.topology.probes.linker import GraphListener
 
 
