@@ -5,11 +5,26 @@ class Indexer(abc.ABC):
 
     @abc.abstractmethod
     def get_all(self):
-        """Retrieves proxy to all origin resources."""
+        """Returns proxy to all origin resources."""
 
     @abc.abstractmethod
     def get_by_node(self, node):
-        """Retrieves proxy to an origin resource based on node metadata."""
+        """Returns proxy to an origin resource based on node metadata."""
+
+
+class ResourceProxy(abc.ABC):
+
+    def __init__(self, resource):
+        self._resource = resource
+
+    @abc.abstractmethod
+    def get_id(self):
+        """Returns ID of a resource."""
+
+    def __getattr__(self, attr):
+        if attr in self.__dict__:
+            return getattr(self, attr)
+        return getattr(self._resource, attr)
 
 
 class GraphIndexer(Indexer):
@@ -27,21 +42,6 @@ class GraphIndexer(Indexer):
         node = self._graph.get_node(id=node.id, kind=self._resource_kind)
         if node:
             return GraphResourceProxy(node)
-
-
-class ResourceProxy(abc.ABC):
-
-    def __init__(self, resource):
-        self._resource = resource
-
-    @abc.abstractmethod
-    def get_id(self):
-        """Returns ID of a resource."""
-
-    def __getattr__(self, attr):
-        if attr in self.__dict__:
-            return getattr(self, attr)
-        return getattr(self._resource, attr)
 
 
 class GraphResourceProxy(ResourceProxy):
