@@ -59,7 +59,7 @@ class Graph(object):
         links = self._client.get_node_links(node)
         for link in links:
             self._client.delete_link(link)
-        self._client.delete(node)
+        self._client.delete_node(node)
         self._notify_listeners(GraphEvent.NODE_DELETED, node)
 
     def get_links(self, metadata=None):
@@ -82,8 +82,8 @@ class Graph(object):
         self._client.delete_link(link)
         self._notify_listeners(GraphEvent.LINK_DELETED, link)
 
-    def get_node_links(self, node):
-        return self._client.get_node_links(node)
+    def get_node_links(self, node, kind=None):
+        return self._client.get_node_links(node, kind)
 
     def add_listener(self, listener):
         self._listeners.append(listener)

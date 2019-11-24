@@ -99,11 +99,14 @@ class Neo4jClient(client.Client):
         query = "MATCH (src_node)-%s-(dst_node) DELETE rel" % (rel_pattern)
         self._run_query(query)
 
-    def get_node_links(self, node):
+    def get_node_links(self, node, kind=None):
         source_node_pattern = self._build_node_pattern(
-            node.id, node.kind, node.metadata, var_name="src_node")
-        query = ("MATCH %s-[rel:linked]->(dst_node) "
-                 "RETURN rel, src_node, dst_node") % (source_node_pattern)
+            node.id, node.kind, None, var_name="src_node")
+        target_node_pattern = self._build_node_pattern(
+            None, kind, None, var_name="dst_node")
+        query = ("MATCH %s-[rel:linked]-%s "
+                 "RETURN rel, src_node, dst_node") % (
+                     source_node_pattern, target_node_pattern)
         query_result = self._run_query(query)
         records = query_result.records()
         links = []

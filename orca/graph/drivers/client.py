@@ -46,5 +46,5 @@ class Client(abc.ABC):
         """Delete a graph link."""
 
     @abc.abstractmethod
-    def get_node_links(self, node):
+    def get_node_links(self, node, kind):
         """Get links connected to a node."""
