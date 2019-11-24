@@ -6,10 +6,11 @@ from orca.graph import graph
 class GraphListener(graph.EventListener):
 
     def __init__(self):
-        self._linkers = []
+        self._linkers = {}
 
     def add_linker(self, linker):
-        self._linkers.append(linker)
+        self._linkers.setdefault(linker.kind_a, []).append(linker)
+        self._linkers.setdefault(linker.kind_b, []).append(linker)
 
     def on_node_added(self, node):
         self._link_node(node)
@@ -30,8 +31,9 @@ class GraphListener(graph.EventListener):
         return
 
     def _link_node(self, node):
-        for linker in self._linkers:
-            linker.link(node)
+        if node.kind in self._linkers:
+            for linker in self._linkers[node.kind]:
+                linker.link(node)
 
 
 class Linker(abc.ABC):
@@ -50,12 +52,8 @@ class Linker(abc.ABC):
         return self._kind_b
 
     def link(self, node):
-        if not self._is_node_linkable(node):
-            return
-        current_links = Linker._build_link_lookup(
-            self._get_current_links(node))
-        new_links = Linker._build_link_lookup(
-            self._get_new_links(node))
+        current_links = Linker._build_link_lookup(self._get_current_links(node))
+        new_links = Linker._build_link_lookup(self._get_new_links(node))
         for link_id, link in new_links.items():
             if link_id not in current_links:
                 self._graph.add_link(link)
@@ -65,21 +63,12 @@ class Linker(abc.ABC):
             if link_id not in new_links:
                 self._graph.delete_link(link)
 
-    def _is_node_linkable(self, node):
-        if node.kind == self._kind_a:
-            return True
-        if node.kind == self._kind_b:
-            return True
-        return False
-
     def _get_current_links(self, node):
-        links = self._graph.get_node_links(node)
-        target_node_kind = self._kind_a
-        if node.kind == self._kind_a:
-            target_node_kind = self._kind_b
-        return filter(
-            lambda link: (link.target.kind == target_node_kind),
-            links)
+        target_kind = self._get_target_kind(node)
+        return self._graph.get_node_links(node, kind=target_kind)
+
+    def _get_target_kind(self, node):
+        return self.kind_a if node.kind == self.kind_b else self.kind_b
 
     @abc.abstractmethod
     def _get_new_links(self, node):
