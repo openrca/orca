@@ -1,6 +1,7 @@
 import abc
 
 from kubernetes import client, config, watch
+from kubernetes.client.rest import ApiException
 
 from orca.common import logger
 
@@ -56,6 +57,11 @@ class ResourceAPI(ResourceProxy):
         resource_obj = None
         try:
             resource_obj = self._read(name, namespace)
+        except ApiException as api_ex:
+            if str(api_ex.status) == "404":
+                resource_obj = None
+            else:
+                raise
         except Exception as ex:
             log.error(str(ex))
         return resource_obj
