@@ -6,7 +6,7 @@ from orca.topology.probes.k8s import linker, probe
 log = logger.get_logger(__name__)
 
 
-class PodProbe(probe.K8SProbe):
+class PodProbe(probe.Probe):
 
     def run(self):
         log.info("Starting K8S watch on resource: pod")
@@ -15,7 +15,7 @@ class PodProbe(probe.K8SProbe):
         watch.run()
 
 
-class PodHandler(probe.K8SHandler):
+class PodHandler(probe.K8SResourceHandler):
 
     def _extract_properties(self, obj):
         id = obj.metadata.uid
@@ -27,7 +27,7 @@ class PodHandler(probe.K8SHandler):
         return (id, 'pod', properties)
 
 
-class PodToServiceLinker(linker.K8SLinker):
+class PodToServiceLinker(linker.Linker):
 
     def _are_linked(self, pod, service):
         match_namespace = self._match_namespace(pod, service)
@@ -36,12 +36,12 @@ class PodToServiceLinker(linker.K8SLinker):
 
     @staticmethod
     def create(graph, client):
-        pod_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'pod')
-        service_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'service')
+        pod_indexer = k8s_indexer.IndexerFactory.get_indexer(client, 'pod')
+        service_indexer = k8s_indexer.IndexerFactory.get_indexer(client, 'service')
         return PodToServiceLinker(graph, 'pod', pod_indexer, 'service', service_indexer)
 
 
-class PodToReplicaSetLinker(linker.K8SLinker):
+class PodToReplicaSetLinker(linker.Linker):
 
     def _are_linked(self, pod, replica_set):
         match_namespace = self._match_namespace(pod, replica_set)
@@ -50,18 +50,18 @@ class PodToReplicaSetLinker(linker.K8SLinker):
 
     @staticmethod
     def create(graph, client):
-        pod_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'pod')
-        replica_set_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'replica_set')
+        pod_indexer = k8s_indexer.IndexerFactory.get_indexer(client, 'pod')
+        replica_set_indexer = k8s_indexer.IndexerFactory.get_indexer(client, 'replica_set')
         return PodToReplicaSetLinker(graph, 'pod', pod_indexer, 'replica_set', replica_set_indexer)
 
 
-class PodToNodeLinker(linker.K8SLinker):
+class PodToNodeLinker(linker.Linker):
 
     def _are_linked(self, pod, node):
         return pod.spec.node_name == node.metadata.name
 
     @staticmethod
     def create(graph, client):
-        pod_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'pod')
-        node_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'node')
+        pod_indexer = k8s_indexer.IndexerFactory.get_indexer(client, 'pod')
+        node_indexer = k8s_indexer.IndexerFactory.get_indexer(client, 'node')
         return PodToNodeLinker(graph, 'pod', pod_indexer, 'node', node_indexer)

@@ -5,7 +5,7 @@ from orca.topology.probes.k8s import probe
 log = logger.get_logger(__name__)
 
 
-class ClusterProbe(probe.K8SProbe):
+class ClusterProbe(probe.Probe):
 
     def run(self):
         log.info("Registering root node for resource: cluster")

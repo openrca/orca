@@ -5,7 +5,7 @@ from orca.topology.probes.k8s import probe
 log = logger.get_logger(__name__)
 
 
-class ServiceProbe(probe.K8SProbe):
+class ServiceProbe(probe.Probe):
 
     def run(self):
         log.info("Starting K8S watch on resource: service")
@@ -14,7 +14,7 @@ class ServiceProbe(probe.K8SProbe):
         watch.run()
 
 
-class ServiceHandler(probe.K8SHandler):
+class ServiceHandler(probe.K8SResourceHandler):
 
     def _extract_properties(self, obj):
         id = obj.metadata.uid

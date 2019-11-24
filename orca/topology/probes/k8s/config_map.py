@@ -6,7 +6,7 @@ from orca.topology.probes.k8s import linker, probe
 log = logger.get_logger(__name__)
 
 
-class ConfigMapProbe(probe.K8SProbe):
+class ConfigMapProbe(probe.Probe):
 
     def run(self):
         log.info("Starting K8S watch on resource: config_map")
@@ -15,7 +15,7 @@ class ConfigMapProbe(probe.K8SProbe):
         watch.run()
 
 
-class ConfigMapHandler(probe.K8SHandler):
+class ConfigMapHandler(probe.K8SResourceHandler):
 
     def _extract_properties(self, obj):
         id = obj.metadata.uid
@@ -25,7 +25,7 @@ class ConfigMapHandler(probe.K8SHandler):
         return (id, 'config_map', properties)
 
 
-class ConfigMapToPodLinker(linker.K8SLinker):
+class ConfigMapToPodLinker(linker.Linker):
 
     def _are_linked(self, config_map, pod):
         match_namespace = self._match_namespace(config_map, pod)
@@ -56,6 +56,6 @@ class ConfigMapToPodLinker(linker.K8SLinker):
 
     @staticmethod
     def create(graph, client):
-        config_map_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'config_map')
-        pod_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'pod')
+        config_map_indexer = k8s_indexer.IndexerFactory.get_indexer(client, 'config_map')
+        pod_indexer = k8s_indexer.IndexerFactory.get_indexer(client, 'pod')
         return ConfigMapToPodLinker(graph, 'config_map', config_map_indexer, 'pod', pod_indexer, )

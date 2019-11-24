@@ -7,7 +7,7 @@ from orca.topology.probes import linker
 log = logger.get_logger(__name__)
 
 
-class K8SLinker(linker.Linker, abc.ABC):
+class Linker(linker.Linker, abc.ABC):
 
     def __init__(self, graph, kind_a, indexer_a, kind_b, indexer_b):
         super().__init__(graph, kind_a, kind_b)

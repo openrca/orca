@@ -6,7 +6,7 @@ from orca.topology.probes.k8s import linker, probe
 log = logger.get_logger(__name__)
 
 
-class ReplicaSetProbe(probe.K8SProbe):
+class ReplicaSetProbe(probe.Probe):
 
     def run(self):
         log.info("Starting K8S watch on resource: replica_set")
@@ -15,7 +15,7 @@ class ReplicaSetProbe(probe.K8SProbe):
         watch.run()
 
 
-class ReplicaSetHandler(probe.K8SHandler):
+class ReplicaSetHandler(probe.K8SResourceHandler):
 
     def _extract_properties(self, obj):
         id = obj.metadata.uid
@@ -26,7 +26,7 @@ class ReplicaSetHandler(probe.K8SHandler):
         return (id, 'replica_set', properties)
 
 
-class ReplicaSetToDeploymentLinker(linker.K8SLinker):
+class ReplicaSetToDeploymentLinker(linker.Linker):
 
     def _are_linked(self, replica_set, deployment):
         match_namespace = self._match_namespace(replica_set, deployment)
@@ -35,7 +35,7 @@ class ReplicaSetToDeploymentLinker(linker.K8SLinker):
 
     @staticmethod
     def create(graph, client):
-        replica_set_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'replica_set')
-        deployment_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'deployment')
+        replica_set_indexer = k8s_indexer.IndexerFactory.get_indexer(client, 'replica_set')
+        deployment_indexer = k8s_indexer.IndexerFactory.get_indexer(client, 'deployment')
         return ReplicaSetToDeploymentLinker(
             graph, 'replica_set', replica_set_indexer, 'deployment', deployment_indexer)

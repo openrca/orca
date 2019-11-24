@@ -5,7 +5,7 @@ from orca.topology.probes.k8s import probe
 log = logger.get_logger(__name__)
 
 
-class DeploymentProbe(probe.K8SProbe):
+class DeploymentProbe(probe.Probe):
 
     def run(self):
         log.info("Starting K8S watch on resource: deployment")
@@ -14,7 +14,7 @@ class DeploymentProbe(probe.K8SProbe):
         watch.run()
 
 
-class DeploymentHandler(probe.K8SHandler):
+class DeploymentHandler(probe.K8SResourceHandler):
 
     def _extract_properties(self, obj):
         id = obj.metadata.uid

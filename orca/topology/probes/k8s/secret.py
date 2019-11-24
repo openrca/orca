@@ -6,7 +6,7 @@ from orca.topology.probes.k8s import linker, probe
 log = logger.get_logger(__name__)
 
 
-class SecretProbe(probe.K8SProbe):
+class SecretProbe(probe.Probe):
 
     def run(self):
         log.info("Starting K8S watch on resource: secret")
@@ -15,7 +15,7 @@ class SecretProbe(probe.K8SProbe):
         watch.run()
 
 
-class SecretHandler(probe.K8SHandler):
+class SecretHandler(probe.K8SResourceHandler):
 
     def _extract_properties(self, obj):
         id = obj.metadata.uid
@@ -25,7 +25,7 @@ class SecretHandler(probe.K8SHandler):
         return (id, 'secret', properties)
 
 
-class SecretToPodLinker(linker.K8SLinker):
+class SecretToPodLinker(linker.Linker):
 
     def _are_linked(self, secret, pod):
         match_namespace = self._match_namespace(secret, pod)
@@ -56,6 +56,6 @@ class SecretToPodLinker(linker.K8SLinker):
 
     @staticmethod
     def create(graph, client):
-        secret_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'secret')
-        pod_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'pod')
+        secret_indexer = k8s_indexer.IndexerFactory.get_indexer(client, 'secret')
+        pod_indexer = k8s_indexer.IndexerFactory.get_indexer(client, 'pod')
         return SecretToPodLinker(graph, 'secret', secret_indexer, 'pod', pod_indexer)

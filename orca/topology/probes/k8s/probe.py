@@ -5,7 +5,7 @@ from orca.k8s import client as k8s_client
 from orca.topology.probes import probe
 
 
-class K8SProbe(probe.Probe):
+class Probe(probe.Probe):
 
     def __init__(self, probe_id, graph, client):
         super().__init__(probe_id)
@@ -13,7 +13,7 @@ class K8SProbe(probe.Probe):
         self._client = client
 
 
-class K8SHandler(k8s_client.EventHandler, abc.ABC):
+class K8SResourceHandler(k8s_client.EventHandler, abc.ABC):
 
     def __init__(self, graph):
         self._graph = graph
