@@ -1,4 +1,5 @@
 from orca.topology.probes import indexer
+from orca.k8s import client as k8s_client
 
 
 class K8SIndexer(indexer.Indexer):
@@ -23,3 +24,12 @@ class K8SResourceProxy(indexer.ResourceProxy):
 
     def get_id(self):
         return self._resource.metadata.uid
+
+
+class K8SIndexerFactory(object):
+
+    @staticmethod
+    def get_indexer(client, resource_kind):
+        resource_api = k8s_client.ResourceAPIFactory.get_resource_api(
+            client, resource_kind)
+        return K8SIndexer(resource_api)

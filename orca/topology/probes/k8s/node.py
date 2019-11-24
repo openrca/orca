@@ -34,7 +34,6 @@ class NodeToClusterLinker(linker.K8SLinker):
 
     @staticmethod
     def create(graph, client):
-        node_indexer = k8s_indexer.K8SIndexer(
-            k8s_client.ResourceAPI(client.CoreV1Api(), 'node', namespaced=False))
+        node_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'node')
         cluster_indexer = indexer.GraphIndexer(graph, 'cluster')
         return NodeToClusterLinker(graph, 'node', node_indexer, 'cluster', cluster_indexer)

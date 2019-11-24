@@ -56,8 +56,6 @@ class ConfigMapToPodLinker(linker.K8SLinker):
 
     @staticmethod
     def create(graph, client):
-        config_map_indexer = k8s_indexer.K8SIndexer(
-            k8s_client.ResourceAPI(client.CoreV1Api(), 'config_map'))
-        pod_indexer = k8s_indexer.K8SIndexer(
-            k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'))
+        config_map_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'config_map')
+        pod_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'pod')
         return ConfigMapToPodLinker(graph, 'config_map', config_map_indexer, 'pod', pod_indexer, )

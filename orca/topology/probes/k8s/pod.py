@@ -36,10 +36,8 @@ class PodToServiceLinker(linker.K8SLinker):
 
     @staticmethod
     def create(graph, client):
-        pod_indexer = k8s_indexer.K8SIndexer(
-            k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'))
-        service_indexer = k8s_indexer.K8SIndexer(
-            k8s_client.ResourceAPI(client.CoreV1Api(), 'service'))
+        pod_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'pod')
+        service_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'service')
         return PodToServiceLinker(graph, 'pod', pod_indexer, 'service', service_indexer)
 
 
@@ -52,10 +50,8 @@ class PodToReplicaSetLinker(linker.K8SLinker):
 
     @staticmethod
     def create(graph, client):
-        pod_indexer = k8s_indexer.K8SIndexer(
-            k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'))
-        replica_set_indexer = k8s_indexer.K8SIndexer(
-            k8s_client.ResourceAPI(client.ExtensionsV1beta1Api(), 'replica_set'))
+        pod_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'pod')
+        replica_set_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'replica_set')
         return PodToReplicaSetLinker(graph, 'pod', pod_indexer, 'replica_set', replica_set_indexer)
 
 
@@ -66,8 +62,6 @@ class PodToNodeLinker(linker.K8SLinker):
 
     @staticmethod
     def create(graph, client):
-        pod_indexer = k8s_indexer.K8SIndexer(
-            k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'))
-        node_indexer = k8s_indexer.K8SIndexer(
-            k8s_client.ResourceAPI(client.CoreV1Api(), 'node', namespaced=False))
+        pod_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'pod')
+        node_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'node')
         return PodToNodeLinker(graph, 'pod', pod_indexer, 'node', node_indexer)

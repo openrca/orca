@@ -35,9 +35,7 @@ class ReplicaSetToDeploymentLinker(linker.K8SLinker):
 
     @staticmethod
     def create(graph, client):
-        replica_set_indexer = k8s_indexer.K8SIndexer(
-            k8s_client.ResourceAPI(client.ExtensionsV1beta1Api(), 'replica_set'))
-        deployment_indexer = k8s_indexer.K8SIndexer(
-            k8s_client.ResourceAPI(client.AppsV1Api(), 'deployment'))
+        replica_set_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'replica_set')
+        deployment_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'deployment')
         return ReplicaSetToDeploymentLinker(
             graph, 'replica_set', replica_set_indexer, 'deployment', deployment_indexer)

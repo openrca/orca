@@ -67,6 +67,29 @@ class ResourceAPI(ResourceProxy):
         return resource_obj
 
 
+class ResourceAPIFactory(object):
+
+    @staticmethod
+    def get_resource_api(client, resource_kind):
+        if resource_kind == 'pod':
+            api, namespaced = client.CoreV1Api(), True
+        elif resource_kind == 'service':
+            api, namespaced = client.CoreV1Api(), True
+        elif resource_kind == 'deployment':
+            api, namespaced = client.AppsV1Api(), True
+        elif resource_kind == 'replica_set':
+            api, namespaced = client.ExtensionsV1beta1Api(), True
+        elif resource_kind == 'config_map':
+            api, namespaced = client.CoreV1Api(), True
+        elif resource_kind == 'secret':
+            api, namespaced = client.CoreV1Api(), True
+        elif resource_kind == 'node':
+            api, namespaced = client.CoreV1Api(), False
+        else:
+            raise Exception("Unknown resource kind: %s" % resource_kind)
+        return ResourceAPI(api, resource_kind, namespaced=namespaced)
+
+
 class ResourceWatch(ResourceProxy):
 
     def __init__(self, client, resource_kind, namespaced=True):

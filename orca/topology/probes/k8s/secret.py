@@ -56,8 +56,6 @@ class SecretToPodLinker(linker.K8SLinker):
 
     @staticmethod
     def create(graph, client):
-        secret_indexer = k8s_indexer.K8SIndexer(
-            k8s_client.ResourceAPI(client.CoreV1Api(), 'secret'))
-        pod_indexer = k8s_indexer.K8SIndexer(
-            k8s_client.ResourceAPI(client.CoreV1Api(), 'pod'))
+        secret_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'secret')
+        pod_indexer = k8s_indexer.K8SIndexerFactory.get_indexer(client, 'pod')
         return SecretToPodLinker(graph, 'secret', secret_indexer, 'pod', pod_indexer)
