@@ -15,24 +15,18 @@ class Probe(probe.Probe):
 
 class K8SResourceHandler(k8s_client.EventHandler, abc.ABC):
 
-    def __init__(self, graph):
+    def __init__(self, graph, extractor):
         self._graph = graph
+        self._extractor = extractor
 
     def on_added(self, obj):
-        (id, kind, metadata) = self._extract_properties(obj)
-        node = graph.Graph.create_node(id, kind, metadata)
+        node = self._extractor.extract(obj)
         self._graph.add_node(node)
 
     def on_updated(self, obj):
-        (id, kind, metadata) = self._extract_properties(obj)
-        node = graph.Graph.create_node(id, kind, metadata)
+        node = self._extractor.extract(obj)
         self._graph.update_node(node)
 
     def on_deleted(self, obj):
-        (id, kind, metadata) = self._extract_properties(obj)
-        node = graph.Graph.create_node(id, kind, metadata)
+        node = self._extractor.extract(obj)
         self._graph.delete_node(node)
-
-    @abc.abstractmethod
-    def _extract_properties(self, obj):
-        """Extracts properties from K8S resource object."""

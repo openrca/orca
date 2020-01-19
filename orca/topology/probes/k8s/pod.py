@@ -1,30 +1,35 @@
 from orca.common import logger
 from orca.k8s import client as k8s_client
+from orca.topology.probes.k8s import extractor
 from orca.topology.probes.k8s import indexer as k8s_indexer
 from orca.topology.probes.k8s import linker, probe
 
 log = logger.get_logger(__name__)
 
 
+class PodExtractor(extractor.KubeExtractor):
+
+    def extract_properties(self, entity):
+        properties = {}
+        properties['name'] = entity.metadata.name
+        properties['namespace'] = entity.metadata.namespace
+        properties['ip'] = entity.status.pod_ip
+        properties['node'] = entity.spec.node_name
+        return properties
+
+
 class PodProbe(probe.Probe):
 
     def run(self):
         log.info("Starting K8S watch on resource: pod")
+        extractor = PodExtractor()
         watch = k8s_client.ResourceWatch(self._client.CoreV1Api(), 'pod')
-        watch.add_handler(PodHandler(self._graph))
+        watch.add_handler(PodHandler(self._graph, extractor))
         watch.run()
 
 
 class PodHandler(probe.K8SResourceHandler):
-
-    def _extract_properties(self, obj):
-        id = obj.metadata.uid
-        properties = {}
-        properties['name'] = obj.metadata.name
-        properties['namespace'] = obj.metadata.namespace
-        properties['ip'] = obj.status.pod_ip
-        properties['node'] = obj.spec.node_name
-        return (id, 'pod', properties)
+    pass
 
 
 class PodToServiceLinker(linker.Linker):
