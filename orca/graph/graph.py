@@ -7,32 +7,32 @@ import addict as dictlib
 
 class GraphObject(abc.ABC):
 
-    def __init__(self, id, metadata):
+    def __init__(self, id, properties):
         self.id = id
-        self.metadata = dictlib.Dict(metadata)
+        self.properties = dictlib.Dict(properties)
 
 
 class Node(GraphObject):
 
-    def __init__(self, id, metadata, kind):
-        super().__init__(id, metadata)
+    def __init__(self, id, properties, kind):
+        super().__init__(id, properties)
         self.kind = kind
 
     def __repr__(self):
-        return "<Node id=%s metadata=%s kind=%s>" % (
-            self.id, self.metadata, self.kind)
+        return "<Node id=%s properties=%s kind=%s>" % (
+            self.id, self.properties, self.kind)
 
 
 class Link(GraphObject):
 
-    def __init__(self, id, metadata, source, target):
-        super().__init__(id, metadata)
+    def __init__(self, id, properties, source, target):
+        super().__init__(id, properties)
         self.source = source
         self.target = target
 
     def __repr__(self):
-        return "<Link id=%s metadata=%s source=%s target=%s>" % (
-            self.id, self.metadata, self.source.id, self.target.id)
+        return "<Link id=%s properties=%s source=%s target=%s>" % (
+            self.id, self.properties, self.source.id, self.target.id)
 
 
 class Graph(object):
@@ -41,11 +41,11 @@ class Graph(object):
         self._client = client
         self._listeners = []
 
-    def get_nodes(self, kind=None, metadata=None):
-        return self._client.get_nodes(kind, metadata)
+    def get_nodes(self, kind=None, properties=None):
+        return self._client.get_nodes(kind, properties)
 
-    def get_node(self, id, kind=None, metadata=None):
-        return self._client.get_node(id, kind, metadata)
+    def get_node(self, id, kind=None, properties=None):
+        return self._client.get_node(id, kind, properties)
 
     def add_node(self, node):
         if self.get_node(node.id):
@@ -64,11 +64,11 @@ class Graph(object):
         self._client.delete_node(node)
         self._notify_listeners(GraphEvent.NODE_DELETED, node)
 
-    def get_links(self, metadata=None):
-        return self._client.get_links(metadata)
+    def get_links(self, properties=None):
+        return self._client.get_links(properties)
 
-    def get_link(self, id, metadata=None):
-        return self._client.get_link(id, metadata)
+    def get_link(self, id, properties=None):
+        return self._client.get_link(id, properties)
 
     def add_link(self, link):
         if self.get_link(link.id):
@@ -108,13 +108,13 @@ class Graph(object):
                 raise Exception("Unknown event type: %s" % event_type)
 
     @staticmethod
-    def create_node(id, kind, metadata):
-        return Node(id, metadata, kind)
+    def create_node(id, kind, properties):
+        return Node(id, properties, kind)
 
     @staticmethod
-    def create_link(metadata, source, target):
+    def create_link(properties, source, target):
         id = Graph.generate_id(source.id, target.id)
-        return Link(id, metadata, source, target)
+        return Link(id, properties, source, target)
 
     @staticmethod
     def generate_id(*names):

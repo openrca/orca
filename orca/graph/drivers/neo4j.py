@@ -25,16 +25,16 @@ class Neo4jClient(client.Client):
             self._client = graph_lib.GraphDatabase.driver(uri, auth=auth)
         return self._client
 
-    def get_nodes(self, kind=None, metadata=None):
-        node_pattern = self._build_node_pattern(None, kind, metadata)
+    def get_nodes(self, kind=None, properties=None):
+        node_pattern = self._build_node_pattern(None, kind, properties)
         query = "MATCH %s RETURN node" % (node_pattern)
         query_result = self._run_query(query)
         records = query_result.records()
         nodes = [record['node'] for record in records]
         return list(map(self._build_node_obj, nodes))
 
-    def get_node(self, id, kind=None, metadata=None):
-        node_pattern = self._build_node_pattern(id, kind, metadata)
+    def get_node(self, id, kind=None, properties=None):
+        node_pattern = self._build_node_pattern(id, kind, properties)
         query = "MATCH %s RETURN node LIMIT 1" % (node_pattern)
         query_result = self._run_query(query)
         record = query_result.single()
@@ -42,7 +42,7 @@ class Neo4jClient(client.Client):
             return self._build_node_obj(record['node'])
 
     def add_node(self, node):
-        node_pattern = self._build_node_pattern(node.id, node.kind, node.metadata)
+        node_pattern = self._build_node_pattern(node.id, node.kind, node.properties)
         query = "CREATE %s" % (node_pattern)
         self._run_query(query)
 
@@ -50,12 +50,12 @@ class Neo4jClient(client.Client):
         pass
 
     def delete_node(self, node):
-        node_pattern = self._build_node_pattern(node.id, node.kind, node.metadata)
+        node_pattern = self._build_node_pattern(node.id, node.kind, node.properties)
         query = "MATCH %s DETACH DELETE node" % (node_pattern)
         self._run_query(query)
 
-    def get_links(self, metadata=None):
-        rel_pattern = self._build_rel_pattern(None, "linked", metadata)
+    def get_links(self, properties=None):
+        rel_pattern = self._build_rel_pattern(None, "linked", properties)
         query = ("MATCH (src_node)-%s->(dst_node) "
                  "RETURN rel, src_node, dst_node") % (rel_pattern)
         query_result = self._run_query(query)
@@ -67,8 +67,8 @@ class Neo4jClient(client.Client):
             links.append(link)
         return links
 
-    def get_link(self, id, metadata=None):
-        rel_pattern = self._build_rel_pattern(id, "linked", metadata)
+    def get_link(self, id, properties=None):
+        rel_pattern = self._build_rel_pattern(id, "linked", properties)
         query = ("MATCH (src_node)-%s-(dst_node) "
                  "RETURN rel, src_node, dst_node LIMIT 1") % (rel_pattern)
         query_result = self._run_query(query)
@@ -81,12 +81,12 @@ class Neo4jClient(client.Client):
         source_node = link.source
         target_node = link.target
         source_node_pattern = self._build_node_pattern(
-            source_node.id, source_node.kind, source_node.metadata,
+            source_node.id, source_node.kind, source_node.properties,
             var_name="src_node")
         target_node_pattern = self._build_node_pattern(
-            target_node.id, target_node.kind, target_node.metadata,
+            target_node.id, target_node.kind, target_node.properties,
             var_name="dst_node")
-        rel_pattern = self._build_rel_pattern(link.id, "linked", link.metadata)
+        rel_pattern = self._build_rel_pattern(link.id, "linked", link.properties)
         query = "MATCH %s, %s CREATE (src_node)-%s->(dst_node)" % (
             source_node_pattern, target_node_pattern, rel_pattern)
         self._run_query(query)
@@ -95,7 +95,7 @@ class Neo4jClient(client.Client):
         pass
 
     def delete_link(self, link):
-        rel_pattern = self._build_rel_pattern(link.id, "linked", link.metadata)
+        rel_pattern = self._build_rel_pattern(link.id, "linked", link.properties)
         query = "MATCH (src_node)-%s-(dst_node) DELETE rel" % (rel_pattern)
         self._run_query(query)
 
@@ -132,21 +132,21 @@ class Neo4jClient(client.Client):
             prop_items.append(prop_item)
         return ", ".join(prop_items)
 
-    def _build_node_pattern(self, id, kind, metadata, var_name="node"):
+    def _build_node_pattern(self, id, kind, properties, var_name="node"):
         inner_pattern = self._build_obj_inner_pattern(
-            id, kind, metadata, var_name)
+            id, kind, properties, var_name)
         return "(%s)" % (inner_pattern)
 
-    def _build_rel_pattern(self, id, kind, metadata, var_name="rel"):
+    def _build_rel_pattern(self, id, kind, properties, var_name="rel"):
         inner_pattern = self._build_obj_inner_pattern(
-            id, kind, metadata, var_name)
+            id, kind, properties, var_name)
         return "[%s]" % (inner_pattern)
 
-    def _build_obj_inner_pattern(self, id, kind, metadata, var_name):
-        if not metadata:
-            metadata = {}
+    def _build_obj_inner_pattern(self, id, kind, properties, var_name):
+        if not properties:
+            properties = {}
         cypher_labels = self._build_cypher_labels([kind])
-        properties = copy.deepcopy(metadata)
+        properties = copy.deepcopy(properties)
         if id:
             properties['_id'] = id
         cypher_properties = self._build_cypher_properties(properties)
@@ -159,14 +159,14 @@ class Neo4jClient(client.Client):
         return result
 
     def _build_node_obj(self, node):
-        metadata = dict(node.items())
-        id = metadata.pop('_id')
+        properties = dict(node.items())
+        id = properties.pop('_id')
         kind = list(node.labels)[0]
-        return graph.Node(id, metadata, kind)
+        return graph.Node(id, properties, kind)
 
     def _build_link_obj(self, rel, src_node, dst_node):
-        metadata = dict(rel.items())
-        id = metadata.pop('_id')
+        properties = dict(rel.items())
+        id = properties.pop('_id')
         source = self._build_node_obj(src_node)
         target = self._build_node_obj(dst_node)
-        return graph.Link(id, metadata, source, target)
+        return graph.Link(id, properties, source, target)

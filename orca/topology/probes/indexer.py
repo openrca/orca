@@ -9,7 +9,7 @@ class Indexer(abc.ABC):
 
     @abc.abstractmethod
     def get_by_node(self, node):
-        """Returns proxy to an origin resource based on node metadata."""
+        """Returns proxy to an origin resource based on node properties."""
 
 
 class ResourceProxy(abc.ABC):

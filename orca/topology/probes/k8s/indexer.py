@@ -13,8 +13,8 @@ class Indexer(indexer.Indexer):
         return [ResourceProxy(resource) for resource in resources]
 
     def get_by_node(self, node):
-        name = node.metadata['name']
-        namespace = node.metadata.get('namespace')
+        name = node.properties['name']
+        namespace = node.properties.get('namespace')
         resource = self._resource_api.get(name, namespace)
         if resource:
             return ResourceProxy(resource)
