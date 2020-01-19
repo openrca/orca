@@ -22,10 +22,7 @@ class ServiceProbe(probe.Probe):
     def run(self):
         log.info("Starting K8S watch on resource: service")
         extractor = ServiceExtractor()
+        handler = probe.KubeHandler(self._graph, extractor)
         watch = k8s_client.ResourceWatch(self._client.CoreV1Api(), 'service')
-        watch.add_handler(ServiceHandler(self._graph, extractor))
+        watch.add_handler(handler)
         watch.run()
-
-
-class ServiceHandler(probe.K8SResourceHandler):
-    pass

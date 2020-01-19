@@ -22,13 +22,10 @@ class ReplicaSetProbe(probe.Probe):
     def run(self):
         log.info("Starting K8S watch on resource: replica_set")
         extractor = ReplicaSetExtractor()
+        handler = probe.KubeHandler(self._graph, extractor)
         watch = k8s_client.ResourceWatch(self._client.ExtensionsV1beta1Api(), 'replica_set')
-        watch.add_handler(ReplicaSetHandler(self._graph, extractor))
+        watch.add_handler(handler)
         watch.run()
-
-
-class ReplicaSetHandler(probe.K8SResourceHandler):
-    pass
 
 
 class ReplicaSetToDeploymentLinker(linker.Linker):

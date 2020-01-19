@@ -13,7 +13,7 @@ class Probe(probe.Probe):
         self._client = client
 
 
-class K8SResourceHandler(k8s_client.EventHandler, abc.ABC):
+class KubeHandler(k8s_client.EventHandler, abc.ABC):
 
     def __init__(self, graph, extractor):
         self._graph = graph

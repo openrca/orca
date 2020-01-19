@@ -22,13 +22,10 @@ class NodeProbe(probe.Probe):
     def run(self):
         log.info("Starting K8S watch on resource: node")
         extractor = NodeExtractor()
+        handler = probe.KubeHandler(self._graph, extractor)
         watch = k8s_client.ResourceWatch(self._client.CoreV1Api(), 'node', namespaced=False)
-        watch.add_handler(NodeHandler(self._graph, extractor))
+        watch.add_handler(handler)
         watch.run()
-
-
-class NodeHandler(probe.K8SResourceHandler):
-    pass
 
 
 class NodeToClusterLinker(linker.Linker):

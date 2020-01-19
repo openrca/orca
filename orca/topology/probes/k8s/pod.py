@@ -23,13 +23,10 @@ class PodProbe(probe.Probe):
     def run(self):
         log.info("Starting K8S watch on resource: pod")
         extractor = PodExtractor()
+        handler = probe.KubeHandler(self._graph, extractor)
         watch = k8s_client.ResourceWatch(self._client.CoreV1Api(), 'pod')
-        watch.add_handler(PodHandler(self._graph, extractor))
+        watch.add_handler(handler)
         watch.run()
-
-
-class PodHandler(probe.K8SResourceHandler):
-    pass
 
 
 class PodToServiceLinker(linker.Linker):

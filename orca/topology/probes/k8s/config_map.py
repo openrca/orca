@@ -21,13 +21,10 @@ class ConfigMapProbe(probe.Probe):
     def run(self):
         log.info("Starting K8S watch on resource: config_map")
         extractor = ConfigMapExtractor()
+        handler = probe.KubeHandler(self._graph, extractor)
         watch = k8s_client.ResourceWatch(self._client.CoreV1Api(), 'config_map')
-        watch.add_handler(ConfigMapHandler(self._graph, extractor))
+        watch.add_handler(handler)
         watch.run()
-
-
-class ConfigMapHandler(probe.K8SResourceHandler):
-    pass
 
 
 class ConfigMapToPodLinker(linker.Linker):

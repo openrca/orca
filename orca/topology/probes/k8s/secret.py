@@ -21,13 +21,10 @@ class SecretProbe(probe.Probe):
     def run(self):
         log.info("Starting K8S watch on resource: secret")
         extractor = SecretExtractor()
+        handler = probe.KubeHandler(self._graph, extractor)
         watch = k8s_client.ResourceWatch(self._client.CoreV1Api(), 'secret')
-        watch.add_handler(SecretHandler(self._graph, extractor))
+        watch.add_handler(handler)
         watch.run()
-
-
-class SecretHandler(probe.K8SResourceHandler):
-    pass
 
 
 class SecretToPodLinker(linker.Linker):
