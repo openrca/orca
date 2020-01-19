@@ -2,12 +2,14 @@ import abc
 import enum
 import uuid
 
+import addict as dictlib
+
 
 class GraphObject(abc.ABC):
 
     def __init__(self, id, metadata):
         self.id = id
-        self.metadata = metadata
+        self.metadata = dictlib.Dict(metadata)
 
 
 class Node(GraphObject):
