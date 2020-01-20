@@ -12,6 +12,7 @@ class DeploymentExtractor(extractor.KubeExtractor):
         properties = {}
         properties['name'] = entity.metadata.name
         properties['namespace'] = entity.metadata.namespace
+        properties['selector'] = entity.spec.selector.match_labels
         return properties
 
 

@@ -1,4 +1,4 @@
-import copy
+import json
 
 import neo4j as graph_lib
 
@@ -26,7 +26,7 @@ class Neo4jClient(client.Client):
         return self._client
 
     def get_nodes(self, kind=None, properties=None):
-        node_pattern = self._build_node_pattern(None, kind, properties)
+        node_pattern = self._build_node_pattern(None, kind, None)
         query = "MATCH %s RETURN node" % (node_pattern)
         query_result = self._run_query(query)
         records = query_result.records()
@@ -34,7 +34,7 @@ class Neo4jClient(client.Client):
         return list(map(self._build_node_obj, nodes))
 
     def get_node(self, id, kind=None, properties=None):
-        node_pattern = self._build_node_pattern(id, kind, properties)
+        node_pattern = self._build_node_pattern(id, kind, None)
         query = "MATCH %s RETURN node LIMIT 1" % (node_pattern)
         query_result = self._run_query(query)
         record = query_result.single()
@@ -42,7 +42,8 @@ class Neo4jClient(client.Client):
             return self._build_node_obj(record['node'])
 
     def add_node(self, node):
-        node_pattern = self._build_node_pattern(node.id, node.kind, node.properties)
+        properties = {'properties': json.dumps(node.properties)}
+        node_pattern = self._build_node_pattern(node.id, node.kind, properties)
         query = "CREATE %s" % (node_pattern)
         self._run_query(query)
 
@@ -81,10 +82,10 @@ class Neo4jClient(client.Client):
         source_node = link.source
         target_node = link.target
         source_node_pattern = self._build_node_pattern(
-            source_node.id, source_node.kind, source_node.properties,
+            source_node.id, source_node.kind, None,
             var_name="src_node")
         target_node_pattern = self._build_node_pattern(
-            target_node.id, target_node.kind, target_node.properties,
+            target_node.id, target_node.kind, None,
             var_name="dst_node")
         rel_pattern = self._build_rel_pattern(link.id, "linked", link.properties)
         query = "MATCH %s, %s CREATE (src_node)-%s->(dst_node)" % (
@@ -146,9 +147,8 @@ class Neo4jClient(client.Client):
         if not properties:
             properties = {}
         cypher_labels = self._build_cypher_labels([kind])
-        properties = copy.deepcopy(properties)
         if id:
-            properties['_id'] = id
+            properties['id'] = id
         cypher_properties = self._build_cypher_properties(properties)
         return "%s%s {%s}" % (var_name, cypher_labels, cypher_properties)
 
@@ -159,14 +159,15 @@ class Neo4jClient(client.Client):
         return result
 
     def _build_node_obj(self, node):
-        properties = dict(node.items())
-        id = properties.pop('_id')
+        raw_properties = dict(node.items())
+        id = raw_properties.pop('id')
+        properties = json.loads(raw_properties['properties'])
         kind = list(node.labels)[0]
         return graph.Node(id, properties, kind)
 
     def _build_link_obj(self, rel, src_node, dst_node):
         properties = dict(rel.items())
-        id = properties.pop('_id')
+        id = properties.pop('id')
         source = self._build_node_obj(src_node)
         target = self._build_node_obj(dst_node)
         return graph.Link(id, properties, source, target)

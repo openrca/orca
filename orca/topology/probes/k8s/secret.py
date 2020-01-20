@@ -1,8 +1,7 @@
 from orca.common import logger
 from orca.k8s import client as k8s_client
-from orca.topology.probes.k8s import extractor
-from orca.topology.probes.k8s import indexer as k8s_indexer
-from orca.topology.probes.k8s import linker, probe
+from orca.topology.probes import graph as graph_indexer
+from orca.topology.probes.k8s import extractor, linker, probe
 
 log = logger.get_logger(__name__)
 
@@ -36,28 +35,28 @@ class SecretToPodLinker(linker.Linker):
         return match_namespace and (match_env or match_volume)
 
     def _match_env(self, secret, pod):
-        for container in pod.spec.containers:
+        for container in pod.properties.containers:
             if container.env:
                 for env_var in container.env:
                     if env_var.value_from and \
                        env_var.value_from.secret_key_ref and \
-                       env_var.value_from.secret_key_ref.name == secret.metadata.name:
+                       env_var.value_from.secret_key_ref.name == secret.properties.name:
                         return True
             if container.env_from:
                 for env_from in container.env_from:
                     if env_from.secret_ref and \
-                       env_from.secret_ref.name == secret.metadata.name:
+                       env_from.secret_ref.name == secret.properties.name:
                         return True
         return False
 
     def _match_volume(self, secret, pod):
-        for volume in pod.spec.volumes:
-            if volume.secret and volume.secret.secret_name == secret.metadata.name:
+        for volume in pod.properties.volumes:
+            if volume.secret and volume.secret.secret_name == secret.properties.name:
                 return True
         return False
 
     @staticmethod
     def create(graph, client):
-        secret_indexer = k8s_indexer.IndexerFactory.get_indexer(client, 'secret')
-        pod_indexer = k8s_indexer.IndexerFactory.get_indexer(client, 'pod')
+        secret_indexer = graph_indexer.Indexer(graph, 'secret')
+        pod_indexer = graph_indexer.Indexer(graph, 'pod')
         return SecretToPodLinker(graph, 'secret', secret_indexer, 'pod', pod_indexer)

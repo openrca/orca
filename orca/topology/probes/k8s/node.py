@@ -2,9 +2,7 @@
 from orca.common import logger
 from orca.k8s import client as k8s_client
 from orca.topology.probes import graph as graph_indexer
-from orca.topology.probes.k8s import extractor
-from orca.topology.probes.k8s import indexer as k8s_indexer
-from orca.topology.probes.k8s import linker, probe
+from orca.topology.probes.k8s import extractor, linker, probe
 
 log = logger.get_logger(__name__)
 
@@ -35,6 +33,6 @@ class NodeToClusterLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        node_indexer = k8s_indexer.IndexerFactory.get_indexer(client, 'node')
+        node_indexer = graph_indexer.Indexer(graph, 'node')
         cluster_indexer = graph_indexer.Indexer(graph, 'cluster')
         return NodeToClusterLinker(graph, 'node', node_indexer, 'cluster', cluster_indexer)
