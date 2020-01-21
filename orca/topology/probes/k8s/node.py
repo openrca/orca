@@ -2,9 +2,7 @@
 from orca.common import logger
 from orca.k8s import client as k8s_client
 from orca.topology.probes import fetcher
-from orca.topology.probes import synchronizer as sync
 from orca.topology.probes.k8s import extractor
-from orca.topology.probes.k8s import fetcher as k8s_fetcher
 from orca.topology.probes.k8s import linker, probe
 from orca.topology.probes.k8s import synchronizer as k8s_sync
 
