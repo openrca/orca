@@ -1,7 +1,10 @@
 from orca.common import logger, str_utils
 from orca.k8s import client as k8s_client
 from orca.topology.probes import fetcher
-from orca.topology.probes.k8s import extractor, linker, probe
+from orca.topology.probes import synchronizer as sync
+from orca.topology.probes.k8s import extractor
+from orca.topology.probes.k8s import fetcher as k8s_fetcher
+from orca.topology.probes.k8s import linker, probe
 
 log = logger.get_logger(__name__)
 
@@ -9,8 +12,14 @@ log = logger.get_logger(__name__)
 class PodProbe(probe.Probe):
 
     def run(self):
-        log.info("Starting K8S watch on resource: pod")
+        log.info("Starting K8S sync on resource: pod")
         extractor = PodExtractor()
+        graph_fetcher = fetcher.GraphFetcher(self._graph, 'pod')
+        upstream_fetcher = k8s_fetcher.FetcherFactory.get_fetcher(self._client, 'pod', extractor)
+        synchronizer = sync.Synchronizer(self._graph, graph_fetcher, upstream_fetcher)
+        synchronizer.synchronize()
+        log.info("Finished K8S sync on resource: pod")
+        log.info("Starting K8S watch on resource: pod")
         handler = probe.KubeHandler(self._graph, extractor)
         watch = k8s_client.ResourceWatch(self._client.CoreV1Api(), 'pod')
         watch.add_handler(handler)
@@ -18,6 +27,9 @@ class PodProbe(probe.Probe):
 
 
 class PodExtractor(extractor.Extractor):
+
+    def extract_kind(self, entity):
+        return 'pod'
 
     def extract_properties(self, entity):
         properties = {}
