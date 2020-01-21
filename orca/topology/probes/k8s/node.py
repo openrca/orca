@@ -1,7 +1,7 @@
 
 from orca.common import logger
 from orca.k8s import client as k8s_client
-from orca.topology.probes import graph as graph_fetcher
+from orca.topology.probes import fetcher
 from orca.topology.probes.k8s import extractor, linker, probe
 
 log = logger.get_logger(__name__)
@@ -30,8 +30,8 @@ class NodeToClusterLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        fetcher_a = graph_fetcher.Fetcher(graph, 'node')
-        fetcher_b = graph_fetcher.Fetcher(graph, 'cluster')
+        fetcher_a = fetcher.GraphFetcher(graph, 'node')
+        fetcher_b = fetcher.GraphFetcher(graph, 'cluster')
         matcher = NodeToClusterMatcher()
         return NodeToClusterLinker(
             graph, 'node', fetcher_a, 'cluster', fetcher_b, matcher)

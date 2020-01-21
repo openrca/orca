@@ -1,6 +1,6 @@
 from orca.common import logger, str_utils
 from orca.k8s import client as k8s_client
-from orca.topology.probes import graph as graph_fetcher
+from orca.topology.probes import fetcher
 from orca.topology.probes.k8s import extractor, linker, probe
 
 log = logger.get_logger(__name__)
@@ -77,8 +77,8 @@ class PodToServiceLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        fetcher_a = graph_fetcher.Fetcher(graph, 'pod')
-        fetcher_b = graph_fetcher.Fetcher(graph, 'service')
+        fetcher_a = fetcher.GraphFetcher(graph, 'pod')
+        fetcher_b = fetcher.GraphFetcher(graph, 'service')
         matcher = PodToServiceMatcher()
         return PodToServiceLinker(graph, 'pod', fetcher_a, 'service', fetcher_b, matcher)
 
@@ -95,8 +95,8 @@ class PodToReplicaSetLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        fetcher_a = graph_fetcher.Fetcher(graph, 'pod')
-        fetcher_b = graph_fetcher.Fetcher(graph, 'replicaset')
+        fetcher_a = fetcher.GraphFetcher(graph, 'pod')
+        fetcher_b = fetcher.GraphFetcher(graph, 'replicaset')
         matcher = PodToReplicaSetMatcher()
         return PodToReplicaSetLinker(
             graph, 'pod', fetcher_a, 'replicaset', fetcher_b, matcher)
@@ -114,8 +114,8 @@ class PodToNodeLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        fetcher_a = graph_fetcher.Fetcher(graph, 'pod')
-        fetcher_b = graph_fetcher.Fetcher(graph, 'node')
+        fetcher_a = fetcher.GraphFetcher(graph, 'pod')
+        fetcher_b = fetcher.GraphFetcher(graph, 'node')
         matcher = PodToNodeMatcher()
         return PodToNodeLinker(graph, 'pod', fetcher_a, 'node', fetcher_b, matcher)
 
