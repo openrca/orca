@@ -6,6 +6,17 @@ from orca.topology.probes.k8s import probe
 log = logger.get_logger(__name__)
 
 
+class ServiceProbe(probe.Probe):
+
+    def run(self):
+        log.info("Starting K8S watch on resource: service")
+        extractor = ServiceExtractor()
+        handler = probe.KubeHandler(self._graph, extractor)
+        watch = k8s_client.ResourceWatch(self._client.CoreV1Api(), 'service')
+        watch.add_handler(handler)
+        watch.run()
+
+
 class ServiceExtractor(extractor.KubeExtractor):
 
     def extract_properties(self, entity):
@@ -19,14 +30,3 @@ class ServiceExtractor(extractor.KubeExtractor):
         else:
             properties['selector'] = {}
         return properties
-
-
-class ServiceProbe(probe.Probe):
-
-    def run(self):
-        log.info("Starting K8S watch on resource: service")
-        extractor = ServiceExtractor()
-        handler = probe.KubeHandler(self._graph, extractor)
-        watch = k8s_client.ResourceWatch(self._client.CoreV1Api(), 'service')
-        watch.add_handler(handler)
-        watch.run()

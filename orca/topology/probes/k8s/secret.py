@@ -6,15 +6,6 @@ from orca.topology.probes.k8s import extractor, linker, probe
 log = logger.get_logger(__name__)
 
 
-class SecretExtractor(extractor.KubeExtractor):
-
-    def extract_properties(self, entity):
-        properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
-        return properties
-
-
 class SecretProbe(probe.Probe):
 
     def run(self):
@@ -24,6 +15,25 @@ class SecretProbe(probe.Probe):
         watch = k8s_client.ResourceWatch(self._client.CoreV1Api(), 'secret')
         watch.add_handler(handler)
         watch.run()
+
+
+class SecretExtractor(extractor.KubeExtractor):
+
+    def extract_properties(self, entity):
+        properties = {}
+        properties['name'] = entity.metadata.name
+        properties['namespace'] = entity.metadata.namespace
+        return properties
+
+
+class SecretToPodLinker(linker.Linker):
+
+    @staticmethod
+    def create(graph, client):
+        secret_fetcher = graph_fetcher.Fetcher(graph, 'secret')
+        pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
+        matcher = SecretToPodMatcher()
+        return SecretToPodLinker(graph, 'secret', secret_fetcher, 'pod', pod_fetcher, matcher)
 
 
 class SecretToPodMatcher(linker.Matcher):
@@ -54,13 +64,3 @@ class SecretToPodMatcher(linker.Matcher):
             if volume.secret and volume.secret.secret_name == secret.properties.name:
                 return True
         return False
-
-
-class SecretToPodLinker(linker.Linker):
-
-    @staticmethod
-    def create(graph, client):
-        secret_fetcher = graph_fetcher.Fetcher(graph, 'secret')
-        pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
-        matcher = SecretToPodMatcher()
-        return SecretToPodLinker(graph, 'secret', secret_fetcher, 'pod', pod_fetcher, matcher)

@@ -7,6 +7,17 @@ from orca.topology.probes.k8s import linker, probe
 log = logger.get_logger(__name__)
 
 
+class ReplicaSetProbe(probe.Probe):
+
+    def run(self):
+        log.info("Starting K8S watch on resource: replica_set")
+        extractor = ReplicaSetExtractor()
+        handler = probe.KubeHandler(self._graph, extractor)
+        watch = k8s_client.ResourceWatch(self._client.ExtensionsV1beta1Api(), 'replica_set')
+        watch.add_handler(handler)
+        watch.run()
+
+
 class ReplicaSetExtractor(extractor.KubeExtractor):
 
     def extract_properties(self, entity):
@@ -19,25 +30,6 @@ class ReplicaSetExtractor(extractor.KubeExtractor):
         return properties
 
 
-class ReplicaSetProbe(probe.Probe):
-
-    def run(self):
-        log.info("Starting K8S watch on resource: replica_set")
-        extractor = ReplicaSetExtractor()
-        handler = probe.KubeHandler(self._graph, extractor)
-        watch = k8s_client.ResourceWatch(self._client.ExtensionsV1beta1Api(), 'replica_set')
-        watch.add_handler(handler)
-        watch.run()
-
-
-class ReplicaSetToDeploymentMatcher(linker.Matcher):
-
-    def are_linked(self, replica_set, deployment):
-        match_namespace = self._match_namespace(replica_set, deployment)
-        match_selector = self._match_selector(replica_set, deployment.properties.selector)
-        return match_namespace and match_selector
-
-
 class ReplicaSetToDeploymentLinker(linker.Linker):
 
     @staticmethod
@@ -47,3 +39,11 @@ class ReplicaSetToDeploymentLinker(linker.Linker):
         matcher = ReplicaSetToDeploymentMatcher()
         return ReplicaSetToDeploymentLinker(
             graph, 'replicaset', replica_set_fetcher, 'deployment', deployment_fetcher, matcher)
+
+
+class ReplicaSetToDeploymentMatcher(linker.Matcher):
+
+    def are_linked(self, replica_set, deployment):
+        match_namespace = self._match_namespace(replica_set, deployment)
+        match_selector = self._match_selector(replica_set, deployment.properties.selector)
+        return match_namespace and match_selector

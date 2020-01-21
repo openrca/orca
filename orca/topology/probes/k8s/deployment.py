@@ -6,16 +6,6 @@ from orca.topology.probes.k8s import probe
 log = logger.get_logger(__name__)
 
 
-class DeploymentExtractor(extractor.KubeExtractor):
-
-    def extract_properties(self, entity):
-        properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
-        properties['selector'] = entity.spec.selector.match_labels
-        return properties
-
-
 class DeploymentProbe(probe.Probe):
 
     def run(self):
@@ -25,3 +15,13 @@ class DeploymentProbe(probe.Probe):
         watch = k8s_client.ResourceWatch(self._client.AppsV1Api(), 'deployment')
         watch.add_handler(handler)
         watch.run()
+
+
+class DeploymentExtractor(extractor.KubeExtractor):
+
+    def extract_properties(self, entity):
+        properties = {}
+        properties['name'] = entity.metadata.name
+        properties['namespace'] = entity.metadata.namespace
+        properties['selector'] = entity.spec.selector.match_labels
+        return properties

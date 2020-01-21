@@ -6,15 +6,6 @@ from orca.topology.probes.k8s import extractor, linker, probe
 log = logger.get_logger(__name__)
 
 
-class ConfigMapExtractor(extractor.KubeExtractor):
-
-    def extract_properties(self, entity):
-        properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
-        return properties
-
-
 class ConfigMapProbe(probe.Probe):
 
     def run(self):
@@ -24,6 +15,26 @@ class ConfigMapProbe(probe.Probe):
         watch = k8s_client.ResourceWatch(self._client.CoreV1Api(), 'config_map')
         watch.add_handler(handler)
         watch.run()
+
+
+class ConfigMapExtractor(extractor.KubeExtractor):
+
+    def extract_properties(self, entity):
+        properties = {}
+        properties['name'] = entity.metadata.name
+        properties['namespace'] = entity.metadata.namespace
+        return properties
+
+
+class ConfigMapToPodLinker(linker.Linker):
+
+    @staticmethod
+    def create(graph, client):
+        config_map_fetcher = graph_fetcher.Fetcher(graph, 'configmap')
+        pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
+        matcher = ConfigMapToPodMatcher()
+        return ConfigMapToPodLinker(
+            graph, 'configmap', config_map_fetcher, 'pod', pod_fetcher, matcher)
 
 
 class ConfigMapToPodMatcher(linker.Matcher):
@@ -54,14 +65,3 @@ class ConfigMapToPodMatcher(linker.Matcher):
             if volume.config_map and volume.config_map.name == config_map.properties.name:
                 return True
         return False
-
-
-class ConfigMapToPodLinker(linker.Linker):
-
-    @staticmethod
-    def create(graph, client):
-        config_map_fetcher = graph_fetcher.Fetcher(graph, 'configmap')
-        pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
-        matcher = ConfigMapToPodMatcher()
-        return ConfigMapToPodLinker(
-            graph, 'configmap', config_map_fetcher, 'pod', pod_fetcher, matcher)
