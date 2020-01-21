@@ -6,6 +6,7 @@ from orca.topology.probes import synchronizer as sync
 from orca.topology.probes.k8s import extractor
 from orca.topology.probes.k8s import fetcher as k8s_fetcher
 from orca.topology.probes.k8s import linker, probe
+from orca.topology.probes.k8s import synchronizer as k8s_sync
 
 log = logger.get_logger(__name__)
 
@@ -15,9 +16,8 @@ class NodeProbe(probe.Probe):
     def run(self):
         log.info("Starting K8S sync on resource: node")
         extractor = NodeExtractor()
-        graph_fetcher = fetcher.GraphFetcher(self._graph, 'node')
-        upstream_fetcher = k8s_fetcher.FetcherFactory.get_fetcher(self._client, 'node', extractor)
-        synchronizer = sync.Synchronizer(self._graph, graph_fetcher, upstream_fetcher)
+        synchronizer = k8s_sync.SynchronizerFactory.get_synchronizer(
+            self._graph, self._client, 'node', extractor)
         synchronizer.synchronize()
         log.info("Finished K8S sync on resource: node")
         log.info("Starting K8S watch on resource: node")

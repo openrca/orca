@@ -17,7 +17,7 @@ class Fetcher(fetcher.Fetcher):
 class FetcherFactory(object):
 
     @staticmethod
-    def get_fetcher(client, resource_kind, extractor):
+    def get_fetcher(client, entity_kind, extractor):
         resource_api = k8s_client.ResourceAPIFactory.get_resource_api(
-            client, resource_kind)
+            client, entity_kind)
         return Fetcher(resource_api, extractor)

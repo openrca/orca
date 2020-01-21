@@ -1,5 +1,3 @@
-import abc
-
 from orca.k8s import client as k8s_client
 from orca.topology.probes import probe
 
@@ -12,7 +10,7 @@ class Probe(probe.Probe):
         self._client = client
 
 
-class KubeHandler(k8s_client.EventHandler, abc.ABC):
+class KubeHandler(k8s_client.EventHandler):
 
     def __init__(self, graph, extractor):
         self._graph = graph

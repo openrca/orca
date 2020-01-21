@@ -5,6 +5,7 @@ from orca.topology.probes import synchronizer as sync
 from orca.topology.probes.k8s import extractor
 from orca.topology.probes.k8s import fetcher as k8s_fetcher
 from orca.topology.probes.k8s import linker, probe
+from orca.topology.probes.k8s import synchronizer as k8s_sync
 
 log = logger.get_logger(__name__)
 
@@ -14,9 +15,8 @@ class ReplicaSetProbe(probe.Probe):
     def run(self):
         log.info("Starting K8S sync on resource: replica_set")
         extractor = ReplicaSetExtractor()
-        graph_fetcher = fetcher.GraphFetcher(self._graph, 'replicaset')
-        upstream_fetcher = k8s_fetcher.FetcherFactory.get_fetcher(self._client, 'replica_set', extractor)
-        synchronizer = sync.Synchronizer(self._graph, graph_fetcher, upstream_fetcher)
+        synchronizer = k8s_sync.SynchronizerFactory.get_synchronizer(
+            self._graph, self._client, 'replica_set', extractor)
         synchronizer.synchronize()
         log.info("Finished K8S sync on resource: replica_set")
         log.info("Starting K8S watch on resource: replica_set")
@@ -29,7 +29,7 @@ class ReplicaSetProbe(probe.Probe):
 class ReplicaSetExtractor(extractor.Extractor):
 
     def extract_kind(self, entity):
-        return 'replicaset'
+        return 'replica_set'
 
     def extract_properties(self, entity):
         properties = {}
@@ -45,11 +45,11 @@ class ReplicaSetToDeploymentLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        fetcher_a = fetcher.GraphFetcher(graph, 'replicaset')
+        fetcher_a = fetcher.GraphFetcher(graph, 'replica_set')
         fetcher_b = fetcher.GraphFetcher(graph, 'deployment')
         matcher = ReplicaSetToDeploymentMatcher()
         return ReplicaSetToDeploymentLinker(
-            graph, 'replicaset', fetcher_a, 'deployment', fetcher_b, matcher)
+            graph, 'replica_set', fetcher_a, 'deployment', fetcher_b, matcher)
 
 
 class ReplicaSetToDeploymentMatcher(linker.Matcher):

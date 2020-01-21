@@ -10,10 +10,10 @@ class Fetcher(abc.ABC):
 
 class GraphFetcher(Fetcher):
 
-    def __init__(self, graph, resource_kind):
+    def __init__(self, graph, entity_kind):
         super().__init__()
         self._graph = graph
-        self._resource_kind = resource_kind
+        self._entity_kind = entity_kind
 
     def fetch_all(self):
-        return self._graph.get_nodes(kind=self._resource_kind)
+        return self._graph.get_nodes(kind=self._entity_kind)
