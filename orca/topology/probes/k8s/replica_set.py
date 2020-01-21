@@ -34,11 +34,11 @@ class ReplicaSetToDeploymentLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        replica_set_fetcher = graph_fetcher.Fetcher(graph, 'replicaset')
-        deployment_fetcher = graph_fetcher.Fetcher(graph, 'deployment')
+        fetcher_a = graph_fetcher.Fetcher(graph, 'replicaset')
+        fetcher_b = graph_fetcher.Fetcher(graph, 'deployment')
         matcher = ReplicaSetToDeploymentMatcher()
         return ReplicaSetToDeploymentLinker(
-            graph, 'replicaset', replica_set_fetcher, 'deployment', deployment_fetcher, matcher)
+            graph, 'replicaset', fetcher_a, 'deployment', fetcher_b, matcher)
 
 
 class ReplicaSetToDeploymentMatcher(linker.Matcher):

@@ -77,10 +77,10 @@ class PodToServiceLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
-        service_fetcher = graph_fetcher.Fetcher(graph, 'service')
+        fetcher_a = graph_fetcher.Fetcher(graph, 'pod')
+        fetcher_b = graph_fetcher.Fetcher(graph, 'service')
         matcher = PodToServiceMatcher()
-        return PodToServiceLinker(graph, 'pod', pod_fetcher, 'service', service_fetcher, matcher)
+        return PodToServiceLinker(graph, 'pod', fetcher_a, 'service', fetcher_b, matcher)
 
 
 class PodToServiceMatcher(linker.Matcher):
@@ -95,11 +95,11 @@ class PodToReplicaSetLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
-        replica_set_fetcher = graph_fetcher.Fetcher(graph, 'replicaset')
+        fetcher_a = graph_fetcher.Fetcher(graph, 'pod')
+        fetcher_b = graph_fetcher.Fetcher(graph, 'replicaset')
         matcher = PodToReplicaSetMatcher()
         return PodToReplicaSetLinker(
-            graph, 'pod', pod_fetcher, 'replicaset', replica_set_fetcher, matcher)
+            graph, 'pod', fetcher_a, 'replicaset', fetcher_b, matcher)
 
 
 class PodToReplicaSetMatcher(linker.Matcher):
@@ -114,10 +114,10 @@ class PodToNodeLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
-        node_fetcher = graph_fetcher.Fetcher(graph, 'node')
+        fetcher_a = graph_fetcher.Fetcher(graph, 'pod')
+        fetcher_b = graph_fetcher.Fetcher(graph, 'node')
         matcher = PodToNodeMatcher()
-        return PodToNodeLinker(graph, 'pod', pod_fetcher, 'node', node_fetcher, matcher)
+        return PodToNodeLinker(graph, 'pod', fetcher_a, 'node', fetcher_b, matcher)
 
 
 class PodToNodeMatcher(linker.Matcher):

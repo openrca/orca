@@ -30,11 +30,11 @@ class ConfigMapToPodLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        config_map_fetcher = graph_fetcher.Fetcher(graph, 'configmap')
-        pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
+        fetcher_a = graph_fetcher.Fetcher(graph, 'configmap')
+        fetcher_b = graph_fetcher.Fetcher(graph, 'pod')
         matcher = ConfigMapToPodMatcher()
         return ConfigMapToPodLinker(
-            graph, 'configmap', config_map_fetcher, 'pod', pod_fetcher, matcher)
+            graph, 'configmap', fetcher_a, 'pod', fetcher_b, matcher)
 
 
 class ConfigMapToPodMatcher(linker.Matcher):

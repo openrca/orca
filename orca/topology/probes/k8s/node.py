@@ -30,11 +30,11 @@ class NodeToClusterLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        node_fetcher = graph_fetcher.Fetcher(graph, 'node')
-        cluster_fetcher = graph_fetcher.Fetcher(graph, 'cluster')
+        fetcher_a = graph_fetcher.Fetcher(graph, 'node')
+        fetcher_b = graph_fetcher.Fetcher(graph, 'cluster')
         matcher = NodeToClusterMatcher()
         return NodeToClusterLinker(
-            graph, 'node', node_fetcher, 'cluster', cluster_fetcher, matcher)
+            graph, 'node', fetcher_a, 'cluster', fetcher_b, matcher)
 
 
 class NodeToClusterMatcher(linker.Matcher):

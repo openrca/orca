@@ -30,10 +30,10 @@ class SecretToPodLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        secret_fetcher = graph_fetcher.Fetcher(graph, 'secret')
-        pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
+        fetcher_a = graph_fetcher.Fetcher(graph, 'secret')
+        fetcher_b = graph_fetcher.Fetcher(graph, 'pod')
         matcher = SecretToPodMatcher()
-        return SecretToPodLinker(graph, 'secret', secret_fetcher, 'pod', pod_fetcher, matcher)
+        return SecretToPodLinker(graph, 'secret', fetcher_a, 'pod', fetcher_b, matcher)
 
 
 class SecretToPodMatcher(linker.Matcher):
