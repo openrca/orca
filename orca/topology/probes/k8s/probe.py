@@ -18,14 +18,14 @@ class KubeHandler(k8s_client.EventHandler, abc.ABC):
         self._graph = graph
         self._extractor = extractor
 
-    def on_added(self, obj):
-        node = self._extractor.extract(obj)
+    def on_added(self, entity):
+        node = self._extractor.extract(entity)
         self._graph.add_node(node)
 
-    def on_updated(self, obj):
-        node = self._extractor.extract(obj)
+    def on_updated(self, entity):
+        node = self._extractor.extract(entity)
         self._graph.update_node(node)
 
-    def on_deleted(self, obj):
-        node = self._extractor.extract(obj)
+    def on_deleted(self, entity):
+        node = self._extractor.extract(entity)
         self._graph.delete_node(node)
