@@ -26,9 +26,9 @@ class ConfigMapProbe(probe.Probe):
         watch.run()
 
 
-class ConfigMapToPodLinker(linker.Linker):
+class ConfigMapToPodMatcher(linker.Matcher):
 
-    def _are_linked(self, config_map, pod):
+    def are_linked(self, config_map, pod):
         match_namespace = self._match_namespace(config_map, pod)
         match_env = self._match_env(config_map, pod)
         match_volume = self._match_volume(config_map, pod)
@@ -55,8 +55,13 @@ class ConfigMapToPodLinker(linker.Linker):
                 return True
         return False
 
+
+class ConfigMapToPodLinker(linker.Linker):
+
     @staticmethod
     def create(graph, client):
         config_map_fetcher = graph_fetcher.Fetcher(graph, 'configmap')
         pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
-        return ConfigMapToPodLinker(graph, 'configmap', config_map_fetcher, 'pod', pod_fetcher, )
+        matcher = ConfigMapToPodMatcher()
+        return ConfigMapToPodLinker(
+            graph, 'configmap', config_map_fetcher, 'pod', pod_fetcher, matcher)

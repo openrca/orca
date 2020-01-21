@@ -26,13 +26,18 @@ class NodeProbe(probe.Probe):
         watch.run()
 
 
-class NodeToClusterLinker(linker.Linker):
+class NodeToClusterMatcher(linker.Matcher):
 
-    def _are_linked(self, node, cluster):
+    def are_linked(self, pod, node):
         return True
+
+
+class NodeToClusterLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
         node_fetcher = graph_fetcher.Fetcher(graph, 'node')
         cluster_fetcher = graph_fetcher.Fetcher(graph, 'cluster')
-        return NodeToClusterLinker(graph, 'node', node_fetcher, 'cluster', cluster_fetcher)
+        matcher = NodeToClusterMatcher()
+        return NodeToClusterLinker(
+            graph, 'node', node_fetcher, 'cluster', cluster_fetcher, matcher)

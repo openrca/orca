@@ -73,41 +73,54 @@ class PodProbe(probe.Probe):
         watch.run()
 
 
-class PodToServiceLinker(linker.Linker):
+class PodToServiceMatcher(linker.Matcher):
 
-    def _are_linked(self, pod, service):
+    def are_linked(self, pod, service):
         match_namespace = self._match_namespace(pod, service)
         match_selector = self._match_selector(pod, service.properties.selector)
         return match_namespace and match_selector
+
+
+class PodToServiceLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
         pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
         service_fetcher = graph_fetcher.Fetcher(graph, 'service')
-        return PodToServiceLinker(graph, 'pod', pod_fetcher, 'service', service_fetcher)
+        matcher = PodToServiceMatcher()
+        return PodToServiceLinker(graph, 'pod', pod_fetcher, 'service', service_fetcher, matcher)
 
 
-class PodToReplicaSetLinker(linker.Linker):
+class PodToReplicaSetMatcher(linker.Matcher):
 
-    def _are_linked(self, pod, replica_set):
+    def are_linked(self, pod, replica_set):
         match_namespace = self._match_namespace(pod, replica_set)
         match_selector = self._match_selector(pod, replica_set.properties.selector)
         return match_namespace and match_selector
+
+
+class PodToReplicaSetLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
         pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
         replica_set_fetcher = graph_fetcher.Fetcher(graph, 'replicaset')
-        return PodToReplicaSetLinker(graph, 'pod', pod_fetcher, 'replicaset', replica_set_fetcher)
+        matcher = PodToReplicaSetMatcher()
+        return PodToReplicaSetLinker(
+            graph, 'pod', pod_fetcher, 'replicaset', replica_set_fetcher, matcher)
+
+
+class PodToNodeMatcher(linker.Matcher):
+
+    def are_linked(self, pod, node):
+        return pod.properties.node == node.properties.name
 
 
 class PodToNodeLinker(linker.Linker):
-
-    def _are_linked(self, pod, node):
-        return pod.properties.node == node.properties.name
 
     @staticmethod
     def create(graph, client):
         pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
         node_fetcher = graph_fetcher.Fetcher(graph, 'node')
-        return PodToNodeLinker(graph, 'pod', pod_fetcher, 'node', node_fetcher)
+        matcher = PodToNodeMatcher()
+        return PodToNodeLinker(graph, 'pod', pod_fetcher, 'node', node_fetcher, matcher)

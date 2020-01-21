@@ -38,12 +38,13 @@ class GraphListener(graph.EventListener):
 
 class Linker(abc.ABC):
 
-    def __init__(self, graph, kind_a, fetcher_a, kind_b, fetcher_b):
+    def __init__(self, graph, kind_a, fetcher_a, kind_b, fetcher_b, matcher):
         self.kind_a = kind_a
         self.kind_b = kind_b
         self._graph = graph
         self._fetcher_a = fetcher_a
         self._fetcher_b = fetcher_b
+        self._matcher = matcher
 
     def link(self, node):
         links_in_graph = self._build_link_lookup(self._get_links_in_graph(node))
@@ -81,7 +82,7 @@ class Linker(abc.ABC):
     def _get_ab_links(self, node_a):
         links = []
         for node_b in self._fetcher_b.fetch_all():
-            if self._are_linked(node_a, node_b):
+            if self._matcher.are_linked(node_a, node_b):
                 link = graph.Graph.create_link({}, node_a, node_b)
                 links.append(link)
         return links
@@ -89,15 +90,18 @@ class Linker(abc.ABC):
     def _get_ba_links(self, node_b):
         links = []
         for node_a in self._fetcher_a.fetch_all():
-            if self._are_linked(node_a, node_b):
+            if self._matcher.are_linked(node_a, node_b):
                 link = graph.Graph.create_link({}, node_a, node_b)
                 links.append(link)
         return links
 
-    @abc.abstractmethod
-    def _are_linked(self, node_a, node_b):
-        """Determines whether two graph nodes are interconnected."""
-
     @staticmethod
     def _build_link_lookup(links):
         return {link.id: link for link in links}
+
+
+class Matcher(abc.ABC):
+
+    @abc.abstractmethod
+    def are_linked(self, node_a, node_b):
+        """Determines whether two graph nodes are interconnected."""

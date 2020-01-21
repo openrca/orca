@@ -30,16 +30,20 @@ class ReplicaSetProbe(probe.Probe):
         watch.run()
 
 
-class ReplicaSetToDeploymentLinker(linker.Linker):
+class ReplicaSetToDeploymentMatcher(linker.Matcher):
 
-    def _are_linked(self, replica_set, deployment):
+    def are_linked(self, replica_set, deployment):
         match_namespace = self._match_namespace(replica_set, deployment)
         match_selector = self._match_selector(replica_set, deployment.properties.selector)
         return match_namespace and match_selector
+
+
+class ReplicaSetToDeploymentLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
         replica_set_fetcher = graph_fetcher.Fetcher(graph, 'replicaset')
         deployment_fetcher = graph_fetcher.Fetcher(graph, 'deployment')
+        matcher = ReplicaSetToDeploymentMatcher()
         return ReplicaSetToDeploymentLinker(
-            graph, 'replicaset', replica_set_fetcher, 'deployment', deployment_fetcher)
+            graph, 'replicaset', replica_set_fetcher, 'deployment', deployment_fetcher, matcher)

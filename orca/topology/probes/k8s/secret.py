@@ -26,9 +26,9 @@ class SecretProbe(probe.Probe):
         watch.run()
 
 
-class SecretToPodLinker(linker.Linker):
+class SecretToPodMatcher(linker.Matcher):
 
-    def _are_linked(self, secret, pod):
+    def are_linked(self, secret, pod):
         match_namespace = self._match_namespace(secret, pod)
         match_env = self._match_env(secret, pod)
         match_volume = self._match_volume(secret, pod)
@@ -55,8 +55,12 @@ class SecretToPodLinker(linker.Linker):
                 return True
         return False
 
+
+class SecretToPodLinker(linker.Linker):
+
     @staticmethod
     def create(graph, client):
         secret_fetcher = graph_fetcher.Fetcher(graph, 'secret')
         pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
-        return SecretToPodLinker(graph, 'secret', secret_fetcher, 'pod', pod_fetcher)
+        matcher = SecretToPodMatcher()
+        return SecretToPodLinker(graph, 'secret', secret_fetcher, 'pod', pod_fetcher, matcher)
