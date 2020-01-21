@@ -1,5 +1,5 @@
-from orca.topology.probes import indexer
 from orca.k8s import client as k8s_client
+from orca.topology.probes import indexer
 
 
 class Indexer(indexer.Indexer):
@@ -9,21 +9,7 @@ class Indexer(indexer.Indexer):
         self._resource_api = resource_api
 
     def get_all(self):
-        resources = self._resource_api.get_all()
-        return [ResourceProxy(resource) for resource in resources]
-
-    def get_by_node(self, node):
-        name = node.properties['name']
-        namespace = node.properties.get('namespace')
-        resource = self._resource_api.get(name, namespace)
-        if resource:
-            return ResourceProxy(resource)
-
-
-class ResourceProxy(indexer.ResourceProxy):
-
-    def get_id(self):
-        return self._resource.metadata.uid
+        self._resource_api.get_all()
 
 
 class IndexerFactory(object):
