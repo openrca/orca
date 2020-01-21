@@ -1,6 +1,6 @@
 from orca.common import logger, str_utils
 from orca.k8s import client as k8s_client
-from orca.topology.probes import graph as graph_indexer
+from orca.topology.probes import graph as graph_fetcher
 from orca.topology.probes.k8s import extractor, linker, probe
 
 log = logger.get_logger(__name__)
@@ -82,9 +82,9 @@ class PodToServiceLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        pod_indexer = graph_indexer.Indexer(graph, 'pod')
-        service_indexer = graph_indexer.Indexer(graph, 'service')
-        return PodToServiceLinker(graph, 'pod', pod_indexer, 'service', service_indexer)
+        pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
+        service_fetcher = graph_fetcher.Fetcher(graph, 'service')
+        return PodToServiceLinker(graph, 'pod', pod_fetcher, 'service', service_fetcher)
 
 
 class PodToReplicaSetLinker(linker.Linker):
@@ -96,9 +96,9 @@ class PodToReplicaSetLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        pod_indexer = graph_indexer.Indexer(graph, 'pod')
-        replica_set_indexer = graph_indexer.Indexer(graph, 'replicaset')
-        return PodToReplicaSetLinker(graph, 'pod', pod_indexer, 'replicaset', replica_set_indexer)
+        pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
+        replica_set_fetcher = graph_fetcher.Fetcher(graph, 'replicaset')
+        return PodToReplicaSetLinker(graph, 'pod', pod_fetcher, 'replicaset', replica_set_fetcher)
 
 
 class PodToNodeLinker(linker.Linker):
@@ -108,6 +108,6 @@ class PodToNodeLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        pod_indexer = graph_indexer.Indexer(graph, 'pod')
-        node_indexer = graph_indexer.Indexer(graph, 'node')
-        return PodToNodeLinker(graph, 'pod', pod_indexer, 'node', node_indexer)
+        pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
+        node_fetcher = graph_fetcher.Fetcher(graph, 'node')
+        return PodToNodeLinker(graph, 'pod', pod_fetcher, 'node', node_fetcher)

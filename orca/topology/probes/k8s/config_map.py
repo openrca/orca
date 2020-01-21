@@ -1,6 +1,6 @@
 from orca.common import logger
 from orca.k8s import client as k8s_client
-from orca.topology.probes import graph as graph_indexer
+from orca.topology.probes import graph as graph_fetcher
 from orca.topology.probes.k8s import extractor, linker, probe
 
 log = logger.get_logger(__name__)
@@ -57,6 +57,6 @@ class ConfigMapToPodLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        config_map_indexer = graph_indexer.Indexer(graph, 'configmap')
-        pod_indexer = graph_indexer.Indexer(graph, 'pod')
-        return ConfigMapToPodLinker(graph, 'configmap', config_map_indexer, 'pod', pod_indexer, )
+        config_map_fetcher = graph_fetcher.Fetcher(graph, 'configmap')
+        pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
+        return ConfigMapToPodLinker(graph, 'configmap', config_map_fetcher, 'pod', pod_fetcher, )

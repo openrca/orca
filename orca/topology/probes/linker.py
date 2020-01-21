@@ -38,12 +38,12 @@ class GraphListener(graph.EventListener):
 
 class Linker(abc.ABC):
 
-    def __init__(self, graph, kind_a, indexer_a, kind_b, indexer_b):
+    def __init__(self, graph, kind_a, fetcher_a, kind_b, fetcher_b):
         self.kind_a = kind_a
         self.kind_b = kind_b
         self._graph = graph
-        self._indexer_a = indexer_a
-        self._indexer_b = indexer_b
+        self._fetcher_a = fetcher_a
+        self._fetcher_b = fetcher_b
 
     def link(self, node):
         links_in_graph = self._build_link_lookup(self._get_links_in_graph(node))
@@ -80,7 +80,7 @@ class Linker(abc.ABC):
 
     def _get_ab_links(self, node_a):
         links = []
-        for node_b in self._indexer_b.get_all():
+        for node_b in self._fetcher_b.fetch_all():
             if self._are_linked(node_a, node_b):
                 link = graph.Graph.create_link({}, node_a, node_b)
                 links.append(link)
@@ -88,7 +88,7 @@ class Linker(abc.ABC):
 
     def _get_ba_links(self, node_b):
         links = []
-        for node_a in self._indexer_a.get_all():
+        for node_a in self._fetcher_a.fetch_all():
             if self._are_linked(node_a, node_b):
                 link = graph.Graph.create_link({}, node_a, node_b)
                 links.append(link)

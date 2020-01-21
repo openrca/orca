@@ -1,6 +1,6 @@
 from orca.common import logger
 from orca.k8s import client as k8s_client
-from orca.topology.probes import graph as graph_indexer
+from orca.topology.probes import graph as graph_fetcher
 from orca.topology.probes.k8s import extractor, linker, probe
 
 log = logger.get_logger(__name__)
@@ -57,6 +57,6 @@ class SecretToPodLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        secret_indexer = graph_indexer.Indexer(graph, 'secret')
-        pod_indexer = graph_indexer.Indexer(graph, 'pod')
-        return SecretToPodLinker(graph, 'secret', secret_indexer, 'pod', pod_indexer)
+        secret_fetcher = graph_fetcher.Fetcher(graph, 'secret')
+        pod_fetcher = graph_fetcher.Fetcher(graph, 'pod')
+        return SecretToPodLinker(graph, 'secret', secret_fetcher, 'pod', pod_fetcher)

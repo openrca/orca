@@ -1,8 +1,8 @@
 import abc
 
 
-class Indexer(abc.ABC):
+class Fetcher(abc.ABC):
 
     @abc.abstractmethod
-    def get_all(self):
+    def fetch_all(self):
         """Returns proxy to all upstream resources."""

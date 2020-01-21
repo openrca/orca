@@ -1,7 +1,7 @@
 from orca.common import logger
 from orca.k8s import client as k8s_client
 from orca.topology.probes.k8s import extractor
-from orca.topology.probes import graph as graph_indexer
+from orca.topology.probes import graph as graph_fetcher
 from orca.topology.probes.k8s import linker, probe
 
 log = logger.get_logger(__name__)
@@ -39,7 +39,7 @@ class ReplicaSetToDeploymentLinker(linker.Linker):
 
     @staticmethod
     def create(graph, client):
-        replica_set_indexer = graph_indexer.Indexer(graph, 'replicaset')
-        deployment_indexer = graph_indexer.Indexer(graph, 'deployment')
+        replica_set_fetcher = graph_fetcher.Fetcher(graph, 'replicaset')
+        deployment_fetcher = graph_fetcher.Fetcher(graph, 'deployment')
         return ReplicaSetToDeploymentLinker(
-            graph, 'replicaset', replica_set_indexer, 'deployment', deployment_indexer)
+            graph, 'replicaset', replica_set_fetcher, 'deployment', deployment_fetcher)
