@@ -9,18 +9,15 @@ log = logger.get_logger(__name__)
 
 class DeploymentProbe(probe.Probe):
 
-    def run(self):
-        log.info("Starting K8S sync on resource: deployment")
+    @staticmethod
+    def create(graph, client):
         extractor = DeploymentExtractor()
         synchronizer = k8s_sync.SynchronizerFactory.get_synchronizer(
-            self._graph, self._client, 'deployment', extractor)
-        synchronizer.synchronize()
-        log.info("Finished K8S sync on resource: deployment")
-        log.info("Starting K8S watch on resource: deployment")
-        handler = probe.KubeHandler(self._graph, extractor)
-        watch = k8s_client.ResourceWatch(self._client.AppsV1Api(), 'deployment')
-        watch.add_handler(handler)
-        watch.run()
+            graph, client, 'deployment', extractor)
+        handler = probe.KubeHandler(graph, extractor)
+        watcher = k8s_client.ResourceWatch(client.AppsV1Api(), 'deployment')
+        watcher.add_handler(handler)
+        return DeploymentProbe('deployment', synchronizer, watcher)
 
 
 class DeploymentExtractor(extractor.Extractor):

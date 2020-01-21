@@ -1,13 +1,24 @@
+from orca.common import logger
 from orca.k8s import client as k8s_client
 from orca.topology.probes import probe
+
+log = logger.get_logger(__name__)
 
 
 class Probe(probe.Probe):
 
-    def __init__(self, probe_id, graph, client):
-        super().__init__(probe_id)
-        self._graph = graph
-        self._client = client
+    def __init__(self, entity_kind, synchronizer, watcher):
+        self._entity_kind = entity_kind
+        self._synchronizer = synchronizer
+        self._watcher = watcher
+
+    def run(self):
+        log.info("Starting sync on entity kind: %s", self._entity_kind)
+        self._synchronizer.synchronize()
+        log.info("Finished sync on entity kind: %s", self._entity_kind)
+
+        log.info("Starting watch on entity kind: %s", self._entity_kind)
+        self._watcher.run()
 
 
 class KubeHandler(k8s_client.EventHandler):

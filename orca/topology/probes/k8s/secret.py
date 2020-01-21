@@ -10,18 +10,15 @@ log = logger.get_logger(__name__)
 
 class SecretProbe(probe.Probe):
 
-    def run(self):
-        log.info("Starting K8S sync on resource: secret")
+    @staticmethod
+    def create(graph, client):
         extractor = SecretExtractor()
         synchronizer = k8s_sync.SynchronizerFactory.get_synchronizer(
-            self._graph, self._client, 'secret', extractor)
-        synchronizer.synchronize()
-        log.info("Finished K8S sync on resource: secret")
-        log.info("Starting K8S watch on resource: secret")
-        handler = probe.KubeHandler(self._graph, extractor)
-        watch = k8s_client.ResourceWatch(self._client.CoreV1Api(), 'secret')
-        watch.add_handler(handler)
-        watch.run()
+            graph, client, 'secret', extractor)
+        handler = probe.KubeHandler(graph, extractor)
+        watcher = k8s_client.ResourceWatch(client.CoreV1Api(), 'secret')
+        watcher.add_handler(handler)
+        return SecretProbe('secret', synchronizer, watcher)
 
 
 class SecretExtractor(extractor.Extractor):

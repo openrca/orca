@@ -11,18 +11,15 @@ log = logger.get_logger(__name__)
 
 class NodeProbe(probe.Probe):
 
-    def run(self):
-        log.info("Starting K8S sync on resource: node")
+    @staticmethod
+    def create(graph, client):
         extractor = NodeExtractor()
         synchronizer = k8s_sync.SynchronizerFactory.get_synchronizer(
-            self._graph, self._client, 'node', extractor)
-        synchronizer.synchronize()
-        log.info("Finished K8S sync on resource: node")
-        log.info("Starting K8S watch on resource: node")
-        handler = probe.KubeHandler(self._graph, extractor)
-        watch = k8s_client.ResourceWatch(self._client.CoreV1Api(), 'node', namespaced=False)
-        watch.add_handler(handler)
-        watch.run()
+            graph, client, 'node', extractor)
+        handler = probe.KubeHandler(graph, extractor)
+        watcher = k8s_client.ResourceWatch(client.CoreV1Api(), 'node', namespaced=False)
+        watcher.add_handler(handler)
+        return NodeProbe('node', synchronizer, watcher)
 
 
 class NodeExtractor(extractor.Extractor):

@@ -10,18 +10,15 @@ log = logger.get_logger(__name__)
 
 class ReplicaSetProbe(probe.Probe):
 
-    def run(self):
-        log.info("Starting K8S sync on resource: replica_set")
+    @staticmethod
+    def create(graph, client):
         extractor = ReplicaSetExtractor()
         synchronizer = k8s_sync.SynchronizerFactory.get_synchronizer(
-            self._graph, self._client, 'replica_set', extractor)
-        synchronizer.synchronize()
-        log.info("Finished K8S sync on resource: replica_set")
-        log.info("Starting K8S watch on resource: replica_set")
-        handler = probe.KubeHandler(self._graph, extractor)
-        watch = k8s_client.ResourceWatch(self._client.ExtensionsV1beta1Api(), 'replica_set')
-        watch.add_handler(handler)
-        watch.run()
+            graph, client, 'replica_set', extractor)
+        handler = probe.KubeHandler(graph, extractor)
+        watcher = k8s_client.ResourceWatch(client.ExtensionsV1beta1Api(), 'replica_set')
+        watcher.add_handler(handler)
+        return ReplicaSetProbe('replica_set', synchronizer, watcher)
 
 
 class ReplicaSetExtractor(extractor.Extractor):

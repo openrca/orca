@@ -9,18 +9,15 @@ log = logger.get_logger(__name__)
 
 class ServiceProbe(probe.Probe):
 
-    def run(self):
-        log.info("Starting K8S sync on resource: service")
+    @staticmethod
+    def create(graph, client):
         extractor = ServiceExtractor()
         synchronizer = k8s_sync.SynchronizerFactory.get_synchronizer(
-            self._graph, self._client, 'service', extractor)
-        synchronizer.synchronize()
-        log.info("Finished K8S sync on resource: service")
-        log.info("Starting K8S watch on resource: service")
-        handler = probe.KubeHandler(self._graph, extractor)
-        watch = k8s_client.ResourceWatch(self._client.CoreV1Api(), 'service')
-        watch.add_handler(handler)
-        watch.run()
+            graph, client, 'service', extractor)
+        handler = probe.KubeHandler(graph, extractor)
+        watcher = k8s_client.ResourceWatch(client.CoreV1Api(), 'service')
+        watcher.add_handler(handler)
+        return ServiceProbe('service', synchronizer, watcher)
 
 
 class ServiceExtractor(extractor.Extractor):

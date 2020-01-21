@@ -10,18 +10,15 @@ log = logger.get_logger(__name__)
 
 class PodProbe(probe.Probe):
 
-    def run(self):
-        log.info("Starting K8S sync on resource: pod")
+    @staticmethod
+    def create(graph, client):
         extractor = PodExtractor()
         synchronizer = k8s_sync.SynchronizerFactory.get_synchronizer(
-            self._graph, self._client, 'pod', extractor)
-        synchronizer.synchronize()
-        log.info("Finished K8S sync on resource: pod")
-        log.info("Starting K8S watch on resource: pod")
-        handler = probe.KubeHandler(self._graph, extractor)
-        watch = k8s_client.ResourceWatch(self._client.CoreV1Api(), 'pod')
-        watch.add_handler(handler)
-        watch.run()
+            graph, client, 'pod', extractor)
+        handler = probe.KubeHandler(graph, extractor)
+        watcher = k8s_client.ResourceWatch(client.CoreV1Api(), 'pod')
+        watcher.add_handler(handler)
+        return PodProbe('pod', synchronizer, watcher)
 
 
 class PodExtractor(extractor.Extractor):

@@ -1,14 +1,18 @@
 from orca.graph import graph
 from orca.common import logger
-from orca.topology.probes.k8s import probe
+from orca.topology.probes import probe
 
 log = logger.get_logger(__name__)
 
 
-class ClusterProbe(probe.Probe):
+class ClusterProbe(probe.GraphProbe):
 
     def run(self):
-        log.info("Registering root node for resource: cluster")
+        log.info("Registering root node for entity: cluster")
         node_id = graph.Graph.generate_id("cluster")
         node = graph.Graph.create_node(node_id, "cluster", {'name': "cluster"})
         self._graph.add_node(node)
+
+    @staticmethod
+    def create(graph, client):
+        return ClusterProbe('cluster', graph)

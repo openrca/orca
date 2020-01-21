@@ -10,18 +10,15 @@ log = logger.get_logger(__name__)
 
 class ConfigMapProbe(probe.Probe):
 
-    def run(self):
-        log.info("Starting K8S sync on resource: config_map")
+    @staticmethod
+    def create(graph, client):
         extractor = ConfigMapExtractor()
         synchronizer = k8s_sync.SynchronizerFactory.get_synchronizer(
-            self._graph, self._client, 'config_map', extractor)
-        synchronizer.synchronize()
-        log.info("Finished K8S sync on resource: config_map")
-        log.info("Starting K8S watch on resource: config_map")
-        handler = probe.KubeHandler(self._graph, extractor)
-        watch = k8s_client.ResourceWatch(self._client.CoreV1Api(), 'config_map')
-        watch.add_handler(handler)
-        watch.run()
+            graph, client, 'config_map', extractor)
+        handler = probe.KubeHandler(graph, extractor)
+        watcher = k8s_client.ResourceWatch(client.CoreV1Api(), 'config_map')
+        watcher.add_handler(handler)
+        return ConfigMapProbe('config_map', synchronizer, watcher)
 
 
 class ConfigMapExtractor(extractor.Extractor):
