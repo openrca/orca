@@ -51,7 +51,7 @@ class Neo4jClient(client.Client):
         pass
 
     def delete_node(self, node):
-        node_pattern = self._build_node_pattern(node.id, node.kind, node.properties)
+        node_pattern = self._build_node_pattern(node.id, node.kind, None)
         query = "MATCH %s DETACH DELETE node" % (node_pattern)
         self._run_query(query)
 
