@@ -4,18 +4,20 @@ from orca.topology.probes import fetcher
 
 class Fetcher(fetcher.Fetcher):
 
-    def __init__(self, resource_api):
+    def __init__(self, resource_api, extractor):
         super().__init__()
         self._resource_api = resource_api
+        self._extractor = extractor
 
     def fetch_all(self):
-        self._resource_api.fetch_all()
+        entities = self._resource_api.get_all()
+        return [self._extractor.extract(entity) for entity in entities]
 
 
 class FetcherFactory(object):
 
     @staticmethod
-    def get_fetcher(client, resource_kind):
+    def get_fetcher(client, resource_kind, extractor):
         resource_api = k8s_client.ResourceAPIFactory.get_resource_api(
             client, resource_kind)
-        return Fetcher(resource_api)
+        return Fetcher(resource_api, extractor)
