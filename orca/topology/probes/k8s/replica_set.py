@@ -18,7 +18,7 @@ class ReplicaSetProbe(probe.Probe):
         watch.run()
 
 
-class ReplicaSetExtractor(extractor.KubeExtractor):
+class ReplicaSetExtractor(extractor.Extractor):
 
     def extract_properties(self, entity):
         properties = {}

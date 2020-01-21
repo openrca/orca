@@ -17,7 +17,7 @@ class ConfigMapProbe(probe.Probe):
         watch.run()
 
 
-class ConfigMapExtractor(extractor.KubeExtractor):
+class ConfigMapExtractor(extractor.Extractor):
 
     def extract_properties(self, entity):
         properties = {}

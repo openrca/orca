@@ -17,7 +17,7 @@ class PodProbe(probe.Probe):
         watch.run()
 
 
-class PodExtractor(extractor.KubeExtractor):
+class PodExtractor(extractor.Extractor):
 
     def extract_properties(self, entity):
         properties = {}

@@ -18,7 +18,7 @@ class NodeProbe(probe.Probe):
         watch.run()
 
 
-class NodeExtractor(extractor.KubeExtractor):
+class NodeExtractor(extractor.Extractor):
 
     def extract_properties(self, entity):
         properties = {}

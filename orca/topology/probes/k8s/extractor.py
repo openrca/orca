@@ -1,7 +1,7 @@
 from orca.topology.probes import extractor
 
 
-class KubeExtractor(extractor.Extractor):
+class Extractor(extractor.Extractor):
 
     def extract_id(self, entity):
         return entity.metadata.uid

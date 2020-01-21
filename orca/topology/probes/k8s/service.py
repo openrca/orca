@@ -17,7 +17,7 @@ class ServiceProbe(probe.Probe):
         watch.run()
 
 
-class ServiceExtractor(extractor.KubeExtractor):
+class ServiceExtractor(extractor.Extractor):
 
     def extract_properties(self, entity):
         properties = {}

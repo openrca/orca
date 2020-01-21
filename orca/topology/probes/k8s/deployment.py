@@ -17,7 +17,7 @@ class DeploymentProbe(probe.Probe):
         watch.run()
 
 
-class DeploymentExtractor(extractor.KubeExtractor):
+class DeploymentExtractor(extractor.Extractor):
 
     def extract_properties(self, entity):
         properties = {}

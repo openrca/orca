@@ -17,7 +17,7 @@ class SecretProbe(probe.Probe):
         watch.run()
 
 
-class SecretExtractor(extractor.KubeExtractor):
+class SecretExtractor(extractor.Extractor):
 
     def extract_properties(self, entity):
         properties = {}
