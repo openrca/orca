@@ -39,6 +39,7 @@ class Dispatcher(graph.EventListener):
 class Linker(abc.ABC):
 
     def __init__(self, kind_a, kind_b, graph, matcher):
+        super().__init__()
         self.kind_a = kind_a
         self.kind_b = kind_b
         self._graph = graph

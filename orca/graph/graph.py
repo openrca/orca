@@ -8,6 +8,7 @@ import addict as dictlib
 class GraphObject(abc.ABC):
 
     def __init__(self, id, properties):
+        super().__init__()
         self.id = id
         self.properties = dictlib.Dict(properties)
 
@@ -140,6 +141,7 @@ class GraphEvent(enum.Enum):
 class EventListener(abc.ABC):
 
     def __init__(self, graph):
+        super().__init__()
         self._graph = graph
 
     @abc.abstractmethod

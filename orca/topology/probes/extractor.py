@@ -3,7 +3,7 @@ import abc
 from orca.graph import graph
 
 
-class Extractor(object):
+class Extractor(abc.ABC):
 
     def extract(self, entity):
         node_id = self.extract_id(entity)
