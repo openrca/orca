@@ -66,10 +66,11 @@ class Linker(abc.ABC):
             self._graph.add_link(new_links[link_id])
 
     def _get_old_links(self, node):
-        if node.kind == self.kind_a:
-            return self._graph.get_node_links(node, kind=self.kind_b)
-        else:
-            return self._graph.get_node_links(node, kind=self.kind_a)
+        target_kind = self._get_target_kind(node)
+        return self._graph.get_node_links(node, kind=target_kind)
+
+    def _get_target_kind(self, node):
+        return self.kind_b if node.kind == self.kind_a else self.kind_a
 
     def _get_new_links(self, node):
         linked_nodes = []
