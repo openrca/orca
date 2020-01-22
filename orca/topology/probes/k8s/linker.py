@@ -8,6 +8,8 @@ class Linker(linker.Linker):
 
 class Matcher(linker.Matcher):
 
+    """Base class for Kubernetes link matchers."""
+
     def _match_namespace(self, node_a, node_b):
         return node_a.properties.namespace == node_b.properties.namespace
 
