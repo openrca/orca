@@ -1,24 +1,13 @@
-from orca.common import logger, str_utils
-from orca.k8s import client as k8s_client
-from orca.topology.probes import fetcher
-from orca.topology.probes.k8s import synchronizer as k8s_sync
-from orca.topology.probes.k8s import extractor
-from orca.topology.probes.k8s import linker, probe
-
-log = logger.get_logger(__name__)
+from orca.common import str_utils
+from orca.k8s import client as k8s
+from orca.topology.probes.k8s import extractor, linker, probe
 
 
 class PodProbe(probe.Probe):
 
     @staticmethod
-    def create(graph, client):
-        extractor = PodExtractor()
-        synchronizer = k8s_sync.SynchronizerFactory.get_synchronizer(
-            graph, client, 'pod', extractor)
-        handler = probe.KubeHandler(graph, extractor)
-        watcher = k8s_client.ResourceWatch(client.CoreV1Api(), 'pod')
-        watcher.add_handler(handler)
-        return PodProbe('pod', synchronizer, watcher)
+    def create(graph, k8s_client):
+        return PodProbe('pod', PodExtractor(), graph, k8s.ResourceProxy.get(k8s_client, 'pod'))
 
 
 class PodExtractor(extractor.Extractor):
@@ -83,11 +72,8 @@ class PodExtractor(extractor.Extractor):
 class PodToServiceLinker(linker.Linker):
 
     @staticmethod
-    def create(graph, client):
-        fetcher_a = fetcher.GraphFetcher(graph, 'pod')
-        fetcher_b = fetcher.GraphFetcher(graph, 'service')
-        matcher = PodToServiceMatcher()
-        return PodToServiceLinker(graph, 'pod', fetcher_a, 'service', fetcher_b, matcher)
+    def create(graph):
+        return PodToServiceLinker('pod', 'service', graph, PodToServiceMatcher())
 
 
 class PodToServiceMatcher(linker.Matcher):
@@ -101,12 +87,8 @@ class PodToServiceMatcher(linker.Matcher):
 class PodToReplicaSetLinker(linker.Linker):
 
     @staticmethod
-    def create(graph, client):
-        fetcher_a = fetcher.GraphFetcher(graph, 'pod')
-        fetcher_b = fetcher.GraphFetcher(graph, 'replica_set')
-        matcher = PodToReplicaSetMatcher()
-        return PodToReplicaSetLinker(
-            graph, 'pod', fetcher_a, 'replica_set', fetcher_b, matcher)
+    def create(graph):
+        return PodToReplicaSetLinker('pod', 'replica_set', graph, PodToReplicaSetMatcher())
 
 
 class PodToReplicaSetMatcher(linker.Matcher):
@@ -120,11 +102,8 @@ class PodToReplicaSetMatcher(linker.Matcher):
 class PodToNodeLinker(linker.Linker):
 
     @staticmethod
-    def create(graph, client):
-        fetcher_a = fetcher.GraphFetcher(graph, 'pod')
-        fetcher_b = fetcher.GraphFetcher(graph, 'node')
-        matcher = PodToNodeMatcher()
-        return PodToNodeLinker(graph, 'pod', fetcher_a, 'node', fetcher_b, matcher)
+    def create(graph):
+        return PodToReplicaSetLinker('pod', 'node', graph, PodToNodeMatcher())
 
 
 class PodToNodeMatcher(linker.Matcher):

@@ -1,25 +1,12 @@
-
-from orca.common import logger
-from orca.k8s import client as k8s_client
-from orca.topology.probes import fetcher
-from orca.topology.probes.k8s import extractor
-from orca.topology.probes.k8s import linker, probe
-from orca.topology.probes.k8s import synchronizer as k8s_sync
-
-log = logger.get_logger(__name__)
+from orca.k8s import client as k8s
+from orca.topology.probes.k8s import extractor, linker, probe
 
 
 class NodeProbe(probe.Probe):
 
     @staticmethod
-    def create(graph, client):
-        extractor = NodeExtractor()
-        synchronizer = k8s_sync.SynchronizerFactory.get_synchronizer(
-            graph, client, 'node', extractor)
-        handler = probe.KubeHandler(graph, extractor)
-        watcher = k8s_client.ResourceWatch(client.CoreV1Api(), 'node', namespaced=False)
-        watcher.add_handler(handler)
-        return NodeProbe('node', synchronizer, watcher)
+    def create(graph, k8s_client):
+        return NodeProbe('node', NodeExtractor(), graph, k8s.ResourceProxy.get(k8s_client, 'node'))
 
 
 class NodeExtractor(extractor.Extractor):
@@ -36,12 +23,8 @@ class NodeExtractor(extractor.Extractor):
 class NodeToClusterLinker(linker.Linker):
 
     @staticmethod
-    def create(graph, client):
-        fetcher_a = fetcher.GraphFetcher(graph, 'node')
-        fetcher_b = fetcher.GraphFetcher(graph, 'cluster')
-        matcher = NodeToClusterMatcher()
-        return NodeToClusterLinker(
-            graph, 'node', fetcher_a, 'cluster', fetcher_b, matcher)
+    def create(graph):
+        return NodeToClusterLinker('node', 'cluster', graph, NodeToClusterMatcher())
 
 
 class NodeToClusterMatcher(linker.Matcher):

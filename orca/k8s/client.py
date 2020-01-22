@@ -1,7 +1,6 @@
 import abc
 
 from kubernetes import client, config, watch
-from kubernetes.client.rest import ApiException
 
 from orca.common import logger
 
@@ -18,114 +17,62 @@ class ClientFactory(object):
 
 class ResourceProxy(object):
 
-    def __init__(self, client, resource_kind, namespaced=True):
-        self._client = client
-        self._resource_kind = resource_kind
-        self._namespaced = namespaced
-        self._list_fn = self._get_list_fn()
-        self._read_fn = self._get_read_fn()
-
-    def _list(self):
-        return self._list_fn()
-
-    def _read(self, name, namespace=None):
-        if self._namespaced:
-            return self._read_fn(name, namespace)
-        else:
-            return self._read_fn(name)
-
-    def _get_list_fn(self):
-        fn_name = "list_%s" % self._resource_kind
-        if self._namespaced:
-            fn_name += "_for_all_namespaces"
-        return getattr(self._client, fn_name)
-
-    def _get_read_fn(self):
-        fn_name = "read_"
-        if self._namespaced:
-            fn_name += "namespaced_"
-        fn_name += self._resource_kind
-        return getattr(self._client, fn_name)
-
-
-class ResourceAPI(ResourceProxy):
+    def __init__(self, list_fn):
+        self._list_fn = list_fn
 
     def get_all(self):
-        return self._list().items
+        return self._list_fn().items
 
-    def get(self, name, namespace):
-        resource_obj = None
-        try:
-            resource_obj = self._read(name, namespace)
-        except ApiException as api_ex:
-            if str(api_ex.status) == "404":
-                resource_obj = None
+    def watch(self, handler):
+        for event in watch.Watch().stream(self._list_fn):
+            event_type = event['type']
+            event_obj = event['object']
+            if event_type == "ADDED":
+                handler.on_added(event_obj)
+            elif event_type == "MODIFIED":
+                handler.on_updated(event_obj)
+            elif event_type == "DELETED":
+                handler.on_deleted(event_obj)
             else:
-                raise
-        except Exception as ex:
-            log.error(str(ex))
-        return resource_obj
-
-
-class ResourceAPIFactory(object):
+                raise Exception("Unknown event type %s" % event_type)
 
     @staticmethod
-    def get_resource_api(client, resource_kind):
-        if resource_kind == 'pod':
-            api, namespaced = client.CoreV1Api(), True
-        elif resource_kind == 'service':
-            api, namespaced = client.CoreV1Api(), True
-        elif resource_kind == 'deployment':
-            api, namespaced = client.AppsV1Api(), True
-        elif resource_kind == 'replica_set':
-            api, namespaced = client.ExtensionsV1beta1Api(), True
-        elif resource_kind == 'config_map':
-            api, namespaced = client.CoreV1Api(), True
-        elif resource_kind == 'secret':
-            api, namespaced = client.CoreV1Api(), True
-        elif resource_kind == 'node':
-            api, namespaced = client.CoreV1Api(), False
+    def get(k8s_client, kind):
+        if kind == 'pod':
+            return ResourceProxy(
+                k8s_client.CoreV1Api().list_pod_for_all_namespaces)
+        elif kind == 'service':
+            return ResourceProxy(
+                k8s_client.CoreV1Api().list_service_for_all_namespaces)
+        elif kind == 'config_map':
+            return ResourceProxy(
+                k8s_client.CoreV1Api().list_config_map_for_all_namespaces)
+        elif kind == 'secret':
+            return ResourceProxy(
+                k8s_client.CoreV1Api().list_secret_for_all_namespaces)
+        elif kind == 'node':
+            return ResourceProxy(
+                k8s_client.CoreV1Api().list_node)
+        elif kind == 'deployment':
+            return ResourceProxy(
+                k8s_client.AppsV1Api().list_deployment_for_all_namespaces)
+        elif kind == 'replica_set':
+            return ResourceProxy(
+                k8s_client.ExtensionsV1beta1Api().list_replica_set_for_all_namespaces)
         else:
-            raise Exception("Unknown resource kind: %s" % resource_kind)
-        return ResourceAPI(api, resource_kind, namespaced=namespaced)
-
-
-class ResourceWatch(ResourceProxy):
-
-    def __init__(self, client, resource_kind, namespaced=True):
-        super().__init__(client, resource_kind, namespaced)
-        self._handlers = []
-
-    def add_handler(self, handler):
-        self._handlers.append(handler)
-
-    def run(self):
-        resource_watch = watch.Watch()
-        for event in resource_watch.stream(self._list_fn):
-            self._handle_event(event)
-
-    def _handle_event(self, event):
-        event_type = event['type']
-        resource_obj = event['object']
-        for handler in self._handlers:
-            if event_type == "ADDED":
-                handler.on_added(resource_obj)
-            if event_type == "UPDATED":
-                handler.on_updated(resource_obj)
-            if event_type == "DELETED":
-                handler.on_deleted(resource_obj)
+            raise Exception("Unknown kind %s" % kind)
 
 
 class EventHandler(abc.ABC):
 
     @abc.abstractmethod
-    def on_added(self, obj):
+    def on_added(self, entity):
         """Triggered when a K8S resource is added."""
 
     @abc.abstractmethod
-    def on_updated(self, obj):
+    def on_updated(self, entity):
         """Triggered when a K8S resource is updated."""
 
     @abc.abstractmethod
-    def on_deleted(self, obj):
+    def on_deleted(self, entity):
         """Triggered when a K8S resource is deleted."""

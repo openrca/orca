@@ -1,23 +1,13 @@
-from orca.common import logger
-from orca.k8s import client as k8s_client
-from orca.topology.probes.k8s import extractor
-from orca.topology.probes.k8s import probe
-from orca.topology.probes.k8s import synchronizer as k8s_sync
-
-log = logger.get_logger(__name__)
+from orca.k8s import client as k8s
+from orca.topology.probes.k8s import extractor, probe
 
 
 class ServiceProbe(probe.Probe):
 
     @staticmethod
-    def create(graph, client):
-        extractor = ServiceExtractor()
-        synchronizer = k8s_sync.SynchronizerFactory.get_synchronizer(
-            graph, client, 'service', extractor)
-        handler = probe.KubeHandler(graph, extractor)
-        watcher = k8s_client.ResourceWatch(client.CoreV1Api(), 'service')
-        watcher.add_handler(handler)
-        return ServiceProbe('service', synchronizer, watcher)
+    def create(graph, k8s_client):
+        return ServiceProbe('service', ServiceExtractor(), graph,
+                            k8s.ResourceProxy.get(k8s_client, 'service'))
 
 
 class ServiceExtractor(extractor.Extractor):

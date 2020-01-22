@@ -5,7 +5,7 @@ from orca.topology.probes import probe
 log = logger.get_logger(__name__)
 
 
-class ClusterProbe(probe.GraphProbe):
+class ClusterProbe(probe.Probe):
 
     def run(self):
         log.info("Registering root node for entity: cluster")
@@ -14,5 +14,5 @@ class ClusterProbe(probe.GraphProbe):
         self._graph.add_node(node)
 
     @staticmethod
-    def create(graph, client):
+    def create(graph, k8s_client):
         return ClusterProbe('cluster', graph)

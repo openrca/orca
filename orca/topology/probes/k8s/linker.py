@@ -3,7 +3,7 @@ from orca.topology.probes import linker
 
 class Linker(linker.Linker):
 
-    """Base class for Kubernetes entity linkers."""
+    """Base class for Kubernetes linkers."""
 
 
 class Matcher(linker.Matcher):

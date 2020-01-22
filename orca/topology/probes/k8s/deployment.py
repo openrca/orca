@@ -1,23 +1,13 @@
-from orca.common import logger
-from orca.k8s import client as k8s_client
-from orca.topology.probes.k8s import extractor
-from orca.topology.probes.k8s import probe
-from orca.topology.probes.k8s import synchronizer as k8s_sync
-
-log = logger.get_logger(__name__)
+from orca.k8s import client as k8s
+from orca.topology.probes.k8s import extractor, probe
 
 
 class DeploymentProbe(probe.Probe):
 
     @staticmethod
-    def create(graph, client):
-        extractor = DeploymentExtractor()
-        synchronizer = k8s_sync.SynchronizerFactory.get_synchronizer(
-            graph, client, 'deployment', extractor)
-        handler = probe.KubeHandler(graph, extractor)
-        watcher = k8s_client.ResourceWatch(client.AppsV1Api(), 'deployment')
-        watcher.add_handler(handler)
-        return DeploymentProbe('deployment', synchronizer, watcher)
+    def create(graph, k8s_client):
+        return DeploymentProbe('deployment', DeploymentExtractor(), graph,
+                               k8s.ResourceProxy.get(k8s_client, 'deployment'))
 
 
 class DeploymentExtractor(extractor.Extractor):

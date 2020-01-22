@@ -1,24 +1,13 @@
-from orca.common import logger
-from orca.k8s import client as k8s_client
-from orca.topology.probes import fetcher
-from orca.topology.probes.k8s import extractor
-from orca.topology.probes.k8s import linker, probe
-from orca.topology.probes.k8s import synchronizer as k8s_sync
-
-log = logger.get_logger(__name__)
+from orca.k8s import client as k8s
+from orca.topology.probes.k8s import extractor, linker, probe
 
 
 class ConfigMapProbe(probe.Probe):
 
     @staticmethod
-    def create(graph, client):
-        extractor = ConfigMapExtractor()
-        synchronizer = k8s_sync.SynchronizerFactory.get_synchronizer(
-            graph, client, 'config_map', extractor)
-        handler = probe.KubeHandler(graph, extractor)
-        watcher = k8s_client.ResourceWatch(client.CoreV1Api(), 'config_map')
-        watcher.add_handler(handler)
-        return ConfigMapProbe('config_map', synchronizer, watcher)
+    def create(graph, k8s_client):
+        return ConfigMapProbe('config_map', ConfigMapExtractor(), graph,
+                              k8s.ResourceProxy.get(k8s_client, 'config_map'))
 
 
 class ConfigMapExtractor(extractor.Extractor):
@@ -36,12 +25,8 @@ class ConfigMapExtractor(extractor.Extractor):
 class ConfigMapToPodLinker(linker.Linker):
 
     @staticmethod
-    def create(graph, client):
-        fetcher_a = fetcher.GraphFetcher(graph, 'config_map')
-        fetcher_b = fetcher.GraphFetcher(graph, 'pod')
-        matcher = ConfigMapToPodMatcher()
-        return ConfigMapToPodLinker(
-            graph, 'config_map', fetcher_a, 'pod', fetcher_b, matcher)
+    def create(graph):
+        return ConfigMapToPodLinker('config_map', 'pod', graph, ConfigMapToPodMatcher())
 
 
 class ConfigMapToPodMatcher(linker.Matcher):

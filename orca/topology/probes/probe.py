@@ -20,20 +20,11 @@ class ProbeService(cotyledon.Service):
 
 class Probe(abc.ABC):
 
-    def __init__(self, entity_kind):
-        self._entity_kind = entity_kind
-
-    @abc.abstractmethod
-    def run(self):
-        """Starts entity probe."""
-
-
-class GraphProbe(Probe):
-
-    def __init__(self, entity_kind, graph):
-        super().__init__(entity_kind)
+    def __init__(self, kind, graph):
+        super().__init__()
+        self._kind = kind
         self._graph = graph
 
     @abc.abstractmethod
     def run(self):
-        """Starts graph probe."""
+        """Starts entity probe."""
