@@ -4,6 +4,10 @@ import uuid
 
 import addict as dictlib
 
+from orca.common import logger
+
+log = logger.get_logger(__name__)
+
 
 class GraphObject(abc.ABC):
 
@@ -49,16 +53,19 @@ class Graph(object):
         return self._client.get_node(id, kind, properties)
 
     def add_node(self, node):
+        log.debug("Adding node: %s", node)
         if self.get_node(node.id):
             return
         self._client.add_node(node)
         self._notify_listeners(GraphEvent.NODE_ADDED, node)
 
     def update_node(self, node):
+        log.debug("Updating node: %s", node)
         self._client.update_node(node)
         self._notify_listeners(GraphEvent.NODE_UPDATED, node)
 
     def delete_node(self, node):
+        log.debug("Deleting node: %s", node)
         links = self._client.get_node_links(node)
         for link in links:
             self._client.delete_link(link)
@@ -72,16 +79,19 @@ class Graph(object):
         return self._client.get_link(id, properties)
 
     def add_link(self, link):
+        log.debug("Adding link: %s", link)
         if self.get_link(link.id):
             return
         self._client.add_link(link)
         self._notify_listeners(GraphEvent.LINK_ADDED, link)
 
     def update_link(self, link):
+        log.debug("Updating link: %s", link)
         self._client.update_link(link)
         self._notify_listeners(GraphEvent.LINK_UPDATED, link)
 
     def delete_link(self, link):
+        log.debug("Deleting link: %s", link)
         self._client.delete_link(link)
         self._notify_listeners(GraphEvent.LINK_DELETED, link)
 

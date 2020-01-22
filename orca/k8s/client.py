@@ -2,10 +2,6 @@ import abc
 
 from kubernetes import client, config, watch
 
-from orca.common import logger
-
-log = logger.get_logger(__name__)
-
 
 class ClientFactory(object):
 

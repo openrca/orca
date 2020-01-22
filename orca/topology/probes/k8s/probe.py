@@ -14,7 +14,11 @@ class Probe(probe.Probe, k8s_client.EventHandler):
         self._k8s_client = k8s_client
 
     def run(self):
+        log.info("Starting sync for entity: %s", self._kind)
         self.synchronize()
+        log.info("Finished sync for entity: %s", self._kind)
+
+        log.info("Starting watch on entity: %s", self._kind)
         self.start_watch()
 
     def synchronize(self):
