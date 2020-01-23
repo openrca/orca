@@ -62,13 +62,13 @@ class ResourceProxy(object):
 class EventHandler(abc.ABC):
 
     @abc.abstractmethod
-    def on_added(self, entity):
+    def on_added(self, event_obj):
         """Triggered when a K8S resource is added."""
 
     @abc.abstractmethod
-    def on_updated(self, entity):
+    def on_updated(self, event_obj):
         """Triggered when a K8S resource is updated."""
 
     @abc.abstractmethod
-    def on_deleted(self, entity):
+    def on_deleted(self, event_obj):
         """Triggered when a K8S resource is deleted."""

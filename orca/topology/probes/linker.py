@@ -73,16 +73,18 @@ class Linker(abc.ABC):
         return self.kind_b if node.kind == self.kind_a else self.kind_a
 
     def _get_new_links(self, node):
-        linked_nodes = []
-        if node.kind == self.kind_a:
-            linked_nodes.extend(self._get_ab_links(node))
-        else:
-            linked_nodes.extend(self._get_ba_links(node))
+        linked_nodes = self._get_linked_nodes(node)
         links = []
         for linked_node in linked_nodes:
             link = graph.Graph.create_link({}, node, linked_node)
             links.append(link)
         return links
+
+    def _get_linked_nodes(self, node):
+        if node.kind == self.kind_a:
+            return self._get_ab_links(node)
+        else:
+            return self._get_ba_links(node)
 
     def _get_ab_links(self, node_a):
         linked_nodes = []

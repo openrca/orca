@@ -156,24 +156,24 @@ class EventListener(abc.ABC):
 
     @abc.abstractmethod
     def on_node_added(self, node):
-        pass
+        """Callback triggered when graph node is added."""
 
     @abc.abstractmethod
     def on_node_updated(self, node):
-        pass
+        """Callback triggered when graph node is updated."""
 
     @abc.abstractmethod
     def on_node_deleted(self, node):
-        pass
+        """Callback triggered when graph node is deleted."""
 
     @abc.abstractmethod
     def on_link_added(self, link):
-        pass
+        """Callback triggered when graph link is added."""
 
     @abc.abstractmethod
     def on_link_updated(self, link):
-        pass
+        """Callback triggered when graph link is updated."""
 
     @abc.abstractmethod
     def on_link_deleted(self, link):
-        pass
+        """Callback triggered when graph link is deleted."""

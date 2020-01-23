@@ -2,10 +2,6 @@ import abc
 
 import cotyledon
 
-from orca.common import logger
-
-log = logger.get_logger(__name__)
-
 
 class ProbeService(cotyledon.Service):
 
