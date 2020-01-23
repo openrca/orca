@@ -3,14 +3,15 @@ import json
 import neo4j as graph_lib
 
 from orca.graph import graph
-from orca.graph.drivers import client
+from orca.graph.drivers import driver
 
 
-class Neo4jClient(client.Client):
+class Neo4jDriver(driver.Driver):
 
     """Neo4j Graph DB client."""
 
     def __init__(self, host, port, user=None, password=None):
+        super().__init__()
         self._host = host
         self._port = port
         self._user = user

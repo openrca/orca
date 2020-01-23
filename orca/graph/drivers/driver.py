@@ -1,9 +1,9 @@
 import abc
 
 
-class Client(abc.ABC):
+class Driver(abc.ABC):
 
-    """Abstract Graph DB client."""
+    """Abstract Graph DB driver."""
 
     @abc.abstractmethod
     def get_nodes(self, kind, properties):

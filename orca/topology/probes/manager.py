@@ -15,7 +15,7 @@ class Manager(cotyledon.ServiceManager):
 
     def _init_graph(self):
         # TODO: read graph backend from config
-        graph_client = graph_drivers.ClientFactory.get_client('neo4j')
+        graph_client = graph_drivers.DriverFactory.get('neo4j')
         return Graph(graph_client)
 
     def _add_k8s_probes(self, graph):
