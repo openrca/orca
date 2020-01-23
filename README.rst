@@ -2,15 +2,18 @@ OpenRCA
 ==============================================
 
 .. image:: https://img.shields.io/travis/openrca/orca.svg
-    :target: https://travis-ci.org/openrca/orca
+   :target: https://travis-ci.org/openrca/orca
 
 .. image:: https://img.shields.io/github/license/openrca/orca
-    :target: https://github.com/openrca/orca
+   :target: https://github.com/openrca/orca
 
+.. raw:: html
 
----------------
-
-Automated Root Cause Analysis for Kubernetes.
+    <h1 align="center">
+        <img src="docs/images/orca-logo.png" alt="OpenRCA" height="200px">
+    <br>
+    Automated Root Cause Analysis for Kubernetes
+    </h1>
 
 **Objectives:**
 
