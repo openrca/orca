@@ -1,13 +1,19 @@
-ORCA
+OpenRCA
 ==============================================
 
 .. image:: https://img.shields.io/travis/openrca/orca.svg
     :target: https://travis-ci.org/openrca/orca
 
+Automated Root Cause Analysis for Kubernetes.
+
 Installation
 ------------
 
-TODO: Write installation instructions
+Install using Helm chart:
+
+::
+
+    $ helm install ./orca --namespace rca --name orca
 
 Usage
 -----
