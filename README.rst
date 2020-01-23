@@ -41,6 +41,16 @@ TODO: Write usage instructions
 Development
 -----
 
+Using Docker Compose:
+
+::
+
+    $ docker-compose build
+    $ docker-compose up
+    $ docker-compose down
+
+Using Telepresence:
+
 ::
 
     $ telepresence \
