@@ -1,0 +1,41 @@
+{
+    "receiver":"webhook",
+    "status":"firing",
+    "alerts":[
+       {
+          "status":"firing",
+          "labels":{
+             "alertname":"TargetDown",
+             "job":"kube-proxy",
+             "namespace":"kube-system",
+             "prometheus":"monitoring/prometheus-prometheus-oper-prometheus",
+             "service":"prometheus-prometheus-oper-kube-proxy",
+             "severity":"warning"
+          },
+          "annotations":{
+             "message":"100% of the kube-proxy targets in kube-system namespace are down."
+          },
+          "startsAt":"2020-01-24T14:07:56.904694511Z",
+          "endsAt":"0001-01-01T00:00:00Z",
+          "generatorURL":"http://prometheus-prometheus-oper-prometheus.monitoring:9090/graph?g0.expr=100+%2A+%28count+by%28job%2C+namespace%2C+service%29+%28up+%3D%3D+0%29+%2F+count+by%28job%2C+namespace%2C+service%29+%28up%29%29+%3E+10&g0.tab=1",
+          "fingerprint":"95f533ca48e5e803"
+       }
+    ],
+    "groupLabels":{
+       "job":"kube-proxy"
+    },
+    "commonLabels":{
+       "alertname":"TargetDown",
+       "job":"kube-proxy",
+       "namespace":"kube-system",
+       "prometheus":"monitoring/prometheus-prometheus-oper-prometheus",
+       "service":"prometheus-prometheus-oper-kube-proxy",
+       "severity":"warning"
+    },
+    "commonAnnotations":{
+       "message":"100% of the kube-proxy targets in kube-system namespace are down."
+    },
+    "externalURL":"http://prometheus-prometheus-oper-alertmanager.monitoring:9093",
+    "version":"4",
+    "groupKey":"{}:{job=\"kube-proxy\"}"
+ }
