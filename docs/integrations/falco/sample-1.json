@@ -1,0 +1,110 @@
+
+// - rule: Disallowed K8s User
+// desc: Detect any k8s operation by users outside of an allowed set of users.
+// condition: kevt and non_system_user and not ka.user.name in (allowed_k8s_users)
+// output: K8s Operation performed by user not in allowed list of users (user=%ka.user.name target=%ka.target.name/%ka.target.resource verb=%ka.verb uri=%ka.uri resp=%ka.response.code)
+// priority: WARNING
+// source: k8s_audit
+// tags: [k8s]
+
+{
+   "output":"15:59:47.146296064: Warning K8s Operation performed by user not in allowed list of users (user=kubernetes-admin target=vanilla-role-binding/rolebindings verb=create uri=/apis/rbac.authorization.k8s.io/v1/namespaces/falco-event-generator/rolebindings resp=201)",
+   "priority":"Warning",
+   "rule":"Disallowed K8s User",
+   "time":"2020-01-24T15:59:47.146296064Z",
+   "output_fields":{
+      "jevt.time":"15:59:47.146296064",
+      "ka.response.code":"201",
+      "ka.target.name":"vanilla-role-binding",
+      "ka.target.resource":"rolebindings",
+      "ka.uri":"/apis/rbac.authorization.k8s.io/v1/namespaces/falco-event-generator/rolebindings",
+      "ka.user.name":"kubernetes-admin",
+      "ka.verb":"create"
+   }
+}
+
+{
+   "output":"15:59:49.660840960: Warning K8s Operation performed by user not in allowed list of users (user=kubernetes-admin target=vanilla-service/services verb=get uri=/api/v1/namespaces/falco-event-generator/services/vanilla-service resp=404)",
+   "priority":"Warning",
+   "rule":"Disallowed K8s User",
+   "time":"2020-01-24T15:59:49.660840960Z",
+   "output_fields":{
+      "jevt.time":"15:59:49.660840960",
+      "ka.response.code":"404",
+      "ka.target.name":"vanilla-service",
+      "ka.target.resource":"services",
+      "ka.uri":"/api/v1/namespaces/falco-event-generator/services/vanilla-service",
+      "ka.user.name":"kubernetes-admin",
+      "ka.verb":"get"
+   }
+}
+
+// - rule: Create HostNetwork Pod
+//   desc: Detect an attempt to start a pod using the host network.
+//   condition: kevt and pod and kcreate and ka.req.pod.host_network intersects (true) and not ka.req.pod.containers.image.repository in (falco_hostnetwork_images)
+//   output: Pod started using host network (user=%ka.user.name pod=%ka.resp.name ns=%ka.target.namespace images=%ka.req.pod.containers.image)
+//   priority: WARNING
+//   source: k8s_audit
+//   tags: [k8s]
+
+{
+   "output":"16:00:07.403497984: Warning Pod started using host network (user=system:serviceaccount:kube-system:replicaset-controller pod=<NA> ns=falco-event-generator images=busybox)",
+   "priority":"Warning",
+   "rule":"Create HostNetwork Pod",
+   "time":"2020-01-24T16:00:07.403497984Z",
+   "output_fields":{
+      "jevt.time":"16:00:07.403497984",
+      "ka.req.pod.containers.image":"busybox",
+      "ka.resp.name":"<NA>",
+      "ka.target.namespace":"falco-event-generator",
+      "ka.user.name":"system:serviceaccount:kube-system:replicaset-controller"
+   }
+}
+
+// - rule: Create Privileged Pod
+//   desc: >
+//     Detect an attempt to start a pod with a privileged container
+//   condition: kevt and pod and kcreate and ka.req.pod.containers.privileged intersects (true) and not ka.req.pod.containers.image.repository in (falco_privileged_images)
+//   output: Pod started with privileged container (user=%ka.user.name pod=%ka.resp.name ns=%ka.target.namespace images=%ka.req.pod.containers.image)
+//   priority: WARNING
+//   source: k8s_audit
+//   tags: [k8s]
+
+{
+   "output":"16:00:07.767782912: Warning Pod started with privileged container (user=system:serviceaccount:kube-system:replicaset-controller pod=<NA> ns=falco-event-generator images=busybox)",
+   "priority":"Warning",
+   "rule":"Create Privileged Pod",
+   "time":"2020-01-24T16:00:07.767782912Z",
+   "output_fields":{
+      "jevt.time":"16:00:07.767782912",
+      "ka.req.pod.containers.image":"busybox",
+      "ka.resp.name":"<NA>",
+      "ka.target.namespace":"falco-event-generator",
+      "ka.user.name":"system:serviceaccount:kube-system:replicaset-controller"
+   }
+}
+
+// - rule: Create Sensitive Mount Pod
+//   desc: >
+//     Detect an attempt to start a pod with a volume from a sensitive host directory (i.e. /proc).
+//     Exceptions are made for known trusted images.
+//   condition: kevt and pod and kcreate and sensitive_vol_mount and not ka.req.pod.containers.image.repository in (falco_sensitive_mount_images)
+//   output: Pod started with sensitive mount (user=%ka.user.name pod=%ka.resp.name ns=%ka.target.namespace images=%ka.req.pod.containers.image volumes=%jevt.value[/requestObject/spec/volumes])
+//   priority: WARNING
+//   source: k8s_audit
+//   tags: [k8s]
+
+{
+   "output":"16:00:07.864911872: Warning Pod started with sensitive mount (user=system:serviceaccount:kube-system:replicaset-controller pod=<NA> ns=falco-event-generator images=busybox volumes=[{\"hostPath\":{\"path\":\"/etc\",\"type\":\"\"},\"name\":\"etc\"}])",
+   "priority":"Warning",
+   "rule":"Create Sensitive Mount Pod",
+   "time":"2020-01-24T16:00:07.864911872Z",
+   "output_fields":{
+      "jevt.time":"16:00:07.864911872",
+      "jevt.value":"[{\"hostPath\":{\"path\":\"/etc\",\"type\":\"\"},\"name\":\"etc\"}]",
+      "ka.req.pod.containers.image":"busybox",
+      "ka.resp.name":"<NA>",
+      "ka.target.namespace":"falco-event-generator",
+      "ka.user.name":"system:serviceaccount:kube-system:replicaset-controller"
+   }
+}
