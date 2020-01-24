@@ -17,7 +17,7 @@ OpenRCA
 
 **Objectives:**
 
-- Holistic insight into application infrastructure
+- Holistic insight into application infrastructure (infra graph)
 - Time-based infrastructure analysis
 - Automated diagnostic workflows (framework, workflow marketplace)
 - ML-supported root cause inference
@@ -31,6 +31,7 @@ Install using Helm chart:
 
 ::
 
+    $ cd ./helm
     $ helm install ./orca --namespace rca --name orca
 
 Usage
