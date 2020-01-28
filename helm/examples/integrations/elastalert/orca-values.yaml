@@ -1,0 +1,36 @@
+image:
+  tag: 0.1.39
+
+elasticsearch:
+  host: "elasticsearch-client.logging"
+  port: 9200
+
+runIntervalMins: 1
+alertRetryLimitMins: 1
+realertIntervalMins: 1
+bufferTimeMins: 15
+writebackIndex: elastalert_status
+
+rules:
+  webhook-test: |-
+    ---
+    name: Webhook test
+    type: frequency
+    index: kubernetes_cluster-*
+    num_events: 3
+    timeframe:
+      minutes: 1
+    filter:
+    - term:
+        "kubernetes.labels.app": "details"
+    alert:
+    - "post"
+    http_post_url: "http://orca.rca:5000/v1/ingestor/elastalert"
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 100Mi
+  limits:
+    cpu: 1000m
+    memory: 1000Mi
