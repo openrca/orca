@@ -1,0 +1,18 @@
+auditLog:
+  enabled: true
+  dynamicBackend:
+    enabled: true
+
+falco:
+  jsonOutput: true
+  httpOutput:
+    enabled: true
+    url: "http://orca.rca:5000/v1/ingestor/falco"
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 100Mi
+  limits:
+    cpu: 1000m
+    memory: 1000Mi
