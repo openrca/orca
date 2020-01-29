@@ -1,0 +1,28 @@
+{
+    "_type":"flb_type",
+    "log":"127.0.0.1 - - [29/Jan/2020:18:30:20 UTC] \"GET /details/123 HTTP/1.1\" 200 180\n",
+    "stream":"stderr",
+    "_index":"kubernetes_cluster-2020.01.29",
+    "num_hits":79,
+    "@timestamp":"2020-01-29T18:30:20.549Z",
+    "time":"2020-01-29T18:30:20.549610447Z",
+    "kubernetes":{
+       "labels":{
+          "pod-template-hash":"74f858558f",
+          "app":"details",
+          "version":"v1"
+       },
+       "pod_id":"3a868f37-cd63-400b-89a6-3ba697ed2841",
+       "host":"node2",
+       "docker_id":"ac0f79fb05dc55324238f9a815f7e646939b2a127cb7e98c1be61b15acdc292a",
+       "container_hash":"fce0bcbff0bed09116dacffca15695cd345e0c3788c15b0114a05f654ddecc17",
+       "container_name":"details",
+       "pod_name":"details-v1-74f858558f-cxr2d",
+       "annotations":{
+          "sidecar_istio_io/status":"{\"version\":\"2696c96840179bdcd8f86ed60a643396f0cb250f56458b46a7fc667e6c75ef7f\",\"initContainers\":[\"istio-init\"],\"containers\":[\"istio-proxy\"],\"volumes\":[\"istio-envoy\",\"istio-certs\"],\"imagePullSecrets\":null}"
+       },
+       "namespace_name":"istio-demo"
+    },
+    "num_matches":26,
+    "_id":"p5WR8m8BWLcqzZChhXHe"
+ }
