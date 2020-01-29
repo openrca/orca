@@ -1,0 +1,2 @@
+env:
+  ELASTICSEARCH_HOSTS: "http://elasticsearch-client.logging:9200"

@@ -1,0 +1,30 @@
+master:
+  persistence:
+    enabled: false
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 4000m
+      memory: 4000Mi
+
+data:
+  persistence:
+    enabled: false
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 4000m
+      memory: 4000Mi
+
+client:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 4000m
+      memory: 4000Mi

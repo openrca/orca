@@ -1,0 +1,17 @@
+resources:
+  requests:
+    cpu: 100m
+    memory: 100Mi
+  limits:
+    cpu: 2000Mi
+    memory: 1000Mi
+
+backend:
+  type: es
+  es:
+    host: "elasticsearch-client.logging"
+    time_key: "@timestamp"
+
+filter:
+  mergeJSONLog: true
+  mergeLogKey: "log_processed"
