@@ -47,10 +47,16 @@ spec:
             - name: config-volume
               mountPath: /etc/orca
               readOnly: true
+            - name: alerts-mapping-volume
+              mountPath: /etc/orca
+              readOnly: true
       volumes:
         - name: config-volume
           configMap:
             name: {{ template "orca.fullname" . }}
+        - name: alerts-mapping-volume
+          configMap:
+            name: {{ template "orca.fullname" . }}-alerts-mapping
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -1,0 +1,20 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "orca.fullname" . }}-alerts-mapping
+  labels:
+{{ include "orca.labels" . | indent 4 }}
+data:
+  prometheus:
+    - name: KubePodNotReady
+      source_mapping:
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: KubeDeploymentReplicasMismatch
+      source_mapping:
+        kind: deployment
+        properties:
+          name: deployment
+          namespace: namespace
