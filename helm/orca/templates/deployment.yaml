@@ -43,6 +43,14 @@ spec:
               port: 5000
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/orca
+              readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ template "orca.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
