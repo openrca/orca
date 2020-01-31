@@ -1,0 +1,13 @@
+prometheus:
+  - name: KubePodNotReady
+    source_mapping:
+      kind: pod
+      properties:
+        name: pod
+        namespace: namespace
+  - name: KubeDeploymentReplicasMismatch
+    source_mapping:
+      kind: deployment
+      properties:
+        name: deployment
+        namespace: namespace
