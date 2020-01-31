@@ -4,6 +4,7 @@ from flask import jsonify, request
 from flask_restplus import Namespace, Resource, fields
 
 from orca.common import logger
+from orca.topology.probes.prometheus import alert as prom_alert
 
 log = logger.get_logger(__name__)
 
@@ -17,6 +18,10 @@ class Prometheus(Resource):
         """Ingest Prometheus alert."""
         payload = request.json
         log.info(json.dumps(payload))
+        extractor = prom_alert.Extractor()
+        for alert in payload['alerts']:
+            node = extractor.extract(alert)
+            log.info(node)
 
 
 @api.route('/falco')
@@ -35,3 +40,4 @@ class Elastalert(Resource):
         """Ingest Elasticsearch alert."""
         payload = request.json
         log.info(json.dumps(payload))
+
