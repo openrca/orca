@@ -1,6 +1,6 @@
 from orca.common import logger
 from orca.k8s import client as k8s_client
-from orca.topology.probes import probe
+from orca.topology import probe
 
 log = logger.get_logger(__name__)
 

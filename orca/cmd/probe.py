@@ -1,4 +1,4 @@
-from orca.topology.probes import manager
+from orca.topology import manager
 
 
 def main():

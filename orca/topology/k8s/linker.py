@@ -1,4 +1,4 @@
-from orca.topology.probes import linker
+from orca.topology import linker
 
 
 class Linker(linker.Linker):

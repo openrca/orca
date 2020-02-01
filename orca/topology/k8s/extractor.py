@@ -1,4 +1,4 @@
-from orca.topology.probes import extractor
+from orca.topology import extractor
 
 
 class Extractor(extractor.Extractor):

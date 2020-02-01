@@ -3,7 +3,7 @@ import uuid
 
 import yaml
 
-from orca.topology.probes import extractor
+from orca.topology import extractor
 from orca.common import logger
 
 log = logger.get_logger(__name__)

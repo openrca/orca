@@ -1,6 +1,6 @@
 from orca.graph import graph
 from orca.common import logger
-from orca.topology.probes import probe
+from orca.topology import probe
 
 log = logger.get_logger(__name__)
 

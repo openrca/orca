@@ -1,5 +1,5 @@
 from orca.k8s import client as k8s
-from orca.topology.probes.k8s import extractor, probe
+from orca.topology.k8s import extractor, probe
 
 
 class DeploymentProbe(probe.Probe):

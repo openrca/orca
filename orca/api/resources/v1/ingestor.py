@@ -4,7 +4,7 @@ from flask import jsonify, request
 from flask_restplus import Namespace, Resource, fields
 
 from orca.common import logger
-from orca.topology.probes.prometheus import alert as prom_alert
+from orca.topology.prometheus import alert as prom_alert
 
 log = logger.get_logger(__name__)
 

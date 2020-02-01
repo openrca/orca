@@ -1,6 +1,6 @@
 from orca.common import str_utils
 from orca.k8s import client as k8s
-from orca.topology.probes.k8s import extractor, linker, probe
+from orca.topology.k8s import extractor, linker, probe
 
 
 class PodProbe(probe.Probe):
