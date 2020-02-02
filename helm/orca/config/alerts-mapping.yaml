@@ -5,9 +5,27 @@ prometheus:
       properties:
         name: pod
         namespace: namespace
+  - name: KubePodCrashLooping
+    source_mapping:
+      kind: pod
+      properties:
+        name: pod
+        namespace: pod
   - name: KubeDeploymentReplicasMismatch
     source_mapping:
       kind: deployment
       properties:
         name: deployment
+        namespace: namespace
+  - name: KubeStatefulSetReplicasMismatc
+    source_mapping:
+      kind: statefulset
+      properties:
+        name: statefulset
+        namespace: namespace
+  - name: CPUThrottlingHigh
+    source_mapping:
+      kind: pod
+      properties:
+        name: pod
         namespace: namespace
