@@ -114,6 +114,21 @@ class PodToStatefulSetMatcher(linker.Matcher):
         return match_namespace and match_selector
 
 
+class PodToDaemonSetLinker(linker.Linker):
+
+    @staticmethod
+    def create(graph):
+        return PodToDaemonSetLinker('pod', 'daemon_set', graph, PodToDaemonSetMatcher())
+
+
+class PodToDaemonSetMatcher(linker.Matcher):
+
+    def are_linked(self, pod, daemon_set):
+        match_namespace = self._match_namespace(pod, daemon_set)
+        match_selector = self._match_selector(pod, daemon_set.properties.selector)
+        return match_namespace and match_selector
+
+
 class PodToNodeLinker(linker.Linker):
 
     @staticmethod
