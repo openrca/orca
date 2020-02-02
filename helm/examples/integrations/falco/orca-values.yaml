@@ -1,3 +1,6 @@
+image:
+  tag: 0.18.0
+
 auditLog:
   enabled: true
   dynamicBackend:
