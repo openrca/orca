@@ -1,9 +1,10 @@
 from orca.topology.k8s import (cluster, config_map, deployment, node, pod, replica_set, secret,
-                               service)
+                               service, stateful_set)
 
 PROBES = [
     pod.PodProbe,
     deployment.DeploymentProbe,
+    stateful_set.StatefulSetProbe,
     service.ServiceProbe,
     replica_set.ReplicaSetProbe,
     node.NodeProbe,
@@ -15,6 +16,7 @@ PROBES = [
 LINKERS = [
     pod.PodToServiceLinker,
     pod.PodToReplicaSetLinker,
+    pod.PodToStatefulSetLinker,
     pod.PodToNodeLinker,
     replica_set.ReplicaSetToDeploymentLinker,
     config_map.ConfigMapToPodLinker,

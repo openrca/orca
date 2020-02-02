@@ -99,6 +99,21 @@ class PodToReplicaSetMatcher(linker.Matcher):
         return match_namespace and match_selector
 
 
+class PodToStatefulSetLinker(linker.Linker):
+
+    @staticmethod
+    def create(graph):
+        return PodToStatefulSetLinker('pod', 'stateful_set', graph, PodToStatefulSetMatcher())
+
+
+class PodToStatefulSetMatcher(linker.Matcher):
+
+    def are_linked(self, pod, stateful_set):
+        match_namespace = self._match_namespace(pod, stateful_set)
+        match_selector = self._match_selector(pod, stateful_set.properties.selector)
+        return match_namespace and match_selector
+
+
 class PodToNodeLinker(linker.Linker):
 
     @staticmethod

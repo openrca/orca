@@ -52,6 +52,9 @@ class ResourceProxy(object):
         elif kind == 'deployment':
             return ResourceProxy(
                 k8s_client.AppsV1Api().list_deployment_for_all_namespaces)
+        elif kind == 'stateful_set':
+            return ResourceProxy(
+                k8s_client.AppsV1Api().list_stateful_set_for_all_namespaces)
         elif kind == 'replica_set':
             return ResourceProxy(
                 k8s_client.ExtensionsV1beta1Api().list_replica_set_for_all_namespaces)
