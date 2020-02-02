@@ -10,16 +10,22 @@ prometheus:
       kind: pod
       properties:
         name: pod
-        namespace: pod
+        namespace: namespace
+  - name: KubeContainerWaiting
+    source_mapping:
+      kind: pod
+      properties:
+        name: pod
+        namespace: namespace
   - name: KubeDeploymentReplicasMismatch
     source_mapping:
       kind: deployment
       properties:
         name: deployment
         namespace: namespace
-  - name: KubeStatefulSetReplicasMismatc
+  - name: KubeStatefulSetReplicasMismatch
     source_mapping:
-      kind: statefulset
+      kind: stateful_set
       properties:
         name: statefulset
         namespace: namespace
