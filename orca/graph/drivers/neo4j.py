@@ -31,8 +31,11 @@ class Neo4jDriver(driver.Driver):
         query = "MATCH %s RETURN node" % (node_pattern)
         query_result = self._run_query(query)
         records = query_result.records()
-        nodes = [record['node'] for record in records]
-        return list(map(self._build_node_obj, nodes))
+        raw_nodes = [record['node'] for record in records]
+        nodes = list(map(self._build_node_obj, raw_nodes))
+        if not properties:
+            return nodes
+        return self._filter_nodes(nodes, properties)
 
     def get_node(self, id, kind=None, properties=None):
         node_pattern = self._build_node_pattern(id, kind, None)
@@ -172,3 +175,16 @@ class Neo4jDriver(driver.Driver):
         source = self._build_node_obj(src_node)
         target = self._build_node_obj(dst_node)
         return graph.Link(id, properties, source, target)
+
+    def _filter_nodes(self, nodes, properties):
+        filtered_nodes = []
+        for node in nodes:
+            matched = True
+            for prop, value in properties.items():
+                if prop in node.properties and node.properties[prop] == value:
+                    continue
+                matched = False
+                break
+            if matched:
+                filtered_nodes.append(node)
+        return filtered_nodes
