@@ -8,14 +8,19 @@ from orca.topology.prometheus import alert as prom_alert
 
 log = logger.get_logger(__name__)
 
-api = Namespace('ingestor', description='Ingestor API')
+
+class IngestEndpoint(Resource):
+
+    def __init__(self, api, graph):
+        super().__init__()
+        self._graph = graph
 
 
-@api.route('/prometheus')
-class Prometheus(Resource):
+class Prometheus(IngestEndpoint):
+
+    """Prometheus ingest endpoint."""
 
     def post(self):
-        """Ingest Prometheus alert."""
         payload = request.json
         log.info(json.dumps(payload))
         extractor = prom_alert.AlertExtractor()
@@ -24,20 +29,27 @@ class Prometheus(Resource):
             log.info(node)
 
 
-@api.route('/falco')
-class Falco(Resource):
+class Falco(IngestEndpoint):
+
+    """Falco ingest endpoint."""
 
     def post(self):
-        """Ingest Falco alert."""
         payload = request.json
         log.info(json.dumps(payload))
 
 
-@api.route('/elastalert')
-class Elastalert(Resource):
+class Elastalert(IngestEndpoint):
+
+    """Elastalert ingest endpoint."""
 
     def post(self):
-        """Ingest Elasticsearch alert."""
         payload = request.json
         log.info(json.dumps(payload))
 
+
+def initialize(graph):
+    api = Namespace('ingestor', description='Ingestor API')
+    api.add_resource(Prometheus, '/prometheus', resource_class_args=[graph])
+    api.add_resource(Falco, '/falco', resource_class_args=[graph])
+    api.add_resource(Elastalert, '/elastalert', resource_class_args=[graph])
+    return api
