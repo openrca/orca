@@ -5,6 +5,7 @@ import yaml
 
 from orca.topology import extractor
 from orca.common import logger
+from orca.common import str_utils
 
 log = logger.get_logger(__name__)
 
@@ -50,7 +51,7 @@ class AlertExtractor(extractor.AlertExtractor):
         return entity['labels']['severity']
 
     def extract_message(self, entity):
-        return entity['annotations']['message']
+        return str_utils.escape(entity['annotations']['message'])
 
     def _load_alert_mappings(self):
         with open("/etc/orca/alerts-mapping.yaml", 'r') as stream:
