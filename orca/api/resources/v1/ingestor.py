@@ -5,6 +5,7 @@ from flask_restplus import Namespace, Resource, fields
 
 from orca.common import logger
 from orca.topology.prometheus import alert as prom_alert
+from orca.topology import probe
 
 log = logger.get_logger(__name__)
 
@@ -26,7 +27,7 @@ class Prometheus(IngestEndpoint):
         extractor = prom_alert.AlertExtractor()
         for alert in payload['alerts']:
             node = extractor.extract(alert)
-            log.info(node)
+            self._graph.add_node(node)
 
 
 class Falco(IngestEndpoint):
