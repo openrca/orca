@@ -5,3 +5,4 @@ cotyledon
 kubernetes
 neo4j
 addict
+pyyaml

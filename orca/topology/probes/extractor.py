@@ -29,7 +29,7 @@ class AlertExtractor(Extractor):
     def extract_properties(self, entity):
         return {
             'name': self.extract_name(entity),
-            'source_labels': self.extract_source_labels(entity),
+            'source_mapping': self.extract_source_mapping(entity),
             'status': self.extract_status(entity),
             'severity': self.extract_severity(entity),
             'message': self.extract_message(entity)
@@ -40,8 +40,8 @@ class AlertExtractor(Extractor):
         """Extracts name from given entity object."""
 
     @abc.abstractmethod
-    def extract_source_labels(self, entity):
-        """Extracts source labels from given entity object."""
+    def extract_source_mapping(self, entity):
+        """Extracts source mapping from given entity object."""
 
     @abc.abstractmethod
     def extract_status(self, entity):

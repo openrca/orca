@@ -18,7 +18,7 @@ class Prometheus(Resource):
         """Ingest Prometheus alert."""
         payload = request.json
         log.info(json.dumps(payload))
-        extractor = prom_alert.Extractor()
+        extractor = prom_alert.AlertExtractor()
         for alert in payload['alerts']:
             node = extractor.extract(alert)
             log.info(node)
