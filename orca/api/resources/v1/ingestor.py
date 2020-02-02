@@ -1,11 +1,10 @@
 import json
 
-from flask import jsonify, request
-from flask_restplus import Namespace, Resource, fields
+from flask import request
+from flask_restplus import Namespace, Resource
 
 from orca.common import logger
 from orca.topology.prometheus import alert as prom_alert
-from orca.topology import probe
 
 log = logger.get_logger(__name__)
 
@@ -36,7 +35,7 @@ class Falco(IngestEndpoint):
 
     def post(self):
         payload = request.json
-        log.info(json.dumps(payload))
+        log.debug(json.dumps(payload))
 
 
 class Elastalert(IngestEndpoint):
@@ -45,7 +44,7 @@ class Elastalert(IngestEndpoint):
 
     def post(self):
         payload = request.json
-        log.info(json.dumps(payload))
+        log.debug(json.dumps(payload))
 
 
 def initialize(graph):

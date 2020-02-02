@@ -1,7 +1,5 @@
 import abc
 
-from orca.graph import graph
-
 
 class Extractor(abc.ABC):
 
