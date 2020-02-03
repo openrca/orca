@@ -5,69 +5,63 @@ from flask_restplus import Namespace, Resource
 
 from orca import exceptions
 from orca.common import logger
-from orca.topology.alerts import extractor
+from orca.topology.alerts import extractor as alert_extractor
 from orca.topology.alerts.falco import alert as falco_alert
 from orca.topology.alerts.prometheus import alert as prom_alert
 
 log = logger.get_logger(__name__)
 
 
-class IngestEndpoint(Resource):
+class Ingestor(Resource):
 
-    def __init__(self, api, graph):
+    """Template class for alert ingestors."""
+
+    def __init__(self, api, graph, extractor):
         super().__init__()
         self._graph = graph
+        self._extractor = extractor
+
+    def ingest(self, entity):
+        try:
+            node = self._extractor.extract(entity)
+            self._graph.add_node(node)
+        except (exceptions.MappingNotFound, exceptions.InvalidMappingValue) as ex:
+            log.warning("Error while processing ingested entity: %s", ex)
 
 
-class Prometheus(IngestEndpoint):
+class Prometheus(Ingestor):
 
     """Prometheus ingest endpoint."""
 
     def post(self):
         payload = request.json
-        log.info(json.dumps(payload))
-        source_mapper = extractor.SourceMapper('prometheus')
-        prom_extractor = prom_alert.AlertExtractor(source_mapper)
+        log.debug(json.dumps(payload))
         for alert in payload['alerts']:
-            try:
-                node = prom_extractor.extract(alert)
-                self._graph.add_node(node)
-            except exceptions.MappingNotFound as ex:
-                log.warning("Mapping not found: %s", ex)
-            except exceptions.InvalidMappingValue as ex:
-                log.warning("Failed extracting Prometheus event: %s", ex)
+            self.ingest(alert)
 
 
-class Falco(IngestEndpoint):
+class Falco(Ingestor):
 
     """Falco ingest endpoint."""
 
     def post(self):
         payload = request.json
         log.debug(json.dumps(payload))
-        source_mapper = extractor.SourceMapper('falco')
-        falco_extractor = falco_alert.AlertExtractor(source_mapper)
-        try:
-            node = falco_extractor.extract(payload)
-            self._graph.add_node(node)
-        except exceptions.MappingNotFound as ex:
-            log.warning("Mapping not found: %s", ex)
-        except exceptions.InvalidMappingValue as ex:
-            log.warning("Failed extracting Falco event: %s", ex)
-
-
-class Elastalert(IngestEndpoint):
-
-    """Elastalert ingest endpoint."""
-
-    def post(self):
-        payload = request.json
-        log.debug(json.dumps(payload))
+        self.ingest(payload)
 
 
 def initialize(graph):
     api = Namespace('ingestor', description='Ingestor API')
-    api.add_resource(Prometheus, '/prometheus', resource_class_args=[graph])
-    api.add_resource(Falco, '/falco', resource_class_args=[graph])
-    api.add_resource(Elastalert, '/elastalert', resource_class_args=[graph])
+    initialize_prometheus(api, graph)
+    initialize_falco(api, graph)
     return api
+
+def initialize_prometheus(api, graph):
+    source_mapper = alert_extractor.SourceMapper('prometheus')
+    extractor = prom_alert.AlertExtractor(source_mapper)
+    api.add_resource(Prometheus, '/prometheus', resource_class_args=[graph, extractor])
+
+def initialize_falco(api, graph):
+    source_mapper = alert_extractor.SourceMapper('falco')
+    extractor = falco_alert.AlertExtractor(source_mapper)
+    api.add_resource(Falco, '/falco', resource_class_args=[graph, extractor])
