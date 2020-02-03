@@ -29,8 +29,13 @@ class Prometheus(IngestEndpoint):
         source_mapper = extractor.SourceMapper('prometheus')
         prom_extractor = prom_alert.AlertExtractor(source_mapper)
         for alert in payload['alerts']:
-            node = prom_extractor.extract(alert)
-            self._graph.add_node(node)
+            try:
+                node = prom_extractor.extract(alert)
+                self._graph.add_node(node)
+            except exceptions.MappingNotFound as ex:
+                log.warning("Mapping not found: %s", ex)
+            except exceptions.InvalidMappingValue as ex:
+                log.warning("Failed extracting Prometheus event: %s", ex)
 
 
 class Falco(IngestEndpoint):
@@ -40,6 +45,15 @@ class Falco(IngestEndpoint):
     def post(self):
         payload = request.json
         log.debug(json.dumps(payload))
+        source_mapper = extractor.SourceMapper('falco')
+        falco_extractor = falco_alert.AlertExtractor(source_mapper)
+        try:
+            node = falco_extractor.extract(payload)
+            self._graph.add_node(node)
+        except exceptions.MappingNotFound as ex:
+            log.warning("Mapping not found: %s", ex)
+        except exceptions.InvalidMappingValue as ex:
+            log.warning("Failed extracting Falco event: %s", ex)
 
 
 class Elastalert(IngestEndpoint):

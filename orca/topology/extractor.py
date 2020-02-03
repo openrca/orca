@@ -75,8 +75,7 @@ class SourceMapper(object):
     def map(self, name, labels):
         mapping = self._mapping.get(name)
         if not mapping:
-            log.warning("No source mapping for key: %s", name)
-            return
+            raise exceptions.MappingNotFound(key=name)
         kind = mapping['kind']
         properties = {}
         for prop, prop_mapping in mapping['properties'].items():
