@@ -7,7 +7,7 @@ class StatefulSetProbe(probe.Probe):
     @staticmethod
     def create(graph, k8s_client):
         return StatefulSetProbe('stateful_set', StatefulSetExtractor(), graph,
-                               k8s.ResourceProxy.get(k8s_client, 'stateful_set'))
+                                k8s.ResourceProxy.get(k8s_client, 'stateful_set'))
 
 
 class StatefulSetExtractor(extractor.Extractor):

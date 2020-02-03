@@ -1,5 +1,6 @@
-from orca.topology.infra.k8s import (cluster, config_map, deployment, node, pod, replica_set, secret,
-                               service, stateful_set, daemon_set)
+from orca.topology.infra.k8s import (cluster, config_map, daemon_set,
+                                     deployment, node, pod, replica_set,
+                                     secret, service, stateful_set)
 
 PROBES = [
     pod.PodProbe,

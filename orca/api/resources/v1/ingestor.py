@@ -56,10 +56,12 @@ def initialize(graph):
     initialize_falco(api, graph)
     return api
 
+
 def initialize_prometheus(api, graph):
     source_mapper = alert_extractor.SourceMapper('prometheus')
     extractor = prom_alert.AlertExtractor(source_mapper)
     api.add_resource(Prometheus, '/prometheus', resource_class_args=[graph, extractor])
+
 
 def initialize_falco(api, graph):
     source_mapper = alert_extractor.SourceMapper('falco')

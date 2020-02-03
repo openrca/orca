@@ -7,7 +7,7 @@ class DaemonSetProbe(probe.Probe):
     @staticmethod
     def create(graph, k8s_client):
         return DaemonSetProbe('daemon_set', DaemonSetExtractor(), graph,
-                               k8s.ResourceProxy.get(k8s_client, 'daemon_set'))
+                              k8s.ResourceProxy.get(k8s_client, 'daemon_set'))
 
 
 class DaemonSetExtractor(extractor.Extractor):
