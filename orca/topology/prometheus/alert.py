@@ -69,14 +69,36 @@ class SourceMapper(object):
             return
         kind = mapping['kind']
         properties = {}
-        for prop, value in mapping['properties'].items():
-            properties[prop] = labels[value]
+        for prop, prop_mapping in mapping['properties'].items():
+            value = labels.get(prop_mapping)
+            valid = self._validate_value(value, mapping)
+            if not valid:
+                raise exceptions.InvalidMappingValue(key=name, value=value)
+            properties[prop] = value
         return {'kind': kind, 'properties': properties}
 
     def _load_mapping(self):
         # TODO: Read mapping path from config
         mapping_path = "/etc/orca/alerts-mapping.yaml"
-        mappings = file_utils.load_yaml(mapping_path).get(self._mapping_key)
-        if not mappings:
+        mapping_spec = file_utils.load_yaml(mapping_path).get(self._mapping_key)
+        if not mapping_spec:
             raise exceptions.MappingNotFound(key=self._mapping_key)
-        return {mapping['name']: mapping['source_mapping'] for mapping in mappings}
+
+        blacklist_values = mapping_spec.get('blacklist_values')
+        if not blacklist_values:
+            blacklist_values = []
+
+        mappings = mapping_spec['mappings']
+        lookup = {}
+        for mapping in mappings:
+            name = mapping['name']
+            lookup[name] = mapping['source_mapping']
+            lookup[name].setdefault('blacklist_values', blacklist_values)
+        return lookup
+
+    def _validate_value(self, value, mapping):
+        if not value:
+            return False
+        if value in mapping['blacklist_values']:
+            return False
+        return True
