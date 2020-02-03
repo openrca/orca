@@ -5,6 +5,8 @@ from flask_restplus import Namespace, Resource
 
 from orca.common import logger
 from orca.topology.prometheus import alert as prom_alert
+from orca.topology.falco import alert as falco_alert
+from orca import exceptions
 
 log = logger.get_logger(__name__)
 
@@ -23,7 +25,8 @@ class Prometheus(IngestEndpoint):
     def post(self):
         payload = request.json
         log.info(json.dumps(payload))
-        extractor = prom_alert.AlertExtractor()
+        source_mapper = prom_alert.SourceMapper('prometheus')
+        extractor = prom_alert.AlertExtractor(source_mapper)
         for alert in payload['alerts']:
             node = extractor.extract(alert)
             self._graph.add_node(node)
