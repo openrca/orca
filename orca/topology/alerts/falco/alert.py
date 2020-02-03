@@ -1,8 +1,8 @@
 from orca.common import str_utils
-from orca.topology import extractor
+from orca.topology.alerts import extractor
 
 
-class AlertExtractor(extractor.AlertExtractor):
+class AlertExtractor(extractor.Extractor):
 
     def extract_kind(self, entity):
         return 'falco_alert'

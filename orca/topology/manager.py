@@ -1,9 +1,10 @@
 import cotyledon
+
 from orca.graph import drivers as graph_drivers
 from orca.graph.graph import Graph
 from orca.k8s import client as k8s
-from orca.topology import k8s as k8s_probe
-from orca.topology.prometheus import probe as prom_probe
+from orca.topology.infra import k8s as k8s_probe
+from orca.topology.alerts.prometheus import probe as prom_probe
 from orca.topology import linker, probe
 
 

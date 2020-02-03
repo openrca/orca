@@ -1,5 +1,5 @@
 from orca.k8s import client as k8s
-from orca.topology.k8s import extractor, linker, probe
+from orca.topology.infra.k8s import extractor, linker, probe
 
 
 class ConfigMapProbe(probe.Probe):

@@ -1,4 +1,4 @@
-from orca.topology.k8s import (cluster, config_map, deployment, node, pod, replica_set, secret,
+from orca.topology.infra.k8s import (cluster, config_map, deployment, node, pod, replica_set, secret,
                                service, stateful_set, daemon_set)
 
 PROBES = [
