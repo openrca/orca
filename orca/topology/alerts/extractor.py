@@ -60,6 +60,12 @@ class SourceMapper(object):
         self._mapping_key = mapping_key
         self.__mapping = None
 
+    @property
+    def _mapping(self):
+        if not self.__mapping:
+            self.__mapping = self._load_mapping()
+        return self.__mapping
+
     def map(self, name, labels):
         mapping = self._mapping.get(name)
         if not mapping:
@@ -70,15 +76,9 @@ class SourceMapper(object):
             value = labels.get(prop_mapping)
             valid = self._validate_value(value, mapping)
             if not valid:
-                raise exceptions.InvalidMappingValue(key=name, value=value)
+                raise exceptions.InvalidMappedValue(key=name, value=value)
             properties[prop] = value
         return {'kind': kind, 'properties': properties}
-
-    @property
-    def _mapping(self):
-        if not self.__mapping:
-            self.__mapping = self._load_mapping()
-        return self.__mapping
 
     def _load_mapping(self):
         # TODO: Read mapping path from config

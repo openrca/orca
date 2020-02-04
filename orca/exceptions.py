@@ -12,6 +12,6 @@ class MappingNotFound(OrcaError):
     message = "Mapping not found for key: %(key)s."
 
 
-class InvalidMappingValue(OrcaError):
+class InvalidMappedValue(OrcaError):
 
     message = "Got invalid value for mapping '%(key)s': %(value)s."
