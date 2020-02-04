@@ -4,11 +4,11 @@ from orca.graph import graph
 from orca.topology import probe
 
 
-class PrometheusProbe(probe.Probe):
+class Probe(probe.Probe):
 
     def run(self):
         while True:
-            alert_nodes = self._graph.get_nodes(kind='prom_alert')
+            alert_nodes = self._graph.get_nodes(kind=self._kind)
             for alert_node in alert_nodes:
                 source_mapping = alert_node.properties.source_mapping
                 if not source_mapping:

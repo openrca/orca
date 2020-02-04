@@ -1,5 +1,12 @@
 from orca.common import str_utils
-from orca.topology.alerts import extractor
+from orca.topology.alerts import extractor, probe
+
+
+class AlertProbe(probe.Probe):
+
+    @staticmethod
+    def create(graph):
+        return AlertProbe('es_alert', graph)
 
 
 class AlertExtractor(extractor.Extractor):
@@ -21,5 +28,4 @@ class AlertExtractor(extractor.Extractor):
         properties['status'] = 'active'
         properties['severity'] = entity['severity']
         properties['message'] = str_utils.escape(entity['message'])
-        properties['log'] = str_utils.escape(entity['log'])
         return properties
