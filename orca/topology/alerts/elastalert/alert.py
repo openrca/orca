@@ -9,6 +9,14 @@ class AlertProbe(probe.Probe):
         return AlertProbe('es_alert', graph)
 
 
+class AlertHandler(probe.EntityHandler):
+
+    @staticmethod
+    def create(graph):
+        source_mapper = extractor.SourceMapper('elastalert')
+        return AlertHandler(graph, AlertExtractor(source_mapper))
+
+
 class AlertExtractor(extractor.Extractor):
 
     def _extract_kind(self, entity):
