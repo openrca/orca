@@ -8,6 +8,7 @@ from orca.common import logger
 from orca.topology.alerts import extractor as alert_extractor
 from orca.topology.alerts.falco import alert as falco_alert
 from orca.topology.alerts.prometheus import alert as prom_alert
+from orca.topology.alerts.elastalert import alert as es_alert
 
 log = logger.get_logger(__name__)
 
@@ -50,10 +51,21 @@ class Falco(Ingestor):
         self.ingest(payload)
 
 
+class Elastalert(Ingestor):
+
+    """Elastalert ingest endpoint."""
+
+    def post(self):
+        payload = request.json
+        log.debug(json.dumps(payload))
+        self.ingest(payload)
+
+
 def initialize(graph):
     api = Namespace('ingestor', description='Ingestor API')
     initialize_prometheus(api, graph)
     initialize_falco(api, graph)
+    initialize_elastalert(api, graph)
     return api
 
 
@@ -67,3 +79,9 @@ def initialize_falco(api, graph):
     source_mapper = alert_extractor.SourceMapper('falco')
     extractor = falco_alert.AlertExtractor(source_mapper)
     api.add_resource(Falco, '/falco', resource_class_args=[graph, extractor])
+
+
+def initialize_elastalert(api, graph):
+    source_mapper = alert_extractor.SourceMapper('elastalert')
+    extractor = es_alert.AlertExtractor(source_mapper)
+    api.add_resource(Elastalert, '/elastalert', resource_class_args=[graph, extractor])
