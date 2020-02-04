@@ -1,7 +1,10 @@
 import time
 
+from orca.common import logger
 from orca.graph import graph
 from orca.topology import probe
+
+log = logger.get_logger(__name__)
 
 
 class Probe(probe.Probe):
@@ -19,3 +22,14 @@ class Probe(probe.Probe):
                     link = graph.Graph.create_link({}, source_node, alert_node)
                     self._graph.add_link(link)
             time.sleep(10)
+
+
+class EntityHandler(object):
+
+    def __init__(self, graph, extractor):
+        self._graph = graph
+        self._extractor = extractor
+
+    def handle(self, entity):
+        node = self._extractor.extract(entity)
+        self._graph.add_node(node)
