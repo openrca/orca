@@ -1,0 +1,34 @@
+{
+    "status":"active",
+    "_type":"flb_type",
+    "log":"I0204 10:33:26.474859       1 event.go:258] Event(v1.ObjectReference{Kind:\"Deployment\", Namespace:\"rca\", Name:\"orca-e5bd78181f3e449483311d531bd99faa\", UID:\"347efff8-d969-4135-81f5-9549324acbbf\", APIVersion:\"apps/v1\", ResourceVersion:\"15261275\", FieldPath:\"\"}): type: 'Normal' reason: 'ScalingReplicaSet' Scaled up replica set orca-e5bd78181f3e449483311d531bd99faa-96b479cc7 to 1\n",
+    "stream":"stderr",
+    "_index":"kubernetes_cluster-2020.02.04",
+    "num_hits":245,
+    "@timestamp":"2020-02-04T10:33:26.475Z",
+    "severity":"warning",
+    "time":"2020-02-04T10:33:26.475178889Z",
+    "kubernetes":{
+       "labels":{
+          "tier":"control-plane",
+          "component":"kube-controller-manager"
+       },
+       "annotations":{
+          "kubernetes_io/config_hash":"74425a16f4d7438817f1ab77e4fa97bb",
+          "kubernetes_io/config_source":"file",
+          "kubernetes_io/config_mirror":"74425a16f4d7438817f1ab77e4fa97bb",
+          "kubernetes_io/config_seen":"2019-11-04T17:00:36.45259693+01:00"
+       },
+       "host":"node1",
+       "docker_id":"52c3b2c90425df03f97dd6d444891e6bc6c66a199d5e9edaa44ea378140bced2",
+       "container_hash":"0bf6211a0d8cb1c444aa3148941ae4dfbb43dfbbd2a7a9177a9594535fbed838",
+       "container_name":"kube-controller-manager",
+       "namespace_name":"kube-system",
+       "pod_id":"6be205a9-5714-453b-aa93-38c895b6cc68",
+       "pod_name":"kube-controller-manager-node1"
+    },
+    "num_matches":4,
+    "message":"Application populated entries to error stream",
+    "_id":"0SLDD3AB_INOpMJ3Fsdv",
+    "name":"Application error"
+}

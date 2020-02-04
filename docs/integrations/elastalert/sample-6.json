@@ -1,0 +1,32 @@
+{
+    "status":"active",
+    "_type":"flb_type",
+    "log":"[2020-02-04 10:36:42.944][36][warning][config] [bazel-out/k8-opt/bin/external/envoy/source/common/config/_virtual_includes/grpc_stream_lib/common/config/grpc_stream.h:87] gRPC config stream closed: 13, \n",
+    "stream":"stderr",
+    "_index":"kubernetes_cluster-2020.02.04",
+    "num_hits":249,
+    "@timestamp":"2020-02-04T10:36:42.944Z",
+    "severity":"warning",
+    "time":"2020-02-04T10:36:42.944567858Z",
+    "kubernetes":{
+       "labels":{
+          "pod-template-hash":"75699b5cfb",
+          "app":"reviews",
+          "version":"v3"
+       },
+       "annotations":{
+          "sidecar_istio_io/status":"{\"version\":\"2696c96840179bdcd8f86ed60a643396f0cb250f56458b46a7fc667e6c75ef7f\",\"initContainers\":[\"istio-init\"],\"containers\":[\"istio-proxy\"],\"volumes\":[\"istio-envoy\",\"istio-certs\"],\"imagePullSecrets\":null}"
+       },
+       "host":"node2",
+       "docker_id":"34ee7e35c42ac904f40b472a7f39803cfaa64a2d706006e7a746243d4a0ec2d6",
+       "container_hash":"cb115da3d84c695d7072a7f44113423f3e0e2625be9bd0ddae74343a6b7033a3",
+       "container_name":"istio-proxy",
+       "namespace_name":"istio-demo",
+       "pod_id":"5dcaf714-ba84-4507-abe1-1499dd13fd5b",
+       "pod_name":"reviews-v3-75699b5cfb-tmflg"
+    },
+    "num_matches":2,
+    "message":"Application populated entries to error stream",
+    "_id":"sSLGD3AB_INOpMJ3D8nj",
+    "name":"Application error"
+}

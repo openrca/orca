@@ -1,0 +1,36 @@
+{
+    "status":"active",
+    "_type":"flb_type",
+    "log":"scvg40640: inuse: 14, idle: 42, sys: 56, released: 38, consumed: 17 (MB)\n",
+    "stream":"stderr",
+    "_index":"kubernetes_cluster-2020.02.04",
+    "num_hits":257,
+    "@timestamp":"2020-02-04T10:34:04.748Z",
+    "severity":"warning",
+    "time":"2020-02-04T10:34:04.74881011Z",
+    "kubernetes":{
+       "labels":{
+          "pod-template-hash":"678675478f",
+          "app":"telemetry",
+          "chart":"mixer",
+          "istio":"mixer",
+          "istio-mixer-type":"telemetry",
+          "heritage":"Tiller",
+          "release":"istio"
+       },
+       "annotations":{
+          "sidecar_istio_io/inject":"false"
+       },
+       "host":"node3",
+       "docker_id":"3c970bd898f6fff71ba1caccacf3b46bc87317afc0a273af329d0a1fb53bcfaf",
+       "container_hash":"f66dc44ed8d9f5d1ff209fde9615427980e779426cf56bbbe0581ef2b05d7853",
+       "container_name":"mixer",
+       "namespace_name":"istio-system",
+       "pod_id":"ae0e6585-bf2c-4af0-88a0-666aa1eb8f4d",
+       "pod_name":"istio-telemetry-678675478f-zkjmd"
+    },
+    "num_matches":11,
+    "message":"Application populated entries to error stream",
+    "_id":"ciLDD3AB_INOpMJ3pchN",
+    "name":"Application error"
+}

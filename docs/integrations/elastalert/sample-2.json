@@ -1,0 +1,36 @@
+{
+    "status":"active",
+    "_type":"flb_type",
+    "log":"gc 71094 @6096597.316s 0%: 0.21+4.3+0.011 ms clock, 1.7+0.86/6.4/12+0.094 ms cpu, 18->18->9 MB, 19 MB goal, 8 P\n",
+    "stream":"stderr",
+    "_index":"kubernetes_cluster-2020.02.04",
+    "num_hits":250,
+    "@timestamp":"2020-02-04T10:32:10.669Z",
+    "severity":"warning",
+    "time":"2020-02-04T10:32:10.66901804Z",
+    "kubernetes":{
+       "labels":{
+          "pod-template-hash":"8d8b6bdbd",
+          "app":"pilot",
+          "chart":"pilot",
+          "istio":"pilot",
+          "heritage":"Tiller",
+          "release":"istio"
+       },
+       "annotations":{
+          "sidecar_istio_io/inject":"false"
+       },
+       "host":"node4",
+       "docker_id":"bf731c0b9f1d27dbd01cb0748846f2ca4a874f2f4860fafba8bb180dd44f5501",
+       "container_hash":"3b566def0c704033355ca8c990457a54688521e9ed9f44fac34f2e59fff7fd5b",
+       "container_name":"discovery",
+       "namespace_name":"istio-system",
+       "pod_id":"61c13bf2-229b-4f6d-9fdf-9058cf2ee022",
+       "pod_name":"istio-pilot-8d8b6bdbd-2rq6n"
+    },
+    "num_matches":11,
+    "message":"Application populated entries to error stream",
+    "_id":"JCLBD3AB_INOpMJ36cfT",
+    "name":"Application error"
+}
+

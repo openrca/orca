@@ -1,0 +1,34 @@
+{
+    "status":"active",
+    "_type":"flb_type",
+    "log":"I0204 10:36:25.309062       1 trace.go:81] Trace[753493751]: \"Update /api/v1/namespaces/kube-system/endpoints/kube-scheduler\" (started: 2020-02-04 10:36:24.636498054 +0000 UTC m=+934425.790300740) (total time: 672.533999ms):\n",
+    "stream":"stderr",
+    "_index":"kubernetes_cluster-2020.02.04",
+    "num_hits":251,
+    "@timestamp":"2020-02-04T10:36:25.309Z",
+    "severity":"warning",
+    "time":"2020-02-04T10:36:25.309738031Z",
+    "kubernetes":{
+       "labels":{
+          "tier":"control-plane",
+          "component":"kube-apiserver"
+       },
+       "annotations":{
+          "kubernetes_io/config_hash":"868c9cdf8897d53af1651a8324ec32a1",
+          "kubernetes_io/config_source":"file",
+          "kubernetes_io/config_mirror":"868c9cdf8897d53af1651a8324ec32a1",
+          "kubernetes_io/config_seen":"2020-01-24T16:01:56.425539053+01:00"
+       },
+       "host":"node1",
+       "docker_id":"eee04d3190a8bf6e7797974cf48df38f779b371ce32e91a46edf2ffff6ae5f82",
+       "container_hash":"120c31707be05d6ff5bd05e56e95cac09cdb75e3b533b91fd2c6a2b771c19609",
+       "container_name":"kube-apiserver",
+       "namespace_name":"kube-system",
+       "pod_id":"6ecf75c4-414f-4717-9b59-cc14f3c630b3",
+       "pod_name":"kube-apiserver-node1"
+    },
+    "num_matches":6,
+    "message":"Application populated entries to error stream",
+    "_id":"iiLFD3AB_INOpMJ30cmo",
+    "name":"Application error"
+}
