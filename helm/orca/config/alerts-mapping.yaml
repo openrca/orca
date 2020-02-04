@@ -64,4 +64,11 @@ falco:
         properties:
           name: ka.resp.name
           namespace: ka.target.namespace
-
+elastalert:
+  mappings:
+    - name: "Application error"
+      source_mapping:
+        kind: pod
+        properties:
+          name: pod_name
+          namespace: namespace_name
