@@ -11,19 +11,19 @@ class AlertProbe(probe.Probe):
 
 class AlertExtractor(extractor.Extractor):
 
-    def extract_kind(self, entity):
+    def _extract_kind(self, entity):
         return 'es_alert'
 
-    def extract_name(self, entity):
+    def _extract_name(self, entity):
         return entity['name']
 
-    def extract_labels(self, entity):
+    def _extract_source_labels(self, entity):
         labels = entity['kubernetes'].copy()
         labels.pop('labels', None)
         labels.pop('annotations', None)
         return labels
 
-    def extract_properties(self, entity):
+    def _extract_properties(self, entity):
         properties = {}
         properties['status'] = 'active'
         properties['severity'] = entity['severity']

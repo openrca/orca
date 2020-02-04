@@ -12,10 +12,10 @@ class SecretProbe(probe.Probe):
 
 class SecretExtractor(extractor.Extractor):
 
-    def extract_kind(self, entity):
+    def _extract_kind(self, entity):
         return 'secret'
 
-    def extract_properties(self, entity):
+    def _extract_properties(self, entity):
         properties = {}
         properties['name'] = entity.metadata.name
         properties['namespace'] = entity.metadata.namespace

@@ -11,16 +11,16 @@ class AlertProbe(probe.Probe):
 
 class AlertExtractor(extractor.Extractor):
 
-    def extract_kind(self, entity):
+    def _extract_kind(self, entity):
         return 'prom_alert'
 
-    def extract_name(self, entity):
+    def _extract_name(self, entity):
         return entity['labels']['alertname']
 
-    def extract_labels(self, entity):
+    def _extract_source_labels(self, entity):
         return entity['labels']
 
-    def extract_properties(self, entity):
+    def _extract_properties(self, entity):
         properties = {}
         properties['status'] = entity['status']
         properties['severity'] = entity['labels']['severity']

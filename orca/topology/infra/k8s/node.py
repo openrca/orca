@@ -11,10 +11,10 @@ class NodeProbe(probe.Probe):
 
 class NodeExtractor(extractor.Extractor):
 
-    def extract_kind(self, entity):
+    def _extract_kind(self, entity):
         return 'node'
 
-    def extract_properties(self, entity):
+    def _extract_properties(self, entity):
         properties = {}
         properties['name'] = entity.metadata.name
         return properties

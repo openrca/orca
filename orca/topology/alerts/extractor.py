@@ -17,30 +17,30 @@ class Extractor(extractor.Extractor):
         self._source_mapper = source_mapper
 
     def extract(self, entity):
-        kind = self.extract_kind(entity)
-        name = self.extract_name(entity)
-        labels = self.extract_labels(entity)
+        kind = self._extract_kind(entity)
+        name = self._extract_name(entity)
+        labels = self._extract_source_labels(entity)
         source_mapping = self._source_mapper.map(name, labels)
         node_id = self._build_id(kind, name, source_mapping)
-        properties = self.extract_properties(entity)
+        properties = self._extract_properties(entity)
         properties['name'] = name
         properties['source_mapping'] = source_mapping
         return graph.Node(node_id, properties, kind)
 
     @abc.abstractmethod
-    def extract_kind(self, entity):
+    def _extract_kind(self, entity):
         """Extract kind from given entity object."""
 
     @abc.abstractmethod
-    def extract_name(self, entity):
+    def _extract_name(self, entity):
         """Extract name from given entity object."""
 
     @abc.abstractmethod
-    def extract_labels(self, entity):
+    def _extract_source_labels(self, entity):
         """Extract labels from given entity object."""
 
     @abc.abstractmethod
-    def extract_properties(self, entity):
+    def _extract_properties(self, entity):
         """Extract properties from given entity object."""
 
     def _build_id(self, kind, name, source_mapping):
@@ -60,12 +60,6 @@ class SourceMapper(object):
         self._mapping_key = mapping_key
         self.__mapping = None
 
-    @property
-    def _mapping(self):
-        if not self.__mapping:
-            self.__mapping = self._load_mapping()
-        return self.__mapping
-
     def map(self, name, labels):
         mapping = self._mapping.get(name)
         if not mapping:
@@ -80,17 +74,21 @@ class SourceMapper(object):
             properties[prop] = value
         return {'kind': kind, 'properties': properties}
 
+    @property
+    def _mapping(self):
+        if not self.__mapping:
+            self.__mapping = self._load_mapping()
+        return self.__mapping
+
     def _load_mapping(self):
         # TODO: Read mapping path from config
         mapping_path = "/etc/orca/alerts-mapping.yaml"
         mapping_spec = file_utils.load_yaml(mapping_path).get(self._mapping_key)
         if not mapping_spec:
             raise exceptions.MappingNotFound(key=self._mapping_key)
-
         blacklist_values = mapping_spec.get('blacklist_values')
         if not blacklist_values:
             blacklist_values = []
-
         mappings = mapping_spec['mappings']
         lookup = {}
         for mapping in mappings:
