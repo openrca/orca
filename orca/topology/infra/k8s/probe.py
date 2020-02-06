@@ -1,11 +1,11 @@
 from orca.common import logger
-from orca.k8s import client as k8s_client
+from orca.common.clients import k8s
 from orca.topology import probe
 
 log = logger.get_logger(__name__)
 
 
-class Probe(probe.Probe, k8s_client.EventHandler):
+class Probe(probe.Probe, k8s.EventHandler):
 
     def __init__(self, kind, extractor, graph, k8s_client):
         self._kind = kind

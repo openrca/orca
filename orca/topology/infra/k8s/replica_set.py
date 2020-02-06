@@ -1,4 +1,4 @@
-from orca.k8s import client as k8s
+from orca.common.clients import k8s
 from orca.topology.infra.k8s import extractor, linker, probe
 
 
