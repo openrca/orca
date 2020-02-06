@@ -7,7 +7,7 @@ class SecretProbe(probe.Probe):
     @staticmethod
     def create(graph, k8s_client):
         return SecretProbe('secret', SecretExtractor(), graph,
-                           k8s.ResourceProxy.get(k8s_client, 'secret'))
+                           k8s.ResourceProxyFactory.get(k8s_client, 'secret'))
 
 
 class SecretExtractor(extractor.Extractor):

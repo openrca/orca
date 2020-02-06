@@ -7,7 +7,7 @@ class ServiceProbe(probe.Probe):
     @staticmethod
     def create(graph, k8s_client):
         return ServiceProbe('service', ServiceExtractor(), graph,
-                            k8s.ResourceProxy.get(k8s_client, 'service'))
+                            k8s.ResourceProxyFactory.get(k8s_client, 'service'))
 
 
 class ServiceExtractor(extractor.Extractor):

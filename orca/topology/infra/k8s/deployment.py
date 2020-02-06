@@ -7,7 +7,7 @@ class DeploymentProbe(probe.Probe):
     @staticmethod
     def create(graph, k8s_client):
         return DeploymentProbe('deployment', DeploymentExtractor(), graph,
-                               k8s.ResourceProxy.get(k8s_client, 'deployment'))
+                               k8s.ResourceProxyFactory.get(k8s_client, 'deployment'))
 
 
 class DeploymentExtractor(extractor.Extractor):

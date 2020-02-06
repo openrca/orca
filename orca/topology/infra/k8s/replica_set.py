@@ -7,7 +7,7 @@ class ReplicaSetProbe(probe.Probe):
     @staticmethod
     def create(graph, k8s_client):
         return ReplicaSetProbe('replica_set', ReplicaSetExtractor(), graph,
-                               k8s.ResourceProxy.get(k8s_client, 'replica_set'))
+                               k8s.ResourceProxyFactory.get(k8s_client, 'replica_set'))
 
 
 class ReplicaSetExtractor(extractor.Extractor):

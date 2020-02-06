@@ -7,7 +7,7 @@ class PodProbe(probe.Probe):
 
     @staticmethod
     def create(graph, k8s_client):
-        return PodProbe('pod', PodExtractor(), graph, k8s.ResourceProxy.get(k8s_client, 'pod'))
+        return PodProbe('pod', PodExtractor(), graph, k8s.ResourceProxyFactory.get(k8s_client, 'pod'))
 
 
 class PodExtractor(extractor.Extractor):

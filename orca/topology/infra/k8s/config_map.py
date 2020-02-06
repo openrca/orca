@@ -7,7 +7,7 @@ class ConfigMapProbe(probe.Probe):
     @staticmethod
     def create(graph, k8s_client):
         return ConfigMapProbe('config_map', ConfigMapExtractor(), graph,
-                              k8s.ResourceProxy.get(k8s_client, 'config_map'))
+                              k8s.ResourceProxyFactory.get(k8s_client, 'config_map'))
 
 
 class ConfigMapExtractor(extractor.Extractor):

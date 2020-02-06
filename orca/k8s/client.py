@@ -20,17 +20,51 @@ class ResourceProxy(object):
         return self._list_fn().items
 
     def watch(self, handler):
-        for event in watch.Watch().stream(self._list_fn):
-            event_type = event['type']
-            event_obj = event['object']
-            if event_type == "ADDED":
-                handler.on_added(event_obj)
-            elif event_type == "MODIFIED":
-                handler.on_updated(event_obj)
-            elif event_type == "DELETED":
-                handler.on_deleted(event_obj)
+        for event in self._watch_resource():
+            evt_type = event['type']
+            evt_obj = event['object']
+            if evt_type == "ADDED":
+                handler.on_added(evt_obj)
+            elif evt_type == "MODIFIED":
+                handler.on_updated(evt_obj)
+            elif evt_type == "DELETED":
+                handler.on_deleted(evt_obj)
             else:
-                raise Exception("Unknown event type %s" % event_type)
+                raise Exception("Unknown event type %s" % evt_type)
+
+    def _watch_resource(self):
+        return watch.Watch().stream(self._list_fn)
+
+
+class CustomResourceProxy(ResourceProxy):
+
+    def __init__(self, list_fn, group, version, plural):
+        super().__init__(list_fn)
+        self._group = group
+        self._version = version
+        self._plural = plural
+
+    def _watch_resource(self):
+        return watch.Watch().stream(
+            self._list_fn, self._group, self._version, self._plural)
+
+
+class EventHandler(abc.ABC):
+
+    @abc.abstractmethod
+    def on_added(self, evt_obj):
+        """Triggered when a K8S resource is added."""
+
+    @abc.abstractmethod
+    def on_updated(self, evt_obj):
+        """Triggered when a K8S resource is updated."""
+
+    @abc.abstractmethod
+    def on_deleted(self, evt_obj):
+        """Triggered when a K8S resource is deleted."""
+
+
+class ResourceProxyFactory(object):
 
     @staticmethod
     def get(k8s_client, kind):
@@ -63,18 +97,3 @@ class ResourceProxy(object):
                 k8s_client.ExtensionsV1beta1Api().list_replica_set_for_all_namespaces)
         else:
             raise Exception("Unknown kind %s" % kind)
-
-
-class EventHandler(abc.ABC):
-
-    @abc.abstractmethod
-    def on_added(self, event_obj):
-        """Triggered when a K8S resource is added."""
-
-    @abc.abstractmethod
-    def on_updated(self, event_obj):
-        """Triggered when a K8S resource is updated."""
-
-    @abc.abstractmethod
-    def on_deleted(self, event_obj):
-        """Triggered when a K8S resource is deleted."""
