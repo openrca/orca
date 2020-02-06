@@ -19,7 +19,8 @@ class PodExtractor(extractor.Extractor):
         properties = {}
         properties['name'] = entity.metadata.name
         properties['namespace'] = entity.metadata.namespace
-        properties['labels'] = entity.metadata.labels.copy()
+        if entity.metadata.labels:
+            properties['labels'] = entity.metadata.labels.copy()
         properties['ip'] = entity.status.pod_ip
         properties['node'] = entity.spec.node_name
         properties['containers'] = self._extract_containers(entity)
