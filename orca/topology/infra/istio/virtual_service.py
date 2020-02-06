@@ -1,4 +1,3 @@
-from orca.common import str_utils
 from orca.common.clients import istio
 from orca.topology.infra.k8s import extractor, probe
 

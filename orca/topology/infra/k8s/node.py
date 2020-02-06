@@ -6,7 +6,8 @@ class NodeProbe(probe.Probe):
 
     @staticmethod
     def create(graph, k8s_client):
-        return NodeProbe('node', NodeExtractor(), graph, k8s.ResourceProxyFactory.get(k8s_client, 'node'))
+        return NodeProbe(
+            'node', NodeExtractor(), graph, k8s.ResourceProxyFactory.get(k8s_client, 'node'))
 
 
 class NodeExtractor(extractor.Extractor):

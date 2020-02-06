@@ -25,7 +25,7 @@ class Manager(cotyledon.ServiceManager):
         return Graph(graph_client)
 
     def _add_k8s_probes(self, graph):
-        k8s_client = k8s.ClientFactory.get_client()
+        k8s_client = k8s.ClientFactory.get()
 
         linker_dispatcher = linker.Dispatcher()
         for k8s_linker in k8s_probe.LINKERS:

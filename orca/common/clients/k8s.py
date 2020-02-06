@@ -7,7 +7,7 @@ from kubernetes import client, config, watch
 class ClientFactory(object):
 
     @staticmethod
-    def get_client():
+    def get():
         config.load_incluster_config()
         return client
 
@@ -31,7 +31,7 @@ class ResourceProxy(object):
             elif evt_type == "DELETED":
                 handler.on_deleted(evt_obj)
             else:
-                raise Exception("Unknown event type %s" % evt_type)
+                raise Exception("Unknown event type '%s': %s" % (evt_type, evt_obj))
 
     def _watch_resource(self):
         return watch.Watch().stream(self._list_fn)
@@ -49,14 +49,13 @@ class CustomResourceProxy(ResourceProxy):
         items = self._list_fn(self._group, self._version, self._plural)['items']
         return [self._extract_item(item) for item in items]
 
-    def _extract_item(self, item):
-        return dictlib.Dict(item)
-
     def _watch_resource(self):
-        for event in watch.Watch().stream(
-            self._list_fn, self._group, self._version, self._plural):
+        for event in watch.Watch().stream(self._list_fn, self._group, self._version, self._plural):
             event['object'] = self._extract_item(event.pop('object'))
             yield event
+
+    def _extract_item(self, item):
+        return dictlib.Dict(item)
 
 
 class EventHandler(abc.ABC):
