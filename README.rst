@@ -9,15 +9,16 @@ OpenRCA
 
 .. raw:: html
 
-    <h1 align="center">
+    <h2 align="center">
         <img src="docs/images/orca-logo.png" alt="OpenRCA" height="200px">
     <br>
     Automated Root Cause Analysis for Kubernetes
-    </h1>
+    </h2>
 
 **Objectives:**
 
 - Holistic insight into application infrastructure (infra graph)
+- Integration hub for telemetry projects (Prometheus, Elasticsearch, Falco)
 - Time-based infrastructure analysis
 - Automated diagnostic workflows (framework, workflow marketplace)
 - ML-supported root cause inference
