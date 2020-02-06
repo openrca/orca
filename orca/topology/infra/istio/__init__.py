@@ -6,3 +6,7 @@ PROBES = [
     destination_rule.DestinationRuleProbe,
     gateway.GatewayProbe
 ]
+
+LINKERS = [
+    virtual_service.VirtualServiceToGatewayLinker,
+]

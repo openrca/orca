@@ -31,6 +31,9 @@ class Manager(cotyledon.ServiceManager):
         for k8s_linker in k8s_probe.LINKERS:
             linker_dispatcher.add_linker(k8s_linker.create(graph))
 
+        for istio_linker in istio_probe.LINKERS:
+            linker_dispatcher.add_linker(istio_linker.create(graph))
+
         graph.add_listener(linker_dispatcher)
 
         for probe_klass in k8s_probe.PROBES:
