@@ -46,18 +46,18 @@ class Linker(abc.ABC):
         self._matcher = matcher
 
     def link(self, node):
-        old_links = self._build_link_lookup(self._get_old_links(node))
+        current_links = self._build_link_lookup(self._get_current_links(node))
         new_links = self._build_link_lookup(self._get_new_links(node))
 
-        old_links_ids = set(old_links.keys())
+        current_links_ids = set(current_links.keys())
         new_links_ids = set(new_links.keys())
 
-        links_to_delete_ids = old_links_ids.difference(new_links_ids)
-        links_to_update_ids = old_links_ids.difference(links_to_delete_ids)
-        links_to_create_ids = new_links_ids.difference(old_links_ids)
+        links_to_delete_ids = current_links_ids.difference(new_links_ids)
+        links_to_update_ids = current_links_ids.difference(links_to_delete_ids)
+        links_to_create_ids = new_links_ids.difference(current_links_ids)
 
         for link_id in links_to_delete_ids:
-            self._graph.delete_link(old_links[link_id])
+            self._graph.delete_link(current_links[link_id])
 
         for link_id in links_to_update_ids:
             self._graph.update_link(new_links[link_id])
@@ -65,7 +65,7 @@ class Linker(abc.ABC):
         for link_id in links_to_create_ids:
             self._graph.add_link(new_links[link_id])
 
-    def _get_old_links(self, node):
+    def _get_current_links(self, node):
         target_kind = self._get_target_kind(node)
         return self._graph.get_node_links(node, kind=target_kind)
 

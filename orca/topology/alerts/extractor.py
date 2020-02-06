@@ -50,7 +50,7 @@ class Extractor(extractor.Extractor):
             source_properties = source_mapping['properties']
             for key in sorted(source_properties.keys()):
                 id_parts.append(source_properties[key])
-        node_id = "-".join(id_parts).replace(" ", "-")
+        node_id = "-".join(id_parts).replace(" ", "-").lower()
         return node_id
 
 
