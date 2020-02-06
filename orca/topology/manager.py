@@ -8,6 +8,7 @@ from orca.topology.alerts.elastalert import alert as prom_alert
 from orca.topology.alerts.falco import alert as falco_alert
 from orca.topology.alerts.prometheus import alert as es_alert
 from orca.topology.infra import k8s as k8s_probe
+from orca.topology.infra import istio as istio_probe
 
 
 class Manager(cotyledon.ServiceManager):
@@ -33,6 +34,10 @@ class Manager(cotyledon.ServiceManager):
         graph.add_listener(linker_dispatcher)
 
         for probe_klass in k8s_probe.PROBES:
+            probe_inst = probe_klass.create(graph, k8s_client)
+            self.add(probe.ProbeService, workers=1, args=(probe_inst,))
+
+        for probe_klass in istio_probe.PROBES:
             probe_inst = probe_klass.create(graph, k8s_client)
             self.add(probe.ProbeService, workers=1, args=(probe_inst,))
 

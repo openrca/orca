@@ -1,5 +1,6 @@
 import abc
 
+import addict as dictlib
 from kubernetes import client, config, watch
 
 
@@ -44,9 +45,18 @@ class CustomResourceProxy(ResourceProxy):
         self._version = version
         self._plural = plural
 
+    def get_all(self):
+        items = self._list_fn(self._group, self._version, self._plural)['items']
+        return [self._extract_item(item) for item in items]
+
+    def _extract_item(self, item):
+        return dictlib.Dict(item)
+
     def _watch_resource(self):
-        return watch.Watch().stream(
-            self._list_fn, self._group, self._version, self._plural)
+        for event in watch.Watch().stream(
+            self._list_fn, self._group, self._version, self._plural):
+            event['object'] = self._extract_item(event.pop('object'))
+            yield event
 
 
 class EventHandler(abc.ABC):
