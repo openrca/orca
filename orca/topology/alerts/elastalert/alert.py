@@ -2,13 +2,6 @@ from orca.common import str_utils
 from orca.topology.alerts import extractor, probe
 
 
-class AlertProbe(probe.Probe):
-
-    @staticmethod
-    def create(graph):
-        return AlertProbe('es_alert', graph)
-
-
 class AlertHandler(probe.EntityHandler):
 
     @staticmethod

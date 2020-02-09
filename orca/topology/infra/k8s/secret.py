@@ -1,16 +1,6 @@
-from orca.common.clients import k8s
 from orca.topology import linker
 from orca.topology.infra.k8s import extractor
 from orca.topology.infra.k8s import linker as k8s_linker
-from orca.topology.infra.k8s import probe
-
-
-class SecretProbe(probe.Probe):
-
-    @staticmethod
-    def create(graph, k8s_client):
-        return SecretProbe('secret', SecretExtractor(), graph,
-                           k8s.ResourceProxyFactory.get(k8s_client, 'secret'))
 
 
 class SecretExtractor(extractor.Extractor):
@@ -23,13 +13,6 @@ class SecretExtractor(extractor.Extractor):
         properties['name'] = entity.metadata.name
         properties['namespace'] = entity.metadata.namespace
         return properties
-
-
-class SecretToPodLinker(linker.Linker):
-
-    @staticmethod
-    def create(graph):
-        return SecretToPodLinker('secret', 'pod', graph, SecretToPodMatcher())
 
 
 class SecretToPodMatcher(linker.Matcher):

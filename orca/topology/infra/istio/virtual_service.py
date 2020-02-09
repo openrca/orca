@@ -1,18 +1,8 @@
 import copy
 
-from orca.common.clients import istio
 from orca.topology import linker
 from orca.topology.infra.istio import linker as istio_linker
-from orca.topology.infra.k8s import extractor, probe
-
-
-class VirtualServiceProbe(probe.Probe):
-
-    @staticmethod
-    def create(graph, k8s_client):
-        return VirtualServiceProbe(
-            'virtual_service', VirtualServiceExtractor(), graph,
-            istio.ResourceProxyFactory.get(k8s_client, 'virtual_service'))
+from orca.topology.infra.k8s import extractor
 
 
 class VirtualServiceExtractor(extractor.Extractor):
@@ -32,14 +22,6 @@ class VirtualServiceExtractor(extractor.Extractor):
         return properties
 
 
-class VirtualServiceToGatewayLinker(linker.Linker):
-
-    @staticmethod
-    def create(graph):
-        return VirtualServiceToGatewayLinker(
-            'virtual_service', 'gateway', graph, VirtualServiceToGatewayMatcher())
-
-
 class VirtualServiceToGatewayMatcher(linker.Matcher):
 
     def are_linked(self, virtual_service, gateway):
@@ -47,14 +29,6 @@ class VirtualServiceToGatewayMatcher(linker.Matcher):
 
     def _match_gateway(self, virtual_service, gateway):
         return gateway.properties.name in virtual_service.properties.gateways
-
-
-class VirtualServiceToServiceLinker(linker.Linker):
-
-    @staticmethod
-    def create(graph):
-        return VirtualServiceToServiceLinker(
-            'virtual_service', 'service', graph, VirtualServiceToServiceMatcher())
 
 
 class VirtualServiceToServiceMatcher(linker.Matcher):

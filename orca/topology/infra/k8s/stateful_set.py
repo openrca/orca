@@ -1,13 +1,4 @@
-from orca.common.clients import k8s
-from orca.topology.infra.k8s import extractor, probe
-
-
-class StatefulSetProbe(probe.Probe):
-
-    @staticmethod
-    def create(graph, k8s_client):
-        return StatefulSetProbe('stateful_set', StatefulSetExtractor(), graph,
-                                k8s.ResourceProxyFactory.get(k8s_client, 'stateful_set'))
+from orca.topology.infra.k8s import extractor
 
 
 class StatefulSetExtractor(extractor.Extractor):

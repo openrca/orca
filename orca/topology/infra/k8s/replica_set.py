@@ -1,16 +1,6 @@
-from orca.common.clients import k8s
 from orca.topology import linker
 from orca.topology.infra.k8s import extractor
 from orca.topology.infra.k8s import linker as k8s_linker
-from orca.topology.infra.k8s import probe
-
-
-class ReplicaSetProbe(probe.Probe):
-
-    @staticmethod
-    def create(graph, k8s_client):
-        return ReplicaSetProbe('replica_set', ReplicaSetExtractor(), graph,
-                               k8s.ResourceProxyFactory.get(k8s_client, 'replica_set'))
 
 
 class ReplicaSetExtractor(extractor.Extractor):
@@ -26,14 +16,6 @@ class ReplicaSetExtractor(extractor.Extractor):
         properties['replicas'] = entity.spec.replicas
         properties['selector'] = entity.spec.selector.match_labels
         return properties
-
-
-class ReplicaSetToDeploymentLinker(linker.Linker):
-
-    @staticmethod
-    def create(graph):
-        return ReplicaSetToDeploymentLinker('replica_set', 'deployment', graph,
-                                            ReplicaSetToDeploymentMatcher())
 
 
 class ReplicaSetToDeploymentMatcher(linker.Matcher):

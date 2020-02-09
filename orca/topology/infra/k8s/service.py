@@ -1,13 +1,4 @@
-from orca.common.clients import k8s
-from orca.topology.infra.k8s import extractor, probe
-
-
-class ServiceProbe(probe.Probe):
-
-    @staticmethod
-    def create(graph, k8s_client):
-        return ServiceProbe('service', ServiceExtractor(), graph,
-                            k8s.ResourceProxyFactory.get(k8s_client, 'service'))
+from orca.topology.infra.k8s import extractor
 
 
 class ServiceExtractor(extractor.Extractor):

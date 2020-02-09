@@ -1,16 +1,6 @@
-from orca.common.clients import k8s
 from orca.topology import linker
 from orca.topology.infra.k8s import extractor
 from orca.topology.infra.k8s import linker as k8s_linker
-from orca.topology.infra.k8s import probe
-
-
-class ConfigMapProbe(probe.Probe):
-
-    @staticmethod
-    def create(graph, k8s_client):
-        return ConfigMapProbe('config_map', ConfigMapExtractor(), graph,
-                              k8s.ResourceProxyFactory.get(k8s_client, 'config_map'))
 
 
 class ConfigMapExtractor(extractor.Extractor):
@@ -23,13 +13,6 @@ class ConfigMapExtractor(extractor.Extractor):
         properties['name'] = entity.metadata.name
         properties['namespace'] = entity.metadata.namespace
         return properties
-
-
-class ConfigMapToPodLinker(linker.Linker):
-
-    @staticmethod
-    def create(graph):
-        return ConfigMapToPodLinker('config_map', 'pod', graph, ConfigMapToPodMatcher())
 
 
 class ConfigMapToPodMatcher(linker.Matcher):

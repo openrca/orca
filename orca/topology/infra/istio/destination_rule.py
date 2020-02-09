@@ -1,16 +1,6 @@
-from orca.common.clients import istio
 from orca.topology import linker
 from orca.topology.infra.istio import linker as istio_linker
-from orca.topology.infra.k8s import extractor, probe
-
-
-class DestinationRuleProbe(probe.Probe):
-
-    @staticmethod
-    def create(graph, k8s_client):
-        return DestinationRuleProbe(
-            'destination_rule', DestinationRuleExtractor(), graph,
-            istio.ResourceProxyFactory.get(k8s_client, 'destination_rule'))
+from orca.topology.infra.k8s import extractor
 
 
 class DestinationRuleExtractor(extractor.Extractor):
@@ -24,14 +14,6 @@ class DestinationRuleExtractor(extractor.Extractor):
         properties['namespace'] = entity.metadata.namespace
         properties['host'] = entity.spec.host
         return properties
-
-
-class DestinationRuleToServiceLinker(linker.Linker):
-
-    @staticmethod
-    def create(graph):
-        return DestinationRuleToServiceLinker(
-            'destination_rule', 'service', graph, DestinationRuleToServiceMatcher())
 
 
 class DestinationRuleToServiceMatcher(linker.Matcher):

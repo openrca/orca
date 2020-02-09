@@ -1,17 +1,7 @@
 from orca.common import str_utils
-from orca.common.clients import k8s
 from orca.topology import linker
 from orca.topology.infra.k8s import extractor
 from orca.topology.infra.k8s import linker as k8s_linker
-from orca.topology.infra.k8s import probe
-
-
-class PodProbe(probe.Probe):
-
-    @staticmethod
-    def create(graph, k8s_client):
-        return PodProbe(
-            'pod', PodExtractor(), graph, k8s.ResourceProxyFactory.get(k8s_client, 'pod'))
 
 
 class PodExtractor(extractor.Extractor):
@@ -74,26 +64,12 @@ class PodExtractor(extractor.Extractor):
         return volumes
 
 
-class PodToServiceLinker(linker.Linker):
-
-    @staticmethod
-    def create(graph):
-        return PodToServiceLinker('pod', 'service', graph, PodToServiceMatcher())
-
-
 class PodToServiceMatcher(linker.Matcher):
 
     def are_linked(self, pod, service):
         match_namespace = k8s_linker.match_namespace(pod, service)
         match_selector = k8s_linker.match_selector(pod, service.properties.selector)
         return match_namespace and match_selector
-
-
-class PodToReplicaSetLinker(linker.Linker):
-
-    @staticmethod
-    def create(graph):
-        return PodToReplicaSetLinker('pod', 'replica_set', graph, PodToReplicaSetMatcher())
 
 
 class PodToReplicaSetMatcher(linker.Matcher):
@@ -104,13 +80,6 @@ class PodToReplicaSetMatcher(linker.Matcher):
         return match_namespace and match_selector
 
 
-class PodToStatefulSetLinker(linker.Linker):
-
-    @staticmethod
-    def create(graph):
-        return PodToStatefulSetLinker('pod', 'stateful_set', graph, PodToStatefulSetMatcher())
-
-
 class PodToStatefulSetMatcher(linker.Matcher):
 
     def are_linked(self, pod, stateful_set):
@@ -119,26 +88,12 @@ class PodToStatefulSetMatcher(linker.Matcher):
         return match_namespace and match_selector
 
 
-class PodToDaemonSetLinker(linker.Linker):
-
-    @staticmethod
-    def create(graph):
-        return PodToDaemonSetLinker('pod', 'daemon_set', graph, PodToDaemonSetMatcher())
-
-
 class PodToDaemonSetMatcher(linker.Matcher):
 
     def are_linked(self, pod, daemon_set):
         match_namespace = k8s_linker.match_namespace(pod, daemon_set)
         match_selector = k8s_linker.match_selector(pod, daemon_set.properties.selector)
         return match_namespace and match_selector
-
-
-class PodToNodeLinker(linker.Linker):
-
-    @staticmethod
-    def create(graph):
-        return PodToReplicaSetLinker('pod', 'node', graph, PodToNodeMatcher())
 
 
 class PodToNodeMatcher(linker.Matcher):

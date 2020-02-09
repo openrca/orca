@@ -12,7 +12,3 @@ class ClusterProbe(probe.Probe):
         node_id = graph.Graph.generate_id("cluster")
         node = graph.Graph.create_node(node_id, "cluster", {'name': "cluster"})
         self._graph.add_node(node)
-
-    @staticmethod
-    def create(graph, k8s_client):
-        return ClusterProbe('cluster', graph)

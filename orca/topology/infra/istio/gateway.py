@@ -1,14 +1,4 @@
-from orca.common.clients import istio
-from orca.topology.infra.k8s import extractor, probe
-
-
-class GatewayProbe(probe.Probe):
-
-    @staticmethod
-    def create(graph, k8s_client):
-        return GatewayProbe(
-            'gateway', GatewayExtractor(), graph,
-            istio.ResourceProxyFactory.get(k8s_client, 'gateway'))
+from orca.topology.infra.k8s import extractor
 
 
 class GatewayExtractor(extractor.Extractor):

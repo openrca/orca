@@ -1,13 +1,4 @@
-from orca.common.clients import k8s
-from orca.topology.infra.k8s import extractor, probe
-
-
-class DaemonSetProbe(probe.Probe):
-
-    @staticmethod
-    def create(graph, k8s_client):
-        return DaemonSetProbe('daemon_set', DaemonSetExtractor(), graph,
-                              k8s.ResourceProxyFactory.get(k8s_client, 'daemon_set'))
+from orca.topology.infra.k8s import extractor
 
 
 class DaemonSetExtractor(extractor.Extractor):
