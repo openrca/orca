@@ -15,12 +15,13 @@ OpenRCA
     Automated Root Cause Analysis for Kubernetes
     </h2>
 
-**Objectives:**
+Objectives
+----------
 
 - Holistic insight into application infrastructure (infra graph)
 - Integration hub for telemetry projects (Prometheus, Elasticsearch, Falco)
 - Time-based infrastructure analysis
-- Automated diagnostic workflows (framework, workflow marketplace)
+- Automated diagnostic workflows for Kubernetes infra and workloads
 - ML-supported root cause inference
 - Policy-driven RCA instrumentation
 - Novel approach for site reliability testing and chaos engineering
@@ -63,4 +64,5 @@ Using Telepresence:
             --rm \
             -it \
             -v=/tmp/telepresence/var/run/secrets:/var/run/secrets \
+            -v=/tmp/telepresence/etc/orca:/etc/orca \
             -v $(pwd):/app
