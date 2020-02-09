@@ -1,5 +1,8 @@
 from orca.common.clients import k8s
-from orca.topology.infra.k8s import extractor, linker, probe
+from orca.topology import linker
+from orca.topology.infra.k8s import extractor
+from orca.topology.infra.k8s import linker as k8s_linker
+from orca.topology.infra.k8s import probe
 
 
 class SecretProbe(probe.Probe):
@@ -32,7 +35,7 @@ class SecretToPodLinker(linker.Linker):
 class SecretToPodMatcher(linker.Matcher):
 
     def are_linked(self, secret, pod):
-        match_namespace = self._match_namespace(secret, pod)
+        match_namespace = k8s_linker.match_namespace(secret, pod)
         match_env = self._match_env(secret, pod)
         match_volume = self._match_volume(secret, pod)
         return match_namespace and (match_env or match_volume)

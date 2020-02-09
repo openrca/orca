@@ -1,5 +1,8 @@
 from orca.common.clients import k8s
-from orca.topology.infra.k8s import extractor, linker, probe
+from orca.topology import linker
+from orca.topology.infra.k8s import extractor
+from orca.topology.infra.k8s import linker as k8s_linker
+from orca.topology.infra.k8s import probe
 
 
 class ReplicaSetProbe(probe.Probe):
@@ -36,6 +39,6 @@ class ReplicaSetToDeploymentLinker(linker.Linker):
 class ReplicaSetToDeploymentMatcher(linker.Matcher):
 
     def are_linked(self, replica_set, deployment):
-        match_namespace = self._match_namespace(replica_set, deployment)
-        match_selector = self._match_selector(replica_set, deployment.properties.selector)
+        match_namespace = k8s_linker.match_namespace(replica_set, deployment)
+        match_selector = k8s_linker.match_selector(replica_set, deployment.properties.selector)
         return match_namespace and match_selector

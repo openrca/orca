@@ -1,5 +1,8 @@
 from orca.common.clients import k8s
-from orca.topology.infra.k8s import extractor, linker, probe
+from orca.topology import linker
+from orca.topology.infra.k8s import extractor
+from orca.topology.infra.k8s import linker as k8s_linker
+from orca.topology.infra.k8s import probe
 
 
 class ConfigMapProbe(probe.Probe):
@@ -32,7 +35,7 @@ class ConfigMapToPodLinker(linker.Linker):
 class ConfigMapToPodMatcher(linker.Matcher):
 
     def are_linked(self, config_map, pod):
-        match_namespace = self._match_namespace(config_map, pod)
+        match_namespace = k8s_linker.match_namespace(config_map, pod)
         match_env = self._match_env(config_map, pod)
         match_volume = self._match_volume(config_map, pod)
         return match_namespace and (match_env or match_volume)

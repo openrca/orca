@@ -1,5 +1,7 @@
 from orca.common.clients import k8s
-from orca.topology.infra.k8s import extractor, linker, probe
+from orca.topology import linker
+from orca.topology.infra.k8s import extractor
+from orca.topology.infra.k8s import probe
 
 
 class NodeProbe(probe.Probe):

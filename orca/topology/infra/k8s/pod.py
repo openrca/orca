@@ -1,6 +1,9 @@
 from orca.common import str_utils
 from orca.common.clients import k8s
-from orca.topology.infra.k8s import extractor, linker, probe
+from orca.topology import linker
+from orca.topology.infra.k8s import extractor
+from orca.topology.infra.k8s import linker as k8s_linker
+from orca.topology.infra.k8s import probe
 
 
 class PodProbe(probe.Probe):
@@ -81,8 +84,8 @@ class PodToServiceLinker(linker.Linker):
 class PodToServiceMatcher(linker.Matcher):
 
     def are_linked(self, pod, service):
-        match_namespace = self._match_namespace(pod, service)
-        match_selector = self._match_selector(pod, service.properties.selector)
+        match_namespace = k8s_linker.match_namespace(pod, service)
+        match_selector = k8s_linker.match_selector(pod, service.properties.selector)
         return match_namespace and match_selector
 
 
@@ -96,8 +99,8 @@ class PodToReplicaSetLinker(linker.Linker):
 class PodToReplicaSetMatcher(linker.Matcher):
 
     def are_linked(self, pod, replica_set):
-        match_namespace = self._match_namespace(pod, replica_set)
-        match_selector = self._match_selector(pod, replica_set.properties.selector)
+        match_namespace = k8s_linker.match_namespace(pod, replica_set)
+        match_selector = k8s_linker.match_selector(pod, replica_set.properties.selector)
         return match_namespace and match_selector
 
 
@@ -111,8 +114,8 @@ class PodToStatefulSetLinker(linker.Linker):
 class PodToStatefulSetMatcher(linker.Matcher):
 
     def are_linked(self, pod, stateful_set):
-        match_namespace = self._match_namespace(pod, stateful_set)
-        match_selector = self._match_selector(pod, stateful_set.properties.selector)
+        match_namespace = k8s_linker.match_namespace(pod, stateful_set)
+        match_selector = k8s_linker.match_selector(pod, stateful_set.properties.selector)
         return match_namespace and match_selector
 
 
@@ -126,8 +129,8 @@ class PodToDaemonSetLinker(linker.Linker):
 class PodToDaemonSetMatcher(linker.Matcher):
 
     def are_linked(self, pod, daemon_set):
-        match_namespace = self._match_namespace(pod, daemon_set)
-        match_selector = self._match_selector(pod, daemon_set.properties.selector)
+        match_namespace = k8s_linker.match_namespace(pod, daemon_set)
+        match_selector = k8s_linker.match_selector(pod, daemon_set.properties.selector)
         return match_namespace and match_selector
 
 
