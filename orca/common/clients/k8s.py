@@ -22,16 +22,15 @@ class ResourceProxy(object):
 
     def watch(self, handler):
         for event in self._watch_resource():
-            evt_type = event['type']
-            evt_obj = event['object']
-            if evt_type == "ADDED":
-                handler.on_added(evt_obj)
-            elif evt_type == "MODIFIED":
-                handler.on_updated(evt_obj)
-            elif evt_type == "DELETED":
-                handler.on_deleted(evt_obj)
+            event_type, event_object = event['type'], event['object']
+            if event_type == "ADDED":
+                handler.on_added(event_object)
+            elif event_type == "MODIFIED":
+                handler.on_updated(event_object)
+            elif event_type == "DELETED":
+                handler.on_deleted(event_object)
             else:
-                raise Exception("Unknown event type '%s': %s" % (evt_type, evt_obj))
+                raise Exception("Unknown event type '%s': %s" % (event_type, event_object))
 
     def _watch_resource(self):
         return watch.Watch().stream(self._list_fn)
@@ -61,15 +60,15 @@ class CustomResourceProxy(ResourceProxy):
 class EventHandler(abc.ABC):
 
     @abc.abstractmethod
-    def on_added(self, evt_obj):
+    def on_added(self, event_object):
         """Triggered when a K8S resource is added."""
 
     @abc.abstractmethod
-    def on_updated(self, evt_obj):
+    def on_updated(self, event_object):
         """Triggered when a K8S resource is updated."""
 
     @abc.abstractmethod
-    def on_deleted(self, evt_obj):
+    def on_deleted(self, event_object):
         """Triggered when a K8S resource is deleted."""
 
 
