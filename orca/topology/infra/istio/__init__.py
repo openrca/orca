@@ -9,4 +9,5 @@ PROBES = [
 
 LINKERS = [
     virtual_service.VirtualServiceToGatewayLinker,
+    virtual_service.VirtualServiceToServiceLinker
 ]
