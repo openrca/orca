@@ -1,3 +1,4 @@
+import copy
 import json
 
 import neo4j as graph_lib
@@ -47,6 +48,7 @@ class Neo4jDriver(driver.Driver):
 
     def add_node(self, node):
         properties = {'properties': json.dumps(node.properties)}
+        properties.update(self._flatten_properties(node.properties))
         node_pattern = self._build_node_pattern(node.id, node.kind, properties)
         query = "CREATE %s" % (node_pattern)
         self._run_query(query)
@@ -188,3 +190,11 @@ class Neo4jDriver(driver.Driver):
             if matched:
                 filtered_nodes.append(node)
         return filtered_nodes
+
+    def _flatten_properties(self, properties):
+        flat_properties = copy.deepcopy(properties)
+        for key in flat_properties:
+            value = flat_properties[key]
+            if isinstance(value, dict) or isinstance(value, list):
+                flat_properties[key] = None
+        return flat_properties
