@@ -6,3 +6,4 @@ kubernetes
 neo4j
 addict
 pyyaml
+requests
