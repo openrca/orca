@@ -12,8 +12,12 @@ class KialiClient(object):
     def __init__(self, connector):
         self._connector = connector
 
-    def graph_namespace(self, namespace):
-        return self._connector.get("/namespaces/graph", namespaces=namespace, graphType='service')
+    def list_namespaces(self):
+        return self._connector.get("/namespaces")
+
+    def graph_namespaces(self, namespaces):
+        namespace_list = ','.join(namespaces)
+        return self._connector.get("/namespaces/graph", namespaces=namespace_list, graphType='service')
 
     @staticmethod
     def get(url, username=None, password=None):
