@@ -1,0 +1,176 @@
+{
+    "timestamp": 1581448332,
+    "duration": 300,
+    "graphType": "service",
+    "elements": {
+      "nodes": [
+        {
+          "data": {
+            "id": "365870af56b162728ed41367dc3a2d71",
+            "nodeType": "service",
+            "namespace": "istio-demo",
+            "app": "details",
+            "service": "details",
+            "destServices": [
+              {
+                "namespace": "istio-demo",
+                "name": "details"
+              }
+            ],
+            "traffic": [
+              {
+                "protocol": "http",
+                "rates": {
+                  "httpIn": "0.96",
+                  "httpOut": "0.96"
+                }
+              }
+            ],
+            "hasVS": true
+          }
+        },
+        {
+          "data": {
+            "id": "f6d3f414efd4b238ad7a3bf3809f3721",
+            "nodeType": "service",
+            "namespace": "istio-demo",
+            "app": "productpage",
+            "service": "productpage",
+            "destServices": [
+              {
+                "namespace": "istio-demo",
+                "name": "productpage"
+              }
+            ],
+            "traffic": [
+              {
+                "protocol": "http",
+                "rates": {
+                  "httpIn": "0.96",
+                  "httpOut": "0.96"
+                }
+              }
+            ],
+            "hasVS": true
+          }
+        },
+        {
+          "data": {
+            "id": "bd01878352144ee73b281914b3a94a73",
+            "nodeType": "service",
+            "namespace": "istio-demo",
+            "app": "ratings",
+            "service": "ratings",
+            "hasVS": true,
+            "isUnused": true
+          }
+        },
+        {
+          "data": {
+            "id": "7ca798e18fde753b4e2336b02153bb6e",
+            "nodeType": "service",
+            "namespace": "istio-demo",
+            "app": "reviews",
+            "service": "reviews",
+            "destServices": [
+              {
+                "namespace": "istio-demo",
+                "name": "reviews"
+              }
+            ],
+            "traffic": [
+              {
+                "protocol": "http",
+                "rates": {
+                  "httpIn": "0.96",
+                  "httpOut": "0.96"
+                }
+              }
+            ],
+            "hasVS": true
+          }
+        },
+        {
+          "data": {
+            "id": "7520241c35a6eb7c61081015d83607b9",
+            "nodeType": "workload",
+            "namespace": "istio-system",
+            "workload": "istio-ingressgateway",
+            "app": "istio-ingressgateway",
+            "traffic": [
+              {
+                "protocol": "http",
+                "rates": {
+                  "httpOut": "0.96"
+                }
+              }
+            ],
+            "isOutside": true,
+            "isRoot": true
+          }
+        }
+      ],
+      "edges": [
+        {
+          "data": {
+            "id": "98b89b2da4ab2a0e87388cceaa86b3eb",
+            "source": "7520241c35a6eb7c61081015d83607b9",
+            "target": "f6d3f414efd4b238ad7a3bf3809f3721",
+            "traffic": {
+              "protocol": "http",
+              "rates": {
+                "http": "0.96",
+                "httpPercentReq": "100.0"
+              },
+              "responses": {
+                "200": {
+                  "-": "100.0"
+                }
+              }
+            },
+            "isMTLS": "0"
+          }
+        },
+        {
+          "data": {
+            "id": "2e607cd90284ffd0e18f44b3b5e38071",
+            "source": "f6d3f414efd4b238ad7a3bf3809f3721",
+            "target": "365870af56b162728ed41367dc3a2d71",
+            "traffic": {
+              "protocol": "http",
+              "rates": {
+                "http": "0.96",
+                "httpPercentReq": "50.0"
+              },
+              "responses": {
+                "200": {
+                  "-": "100.0"
+                }
+              }
+            },
+            "isMTLS": "0"
+          }
+        },
+        {
+          "data": {
+            "id": "a4e765f6806860f95f8f220ef3a0f10e",
+            "source": "f6d3f414efd4b238ad7a3bf3809f3721",
+            "target": "7ca798e18fde753b4e2336b02153bb6e",
+            "traffic": {
+              "protocol": "http",
+              "rates": {
+                "http": "0.96",
+                "httpPercentReq": "50.0"
+              },
+              "responses": {
+                "200": {
+                  "-": "100.0"
+                }
+              }
+            },
+            "isMTLS": "0"
+          }
+        }
+      ]
+    }
+  }
