@@ -1,4 +1,4 @@
-from orca.common.clients import k8s
+from orca.common.clients.k8s import client as k8s
 
 
 class ResourceProxyFactory(object):

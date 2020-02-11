@@ -1,4 +1,4 @@
-from orca.common.clients import k8s
+from orca.common.clients.k8s import client as k8s
 from orca.topology import linker
 from orca.topology.infra.k8s import (cluster, config_map, daemon_set,
                                      deployment, node, pod, probe, replica_set,
