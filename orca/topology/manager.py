@@ -3,9 +3,9 @@ import cotyledon
 from orca.graph import drivers as graph_drivers
 from orca.graph.graph import Graph
 from orca.topology import linker, probe
-from orca.topology.alerts.elastalert import manager as prom
+from orca.topology.alerts.elastalert import manager as es
 from orca.topology.alerts.falco import manager as falco
-from orca.topology.alerts.prometheus import manager as es
+from orca.topology.alerts.prometheus import manager as prom
 from orca.topology.infra.istio import manager as istio
 from orca.topology.infra.k8s import manager as k8s
 from orca.topology.infra.kiali import manager as kiali
