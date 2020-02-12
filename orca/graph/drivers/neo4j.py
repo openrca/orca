@@ -93,19 +93,28 @@ class Neo4jDriver(driver.Driver):
     def add_link(self, link):
         source_node = link.source
         target_node = link.target
+        properties = {'properties': json.dumps(link.properties)}
+        properties.update(self._flatten_properties(link.properties))
         source_node_pattern = self._build_node_pattern(
             source_node.id, source_node.kind, None,
             var_name="src_node")
         target_node_pattern = self._build_node_pattern(
             target_node.id, target_node.kind, None,
             var_name="dst_node")
-        rel_pattern = self._build_rel_pattern(link.id, "linked", link.properties)
+        rel_pattern = self._build_rel_pattern(link.id, "linked", properties)
         query = "MATCH %s, %s CREATE (src_node)-%s->(dst_node)" % (
             source_node_pattern, target_node_pattern, rel_pattern)
         self._run_query(query)
 
     def update_link(self, link):
-        pass
+        rel_pattern = self._build_rel_pattern(link.id, "linked", None, var_name='rel')
+        properties = {'properties': json.dumps(link.properties)}
+        properties.update(self._flatten_properties(link.properties))
+        properties['id'] = link.id
+        cypher_properties = self._build_cypher_properties(properties)
+        query = "MATCH (src_node)-%s-(dst_node) SET rel = {%s}" % (rel_pattern, cypher_properties)
+        self._run_query(query)
+
 
     def delete_link(self, link):
         rel_pattern = self._build_rel_pattern(link.id, "linked", link.properties)
@@ -178,8 +187,9 @@ class Neo4jDriver(driver.Driver):
         return graph.Node(id, properties, kind)
 
     def _build_link_obj(self, rel, src_node, dst_node):
-        properties = dict(rel.items())
-        id = properties.pop('id')
+        raw_properties = dict(rel.items())
+        id = raw_properties.pop('id')
+        properties = json.loads(raw_properties['properties'])
         source = self._build_node_obj(src_node)
         target = self._build_node_obj(dst_node)
         return graph.Link(id, properties, source, target)
