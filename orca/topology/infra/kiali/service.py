@@ -50,16 +50,20 @@ class Probe(probe.Probe):
             if source_mapping and target_mapping:
                 source_node = self._get_service(source_mapping)
                 target_node = self._get_service(target_mapping)
+                properties = self._extract_edge_properties(edge)
                 if source_node and target_node:
-                    self._link_services(source_node, target_node)
+                    self._link_services(source_node, target_node, properties)
 
     def _get_service(self, mapping):
         matches = self._graph.get_nodes('service', properties=mapping)
         if matches:
             return matches[0]
 
-    def _link_services(self, source_node, target_node):
-        link = graph.Graph.create_link({}, source_node, target_node)
+    def _extract_edge_properties(self, edge):
+        return {'protocol': edge['traffic']['protocol']}
+
+    def _link_services(self, source_node, target_node, properties):
+        link = graph.Graph.create_link(properties, source_node, target_node)
         if self._graph.get_link(link.id):
             self._graph.update_link(link)
         else:
