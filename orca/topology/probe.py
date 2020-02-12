@@ -16,10 +16,15 @@ class ProbeService(cotyledon.Service):
 
 class Probe(abc.ABC):
 
-    def __init__(self, kind, graph):
+    def __init__(self, origin, kind, graph):
         super().__init__()
+        self._origin = origin
         self._kind = kind
         self._graph = graph
+
+    @property
+    def _extended_kind(self):
+        return "%s/%s" % (self._origin, self._kind)
 
     @abc.abstractmethod
     def run(self):

@@ -8,7 +8,8 @@ def initialize_probes(graph):
 
     return [
         service.Probe(
-            kind='kiali_service',
+            origin='kiali',
+            kind='service',
             graph=graph,
             kiali_client=kiali_client)]
 

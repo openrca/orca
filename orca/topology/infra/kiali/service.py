@@ -6,8 +6,8 @@ from orca.graph import graph
 
 class Probe(probe.Probe):
 
-    def __init__(self, kind, graph, kiali_client):
-        super().__init__(kind, graph)
+    def __init__(self, origin, kind, graph, kiali_client):
+        super().__init__(origin, kind, graph)
         self._kiali_client = kiali_client
 
     def run(self):

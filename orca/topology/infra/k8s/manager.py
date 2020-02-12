@@ -9,51 +9,63 @@ def initialize_probes(graph):
     k8s_client = k8s.ClientFactory.get()
     return [
         probe.Probe(
+            origin="kubernetes",
             kind='pod',
-            extractor=pod.PodExtractor(),
             graph=graph,
+            extractor=pod.PodExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'pod')),
         probe.Probe(
+            origin="kubernetes",
             kind='service',
-            extractor=service.ServiceExtractor(),
             graph=graph,
+            extractor=service.ServiceExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'service')),
         probe.Probe(
+            origin="kubernetes",
             kind='deployment',
-            extractor=deployment.DeploymentExtractor(),
             graph=graph,
+            extractor=deployment.DeploymentExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'deployment')),
         probe.Probe(
+            origin="kubernetes",
             kind='replica_set',
-            extractor=replica_set.ReplicaSetExtractor(),
             graph=graph,
+            extractor=replica_set.ReplicaSetExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'replica_set')),
         probe.Probe(
+            origin="kubernetes",
             kind='daemon_set',
-            extractor=daemon_set.DaemonSetExtractor(),
             graph=graph,
+            extractor=daemon_set.DaemonSetExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'daemon_set')),
         probe.Probe(
+            origin="kubernetes",
             kind='stateful_set',
-            extractor=stateful_set.StatefulSetExtractor(),
             graph=graph,
+            extractor=stateful_set.StatefulSetExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'stateful_set')),
         probe.Probe(
+            origin="kubernetes",
             kind='config_map',
-            extractor=config_map.ConfigMapExtractor(),
             graph=graph,
+            extractor=config_map.ConfigMapExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'config_map')),
         probe.Probe(
+            origin="kubernetes",
             kind='secret',
-            extractor=secret.SecretExtractor(),
             graph=graph,
+            extractor=secret.SecretExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'secret')),
         probe.Probe(
+            origin="kubernetes",
             kind='node',
-            extractor=node.NodeExtractor(),
             graph=graph,
+            extractor=node.NodeExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'node')),
-        cluster.ClusterProbe(kind='cluster', graph=graph)]
+        cluster.ClusterProbe(
+            origin='kubernetes',
+            kind='cluster',
+            graph=graph)]
 
 
 def initialize_linkers(graph):

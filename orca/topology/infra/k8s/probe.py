@@ -7,18 +7,17 @@ log = logger.get_logger(__name__)
 
 class Probe(probe.Probe, k8s.EventHandler):
 
-    def __init__(self, kind, extractor, graph, k8s_client):
-        self._kind = kind
+    def __init__(self, origin, kind, graph, extractor, k8s_client):
+        super().__init__(origin, kind, graph)
         self._extractor = extractor
-        self._graph = graph
         self._k8s_client = k8s_client
 
     def run(self):
-        log.info("Starting sync for entity: %s", self._kind)
+        log.info("Starting sync for entity: %s", self._extended_kind)
         self.synchronize()
-        log.info("Finished sync for entity: %s", self._kind)
+        log.info("Finished sync for entity: %s", self._extended_kind)
 
-        log.info("Starting watch on entity: %s", self._kind)
+        log.info("Starting watch on entity: %s", self._extended_kind)
         self.start_watch()
 
     def synchronize(self):
