@@ -1,8 +1,8 @@
 import copy
 
 from orca.topology import linker
+from orca.topology.infra.istio import extractor
 from orca.topology.infra.istio import linker as istio_linker
-from orca.topology.infra.k8s import extractor
 
 
 class VirtualServiceExtractor(extractor.Extractor):

@@ -19,8 +19,9 @@ class GraphObject(abc.ABC):
 
 class Node(GraphObject):
 
-    def __init__(self, id, properties, kind):
+    def __init__(self, id, properties, origin, kind):
         super().__init__(id, properties)
+        self.origin = origin
         self.kind = kind
 
     def __repr__(self):
@@ -46,11 +47,11 @@ class Graph(object):
         self._driver = driver
         self._listeners = []
 
-    def get_nodes(self, kind=None, properties=None):
-        return self._driver.get_nodes(kind, properties)
+    def get_nodes(self, origin=None, kind=None, properties=None):
+        return self._driver.get_nodes(origin, kind, properties)
 
-    def get_node(self, id, kind=None, properties=None):
-        return self._driver.get_node(id, kind, properties)
+    def get_node(self, id, origin=None, kind=None, properties=None):
+        return self._driver.get_node(id, origin, kind, properties)
 
     def add_node(self, node):
         log.debug("Adding node: %s", node)
@@ -95,8 +96,8 @@ class Graph(object):
         self._driver.delete_link(link)
         self._notify_listeners(GraphEvent.LINK_DELETED, link)
 
-    def get_node_links(self, node, kind=None):
-        return self._driver.get_node_links(node, kind)
+    def get_node_links(self, node, origin=None, kind=None):
+        return self._driver.get_node_links(node, origin, kind)
 
     def add_listener(self, listener):
         self._listeners.append(listener)
@@ -119,8 +120,8 @@ class Graph(object):
                 raise Exception("Unknown event type: %s" % event_type)
 
     @staticmethod
-    def create_node(id, kind, properties):
-        return Node(id, properties, kind)
+    def create_node(id, properties, origin, kind):
+        return Node(id, properties, origin, kind)
 
     @staticmethod
     def create_link(properties, source, target):

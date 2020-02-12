@@ -12,8 +12,11 @@ class AlertHandler(probe.EntityHandler):
 
 class AlertExtractor(extractor.Extractor):
 
+    def _extract_origin(self, entity):
+        return 'elastalert'
+
     def _extract_kind(self, entity):
-        return 'es_alert'
+        return 'alert'
 
     def _extract_name(self, entity):
         return entity['name']

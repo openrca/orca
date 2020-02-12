@@ -27,8 +27,8 @@ class Neo4jDriver(driver.Driver):
             self._client = graph_lib.GraphDatabase.driver(uri, auth=auth)
         return self._client
 
-    def get_nodes(self, kind=None, properties=None):
-        node_pattern = self._build_node_pattern(None, kind, None)
+    def get_nodes(self, origin=None, kind=None, properties=None):
+        node_pattern = self._build_node_pattern(None, origin, kind, None)
         query = "MATCH %s RETURN node" % (node_pattern)
         query_result = self._run_query(query)
         records = query_result.records()
@@ -38,8 +38,8 @@ class Neo4jDriver(driver.Driver):
             return nodes
         return self._filter_nodes(nodes, properties)
 
-    def get_node(self, id, kind=None, properties=None):
-        node_pattern = self._build_node_pattern(id, kind, None)
+    def get_node(self, id, origin=None, kind=None, properties=None):
+        node_pattern = self._build_node_pattern(id, origin, kind, None)
         query = "MATCH %s RETURN node LIMIT 1" % (node_pattern)
         query_result = self._run_query(query)
         record = query_result.single()
@@ -49,12 +49,12 @@ class Neo4jDriver(driver.Driver):
     def add_node(self, node):
         properties = {'properties': json.dumps(node.properties)}
         properties.update(self._flatten_properties(node.properties))
-        node_pattern = self._build_node_pattern(node.id, node.kind, properties)
+        node_pattern = self._build_node_pattern(node.id, node.origin, node.kind, properties)
         query = "CREATE %s" % (node_pattern)
         self._run_query(query)
 
     def update_node(self, node):
-        node_pattern = self._build_node_pattern(node.id, node.kind, None, var_name='node')
+        node_pattern = self._build_node_pattern(node.id, node.origin, node.kind, None, var_name='node')
         properties = {'properties': json.dumps(node.properties)}
         properties['id'] = node.id
         properties.update(self._flatten_properties(node.properties))
@@ -63,7 +63,7 @@ class Neo4jDriver(driver.Driver):
         self._run_query(query)
 
     def delete_node(self, node):
-        node_pattern = self._build_node_pattern(node.id, node.kind, None)
+        node_pattern = self._build_node_pattern(node.id, node.origin, node.kind, None)
         query = "MATCH %s DETACH DELETE node" % (node_pattern)
         self._run_query(query)
 
@@ -96,10 +96,10 @@ class Neo4jDriver(driver.Driver):
         properties = {'properties': json.dumps(link.properties)}
         properties.update(self._flatten_properties(link.properties))
         source_node_pattern = self._build_node_pattern(
-            source_node.id, source_node.kind, None,
+            source_node.id, source_node.origin, source_node.kind, None,
             var_name="src_node")
         target_node_pattern = self._build_node_pattern(
-            target_node.id, target_node.kind, None,
+            target_node.id, target_node.origin, target_node.kind, None,
             var_name="dst_node")
         rel_pattern = self._build_rel_pattern(link.id, "linked", properties)
         query = "MATCH %s, %s CREATE (src_node)-%s->(dst_node)" % (
@@ -121,11 +121,11 @@ class Neo4jDriver(driver.Driver):
         query = "MATCH (src_node)-%s-(dst_node) DELETE rel" % (rel_pattern)
         self._run_query(query)
 
-    def get_node_links(self, node, kind=None):
+    def get_node_links(self, node, origin=None, kind=None):
         source_node_pattern = self._build_node_pattern(
-            node.id, node.kind, None, var_name="src_node")
+            node.id, node.origin, node.kind, None, var_name="src_node")
         target_node_pattern = self._build_node_pattern(
-            None, kind, None, var_name="dst_node")
+            None, origin, kind, None, var_name="dst_node")
         query = ("MATCH %s-[rel:linked]-%s "
                  "RETURN rel, src_node, dst_node") % (
                      source_node_pattern, target_node_pattern)
@@ -154,20 +154,20 @@ class Neo4jDriver(driver.Driver):
             prop_items.append(prop_item)
         return ", ".join(prop_items)
 
-    def _build_node_pattern(self, id, kind, properties, var_name="node"):
+    def _build_node_pattern(self, id, origin, kind, properties, var_name="node"):
         inner_pattern = self._build_obj_inner_pattern(
-            id, kind, properties, var_name)
+            id, origin, kind, properties, var_name)
         return "(%s)" % (inner_pattern)
 
     def _build_rel_pattern(self, id, kind, properties, var_name="rel"):
         inner_pattern = self._build_obj_inner_pattern(
-            id, kind, properties, var_name)
+            id, None, kind, properties, var_name)
         return "[%s]" % (inner_pattern)
 
-    def _build_obj_inner_pattern(self, id, kind, properties, var_name):
+    def _build_obj_inner_pattern(self, id, origin, kind, properties, var_name):
         if not properties:
             properties = {}
-        cypher_labels = self._build_cypher_labels([kind])
+        cypher_labels = self._build_cypher_labels([origin, kind])
         if id:
             properties['id'] = id
         cypher_properties = self._build_cypher_properties(properties)
@@ -183,8 +183,10 @@ class Neo4jDriver(driver.Driver):
         raw_properties = dict(node.items())
         id = raw_properties.pop('id')
         properties = json.loads(raw_properties['properties'])
-        kind = list(node.labels)[0]
-        return graph.Node(id, properties, kind)
+        labels = list(node.labels)
+        origin = labels[0]
+        kind = labels[1]
+        return graph.Node(id, properties, origin, kind)
 
     def _build_link_obj(self, rel, src_node, dst_node):
         raw_properties = dict(rel.items())

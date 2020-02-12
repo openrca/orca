@@ -17,6 +17,7 @@ class Extractor(extractor.Extractor):
         self._source_mapper = source_mapper
 
     def extract(self, entity):
+        origin = self._extract_origin(entity)
         kind = self._extract_kind(entity)
         name = self._extract_name(entity)
         labels = self._extract_source_labels(entity)
@@ -25,7 +26,11 @@ class Extractor(extractor.Extractor):
         properties = self._extract_properties(entity)
         properties['name'] = name
         properties['source_mapping'] = source_mapping
-        return graph.Node(node_id, properties, kind)
+        return graph.Node(node_id, properties, origin, kind)
+
+    @abc.abstractmethod
+    def _extract_origin(self, entity):
+        """Extract origin from given entity object."""
 
     @abc.abstractmethod
     def _extract_kind(self, entity):
