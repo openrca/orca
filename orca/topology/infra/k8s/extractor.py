@@ -6,9 +6,6 @@ from orca.topology import extractor
 
 class Extractor(extractor.Extractor):
 
-    def __init__(self, origin, kind):
-        super().__init__(origin, kind)
-
     def extract(self, entity):
         node_id = self._extract_id(entity)
         properties = self._extract_properties(entity)
