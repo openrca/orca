@@ -9,9 +9,13 @@ log = logger.get_logger(__name__)
 
 class Probe(probe.Probe):
 
+    def __init__(self, origin, kind, graph):
+        super().__init__(kind, graph)
+        self._origin = origin
+
     def run(self):
         while True:
-            alert_nodes = self._graph.get_nodes(kind=self._kind)
+            alert_nodes = self._graph.get_nodes(origin=self._origin, kind=self._kind)
             for alert_node in alert_nodes:
                 source_mapping = alert_node.properties.source_mapping
                 if not source_mapping:
