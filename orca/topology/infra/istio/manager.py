@@ -10,21 +10,15 @@ def initialize_probes(graph):
     k8s_client = k8s.ClientFactory.get()
     return [
         probe.Probe(
-            origin='istio',
-            kind='virtual_service',
-            extractor=virtual_service.VirtualServiceExtractor(),
+            extractor=virtual_service.VirtualServiceExtractor('istio', 'virtual_service'),
             graph=graph,
             k8s_client=istio.ResourceProxyFactory.get(k8s_client, 'virtual_service')),
         probe.Probe(
-            origin='istio',
-            kind='destination_rule',
-            extractor=destination_rule.DestinationRuleExtractor(),
+            extractor=destination_rule.DestinationRuleExtractor('istio', 'destination_rule'),
             graph=graph,
             k8s_client=istio.ResourceProxyFactory.get(k8s_client, 'destination_rule')),
         probe.Probe(
-            origin='istio',
-            kind='gateway',
-            extractor=gateway.GatewayExtractor(),
+            extractor=gateway.GatewayExtractor('istio', 'gateway'),
             graph=graph,
             k8s_client=istio.ResourceProxyFactory.get(k8s_client, 'gateway'))]
 

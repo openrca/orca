@@ -7,10 +7,16 @@ log = logger.get_logger(__name__)
 
 class Probe(probe.Probe, k8s.EventHandler):
 
-    def __init__(self, origin, kind, graph, extractor, k8s_client):
-        super().__init__(origin, kind, graph)
+    def __init__(self, graph, extractor, k8s_client):
+        super().__init__(graph)
+        self._origin = extractor.origin
+        self._kind = extractor.kind
         self._extractor = extractor
         self._k8s_client = k8s_client
+
+    @property
+    def _extended_kind(self):
+        return "%s/%s" % (self._origin, self._kind)
 
     def run(self):
         log.info("Starting sync for entity: %s", self._extended_kind)

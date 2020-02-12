@@ -9,6 +9,11 @@ log = logger.get_logger(__name__)
 
 class Probe(probe.Probe):
 
+    def __init__(self, graph, origin, kind):
+        super().__init__(graph)
+        self._origin = origin
+        self._kind = kind
+
     def run(self):
         while True:
             alert_nodes = self._graph.get_nodes(origin=self._origin, kind=self._kind)

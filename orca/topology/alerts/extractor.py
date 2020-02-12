@@ -12,29 +12,19 @@ class Extractor(extractor.Extractor):
 
     """Base class for alert extractors."""
 
-    def __init__(self, source_mapper):
-        super().__init__()
+    def __init__(self, origin, kind, source_mapper):
+        super().__init__(origin, kind)
         self._source_mapper = source_mapper
 
     def extract(self, entity):
-        origin = self._extract_origin(entity)
-        kind = self._extract_kind(entity)
         name = self._extract_name(entity)
         labels = self._extract_source_labels(entity)
         source_mapping = self._source_mapper.map(name, labels)
-        node_id = self._build_id(kind, name, source_mapping)
+        node_id = self._build_id(self.kind, name, source_mapping)
         properties = self._extract_properties(entity)
         properties['name'] = name
         properties['source_mapping'] = source_mapping
-        return graph.Node(node_id, properties, origin, kind)
-
-    @abc.abstractmethod
-    def _extract_origin(self, entity):
-        """Extract origin from given entity object."""
-
-    @abc.abstractmethod
-    def _extract_kind(self, entity):
-        """Extract kind from given entity object."""
+        return graph.Node(node_id, properties, self.origin, self.kind)
 
     @abc.abstractmethod
     def _extract_name(self, entity):

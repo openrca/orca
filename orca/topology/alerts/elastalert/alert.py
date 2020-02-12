@@ -7,7 +7,7 @@ class AlertHandler(probe.EntityHandler):
     @staticmethod
     def create(graph):
         source_mapper = extractor.SourceMapper('elastalert')
-        return AlertHandler(graph, AlertExtractor(source_mapper))
+        return AlertHandler(graph, AlertExtractor('elastalert', 'alert', source_mapper))
 
 
 class AlertExtractor(extractor.Extractor):

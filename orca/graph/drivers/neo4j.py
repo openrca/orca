@@ -39,7 +39,7 @@ class Neo4jDriver(driver.Driver):
         return self._filter_nodes(nodes, properties)
 
     def get_node(self, id, origin=None, kind=None, properties=None):
-        node_pattern = self._build_node_pattern(id, origin, kind, None)
+        node_pattern = self._build_node_pattern(id, None, None, None)
         query = "MATCH %s RETURN node LIMIT 1" % (node_pattern)
         query_result = self._run_query(query)
         record = query_result.single()
@@ -54,7 +54,7 @@ class Neo4jDriver(driver.Driver):
         self._run_query(query)
 
     def update_node(self, node):
-        node_pattern = self._build_node_pattern(node.id, node.origin, node.kind, None, var_name='node')
+        node_pattern = self._build_node_pattern(node.id, None, None, None, var_name='node')
         properties = {'properties': json.dumps(node.properties)}
         properties['id'] = node.id
         properties.update(self._flatten_properties(node.properties))
@@ -63,7 +63,7 @@ class Neo4jDriver(driver.Driver):
         self._run_query(query)
 
     def delete_node(self, node):
-        node_pattern = self._build_node_pattern(node.id, node.origin, node.kind, None)
+        node_pattern = self._build_node_pattern(node.id, None, None, None)
         query = "MATCH %s DETACH DELETE node" % (node_pattern)
         self._run_query(query)
 
@@ -81,7 +81,7 @@ class Neo4jDriver(driver.Driver):
         return links
 
     def get_link(self, id, properties=None):
-        rel_pattern = self._build_rel_pattern(id, "linked", properties)
+        rel_pattern = self._build_rel_pattern(id, "linked", None)
         query = ("MATCH (src_node)-%s-(dst_node) "
                  "RETURN rel, src_node, dst_node LIMIT 1") % (rel_pattern)
         query_result = self._run_query(query)
@@ -93,21 +93,19 @@ class Neo4jDriver(driver.Driver):
     def add_link(self, link):
         source_node = link.source
         target_node = link.target
+        source_node_pattern = self._build_node_pattern(
+            source_node.id, None, None, None, var_name="src_node")
+        target_node_pattern = self._build_node_pattern(
+            target_node.id, None, None, None, var_name="dst_node")
         properties = {'properties': json.dumps(link.properties)}
         properties.update(self._flatten_properties(link.properties))
-        source_node_pattern = self._build_node_pattern(
-            source_node.id, source_node.origin, source_node.kind, None,
-            var_name="src_node")
-        target_node_pattern = self._build_node_pattern(
-            target_node.id, target_node.origin, target_node.kind, None,
-            var_name="dst_node")
         rel_pattern = self._build_rel_pattern(link.id, "linked", properties)
         query = "MATCH %s, %s CREATE (src_node)-%s->(dst_node)" % (
             source_node_pattern, target_node_pattern, rel_pattern)
         self._run_query(query)
 
     def update_link(self, link):
-        rel_pattern = self._build_rel_pattern(link.id, "linked", None, var_name='rel')
+        rel_pattern = self._build_rel_pattern(link.id, None, None, var_name='rel')
         properties = {'properties': json.dumps(link.properties)}
         properties.update(self._flatten_properties(link.properties))
         properties['id'] = link.id
@@ -117,13 +115,13 @@ class Neo4jDriver(driver.Driver):
 
 
     def delete_link(self, link):
-        rel_pattern = self._build_rel_pattern(link.id, "linked", link.properties)
+        rel_pattern = self._build_rel_pattern(link.id, None, None)
         query = "MATCH (src_node)-%s-(dst_node) DELETE rel" % (rel_pattern)
         self._run_query(query)
 
     def get_node_links(self, node, origin=None, kind=None):
         source_node_pattern = self._build_node_pattern(
-            node.id, node.origin, node.kind, None, var_name="src_node")
+            node.id, None, None, None, var_name="src_node")
         target_node_pattern = self._build_node_pattern(
             None, origin, kind, None, var_name="dst_node")
         query = ("MATCH %s-[rel:linked]-%s "
