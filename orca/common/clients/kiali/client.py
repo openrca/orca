@@ -11,9 +11,10 @@ class KialiClient(client.APIClient):
     def list_namespaces(self):
         return self._connector.get("/namespaces")
 
-    def graph_namespaces(self, namespaces):
+    def graph_namespaces(self, namespaces, graph_type='service'):
         namespace_list = ','.join(namespaces)
-        return self._connector.get("/namespaces/graph", namespaces=namespace_list, graphType='service')
+        return self._connector.get(
+            "/namespaces/graph", namespaces=namespace_list, graphType=graph_type)
 
     @staticmethod
     def get(url="http://localhost:20001", api_prefix="/kiali/api", username=None, password=None):
