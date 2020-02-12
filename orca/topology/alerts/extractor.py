@@ -20,7 +20,7 @@ class Extractor(extractor.Extractor):
         name = self._extract_name(entity)
         labels = self._extract_source_labels(entity)
         source_mapping = self._source_mapper.map(name, labels)
-        node_id = self._build_id(self.kind, name, source_mapping)
+        node_id = self._build_id(name, source_mapping)
         properties = self._extract_properties(entity)
         properties['name'] = name
         properties['source_mapping'] = source_mapping
@@ -38,8 +38,8 @@ class Extractor(extractor.Extractor):
     def _extract_properties(self, entity):
         """Extract properties from given entity object."""
 
-    def _build_id(self, kind, name, source_mapping):
-        id_parts = [kind, name]
+    def _build_id(self, name, source_mapping):
+        id_parts = [self.origin, self.kind, name]
         if source_mapping:
             id_parts.append(source_mapping['kind'])
             source_properties = source_mapping['properties']
