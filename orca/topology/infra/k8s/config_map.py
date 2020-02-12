@@ -5,9 +5,6 @@ from orca.topology.infra.k8s import linker as k8s_linker
 
 class ConfigMapExtractor(extractor.Extractor):
 
-    def _extract_kind(self, entity):
-        return 'config_map'
-
     def _extract_properties(self, entity):
         properties = {}
         properties['name'] = entity.metadata.name

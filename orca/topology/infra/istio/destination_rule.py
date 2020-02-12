@@ -5,9 +5,6 @@ from orca.topology.infra.k8s import extractor
 
 class DestinationRuleExtractor(extractor.Extractor):
 
-    def _extract_kind(self, entity):
-        return 'destination_rule'
-
     def _extract_properties(self, entity):
         properties = {}
         properties['name'] = entity.metadata.name

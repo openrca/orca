@@ -12,12 +12,6 @@ class AlertHandler(probe.EntityHandler):
 
 class AlertExtractor(extractor.Extractor):
 
-    def _extract_origin(self, entity):
-        return 'prometheus'
-
-    def _extract_kind(self, entity):
-        return 'alert'
-
     def _extract_name(self, entity):
         return entity['labels']['alertname']
 

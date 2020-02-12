@@ -5,9 +5,6 @@ from orca.topology.infra.k8s import linker as k8s_linker
 
 class ReplicaSetExtractor(extractor.Extractor):
 
-    def _extract_kind(self, entity):
-        return 'replica_set'
-
     def _extract_properties(self, entity):
         properties = {}
         properties['name'] = entity.metadata.name

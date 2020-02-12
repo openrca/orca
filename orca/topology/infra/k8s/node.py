@@ -4,9 +4,6 @@ from orca.topology.infra.k8s import extractor
 
 class NodeExtractor(extractor.Extractor):
 
-    def _extract_kind(self, entity):
-        return 'node'
-
     def _extract_properties(self, entity):
         properties = {}
         properties['name'] = entity.metadata.name
