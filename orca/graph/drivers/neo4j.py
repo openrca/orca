@@ -54,7 +54,13 @@ class Neo4jDriver(driver.Driver):
         self._run_query(query)
 
     def update_node(self, node):
-        pass
+        node_pattern = self._build_node_pattern(node.id, node.kind, None, var_name='node')
+        properties = {'properties': json.dumps(node.properties)}
+        properties['id'] = node.id
+        properties.update(self._flatten_properties(node.properties))
+        cypher_properties = self._build_cypher_properties(properties)
+        query = "MATCH %s SET node = {%s} RETURN node" % (node_pattern, cypher_properties)
+        self._run_query(query)
 
     def delete_node(self, node):
         node_pattern = self._build_node_pattern(node.id, node.kind, None)
