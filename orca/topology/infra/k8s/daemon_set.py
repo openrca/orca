@@ -3,6 +3,9 @@ from orca.topology.infra.k8s import extractor
 
 class DaemonSetExtractor(extractor.Extractor):
 
+    def get_kind(self):
+        return 'daemon_set'
+
     def _extract_properties(self, entity):
         properties = {}
         properties['name'] = entity.metadata.name

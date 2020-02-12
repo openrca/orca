@@ -1,7 +1,10 @@
-from orca.topology.infra.k8s import extractor
+from orca.topology.infra.istio import extractor
 
 
 class GatewayExtractor(extractor.Extractor):
+
+    def get_kind(self):
+        return 'gateway'
 
     def _extract_properties(self, entity):
         properties = {}

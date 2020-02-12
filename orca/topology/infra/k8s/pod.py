@@ -6,6 +6,9 @@ from orca.topology.infra.k8s import linker as k8s_linker
 
 class PodExtractor(extractor.Extractor):
 
+    def get_kind(self):
+        return 'pod'
+
     def _extract_properties(self, entity):
         properties = {}
         properties['name'] = entity.metadata.name

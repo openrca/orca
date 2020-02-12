@@ -3,10 +3,13 @@ import abc
 
 class Extractor(abc.ABC):
 
-    def __init__(self, origin, kind):
-        self.origin = origin
-        self.kind = kind
+    @abc.abstractmethod
+    def get_origin(self):
+        """Returns origin of extracted entities."""
 
     @abc.abstractmethod
+    def get_kind(self):
+        """Returns kind of extracted entities."""
+
     def extract(self, entity):
         """Extracts graph node from given raw entity."""

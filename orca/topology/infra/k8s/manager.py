@@ -10,39 +10,39 @@ def initialize_probes(graph):
     return [
         probe.Probe(
             graph=graph,
-            extractor=pod.PodExtractor('kubernetes', 'pod'),
+            extractor=pod.PodExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'pod')),
         probe.Probe(
             graph=graph,
-            extractor=service.ServiceExtractor('kubernetes', 'service'),
+            extractor=service.ServiceExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'service')),
         probe.Probe(
             graph=graph,
-            extractor=deployment.DeploymentExtractor('kubernetes', 'deployment'),
+            extractor=deployment.DeploymentExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'deployment')),
         probe.Probe(
             graph=graph,
-            extractor=replica_set.ReplicaSetExtractor('kubernetes', 'replica_set'),
+            extractor=replica_set.ReplicaSetExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'replica_set')),
         probe.Probe(
             graph=graph,
-            extractor=daemon_set.DaemonSetExtractor('kubernetes', 'daemon_set'),
+            extractor=daemon_set.DaemonSetExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'daemon_set')),
         probe.Probe(
             graph=graph,
-            extractor=stateful_set.StatefulSetExtractor('kubernetes', 'stateful_set'),
+            extractor=stateful_set.StatefulSetExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'stateful_set')),
         probe.Probe(
             graph=graph,
-            extractor=config_map.ConfigMapExtractor('kubernetes', 'config_map'),
+            extractor=config_map.ConfigMapExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'config_map')),
         probe.Probe(
             graph=graph,
-            extractor=secret.SecretExtractor('kubernetes', 'secret'),
+            extractor=secret.SecretExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'secret')),
         probe.Probe(
             graph=graph,
-            extractor=node.NodeExtractor('kubernetes', 'node'),
+            extractor=node.NodeExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'node')),
         cluster.ClusterProbe(graph=graph)]
 

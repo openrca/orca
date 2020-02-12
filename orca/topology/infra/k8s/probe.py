@@ -9,8 +9,8 @@ class Probe(probe.Probe, k8s.EventHandler):
 
     def __init__(self, graph, extractor, k8s_client):
         super().__init__(graph)
-        self._origin = extractor.origin
-        self._kind = extractor.kind
+        self._origin = extractor.get_origin()
+        self._kind = extractor.get_kind()
         self._extractor = extractor
         self._k8s_client = k8s_client
 
