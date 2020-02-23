@@ -32,7 +32,7 @@ def initialize_linkers(graph):
             matcher=virtual_service.VirtualServiceToGatewayMatcher()),
         linker.Linker(
             kind_a='virtual_service',
-            kind_b='gateway',
+            kind_b='service',
             graph=graph,
             matcher=virtual_service.VirtualServiceToServiceMatcher()),
         linker.Linker(
