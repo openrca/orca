@@ -14,3 +14,6 @@ class Extractor(abc.ABC):
     @abc.abstractmethod
     def extract(self, entity):
         """Extracts graph node from given raw entity."""
+
+    def get_extended_kind(self):
+        return "%s/%s" % (self.get_origin(), self.get_kind())

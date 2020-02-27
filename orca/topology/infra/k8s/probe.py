@@ -9,26 +9,32 @@ class Probe(probe.Probe, k8s.EventHandler):
 
     def __init__(self, graph, extractor, k8s_client):
         super().__init__(graph)
-        self._origin = extractor.get_origin()
-        self._kind = extractor.get_kind()
         self._extractor = extractor
         self._k8s_client = k8s_client
 
-    @property
-    def _extended_kind(self):
-        return "%s/%s" % (self._origin, self._kind)
-
     def run(self):
-        log.info("Starting sync for entity: %s", self._extended_kind)
-        self.synchronize()
-        log.info("Finished sync for entity: %s", self._extended_kind)
+        extended_kind = self._extractor.get_extended_kind()
+        log.info("Starting sync for entity: %s", extended_kind)
+        self._synchronize()
+        log.info("Finished sync for entity: %s", extended_kind)
+        log.info("Starting watch on entity: %s", extended_kind)
+        self._start_watch()
 
-        log.info("Starting watch on entity: %s", self._extended_kind)
-        self.start_watch()
+    def on_added(self, entity):
+        node = self._extractor.extract(entity)
+        self._graph.add_node(node)
 
-    def synchronize(self):
-        nodes_in_graph = self._build_node_lookup(self._graph.get_nodes(kind=self._kind))
-        upstream_nodes = self._build_node_lookup(self._get_nodes_from_upstream())
+    def on_updated(self, entity):
+        node = self._extractor.extract(entity)
+        self._graph.update_node(node)
+
+    def on_deleted(self, entity):
+        node = self._extractor.extract(entity)
+        self._graph.delete_node(node)
+
+    def _synchronize(self):
+        nodes_in_graph = self._build_node_lookup(self._get_nodes_in_graph())
+        upstream_nodes = self._build_node_lookup(self._get_upstream_nodes())
 
         nodes_in_graph_ids = set(nodes_in_graph.keys())
         upstream_nodes_ids = set(upstream_nodes.keys())
@@ -46,25 +52,16 @@ class Probe(probe.Probe, k8s.EventHandler):
         for node_id in nodes_to_create_ids:
             self._graph.add_node(upstream_nodes[node_id])
 
-    def start_watch(self):
-        self._k8s_client.watch(handler=self)
+    def _build_node_lookup(self, nodes):
+        return {node.id: node for node in nodes}
 
-    def on_added(self, entity):
-        node = self._extractor.extract(entity)
-        self._graph.add_node(node)
+    def _get_nodes_in_graph(self):
+        return self._graph.get_nodes(
+            origin=self._extractor.get_origin(), kind=self._extractor.get_kind())
 
-    def on_updated(self, entity):
-        node = self._extractor.extract(entity)
-        self._graph.update_node(node)
-
-    def on_deleted(self, entity):
-        node = self._extractor.extract(entity)
-        self._graph.delete_node(node)
-
-    def _get_nodes_from_upstream(self):
+    def _get_upstream_nodes(self):
         entities = self._k8s_client.get_all()
         return [self._extractor.extract(entity) for entity in entities]
 
-    @staticmethod
-    def _build_node_lookup(nodes):
-        return {node.id: node for node in nodes}
+    def _start_watch(self):
+        self._k8s_client.watch(handler=self)
