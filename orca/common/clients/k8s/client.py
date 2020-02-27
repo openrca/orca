@@ -57,21 +57,6 @@ class CustomResourceProxy(ResourceProxy):
         return dictlib.Dict(item)
 
 
-class EventHandler(abc.ABC):
-
-    @abc.abstractmethod
-    def on_added(self, event_object):
-        """Triggered when a K8S resource is added."""
-
-    @abc.abstractmethod
-    def on_updated(self, event_object):
-        """Triggered when a K8S resource is updated."""
-
-    @abc.abstractmethod
-    def on_deleted(self, event_object):
-        """Triggered when a K8S resource is deleted."""
-
-
 class ResourceProxyFactory(object):
 
     @staticmethod
@@ -105,3 +90,18 @@ class ResourceProxyFactory(object):
                 k8s_client.ExtensionsV1beta1Api().list_replica_set_for_all_namespaces)
         else:
             raise Exception("Unknown kind %s" % kind)
+
+
+class EventHandler(abc.ABC):
+
+    @abc.abstractmethod
+    def on_added(self, event_object):
+        """Triggered when a K8S resource is added."""
+
+    @abc.abstractmethod
+    def on_updated(self, event_object):
+        """Triggered when a K8S resource is updated."""
+
+    @abc.abstractmethod
+    def on_deleted(self, event_object):
+        """Triggered when a K8S resource is deleted."""

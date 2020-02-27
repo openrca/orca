@@ -139,21 +139,7 @@ class Graph(object):
         return str(id)
 
 
-class GraphEvent(enum.Enum):
-
-    NODE_ADDED = 1
-    NODE_UPDATED = 2
-    NODE_DELETED = 3
-    LINK_ADDED = 4
-    LINK_UPDATED = 5
-    LINK_DELETED = 6
-
-
 class EventListener(abc.ABC):
-
-    def __init__(self, graph):
-        super().__init__()
-        self._graph = graph
 
     @abc.abstractmethod
     def on_node_added(self, node):
@@ -178,3 +164,13 @@ class EventListener(abc.ABC):
     @abc.abstractmethod
     def on_link_deleted(self, link):
         """Callback triggered when graph link is deleted."""
+
+
+class GraphEvent(enum.Enum):
+
+    NODE_ADDED = 1
+    NODE_UPDATED = 2
+    NODE_DELETED = 3
+    LINK_ADDED = 4
+    LINK_UPDATED = 5
+    LINK_DELETED = 6
