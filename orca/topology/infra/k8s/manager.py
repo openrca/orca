@@ -50,47 +50,47 @@ def initialize_probes(graph):
 def initialize_linkers(graph):
     return [
         linker.Linker(
-            kind_a='pod',
-            kind_b='service',
+            source_kind='pod',
+            target_kind='service',
             graph=graph,
             matcher=pod.PodToServiceMatcher()),
         linker.Linker(
-            kind_a='pod',
-            kind_b='replica_set',
+            source_kind='pod',
+            target_kind='replica_set',
             graph=graph,
             matcher=pod.PodToReplicaSetMatcher()),
         linker.Linker(
-            kind_a='pod',
-            kind_b='stateful_set',
+            source_kind='pod',
+            target_kind='stateful_set',
             graph=graph,
             matcher=pod.PodToStatefulSetMatcher()),
         linker.Linker(
-            kind_a='pod',
-            kind_b='daemon_set',
+            source_kind='pod',
+            target_kind='daemon_set',
             graph=graph,
             matcher=pod.PodToDaemonSetMatcher()),
         linker.Linker(
-            kind_a='pod',
-            kind_b='node',
+            source_kind='pod',
+            target_kind='node',
             graph=graph,
             matcher=pod.PodToNodeMatcher()),
         linker.Linker(
-            kind_a='replica_set',
-            kind_b='deployment',
+            source_kind='replica_set',
+            target_kind='deployment',
             graph=graph,
             matcher=replica_set.ReplicaSetToDeploymentMatcher()),
         linker.Linker(
-            kind_a='config_map',
-            kind_b='pod',
+            source_kind='config_map',
+            target_kind='pod',
             graph=graph,
             matcher=config_map.ConfigMapToPodMatcher()),
         linker.Linker(
-            kind_a='secret',
-            kind_b='pod',
+            source_kind='secret',
+            target_kind='pod',
             graph=graph,
             matcher=secret.SecretToPodMatcher()),
         linker.Linker(
-            kind_a='node',
-            kind_b='cluster',
+            source_kind='node',
+            target_kind='cluster',
             graph=graph,
             matcher=node.NodeToClusterMatcher())]

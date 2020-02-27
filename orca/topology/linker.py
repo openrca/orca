@@ -9,8 +9,8 @@ class Dispatcher(graph.EventListener):
         self._linkers = {}
 
     def add_linker(self, linker):
-        self._linkers.setdefault(linker.kind_a, []).append(linker)
-        self._linkers.setdefault(linker.kind_b, []).append(linker)
+        self._linkers.setdefault(linker.source_kind, []).append(linker)
+        self._linkers.setdefault(linker.target_kind, []).append(linker)
 
     def on_node_added(self, node):
         self._link_node(node)
@@ -38,10 +38,10 @@ class Dispatcher(graph.EventListener):
 
 class Linker(abc.ABC):
 
-    def __init__(self, kind_a, kind_b, graph, matcher):
+    def __init__(self, source_kind, target_kind, graph, matcher):
         super().__init__()
-        self.kind_a = kind_a
-        self.kind_b = kind_b
+        self.source_kind = source_kind
+        self.target_kind = target_kind
         self._graph = graph
         self._matcher = matcher
 
@@ -70,7 +70,9 @@ class Linker(abc.ABC):
         return self._graph.get_node_links(node, kind=target_kind)
 
     def _get_target_kind(self, node):
-        return self.kind_b if node.kind == self.kind_a else self.kind_a
+        if node.kind == self.source_kind:
+            return self.target_kind
+        return self.source_kind
 
     def _get_new_links(self, node):
         linked_nodes = self._get_linked_nodes(node)
@@ -81,27 +83,26 @@ class Linker(abc.ABC):
         return links
 
     def _get_linked_nodes(self, node):
-        if node.kind == self.kind_a:
-            return self._get_ab_links(node)
+        if node.kind == self.source_kind:
+            return self._get_linked_from_source(node)
         else:
-            return self._get_ba_links(node)
+            return self._get_linked_from_target(node)
 
-    def _get_ab_links(self, node_a):
+    def _get_linked_from_source(self, source_node):
         linked_nodes = []
-        for node_b in self._graph.get_nodes(kind=self.kind_b):
-            if self._matcher.are_linked(node_a, node_b):
-                linked_nodes.append(node_b)
+        for target_node in self._graph.get_nodes(kind=self.target_kind):
+            if self._matcher.are_linked(source_node, target_node):
+                linked_nodes.append(target_node)
         return linked_nodes
 
-    def _get_ba_links(self, node_b):
+    def _get_linked_from_target(self, target_node):
         linked_nodes = []
-        for node_a in self._graph.get_nodes(kind=self.kind_a):
-            if self._matcher.are_linked(node_a, node_b):
-                linked_nodes.append(node_a)
+        for source_node in self._graph.get_nodes(kind=self.source_kind):
+            if self._matcher.are_linked(source_node, target_node):
+                linked_nodes.append(source_node)
         return linked_nodes
 
-    @staticmethod
-    def _build_link_lookup(links):
+    def _build_link_lookup(self, links):
         return {link.id: link for link in links}
 
 

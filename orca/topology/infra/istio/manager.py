@@ -26,17 +26,17 @@ def initialize_probes(graph):
 def initialize_linkers(graph):
     return [
         linker.Linker(
-            kind_a='virtual_service',
-            kind_b='gateway',
+            source_kind='virtual_service',
+            target_kind='gateway',
             graph=graph,
             matcher=virtual_service.VirtualServiceToGatewayMatcher()),
         linker.Linker(
-            kind_a='virtual_service',
-            kind_b='service',
+            source_kind='virtual_service',
+            target_kind='service',
             graph=graph,
             matcher=virtual_service.VirtualServiceToServiceMatcher()),
         linker.Linker(
-            kind_a='destination_rule',
-            kind_b='service',
+            source_kind='destination_rule',
+            target_kind='service',
             graph=graph,
             matcher=destination_rule.DestinationRuleToServiceMatcher())]
