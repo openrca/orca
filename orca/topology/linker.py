@@ -5,6 +5,8 @@ from orca.graph import graph
 
 class Dispatcher(graph.EventListener):
 
+    """Listens for graph events and triggers node linking on node updates."""
+
     def __init__(self):
         self._linkers = {}
 
@@ -37,6 +39,8 @@ class Dispatcher(graph.EventListener):
 
 
 class Linker(abc.ABC):
+
+    """Links pair of nodes based on the matching condition."""
 
     def __init__(self, source_kind, target_kind, graph, matcher):
         super().__init__()
