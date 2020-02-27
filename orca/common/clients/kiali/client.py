@@ -5,9 +5,6 @@ from orca.common.clients import client
 
 class KialiClient(client.APIClient):
 
-    def __init__(self, connector):
-        self._connector = connector
-
     def list_namespaces(self):
         return self._connector.get("/namespaces")
 

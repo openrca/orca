@@ -9,11 +9,6 @@ class APIClient(object):
     def __init__(self, connector):
         self._connector = connector
 
-    @staticmethod
-    def get(url):
-        connector = APIConnector(url)
-        return APIClient(connector)
-
 
 class APIConnector(object):
 
