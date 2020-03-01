@@ -91,6 +91,9 @@ class ResourceProxyFactory(object):
         elif kind == 'storage_class':
             return ResourceProxy(
                 k8s_client.StorageV1Api().list_storage_class)
+        elif kind == 'persistent_volume':
+            return ResourceProxy(
+                k8s_client.CoreV1Api().list_persistent_volume)
         else:
             raise Exception("Unknown kind %s" % kind)
 

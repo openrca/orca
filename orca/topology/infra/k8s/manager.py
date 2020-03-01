@@ -1,9 +1,9 @@
 from orca.common.clients.k8s import client as k8s
 from orca.topology import linker
 from orca.topology.infra.k8s import (cluster, config_map, daemon_set,
-                                     deployment, node, pod, probe, replica_set,
-                                     secret, service, stateful_set,
-                                     storage_class)
+                                     deployment, node, persistent_volume, pod,
+                                     probe, replica_set, secret, service,
+                                     stateful_set, storage_class)
 
 
 def initialize_probes(graph):
@@ -43,12 +43,16 @@ def initialize_probes(graph):
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'secret')),
         probe.Probe(
             graph=graph,
-            extractor=node.NodeExtractor(),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'node')),
-        probe.Probe(
-            graph=graph,
             extractor=storage_class.StorageClassExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'storage_class')),
+        probe.Probe(
+            graph=graph,
+            extractor=persistent_volume.PersistentVolumeExtractor(),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'persistent_volume')),
+        probe.Probe(
+            graph=graph,
+            extractor=node.NodeExtractor(),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'node')),
         cluster.ClusterProbe(graph=graph)]
 
 
@@ -94,6 +98,11 @@ def initialize_linkers(graph):
             target_kind='pod',
             graph=graph,
             matcher=secret.SecretToPodMatcher()),
+        linker.Linker(
+            source_kind='persistent_volume',
+            target_kind='storage_class',
+            graph=graph,
+            matcher=persistent_volume.PersistentVolumeToStorageClassMatcher()),
         linker.Linker(
             source_kind='node',
             target_kind='cluster',
