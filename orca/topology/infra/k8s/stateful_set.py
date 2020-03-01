@@ -4,7 +4,7 @@ from orca.topology.infra.k8s import extractor
 class StatefulSetExtractor(extractor.Extractor):
 
     def get_kind(self):
-        return 'steteful_set'
+        return 'stateful_set'
 
     def _extract_properties(self, entity):
         properties = {}
