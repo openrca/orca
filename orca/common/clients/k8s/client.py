@@ -88,6 +88,9 @@ class ResourceProxyFactory(object):
         elif kind == 'replica_set':
             return ResourceProxy(
                 k8s_client.ExtensionsV1beta1Api().list_replica_set_for_all_namespaces)
+        elif kind == 'storage_class':
+            return ResourceProxy(
+                k8s_client.StorageV1Api().list_storage_class)
         else:
             raise Exception("Unknown kind %s" % kind)
 

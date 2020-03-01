@@ -2,7 +2,8 @@ from orca.common.clients.k8s import client as k8s
 from orca.topology import linker
 from orca.topology.infra.k8s import (cluster, config_map, daemon_set,
                                      deployment, node, pod, probe, replica_set,
-                                     secret, service, stateful_set)
+                                     secret, service, stateful_set,
+                                     storage_class)
 
 
 def initialize_probes(graph):
@@ -44,6 +45,10 @@ def initialize_probes(graph):
             graph=graph,
             extractor=node.NodeExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'node')),
+        probe.Probe(
+            graph=graph,
+            extractor=storage_class.StorageClassExtractor(),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'storage_class')),
         cluster.ClusterProbe(graph=graph)]
 
 
