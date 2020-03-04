@@ -114,6 +114,11 @@ def initialize_linkers(graph):
             graph=graph,
             matcher=persistent_volume.PersistentVolumeToPersistentVolumeClaimMatcher()),
         linker.Linker(
+            source_kind='persistent_volume_claim',
+            target_kind='pod',
+            graph=graph,
+            matcher=persistent_volume_claim.PersistentVolumeClaimToPodMatcher()),
+        linker.Linker(
             source_kind='node',
             target_kind='cluster',
             graph=graph,

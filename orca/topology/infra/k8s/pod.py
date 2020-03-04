@@ -60,6 +60,8 @@ class PodExtractor(extractor.Extractor):
             properties['config_map'] = None
             if volume.config_map:
                 properties['config_map'] = volume.config_map.to_dict()
+            if volume.persistent_volume_claim:
+                properties['persistent_volume_claim'] = volume.persistent_volume_claim.to_dict()
             volumes.append(properties)
         return volumes
 
