@@ -35,3 +35,9 @@ class PersistentVolumeToStorageClassMatcher(linker.Matcher):
            persistent_volume.properties.storage_class == storage_class.properties.name:
             return True
         return False
+
+
+class PersistentVolumeToPersistentVolumeClaimMatcher(linker.Matcher):
+
+    def are_linked(self, pv, pvc):
+        return pv.properties.name == pvc.properties.volume_name
