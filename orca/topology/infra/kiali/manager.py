@@ -1,5 +1,5 @@
 from orca.common.clients.kiali import client as kiali
-from orca.topology.infra.kiali import service
+from orca.topology.infra.kiali import probe
 
 
 def initialize_probes(graph):
@@ -7,9 +7,7 @@ def initialize_probes(graph):
         "http://kiali.istio-system:20001", username="admin", password="admin")
 
     return [
-        service.Probe(
-            graph=graph,
-            kiali_client=kiali_client)]
+        probe.Probe(graph=graph, kiali_client=kiali_client)]
 
 
 def initialize_linkers(graph):
