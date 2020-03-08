@@ -1,7 +1,7 @@
 from orca.common.clients.k8s import client as k8s
 from orca.topology import linker
 from orca.topology.infra.k8s import (
-    cluster, config_map, daemon_set, deployment, namespace, node,
+    cluster, config_map, daemon_set, deployment, endpoints, namespace, node,
     persistent_volume, persistent_volume_claim, pod, probe, replica_set,
     secret, service, stateful_set, storage_class)
 
@@ -17,6 +17,10 @@ def initialize_probes(graph):
             graph=graph,
             extractor=service.ServiceExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'service')),
+        probe.Probe(
+            graph=graph,
+            extractor=endpoints.EndpointsExtractor(),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'endpoints')),
         probe.Probe(
             graph=graph,
             extractor=deployment.DeploymentExtractor(),
@@ -92,6 +96,11 @@ def initialize_linkers(graph):
             graph=graph,
             matcher=pod.PodToNodeMatcher()),
         linker.Linker(
+            source_kind='endpoints',
+            target_kind='service',
+            graph=graph,
+            matcher=endpoints.EndpointsToServiceMatcher()),
+        linker.Linker(
             source_kind='replica_set',
             target_kind='deployment',
             graph=graph,
@@ -137,4 +146,3 @@ def initialize_linkers(graph):
                 matcher=namespace.NamespaceMatcher()))
 
     return linkers
-

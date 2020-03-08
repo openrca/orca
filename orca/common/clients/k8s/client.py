@@ -67,6 +67,9 @@ class ResourceProxyFactory(object):
         elif kind == 'service':
             return ResourceProxy(
                 k8s_client.CoreV1Api().list_service_for_all_namespaces)
+        elif kind == 'endpoints':
+            return ResourceProxy(
+                k8s_client.CoreV1Api().list_endpoints_for_all_namespaces)
         elif kind == 'config_map':
             return ResourceProxy(
                 k8s_client.CoreV1Api().list_config_map_for_all_namespaces)
