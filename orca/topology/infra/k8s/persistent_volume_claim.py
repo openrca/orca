@@ -44,4 +44,3 @@ class PersistentVolumeClaimToPodMatcher(linker.Matcher):
                volume.persistent_volume_claim.claim_name == pvc.properties.name:
                 return True
         return False
-

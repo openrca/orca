@@ -127,7 +127,6 @@ class Neo4jDriver(driver.Driver):
         query = "MATCH (src_node)-%s-(dst_node) SET rel = {%s}" % (rel_pattern, cypher_properties)
         self._run_query(query)
 
-
     def delete_link(self, link):
         rel_pattern = self._build_rel_pattern(link.id, None, None)
         query = "MATCH (src_node)-%s-(dst_node) DELETE rel" % (rel_pattern)

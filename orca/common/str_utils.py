@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 def escape(s):
     escaped = s.replace('"', '\\"')
     escaped = escaped.replace('\n', '\\n')

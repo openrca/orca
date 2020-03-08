@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 def match_host_to_service(namespace, host, service):
     host_parts = host.split('.')
     service_name = host_parts[0]

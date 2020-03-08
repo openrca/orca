@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 def match_namespace(node_a, node_b):
     return node_a.properties.namespace == node_b.properties.namespace
 

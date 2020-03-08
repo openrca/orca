@@ -14,7 +14,6 @@
 
 from orca.topology import linker
 from orca.topology.infra.k8s import extractor
-from orca.topology.infra.k8s import linker as k8s_linker
 
 
 class PersistentVolumeExtractor(extractor.Extractor):
