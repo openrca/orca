@@ -97,6 +97,9 @@ class ResourceProxyFactory(object):
         elif kind == 'persistent_volume_claim':
             return ResourceProxy(
                 k8s_client.CoreV1Api().list_persistent_volume_claim_for_all_namespaces)
+        elif kind == 'namespace':
+            return ResourceProxy(
+                k8s_client.CoreV1Api().list_namespace)
         else:
             raise Exception("Unknown kind %s" % kind)
 

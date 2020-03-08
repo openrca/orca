@@ -1,10 +1,9 @@
 from orca.common.clients.k8s import client as k8s
 from orca.topology import linker
-from orca.topology.infra.k8s import (cluster, config_map, daemon_set,
-                                     deployment, node, persistent_volume,
-                                     persistent_volume_claim, pod, probe,
-                                     replica_set, secret, service,
-                                     stateful_set, storage_class)
+from orca.topology.infra.k8s import (
+    cluster, config_map, daemon_set, deployment, namespace, node,
+    persistent_volume, persistent_volume_claim, pod, probe, replica_set,
+    secret, service, stateful_set, storage_class)
 
 
 def initialize_probes(graph):
@@ -58,11 +57,15 @@ def initialize_probes(graph):
             graph=graph,
             extractor=node.NodeExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'node')),
+        probe.Probe(
+            graph=graph,
+            extractor=namespace.NamespaceExtractor(),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'namespace')),
         cluster.ClusterProbe(graph=graph)]
 
 
 def initialize_linkers(graph):
-    return [
+    linkers = [
         linker.Linker(
             source_kind='pod',
             target_kind='service',
@@ -123,3 +126,15 @@ def initialize_linkers(graph):
             target_kind='cluster',
             graph=graph,
             matcher=node.NodeToClusterMatcher())]
+
+    for kind in ('pod', 'service', 'deployment', 'replica_set', 'daemon_set', 'stateful_set',
+                 'config_map', 'secret', 'persistent_volume_claim'):
+        linkers.append(
+            linker.Linker(
+                source_kind=kind,
+                target_kind='namespace',
+                graph=graph,
+                matcher=namespace.NamespaceMatcher()))
+
+    return linkers
+
