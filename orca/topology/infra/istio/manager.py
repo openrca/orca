@@ -15,8 +15,7 @@
 from orca.common.clients.istio import client as istio
 from orca.common.clients.k8s import client as k8s
 from orca.topology import linker
-from orca.topology.infra.istio import (destination_rule, gateway,
-                                       virtual_service)
+from orca.topology.infra.istio import destination_rule, gateway, virtual_service
 from orca.topology.infra.k8s import probe
 
 

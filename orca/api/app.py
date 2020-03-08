@@ -15,8 +15,8 @@
 from flask import Flask
 
 from orca import api
-from orca.graph import graph
 from orca.graph import drivers as graph_drivers
+from orca.graph import graph
 
 
 def create_app():
