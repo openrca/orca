@@ -41,16 +41,12 @@ class Probe(probe.Probe, k8s.EventHandler):
 
         nodes_to_delete_ids = nodes_in_graph_ids.difference(upstream_nodes_ids)
         nodes_to_update_ids = nodes_in_graph_ids.difference(nodes_to_delete_ids)
-        nodes_to_create_ids = upstream_nodes_ids.difference(nodes_in_graph_ids)
 
         for node_id in nodes_to_delete_ids:
             self._graph.delete_node(nodes_in_graph[node_id])
 
         for node_id in nodes_to_update_ids:
             self._graph.update_node(upstream_nodes[node_id])
-
-        for node_id in nodes_to_create_ids:
-            self._graph.add_node(upstream_nodes[node_id])
 
     def _build_node_lookup(self, nodes):
         return {node.id: node for node in nodes}
