@@ -36,6 +36,10 @@ prometheus:
         properties:
           name: pod
           namespace: namespace
+    - name: KubeAPILatencyHigh
+      source_mapping:
+        kind: cluster
+        properties: {}
 falco:
   blacklist_values:
     - '<NA>'
