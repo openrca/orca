@@ -11,6 +11,8 @@ falco:
   httpOutput:
     enabled: true
     url: "http://orca.rca:5000/v1/ingestor/falco"
+  syscallEventDrops:
+    actions: ["log"]
 
 resources:
   requests:
