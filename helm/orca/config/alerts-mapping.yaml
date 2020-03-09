@@ -64,6 +64,18 @@ falco:
         properties:
           name: ka.resp.name
           namespace: ka.target.namespace
+    - name: "Terminal shell in container"
+      source_mapping:
+        kind: pod
+        properties:
+          name: k8s.pod.name
+          namespace: k8s.ns.name
+    - name: "Detect outbound connections to common miner pool ports"
+      source_mapping:
+        kind: pod
+        properties:
+          name: k8s.pod.name
+          namespace: k8s.ns.name
 elastalert:
   mappings:
     - name: "Application error"
