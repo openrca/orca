@@ -40,6 +40,18 @@ prometheus:
       source_mapping:
         kind: cluster
         properties: {}
+    - name: KubeHpaMaxedOut
+      source_mapping:
+        kind: horizontal_pod_autoscaler
+        properties:
+          name: hpa
+          namespace: namespace
+    - name: KubeHpaReplicasMismatch
+      source_mapping:
+        kind: horizontal_pod_autoscaler
+        properties:
+          name: hpa
+          namespace: namespace
 falco:
   blacklist_values:
     - '<NA>'
