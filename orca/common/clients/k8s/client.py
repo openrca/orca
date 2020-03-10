@@ -117,6 +117,9 @@ class ResourceProxyFactory(object):
         elif kind == 'namespace':
             return ResourceProxy(
                 k8s_client.CoreV1Api().list_namespace)
+        elif kind == 'horizontal_pod_autoscaler':
+            return ResourceProxy(
+                k8s_client.AutoscalingV1Api().list_horizontal_pod_autoscaler_for_all_namespaces)
         else:
             raise Exception("Unknown kind %s" % kind)
 

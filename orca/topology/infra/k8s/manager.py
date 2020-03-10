@@ -15,9 +15,10 @@
 from orca.common.clients.k8s import client as k8s
 from orca.topology import linker
 from orca.topology.infra.k8s import (
-    cluster, config_map, daemon_set, deployment, endpoints, namespace, node,
-    persistent_volume, persistent_volume_claim, pod, probe, replica_set,
-    secret, service, stateful_set, storage_class)
+    cluster, config_map, daemon_set, deployment, endpoints,
+    horizontal_pod_autoscaler, namespace, node, persistent_volume,
+    persistent_volume_claim, pod, probe, replica_set, secret, service,
+    stateful_set, storage_class)
 
 
 def initialize_probes(graph):
@@ -79,6 +80,10 @@ def initialize_probes(graph):
             graph=graph,
             extractor=namespace.NamespaceExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'namespace')),
+        probe.Probe(
+            graph=graph,
+            extractor=horizontal_pod_autoscaler.HorizontalPodAutoscalerExtractor(),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'horizontal_pod_autoscaler')),
         cluster.ClusterProbe(graph=graph)]
 
 
@@ -150,8 +155,16 @@ def initialize_linkers(graph):
             graph=graph,
             matcher=node.NodeToClusterMatcher())]
 
+    for kind in ('deployment', 'replica_set', 'stateful_set'):
+        linkers.append(
+            linker.Linker(
+                source_kind=kind,
+                target_kind='horizontal_pod_autoscaler',
+                graph=graph,
+                matcher=horizontal_pod_autoscaler.HorizontalPodAutoscalerMatcher()))
+
     for kind in ('pod', 'service', 'deployment', 'replica_set', 'daemon_set', 'stateful_set',
-                 'config_map', 'secret', 'persistent_volume_claim'):
+                 'config_map', 'secret', 'persistent_volume_claim', 'horizontal_pod_autoscaler'):
         linkers.append(
             linker.Linker(
                 source_kind=kind,
