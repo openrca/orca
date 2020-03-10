@@ -82,6 +82,21 @@ prometheus:
         properties:
           name: daemonset
           namespace: namespace
+    - name: KubePersistentVolumeErrors
+      source_mapping:
+        kind: persistent_volume
+        properties:
+          name: persistentvolume
+    - name: KubePersistentVolumeFullInFourDays
+      source_mapping:
+        kind: persistent_volume
+        properties:
+          name: persistentvolume
+    - name: KubePersistentVolumeUsageCritical
+      source_mapping:
+        kind: persistent_volume
+        properties:
+          name: persistentvolume
 falco:
   blacklist_values:
     - '<NA>'
