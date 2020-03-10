@@ -30,6 +30,18 @@ prometheus:
         properties:
           name: statefulset
           namespace: namespace
+    - name: KubeStatefulSetGenerationMismatch
+      source_mapping:
+        kind: stateful_set
+        properties:
+          name: statefulset
+          namespace: namespace
+    - name: KubeStatefulSetUpdateNotRolledOut
+      source_mapping:
+        kind: stateful_set
+        properties:
+          name: statefulset
+          namespace: namespace
     - name: CPUThrottlingHigh
       source_mapping:
         kind: pod
