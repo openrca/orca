@@ -97,6 +97,62 @@ prometheus:
         kind: persistent_volume
         properties:
           name: persistentvolume
+    - name: KubeNodeNotReady
+      source_mapping:
+        kind: node
+        properties:
+          name: node
+    - name: KubeNodeUnreachable
+      source_mapping:
+        kind: node
+        properties:
+          name: node
+    - name: KubeletDown
+      source_mapping:
+        kind: node
+        properties:
+          name: node
+    - name: KubeletTooManyPods
+      source_mapping:
+        kind: node
+        properties:
+          name: node
+    - name: NodeFilesystemAlmostOutOfFiles
+      source_mapping:
+        kind: node
+        properties:
+          name: instance
+    - name: NodeFilesystemAlmostOutOfSpace
+      source_mapping:
+        kind: node
+        properties:
+          name: instance
+    - name: NodeFilesystemFilesFillingUp
+      source_mapping:
+        kind: node
+        properties:
+          name: instance
+    - name: NodeFilesystemSpaceFillingUp
+      source_mapping:
+        kind: node
+        properties:
+          name: instance
+    - name: NodeNetworkReceiveErrs
+      source_mapping:
+        kind: node
+        properties:
+          name: instance
+    - name: NodeNetworkTransmitErrs
+      source_mapping:
+        kind: node
+        properties:
+          name: instance
+    - name: NodeFilesystemAlmostOutOfFiles
+      source_mapping:
+        kind: node
+        properties:
+          name: instance
+
 falco:
   blacklist_values:
     - '<NA>'
