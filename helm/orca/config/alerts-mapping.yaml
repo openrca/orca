@@ -52,6 +52,24 @@ prometheus:
         properties:
           name: hpa
           namespace: namespace
+    - name: KubeDaemonSetMisScheduled
+      source_mapping:
+        kind: daemon_set
+        properties:
+          name: daemonset
+          namespace: namespace
+    - name: KubeDaemonSetNotScheduled
+      source_mapping:
+        kind: daemon_set
+        properties:
+          name: daemonset
+          namespace: namespace
+    - name: KubeDaemonSetRolloutStuck
+      source_mapping:
+        kind: daemon_set
+        properties:
+          name: daemonset
+          namespace: namespace
 falco:
   blacklist_values:
     - '<NA>'
