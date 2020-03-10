@@ -1,0 +1,55 @@
+// - rule: Terminal shell in container
+//   desc: A shell was used as the entrypoint/exec point into a container with an attached terminal.
+//   condition: >
+//     spawned_process and container
+//     and shell_procs and proc.tty != 0
+//     and container_entrypoint
+//   output: >
+//     A shell was spawned in a container with an attached terminal (user=%user.name %container.info
+//     shell=%proc.name parent=%proc.pname cmdline=%proc.cmdline terminal=%proc.tty container_id=%container.id image=%container.image.repository)
+//   priority: NOTICE
+//   tags: [container, shell, mitre_execution]
+
+{
+    "output":"09:39:32.738879238: Notice A shell was spawned in a container with an attached terminal (user=root k8s.ns=falco k8s.pod=falco-7g7mg container=da7bad0d94f2 shell=bash parent=runc cmdline=bash terminal=34816 container_id=da7bad0d94f2 image=falcosecurity/falco) k8s.ns=falco k8s.pod=falco-7g7mg container=da7bad0d94f2 k8s.ns=falco k8s.pod=falco-7g7mg container=da7bad0d94f2",
+    "priority":"Notice",
+    "rule":"Terminal shell in container",
+    "time":"2020-03-05T09:39:32.738879238Z",
+    "output_fields":{
+       "container.id":"da7bad0d94f2",
+       "container.image.repository":"falcosecurity/falco",
+       "evt.time":1583401172738879238,
+       "k8s.ns.name":"falco",
+       "k8s.pod.name":"falco-7g7mg",
+       "proc.cmdline":"bash",
+       "proc.name":"bash",
+       "proc.pname":"runc",
+       "proc.tty":34816,
+       "user.name":"root"
+    }
+ }
+
+//  - rule: Detect outbound connections to common miner pool ports
+//  desc: Miners typically connect to miner pools on common ports.
+//  condition: net_miner_pool
+//  output: Outbound connection to IP/Port flagged by cryptoioc.ch (command=%proc.cmdline port=%fd.rport ip=%fd.rip container=%container.info image=%container.image.repository)
+//  priority: CRITICAL
+//  tags: [network, mitre_execution]
+
+
+ {
+   "output":"10:41:28.398611074: Critical Outbound connection to IP/Port flagged by cryptoioc.ch (command=python email_server.py port=8080 ip=127.0.0.1 container=k8s.ns=hipster-shop k8s.pod=emailservice-58df995497-wqh76 container=43158711e476 image=gcr.io/google-samples/microservices-demo/emailservice) k8s.ns=hipster-shop k8s.pod=emailservice-58df995497-wqh76 container=43158711e476 k8s.ns=hipster-shop k8s.pod=emailservice-58df995497-wqh76 container=43158711e476",
+   "priority":"Critical",
+   "rule":"Detect outbound connections to common miner pool ports",
+   "time":"2020-03-05T10:41:28.398611074Z",
+   "output_fields":{
+      "container.id":"43158711e476",
+      "container.image.repository":"gcr.io/google-samples/microservices-demo/emailservice",
+      "evt.time":1583404888398611074,
+      "fd.rip":"127.0.0.1",
+      "fd.rport":8080,
+      "k8s.ns.name":"hipster-shop",
+      "k8s.pod.name":"emailservice-58df995497-wqh76",
+      "proc.cmdline":"python email_server.py"
+   }
+}
