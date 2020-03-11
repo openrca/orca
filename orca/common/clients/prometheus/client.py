@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.common.clients import client
+from orca.common.clients import rest_client
 
 
-class PrometheusClient(client.APIClient):
+class PrometheusClient(rest_client.APIClient):
+
+    """Client for Prometheus API."""
 
     def alerts(self):
         return self._connector.get("alerts")

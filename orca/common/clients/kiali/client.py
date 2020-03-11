@@ -14,10 +14,12 @@
 
 from requests import auth
 
-from orca.common.clients import client
+from orca.common.clients import rest_client
 
 
-class KialiClient(client.APIClient):
+class KialiClient(rest_client.APIClient):
+
+    """Client for Kiali API."""
 
     def list_namespaces(self):
         return self._connector.get("/namespaces")

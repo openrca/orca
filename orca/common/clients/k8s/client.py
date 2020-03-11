@@ -26,51 +26,6 @@ class ClientFactory(object):
         return client
 
 
-class ResourceProxy(object):
-
-    def __init__(self, list_fn):
-        self._list_fn = list_fn
-
-    def get_all(self):
-        return self._list_fn().items
-
-    def watch(self, handler):
-        for event in self._watch_resource():
-            event_type, event_object = event['type'], event['object']
-            if event_type == "ADDED":
-                handler.on_added(event_object)
-            elif event_type == "MODIFIED":
-                handler.on_updated(event_object)
-            elif event_type == "DELETED":
-                handler.on_deleted(event_object)
-            else:
-                raise Exception("Unknown event type '%s': %s" % (event_type, event_object))
-
-    def _watch_resource(self):
-        return watch.Watch().stream(self._list_fn)
-
-
-class CustomResourceProxy(ResourceProxy):
-
-    def __init__(self, list_fn, group, version, plural):
-        super().__init__(list_fn)
-        self._group = group
-        self._version = version
-        self._plural = plural
-
-    def get_all(self):
-        items = self._list_fn(self._group, self._version, self._plural)['items']
-        return [self._extract_item(item) for item in items]
-
-    def _watch_resource(self):
-        for event in watch.Watch().stream(self._list_fn, self._group, self._version, self._plural):
-            event['object'] = self._extract_item(event.pop('object'))
-            yield event
-
-    def _extract_item(self, item):
-        return dictlib.Dict(item)
-
-
 class ResourceProxyFactory(object):
 
     @staticmethod
@@ -122,6 +77,51 @@ class ResourceProxyFactory(object):
                 k8s_client.AutoscalingV1Api().list_horizontal_pod_autoscaler_for_all_namespaces)
         else:
             raise Exception("Unknown kind %s" % kind)
+
+
+class ResourceProxy(object):
+
+    def __init__(self, list_fn):
+        self._list_fn = list_fn
+
+    def get_all(self):
+        return self._list_fn().items
+
+    def watch(self, handler):
+        for event in self._watch_resource():
+            event_type, event_object = event['type'], event['object']
+            if event_type == "ADDED":
+                handler.on_added(event_object)
+            elif event_type == "MODIFIED":
+                handler.on_updated(event_object)
+            elif event_type == "DELETED":
+                handler.on_deleted(event_object)
+            else:
+                raise Exception("Unknown event type '%s': %s" % (event_type, event_object))
+
+    def _watch_resource(self):
+        return watch.Watch().stream(self._list_fn)
+
+
+class CustomResourceProxy(ResourceProxy):
+
+    def __init__(self, list_fn, group, version, plural):
+        super().__init__(list_fn)
+        self._group = group
+        self._version = version
+        self._plural = plural
+
+    def get_all(self):
+        items = self._list_fn(self._group, self._version, self._plural)['items']
+        return [self._extract_item(item) for item in items]
+
+    def _watch_resource(self):
+        for event in watch.Watch().stream(self._list_fn, self._group, self._version, self._plural):
+            event['object'] = self._extract_item(event.pop('object'))
+            yield event
+
+    def _extract_item(self, item):
+        return dictlib.Dict(item)
 
 
 class EventHandler(abc.ABC):
