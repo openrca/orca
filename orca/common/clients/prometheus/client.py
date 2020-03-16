@@ -27,5 +27,5 @@ class PrometheusClient(rest_client.APIClient):
 
     @staticmethod
     def get(url="http://localhost:9090", api_prefix="/api/v1"):
-        connector = client.APIConnector(url, api_prefix=api_prefix)
+        connector = rest_client.APIConnector(url, api_prefix=api_prefix)
         return PrometheusClient(connector)

@@ -34,5 +34,5 @@ class KialiClient(rest_client.APIClient):
         basic_auth = None
         if username and password:
             basic_auth = auth.HTTPBasicAuth(username, password)
-        connector = client.APIConnector(url, api_prefix=api_prefix, auth=basic_auth)
+        connector = rest_client.APIConnector(url, api_prefix=api_prefix, auth=basic_auth)
         return KialiClient(connector)
