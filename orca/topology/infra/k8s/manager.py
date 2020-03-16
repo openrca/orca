@@ -13,12 +13,10 @@
 # limitations under the License.
 
 from orca.common.clients.k8s import client as k8s
-from orca.topology import linker
-from orca.topology.infra.k8s import (
-    cluster, config_map, daemon_set, deployment, endpoints,
-    horizontal_pod_autoscaler, namespace, node, persistent_volume,
-    persistent_volume_claim, pod, probe, replica_set, secret, service,
-    stateful_set, storage_class)
+from orca.topology.infra.k8s import extractor
+from orca.topology.infra.k8s import linker
+from orca.topology.infra.k8s import probe
+from orca.topology.infra.k8s import cluster
 
 
 def initialize_probes(graph):
@@ -26,64 +24,64 @@ def initialize_probes(graph):
     return [
         probe.Probe(
             graph=graph,
-            extractor=pod.PodExtractor(),
+            extractor=extractor.PodExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'pod')),
         probe.Probe(
             graph=graph,
-            extractor=service.ServiceExtractor(),
+            extractor=extractor.ServiceExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'service')),
         probe.Probe(
             graph=graph,
-            extractor=endpoints.EndpointsExtractor(),
+            extractor=extractor.EndpointsExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'endpoints')),
         probe.Probe(
             graph=graph,
-            extractor=deployment.DeploymentExtractor(),
+            extractor=extractor.DeploymentExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'deployment')),
         probe.Probe(
             graph=graph,
-            extractor=replica_set.ReplicaSetExtractor(),
+            extractor=extractor.ReplicaSetExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'replica_set')),
         probe.Probe(
             graph=graph,
-            extractor=daemon_set.DaemonSetExtractor(),
+            extractor=extractor.DaemonSetExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'daemon_set')),
         probe.Probe(
             graph=graph,
-            extractor=stateful_set.StatefulSetExtractor(),
+            extractor=extractor.StatefulSetExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'stateful_set')),
         probe.Probe(
             graph=graph,
-            extractor=config_map.ConfigMapExtractor(),
+            extractor=extractor.ConfigMapExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'config_map')),
         probe.Probe(
             graph=graph,
-            extractor=secret.SecretExtractor(),
+            extractor=extractor.SecretExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'secret')),
         probe.Probe(
             graph=graph,
-            extractor=storage_class.StorageClassExtractor(),
+            extractor=extractor.StorageClassExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'storage_class')),
         probe.Probe(
             graph=graph,
-            extractor=persistent_volume.PersistentVolumeExtractor(),
+            extractor=extractor.PersistentVolumeExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'persistent_volume')),
         probe.Probe(
             graph=graph,
-            extractor=persistent_volume_claim.PersistentVolumeClaimExtractor(),
+            extractor=extractor.PersistentVolumeClaimExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'persistent_volume_claim')),
         probe.Probe(
             graph=graph,
-            extractor=node.NodeExtractor(),
+            extractor=extractor.HorizontalPodAutoscalerExtractor(),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'horizontal_pod_autoscaler')),
+        probe.Probe(
+            graph=graph,
+            extractor=extractor.NodeExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'node')),
         probe.Probe(
             graph=graph,
-            extractor=namespace.NamespaceExtractor(),
+            extractor=extractor.NamespaceExtractor(),
             k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'namespace')),
-        probe.Probe(
-            graph=graph,
-            extractor=horizontal_pod_autoscaler.HorizontalPodAutoscalerExtractor(),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'horizontal_pod_autoscaler')),
         cluster.ClusterProbe(graph=graph)]
 
 
@@ -93,67 +91,67 @@ def initialize_linkers(graph):
             source_kind='pod',
             target_kind='service',
             graph=graph,
-            matcher=pod.PodToServiceMatcher()),
+            matcher=linker.PodToServiceMatcher()),
         linker.Linker(
             source_kind='pod',
             target_kind='replica_set',
             graph=graph,
-            matcher=pod.PodToReplicaSetMatcher()),
+            matcher=linker.PodToReplicaSetMatcher()),
         linker.Linker(
             source_kind='pod',
             target_kind='stateful_set',
             graph=graph,
-            matcher=pod.PodToStatefulSetMatcher()),
+            matcher=linker.PodToStatefulSetMatcher()),
         linker.Linker(
             source_kind='pod',
             target_kind='daemon_set',
             graph=graph,
-            matcher=pod.PodToDaemonSetMatcher()),
+            matcher=linker.PodToDaemonSetMatcher()),
         linker.Linker(
             source_kind='pod',
             target_kind='node',
             graph=graph,
-            matcher=pod.PodToNodeMatcher()),
+            matcher=linker.PodToNodeMatcher()),
         linker.Linker(
             source_kind='endpoints',
             target_kind='service',
             graph=graph,
-            matcher=endpoints.EndpointsToServiceMatcher()),
+            matcher=linker.EndpointsToServiceMatcher()),
         linker.Linker(
             source_kind='replica_set',
             target_kind='deployment',
             graph=graph,
-            matcher=replica_set.ReplicaSetToDeploymentMatcher()),
+            matcher=linker.ReplicaSetToDeploymentMatcher()),
         linker.Linker(
             source_kind='config_map',
             target_kind='pod',
             graph=graph,
-            matcher=config_map.ConfigMapToPodMatcher()),
+            matcher=linker.ConfigMapToPodMatcher()),
         linker.Linker(
             source_kind='secret',
             target_kind='pod',
             graph=graph,
-            matcher=secret.SecretToPodMatcher()),
+            matcher=linker.SecretToPodMatcher()),
         linker.Linker(
             source_kind='persistent_volume',
             target_kind='storage_class',
             graph=graph,
-            matcher=persistent_volume.PersistentVolumeToStorageClassMatcher()),
+            matcher=linker.PersistentVolumeToStorageClassMatcher()),
         linker.Linker(
             source_kind='persistent_volume',
             target_kind='persistent_volume_claim',
             graph=graph,
-            matcher=persistent_volume.PersistentVolumeToPersistentVolumeClaimMatcher()),
+            matcher=linker.PersistentVolumeToPersistentVolumeClaimMatcher()),
         linker.Linker(
             source_kind='persistent_volume_claim',
             target_kind='pod',
             graph=graph,
-            matcher=persistent_volume_claim.PersistentVolumeClaimToPodMatcher()),
+            matcher=linker.PersistentVolumeClaimToPodMatcher()),
         linker.Linker(
             source_kind='node',
             target_kind='cluster',
             graph=graph,
-            matcher=node.NodeToClusterMatcher())]
+            matcher=linker.NodeToClusterMatcher())]
 
     for kind in ('deployment', 'replica_set', 'stateful_set'):
         linkers.append(
@@ -161,7 +159,7 @@ def initialize_linkers(graph):
                 source_kind=kind,
                 target_kind='horizontal_pod_autoscaler',
                 graph=graph,
-                matcher=horizontal_pod_autoscaler.HorizontalPodAutoscalerMatcher()))
+                matcher=linker.HorizontalPodAutoscalerMatcher()))
 
     for kind in ('pod', 'service', 'deployment', 'replica_set', 'daemon_set', 'stateful_set',
                  'config_map', 'secret', 'persistent_volume_claim', 'horizontal_pod_autoscaler'):
@@ -170,6 +168,6 @@ def initialize_linkers(graph):
                 source_kind=kind,
                 target_kind='namespace',
                 graph=graph,
-                matcher=namespace.NamespaceMatcher()))
+                matcher=linker.NamespaceMatcher()))
 
     return linkers

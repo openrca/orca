@@ -21,6 +21,8 @@ log = logger.get_logger(__name__)
 
 class Probe(probe.Probe, k8s.EventHandler):
 
+    """Probe for Kubernetes entities."""
+
     def __init__(self, graph, extractor, k8s_client):
         super().__init__(graph)
         self._extractor = extractor
