@@ -20,16 +20,18 @@ from orca.graph import graph
 
 class Probe(probe.Probe):
 
+    """Probe for synchronizing service graph from Kiali."""
+
     def __init__(self, graph, kiali_client):
         super().__init__(graph)
         self._kiali_client = kiali_client
 
     def run(self):
         while True:
-            self._synchronize_service_graph()
+            self._synchronize()
             time.sleep(60)
 
-    def _synchronize_service_graph(self):
+    def _synchronize(self):
         namespaces = self._get_namespaces()
         nodes, edges = self._get_service_graph(namespaces)
         service_mapping = self._build_service_mapping(nodes)

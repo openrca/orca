@@ -12,6 +12,64 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from orca.topology import linker
+
+
+class Linker(linker.Linker):
+
+    """Base class for Istio linkers."""
+
+
+class Matcher(linker.Matcher):
+
+    """Base class for Istio matchers."""
+
+
+class VirtualServiceToGatewayMatcher(Matcher):
+
+    """Matcher for links between Virtual Service and Gateway entities."""
+
+    def are_linked(self, virtual_service, gateway):
+        return self._match_gateway(virtual_service, gateway)
+
+    def _match_gateway(self, virtual_service, gateway):
+        return gateway.properties.name in virtual_service.properties.gateways
+
+
+class VirtualServiceToServiceMatcher(Matcher):
+
+    """Matcher for links between Virtual Service and Service entities."""
+
+    def are_linked(self, virtual_service, service):
+        namespace = virtual_service.properties.namespace
+        if self._match_route_destination(
+           namespace, virtual_service.properties.http, service):
+            return True
+        if self._match_route_destination(
+           namespace, virtual_service.properties.tls, service):
+            return True
+        if self._match_route_destination(
+           namespace, virtual_service.properties.tcp, service):
+            return True
+        return False
+
+    def _match_route_destination(self, namespace, routes, service):
+        for route in routes:
+            for route_dest in route.route:
+                if match_host_to_service(
+                   namespace, route_dest.destination.host, service):
+                    return True
+        return False
+
+
+class DestinationRuleToServiceMatcher(Matcher):
+
+    """Matcher for links between Destination Rule and Service entities."""
+
+    def are_linked(self, destination_rule, service):
+        return match_host_to_service(
+            destination_rule.properties.namespace, destination_rule.properties.host, service)
+
 
 def match_host_to_service(namespace, host, service):
     host_parts = host.split('.')

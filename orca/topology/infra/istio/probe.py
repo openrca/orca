@@ -12,16 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology.infra.istio import extractor
+from orca.topology.infra.k8s import probe
 
 
-class GatewayExtractor(extractor.Extractor):
+class Probe(probe.Probe):
 
-    def get_kind(self):
-        return 'gateway'
-
-    def _extract_properties(self, entity):
-        properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
-        return properties
+    """Probe for Istio entities."""
