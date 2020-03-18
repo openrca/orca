@@ -17,8 +17,7 @@ from orca.topology import upstream
 
 class UpstreamProxy(upstream.UpstreamProxy):
 
-    def __init__(self, prom_client):
-        self._prom_client = prom_client
+    """Upstream proxy for Prometheus."""
 
     def get_all(self):
-        return self._prom_client.get_alerts()['data']['alerts']
+        return self._client.get_alerts()['data']['alerts']

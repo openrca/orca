@@ -19,6 +19,9 @@ class UpstreamProxy(abc.ABC):
 
     """Base class for upstream proxies."""
 
+    def __init__(self, client):
+        self._client = client
+
     @abc.abstractmethod
     def get_all(self):
         """Retrieves all entities from the upstream."""
