@@ -34,7 +34,7 @@ class Matcher(linker.Matcher):
     """Base class for alert matchers."""
 
 
-class AlertToSourceObjectMatcher(Matcher):
+class AlertToSourceMatcher(Matcher):
 
     """Generic matcher for links between Alert and source objects."""
 

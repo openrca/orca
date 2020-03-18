@@ -39,7 +39,7 @@ def initialize_linkers(graph):
             source_kind='alert',
             target_kind='any',
             graph=graph,
-            matcher=linker.AlertToSourceObjectMatcher(),
+            matcher=linker.AlertToSourceMatcher(),
             bidirectional=False
         )
     ]
