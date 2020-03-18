@@ -18,7 +18,7 @@ from orca.topology import linker
 
 class Linker(linker.Linker):
 
-    """Base class for Prometheus linkers."""
+    """Base class for alert linkers."""
 
     def _get_current_links(self, node):
         return self._graph.get_node_links(node)
@@ -31,7 +31,7 @@ class Linker(linker.Linker):
 
 class Matcher(linker.Matcher):
 
-    """Base class for Prometheus matchers."""
+    """Base class for alert matchers."""
 
 
 class AlertToSourceObjectMatcher(Matcher):

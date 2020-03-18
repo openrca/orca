@@ -13,9 +13,9 @@
 # limitations under the License.
 
 from orca.common.clients.prometheus import client as prometheus
-from orca.topology.alerts import extractor
+from orca.topology.alerts import extractor, linker
 from orca.topology.alerts.prometheus import extractor as prom_extractor
-from orca.topology.alerts.prometheus import linker, probe
+from orca.topology.alerts.prometheus import probe
 
 
 def initialize_probes(graph):
