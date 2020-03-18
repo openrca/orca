@@ -17,7 +17,7 @@ class NodeSynchronizer(object):
     def __init__(self, graph):
         self._graph = graph
 
-    def synchronize(self, nodes_in_graph, upstream_nodes):
+    def synchronize(self, nodes_in_graph, upstream_nodes, delete=True, update=True, create=True):
         nodes_in_graph = self._build_node_lookup(nodes_in_graph)
         upstream_nodes = self._build_node_lookup(upstream_nodes)
 
@@ -28,14 +28,17 @@ class NodeSynchronizer(object):
         nodes_to_update_ids = nodes_in_graph_ids.difference(nodes_to_delete_ids)
         nodes_to_create_ids = upstream_nodes_ids.difference(nodes_in_graph)
 
-        for node_id in nodes_to_delete_ids:
-            self._graph.delete_node(nodes_in_graph[node_id])
+        if delete:
+            for node_id in nodes_to_delete_ids:
+                self._graph.delete_node(nodes_in_graph[node_id])
 
-        for node_id in nodes_to_update_ids:
-            self._graph.update_node(upstream_nodes[node_id])
+        if update:
+            for node_id in nodes_to_update_ids:
+                self._graph.update_node(upstream_nodes[node_id])
 
-        for node_id in nodes_to_create_ids:
-            self._graph.add_node(upstream_nodes[node_id])
+        if create:
+            for node_id in nodes_to_create_ids:
+                self._graph.add_node(upstream_nodes[node_id])
 
     def _build_node_lookup(self, nodes):
         return {node.id: node for node in nodes}

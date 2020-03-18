@@ -52,7 +52,7 @@ class Probe(probe.Probe, k8s.EventHandler):
     def _synchronize(self):
         nodes_in_graph = self._get_nodes_in_graph()
         upstream_nodes = self._get_upstream_nodes()
-        self._synchronizer.synchronize(nodes_in_graph, upstream_nodes)
+        self._synchronizer.synchronize(nodes_in_graph, upstream_nodes, create=False)
 
     def _get_nodes_in_graph(self):
         return self._graph.get_nodes(
