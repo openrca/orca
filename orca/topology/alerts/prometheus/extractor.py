@@ -23,7 +23,7 @@ class Extractor(extractor.Extractor):
 
 class AlertExtractor(Extractor):
 
-    """Extractor for Alert entities."""
+    """Extractor for Alert entities retrieved from Prometheus API."""
 
     def get_origin(self):
         return 'prometheus'
@@ -36,7 +36,24 @@ class AlertExtractor(Extractor):
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['status'] = entity['status']
-        properties['severity'] = entity['labels']['severity']
-        properties['message'] = str_utils.escape(entity['annotations']['message'])
+        properties['status'] = self._extract_status(entity)
+        properties['severity'] = self._extract_severity(entity)
+        properties['message'] = self._extract_message(entity)
         return properties
+
+    def _extract_status(self, entity):
+        return entity['state']
+
+    def _extract_severity(self, entity):
+        return entity['labels']['severity']
+
+    def _extract_message(self, entity):
+        return str_utils.escape(entity['annotations']['message'])
+
+
+class AlertEventExtractor(AlertExtractor):
+
+    """Extractor for Alert events received from Alertmanager."""
+
+    def _extract_status(self, entity):
+        return entity['status']

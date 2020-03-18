@@ -26,7 +26,8 @@ class Dispatcher(graph.EventListener):
 
     def add_linker(self, linker):
         self._linkers.setdefault(linker.source_kind, []).append(linker)
-        self._linkers.setdefault(linker.target_kind, []).append(linker)
+        if linker.bidirectional:
+            self._linkers.setdefault(linker.target_kind, []).append(linker)
 
     def on_node_added(self, node):
         self._link_node(node)
@@ -54,12 +55,11 @@ class Dispatcher(graph.EventListener):
 
 class Linker(abc.ABC):
 
-    """Links pairs of nodes based on the matching condition."""
-
-    def __init__(self, source_kind, target_kind, graph, matcher):
+    def __init__(self, source_kind, target_kind, graph, matcher, bidirectional=True):
         super().__init__()
         self.source_kind = source_kind
         self.target_kind = target_kind
+        self.bidirectional = bidirectional
         self._graph = graph
         self._matcher = matcher
 

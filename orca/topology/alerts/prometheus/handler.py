@@ -21,4 +21,4 @@ class AlertHandler(handler.AlertHandler):
     @staticmethod
     def create(graph):
         source_mapper = extractor.SourceMapper('prometheus')
-        return AlertHandler(graph, prom_extractor.AlertExtractor(source_mapper))
+        return AlertHandler(graph, prom_extractor.AlertEventExtractor(source_mapper))

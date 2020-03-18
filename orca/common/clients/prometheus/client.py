@@ -19,7 +19,7 @@ class PrometheusClient(rest_client.APIClient):
 
     """Client for Prometheus API."""
 
-    def alerts(self):
+    def get_alerts(self):
         return self._connector.get("alerts")
 
     def instant_query(self, query):

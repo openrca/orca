@@ -22,11 +22,16 @@ class OrcaError(Exception):
         super(OrcaError, self).__init__(msg)
 
 
-class MappingNotFound(OrcaError):
+class SourceMappingError(OrcaError):
+
+    """Base class for source mapping errors."""
+
+
+class MappingNotFound(SourceMappingError):
 
     message = "Mapping not found for key: %(key)s."
 
 
-class InvalidMappedValue(OrcaError):
+class InvalidMappedValue(SourceMappingError):
 
     message = "Got invalid value for mapping '%(key)s': %(value)s."

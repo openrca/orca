@@ -12,13 +12,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology.alerts import probe
+from orca.common.clients.prometheus import client as prometheus
+from orca.topology.alerts import extractor
+from orca.topology.alerts.prometheus import extractor as prom_extractor
+from orca.topology.alerts.prometheus import linker, probe
 
 
 def initialize_probes(graph):
+    source_mapper = extractor.SourceMapper('prometheus')
+    prom_client = prometheus.PrometheusClient.get(
+        "http://prometheus-prometheus-oper-prometheus.monitoring:9090")
     return [
-        probe.Probe(graph=graph, origin='prometheus', kind='alert')]
+        probe.Probe(
+            graph=graph,
+            extractor=prom_extractor.AlertExtractor(source_mapper),
+            prom_client=prom_client
+        )
+    ]
 
 
 def initialize_linkers(graph):
-    return []
+    linkers = []
+    for kind in ('pod', 'daemon_set', 'persistent_volume', 'horizontal_pod_autoscaler', 'node'):
+        linkers.append(
+            linker.Linker(
+                source_kind='alert',
+                target_kind=kind,
+                graph=graph,
+                matcher=linker.AlertToSourceObjectMatcher(),
+                bidirectional=False
+            ))
+    return linkers
