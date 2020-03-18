@@ -1,0 +1,16 @@
+{
+    "labels":{
+       "alertname":"CPUThrottlingHigh",
+       "container":"metrics-server",
+       "namespace":"kube-system",
+       "pod":"metrics-server-8654479566-k2j9j",
+       "severity":"warning"
+    },
+    "annotations":{
+       "message":"42.62% throttling of CPU in namespace kube-system for container metrics-server in pod metrics-server-8654479566-k2j9j.",
+       "runbook_url":"https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh"
+    },
+    "state":"firing",
+    "activeAt":"2020-03-09T16:12:28.714203701Z",
+    "value":"4.2615176151761514e-01"
+ }
