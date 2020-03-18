@@ -23,9 +23,10 @@ class Probe(probe.Probe, k8s.EventHandler):
 
     """Probe for Kubernetes entities."""
 
-    def __init__(self, graph, extractor, k8s_client):
+    def __init__(self, graph, extractor, synchronizer, k8s_client):
         super().__init__(graph)
         self._extractor = extractor
+        self._synchronizer = synchronizer
         self._k8s_client = k8s_client
 
     def run(self):
@@ -49,23 +50,9 @@ class Probe(probe.Probe, k8s.EventHandler):
         self._graph.delete_node(node)
 
     def _synchronize(self):
-        nodes_in_graph = self._build_node_lookup(self._get_nodes_in_graph())
-        upstream_nodes = self._build_node_lookup(self._get_upstream_nodes())
-
-        nodes_in_graph_ids = set(nodes_in_graph.keys())
-        upstream_nodes_ids = set(upstream_nodes.keys())
-
-        nodes_to_delete_ids = nodes_in_graph_ids.difference(upstream_nodes_ids)
-        nodes_to_update_ids = nodes_in_graph_ids.difference(nodes_to_delete_ids)
-
-        for node_id in nodes_to_delete_ids:
-            self._graph.delete_node(nodes_in_graph[node_id])
-
-        for node_id in nodes_to_update_ids:
-            self._graph.update_node(upstream_nodes[node_id])
-
-    def _build_node_lookup(self, nodes):
-        return {node.id: node for node in nodes}
+        nodes_in_graph = self._get_nodes_in_graph()
+        upstream_nodes = self._get_upstream_nodes()
+        self._synchronizer.synchronize(nodes_in_graph, upstream_nodes)
 
     def _get_nodes_in_graph(self):
         return self._graph.get_nodes(

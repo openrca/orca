@@ -26,9 +26,10 @@ class Probe(probe.Probe):
 
     """Probe for synchronizing alerts from Prometheus."""
 
-    def __init__(self, graph, extractor, prom_client):
+    def __init__(self, graph, extractor, synchronizer, prom_client):
         super().__init__(graph)
         self._extractor = extractor
+        self._synchronizer = synchronizer
         self._prom_client = prom_client
 
     def run(self):
@@ -40,34 +41,16 @@ class Probe(probe.Probe):
             time.sleep(60)
 
     def _synchronize(self):
-        nodes_in_graph = self._build_node_lookup(self._get_nodes_in_graph())
-        upstream_nodes = self._build_node_lookup(self._get_upstream_nodes())
-
-        nodes_in_graph_ids = set(nodes_in_graph.keys())
-        upstream_nodes_ids = set(upstream_nodes.keys())
-
-        nodes_to_delete_ids = nodes_in_graph_ids.difference(upstream_nodes_ids)
-        nodes_to_update_ids = nodes_in_graph_ids.difference(nodes_to_delete_ids)
-        nodes_to_create_ids = upstream_nodes_ids.difference(nodes_in_graph)
-
-        for node_id in nodes_to_delete_ids:
-            self._graph.delete_node(nodes_in_graph[node_id])
-
-        for node_id in nodes_to_update_ids:
-            self._graph.update_node(upstream_nodes[node_id])
-
-        for node_id in nodes_to_create_ids:
-            self._graph.add_node(upstream_nodes[node_id])
-
-    def _build_node_lookup(self, nodes):
-        return {node.id: node for node in nodes}
+        nodes_in_graph = self._get_nodes_in_graph()
+        upstream_nodes = self._get_upstream_nodes()
+        self._synchronizer.synchronize(nodes_in_graph, upstream_nodes)
 
     def _get_nodes_in_graph(self):
         return self._graph.get_nodes(
             origin=self._extractor.get_origin(), kind=self._extractor.get_kind())
 
     def _get_upstream_nodes(self):
-        entities = self._prom_client.get_alerts()['data']['alerts']
+        entities = self._get_all_alerts()
         upstream_nodes = []
         for entity in entities:
             try:
@@ -76,3 +59,6 @@ class Probe(probe.Probe):
             except exceptions.SourceMappingError as ex:
                 log.warning("Error while processing an entity: %s", ex)
         return upstream_nodes
+
+    def _get_all_alerts(self):
+        return self._prom_client.get_alerts()['data']['alerts']
