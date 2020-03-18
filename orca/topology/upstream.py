@@ -12,20 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import time
-
-from orca.common import logger
-from orca.graph import graph
-from orca.topology import probe
-from orca import exceptions
-
-log = logger.get_logger(__name__)
+import abc
 
 
-class UpstreamProxy(probe.UpstreamProxy):
+class UpstreamProxy(abc.ABC):
 
-    def __init__(self, prom_client):
-        self._prom_client = prom_client
+    """Base class for upstream proxies."""
 
+    @abc.abstractmethod
     def get_all(self):
-        return self._prom_client.get_alerts()['data']['alerts']
+        """Retrieves all entities from the upstream."""

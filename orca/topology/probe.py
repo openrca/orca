@@ -85,9 +85,3 @@ class PullProbe(Probe):
                 log.warning("Error while processing an entity: %s", ex)
         return upstream_nodes
 
-
-class UpstreamProxy(abc.ABC):
-
-    @abc.abstractmethod
-    def get_all(self):
-        """Retrieves all entities from the upstream."""

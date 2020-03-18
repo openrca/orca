@@ -16,7 +16,7 @@ from orca.common.clients.prometheus import client as prometheus
 from orca.topology import probe, synchronizer
 from orca.topology.alerts import extractor, linker
 from orca.topology.alerts.prometheus import extractor as prom_extractor
-from orca.topology.alerts.prometheus import probe as prom_probe
+from orca.topology.alerts.prometheus import upstream
 
 
 def initialize_probes(graph):
@@ -26,7 +26,7 @@ def initialize_probes(graph):
     return [
         probe.PullProbe(
             graph=graph,
-            upstream_proxy=prom_probe.UpstreamProxy(prom_client),
+            upstream_proxy=upstream.UpstreamProxy(prom_client),
             extractor=prom_extractor.AlertExtractor(source_mapper),
             synchronizer=synchronizer.NodeSynchronizer(graph)
         )
