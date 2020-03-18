@@ -13,10 +13,10 @@
 # limitations under the License.
 
 from orca.common.clients.prometheus import client as prometheus
+from orca.topology import probe, synchronizer
 from orca.topology.alerts import extractor, linker
 from orca.topology.alerts.prometheus import extractor as prom_extractor
-from orca.topology.alerts.prometheus import probe
-from orca.topology import synchronizer
+from orca.topology.alerts.prometheus import probe as prom_probe
 
 
 def initialize_probes(graph):
@@ -26,9 +26,9 @@ def initialize_probes(graph):
     return [
         probe.PullProbe(
             graph=graph,
+            upstream_proxy=prom_probe.UpstreamProxy(prom_client),
             extractor=prom_extractor.AlertExtractor(source_mapper),
-            synchronizer=synchronizer.NodeSynchronizer(graph),
-            upstream_proxy=probe.UpstreamProxy(prom_client)
+            synchronizer=synchronizer.NodeSynchronizer(graph)
         )
     ]
 

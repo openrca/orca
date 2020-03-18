@@ -49,13 +49,13 @@ class Probe(abc.ABC):
 
 class PullProbe(Probe):
 
-    """Periodically synchronizes all entities from the upstream into the graph."""
+    """Periodically pulls all entities from the upstream into the graph."""
 
-    def __init__(self, graph, extractor, synchronizer, upstream_proxy):
+    def __init__(self, graph, upstream_proxy, extractor, synchronizer):
         super().__init__(graph)
         self._extractor = extractor
-        self._synchronizer = synchronizer
         self._upstream_proxy = upstream_proxy
+        self._synchronizer = synchronizer
 
     def run(self):
         while True:

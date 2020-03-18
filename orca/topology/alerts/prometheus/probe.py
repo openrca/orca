@@ -22,11 +22,6 @@ from orca import exceptions
 log = logger.get_logger(__name__)
 
 
-class PullProbe(probe.PullProbe):
-
-    """Probe for synchronizing alerts from Prometheus."""
-
-
 class UpstreamProxy(probe.UpstreamProxy):
 
     def __init__(self, prom_client):
