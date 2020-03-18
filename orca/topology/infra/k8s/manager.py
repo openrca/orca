@@ -24,78 +24,96 @@ def initialize_probes(graph):
             graph=graph,
             extractor=extractor.PodExtractor(),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'pod')),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'pod')
+        ),
         probe.Probe(
             graph=graph,
             extractor=extractor.ServiceExtractor(),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'service')),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'service')
+        ),
         probe.Probe(
             graph=graph,
             extractor=extractor.EndpointsExtractor(),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'endpoints')),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'endpoints')
+        ),
         probe.Probe(
             graph=graph,
             extractor=extractor.DeploymentExtractor(),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'deployment')),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'deployment')
+        ),
         probe.Probe(
             graph=graph,
             extractor=extractor.ReplicaSetExtractor(),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'replica_set')),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'replica_set')
+        ),
         probe.Probe(
             graph=graph,
             extractor=extractor.DaemonSetExtractor(),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'daemon_set')),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'daemon_set')
+        ),
         probe.Probe(
             graph=graph,
             extractor=extractor.StatefulSetExtractor(),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'stateful_set')),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'stateful_set')
+        ),
         probe.Probe(
             graph=graph,
             extractor=extractor.ConfigMapExtractor(),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'config_map')),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'config_map')
+        ),
         probe.Probe(
             graph=graph,
             extractor=extractor.SecretExtractor(),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'secret')),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'secret')
+        ),
         probe.Probe(
             graph=graph,
             extractor=extractor.StorageClassExtractor(),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'storage_class')),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'storage_class')
+        ),
         probe.Probe(
             graph=graph,
             extractor=extractor.PersistentVolumeExtractor(),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'persistent_volume')),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'persistent_volume')
+        ),
         probe.Probe(
             graph=graph,
             extractor=extractor.PersistentVolumeClaimExtractor(),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'persistent_volume_claim')),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'persistent_volume_claim')
+        ),
         probe.Probe(
             graph=graph,
             extractor=extractor.HorizontalPodAutoscalerExtractor(),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'horizontal_pod_autoscaler')),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'horizontal_pod_autoscaler')
+        ),
         probe.Probe(
             graph=graph,
             extractor=extractor.NodeExtractor(),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'node')),
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'node')
+        ),
         probe.Probe(
             graph=graph,
             extractor=extractor.NamespaceExtractor(),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'namespace')),
-        cluster.ClusterProbe(graph=graph)]
+            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'namespace')
+        ),
+        cluster.ClusterProbe(
+            graph=graph
+        )
+    ]
 
 
 def initialize_linkers(graph):
@@ -104,67 +122,81 @@ def initialize_linkers(graph):
             source_kind='pod',
             target_kind='service',
             graph=graph,
-            matcher=linker.PodToServiceMatcher()),
+            matcher=linker.PodToServiceMatcher()
+        ),
         linker.Linker(
             source_kind='pod',
             target_kind='replica_set',
             graph=graph,
-            matcher=linker.PodToReplicaSetMatcher()),
+            matcher=linker.PodToReplicaSetMatcher()
+        ),
         linker.Linker(
             source_kind='pod',
             target_kind='stateful_set',
             graph=graph,
-            matcher=linker.PodToStatefulSetMatcher()),
+            matcher=linker.PodToStatefulSetMatcher()
+        ),
         linker.Linker(
             source_kind='pod',
             target_kind='daemon_set',
             graph=graph,
-            matcher=linker.PodToDaemonSetMatcher()),
+            matcher=linker.PodToDaemonSetMatcher()
+        ),
         linker.Linker(
             source_kind='pod',
             target_kind='node',
             graph=graph,
-            matcher=linker.PodToNodeMatcher()),
+            matcher=linker.PodToNodeMatcher()
+        ),
         linker.Linker(
             source_kind='endpoints',
             target_kind='service',
             graph=graph,
-            matcher=linker.EndpointsToServiceMatcher()),
+            matcher=linker.EndpointsToServiceMatcher()
+        ),
         linker.Linker(
             source_kind='replica_set',
             target_kind='deployment',
             graph=graph,
-            matcher=linker.ReplicaSetToDeploymentMatcher()),
+            matcher=linker.ReplicaSetToDeploymentMatcher()
+        ),
         linker.Linker(
             source_kind='config_map',
             target_kind='pod',
             graph=graph,
-            matcher=linker.ConfigMapToPodMatcher()),
+            matcher=linker.ConfigMapToPodMatcher()
+        ),
         linker.Linker(
             source_kind='secret',
             target_kind='pod',
             graph=graph,
-            matcher=linker.SecretToPodMatcher()),
+            matcher=linker.SecretToPodMatcher()
+        ),
         linker.Linker(
             source_kind='persistent_volume',
             target_kind='storage_class',
             graph=graph,
-            matcher=linker.PersistentVolumeToStorageClassMatcher()),
+            matcher=linker.PersistentVolumeToStorageClassMatcher()
+        ),
         linker.Linker(
             source_kind='persistent_volume',
             target_kind='persistent_volume_claim',
             graph=graph,
-            matcher=linker.PersistentVolumeToPersistentVolumeClaimMatcher()),
+            matcher=linker.PersistentVolumeToPersistentVolumeClaimMatcher()
+        ),
         linker.Linker(
             source_kind='persistent_volume_claim',
             target_kind='pod',
             graph=graph,
-            matcher=linker.PersistentVolumeClaimToPodMatcher()),
+            matcher=linker.PersistentVolumeClaimToPodMatcher()
+        ),
         linker.Linker(
             source_kind='node',
             target_kind='cluster',
             graph=graph,
-            matcher=linker.NodeToClusterMatcher())]
+            matcher=linker.NodeToClusterMatcher()
+        )
+    ]
 
     for kind in ('deployment', 'replica_set', 'stateful_set'):
         linkers.append(
@@ -172,7 +204,8 @@ def initialize_linkers(graph):
                 source_kind=kind,
                 target_kind='horizontal_pod_autoscaler',
                 graph=graph,
-                matcher=linker.HorizontalPodAutoscalerMatcher()))
+                matcher=linker.HorizontalPodAutoscalerMatcher()
+            ))
 
     for kind in ('pod', 'service', 'deployment', 'replica_set', 'daemon_set', 'stateful_set',
                  'config_map', 'secret', 'persistent_volume_claim', 'horizontal_pod_autoscaler'):
@@ -181,6 +214,7 @@ def initialize_linkers(graph):
                 source_kind=kind,
                 target_kind='namespace',
                 graph=graph,
-                matcher=linker.NamespaceMatcher()))
+                matcher=linker.NamespaceMatcher()
+            ))
 
     return linkers

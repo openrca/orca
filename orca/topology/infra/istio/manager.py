@@ -25,17 +25,21 @@ def initialize_probes(graph):
             graph=graph,
             extractor=extractor.VirtualServiceExtractor(),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            k8s_client=istio.ResourceProxyFactory.get(k8s_client, 'virtual_service')),
+            k8s_client=istio.ResourceProxyFactory.get(k8s_client, 'virtual_service')
+        ),
         probe.Probe(
             graph=graph,
             extractor=extractor.DestinationRuleExtractor(),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            k8s_client=istio.ResourceProxyFactory.get(k8s_client, 'destination_rule')),
+            k8s_client=istio.ResourceProxyFactory.get(k8s_client, 'destination_rule')
+        ),
         probe.Probe(
             graph=graph,
             extractor=extractor.GatewayExtractor(),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            k8s_client=istio.ResourceProxyFactory.get(k8s_client, 'gateway'))]
+            k8s_client=istio.ResourceProxyFactory.get(k8s_client, 'gateway')
+        )
+    ]
 
 
 def initialize_linkers(graph):
@@ -44,14 +48,18 @@ def initialize_linkers(graph):
             source_kind='virtual_service',
             target_kind='gateway',
             graph=graph,
-            matcher=linker.VirtualServiceToGatewayMatcher()),
+            matcher=linker.VirtualServiceToGatewayMatcher()
+        ),
         linker.Linker(
             source_kind='virtual_service',
             target_kind='service',
             graph=graph,
-            matcher=linker.VirtualServiceToServiceMatcher()),
+            matcher=linker.VirtualServiceToServiceMatcher()
+        ),
         linker.Linker(
             source_kind='destination_rule',
             target_kind='service',
             graph=graph,
-            matcher=linker.DestinationRuleToServiceMatcher())]
+            matcher=linker.DestinationRuleToServiceMatcher()
+        )
+    ]
