@@ -14,8 +14,11 @@
 
 import time
 
-from orca.topology import probe
+from orca.common import logger
 from orca.graph import graph
+from orca.topology import probe
+
+log = logger.get_logger(__name__)
 
 
 class Probe(probe.Probe):
@@ -28,7 +31,9 @@ class Probe(probe.Probe):
 
     def run(self):
         while True:
+            log.info("Starting sync for Kiali service graph")
             self._synchronize()
+            log.info("Finished sync for Kiali service graph")
             time.sleep(60)
 
     def _synchronize(self):
