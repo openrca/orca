@@ -24,11 +24,11 @@ def initialize_probes(graph):
     prom_client = prometheus.PrometheusClient.get(
         "http://prometheus-prometheus-oper-prometheus.monitoring:9090")
     return [
-        probe.Probe(
+        probe.PullProbe(
             graph=graph,
             extractor=prom_extractor.AlertExtractor(source_mapper),
             synchronizer=synchronizer.NodeSynchronizer(graph),
-            prom_client=prom_client
+            upstream_proxy=probe.UpstreamProxy(prom_client)
         )
     ]
 
