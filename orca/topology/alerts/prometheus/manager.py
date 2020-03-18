@@ -34,14 +34,12 @@ def initialize_probes(graph):
 
 
 def initialize_linkers(graph):
-    linkers = []
-    for kind in ('pod', 'daemon_set', 'persistent_volume', 'horizontal_pod_autoscaler', 'node'):
-        linkers.append(
-            linker.Linker(
-                source_kind='alert',
-                target_kind=kind,
-                graph=graph,
-                matcher=linker.AlertToSourceObjectMatcher(),
-                bidirectional=False
-            ))
-    return linkers
+    return [
+        linker.Linker(
+            source_kind='alert',
+            target_kind='any',
+            graph=graph,
+            matcher=linker.AlertToSourceObjectMatcher(),
+            bidirectional=False
+        )
+    ]
