@@ -14,7 +14,7 @@
 
 from orca.common.clients.istio import client as istio
 from orca.common.clients.k8s import client as k8s
-from orca.topology import synchronizer
+from orca.topology import utils
 from orca.topology.infra.istio import extractor, linker, probe
 
 
@@ -24,19 +24,19 @@ def initialize_probes(graph):
         probe.Probe(
             graph=graph,
             extractor=extractor.VirtualServiceExtractor(),
-            synchronizer=synchronizer.NodeSynchronizer(graph),
+            synchronizer=utils.NodeSynchronizer(graph),
             k8s_client=istio.ResourceProxyFactory.get(k8s_client, 'virtual_service')
         ),
         probe.Probe(
             graph=graph,
             extractor=extractor.DestinationRuleExtractor(),
-            synchronizer=synchronizer.NodeSynchronizer(graph),
+            synchronizer=utils.NodeSynchronizer(graph),
             k8s_client=istio.ResourceProxyFactory.get(k8s_client, 'destination_rule')
         ),
         probe.Probe(
             graph=graph,
             extractor=extractor.GatewayExtractor(),
-            synchronizer=synchronizer.NodeSynchronizer(graph),
+            synchronizer=utils.NodeSynchronizer(graph),
             k8s_client=istio.ResourceProxyFactory.get(k8s_client, 'gateway')
         )
     ]
