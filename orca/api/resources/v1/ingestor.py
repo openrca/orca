@@ -19,9 +19,9 @@ from flask_restplus import Namespace, Resource
 
 from orca import exceptions
 from orca.common import logger
-from orca.topology.alerts.elastalert import alert as elastalert
-from orca.topology.alerts.falco import alert as falco
-from orca.topology.alerts.prometheus import alert as prometheus
+from orca.topology.alerts.elastalert import handler as elastalert
+from orca.topology.alerts.falco import handler as falco
+from orca.topology.alerts.prometheus import handler as prometheus
 
 log = logger.get_logger(__name__)
 

@@ -13,15 +13,12 @@
 # limitations under the License.
 
 from orca.common import str_utils
-from orca.topology.alerts import extractor, probe
+from orca.topology.alerts import extractor
 
 
-class AlertHandler(probe.EntityHandler):
+class Extractor(extractor.Extractor):
 
-    @staticmethod
-    def create(graph):
-        source_mapper = extractor.SourceMapper('falco')
-        return AlertHandler(graph, AlertExtractor(source_mapper))
+    """Base class for Falco extractors."""
 
 
 class AlertExtractor(extractor.Extractor):

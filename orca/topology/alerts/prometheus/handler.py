@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology.alerts import probe
+from orca.topology.alerts import extractor, handler
+from orca.topology.alerts.prometheus import extractor as prom_extractor
 
 
-def initialize_probes(graph):
-    return [
-        probe.Probe(graph=graph, origin='prometheus', kind='alert')]
+class AlertHandler(handler.AlertHandler):
 
-
-def initialize_linkers(graph):
-    return []
+    @staticmethod
+    def create(graph):
+        source_mapper = extractor.SourceMapper('prometheus')
+        return AlertHandler(graph, prom_extractor.AlertExtractor(source_mapper))

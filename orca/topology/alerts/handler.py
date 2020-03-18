@@ -12,13 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology.alerts import probe
+class AlertHandler(object):
 
+    def __init__(self, graph, extractor):
+        self._graph = graph
+        self._extractor = extractor
 
-def initialize_probes(graph):
-    return [
-        probe.Probe(graph=graph, origin='prometheus', kind='alert')]
-
-
-def initialize_linkers(graph):
-    return []
+    def handle(self, entity):
+        node = self._extractor.extract(entity)
+        self._graph.add_node(node)
