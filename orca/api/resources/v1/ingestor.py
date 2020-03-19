@@ -19,9 +19,9 @@ from flask_restplus import Namespace, Resource
 
 from orca import exceptions
 from orca.common import logger
-from orca.topology.alerts.elastalert import handler as elastalert
-from orca.topology.alerts.falco import handler as falco
-from orca.topology.alerts.prometheus import handler as prometheus
+from orca.topology.alerts.elastalert import manager as es
+from orca.topology.alerts.falco import manager as falco
+from orca.topology.alerts.prometheus import manager as prometheus
 
 log = logger.get_logger(__name__)
 
@@ -71,11 +71,11 @@ def initialize(graph):
     api = Namespace('ingestor', description='Ingestor API')
     api.add_resource(
         Prometheus, '/prometheus',
-        resource_class_args=[prometheus.AlertHandler.create(graph)])
+        resource_class_args=[prometheus.initialize_handler(graph)])
     api.add_resource(
         Falco, '/falco',
-        resource_class_args=[falco.AlertHandler.create(graph)])
+        resource_class_args=[falco.initialize_handler(graph)])
     api.add_resource(
         Elastalert, '/elastalert',
-        resource_class_args=[elastalert.AlertHandler.create(graph)])
+        resource_class_args=[es.initialize_handler(graph)])
     return api

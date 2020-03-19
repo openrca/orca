@@ -12,12 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology.alerts import probe
+from orca.topology.alerts import extractor, handler, probe
+from orca.topology.alerts.falco import extractor as falco_extractor
 
 
 def initialize_probes(graph):
-    return [probe.Probe(graph=graph, origin='falco', kind='alert')]
+    return []
 
 
 def initialize_linkers(graph):
     return []
+
+
+def initialize_handler(graph):
+    source_mapper = extractor.SourceMapper('falco')
+    return handler.AlertHandler(graph, falco_extractor.AlertExtractor(source_mapper))
