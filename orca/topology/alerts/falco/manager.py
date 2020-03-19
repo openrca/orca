@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from orca.topology import ingestor, utils
-from orca.topology.alerts import extractor, linker, probe
+from orca.topology.alerts import extractor, linker
 from orca.topology.alerts.falco import extractor as falco_extractor
 
 
