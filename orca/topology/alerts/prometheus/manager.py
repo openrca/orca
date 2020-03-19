@@ -13,8 +13,8 @@
 # limitations under the License.
 
 from orca.common.clients.prometheus import client as prometheus
-from orca.topology import probe, utils
-from orca.topology.alerts import extractor, handler, linker
+from orca.topology import ingestor, probe, utils
+from orca.topology.alerts import extractor, linker
 from orca.topology.alerts.prometheus import extractor as prom_extractor
 from orca.topology.alerts.prometheus import upstream
 
@@ -47,4 +47,4 @@ def initialize_linkers(graph):
 
 def initialize_handler(graph):
     source_mapper = extractor.SourceMapper('prometheus')
-    return handler.AlertHandler(graph, prom_extractor.AlertEventExtractor(source_mapper))
+    return ingestor.EntityHandler(graph, prom_extractor.AlertEventExtractor(source_mapper))

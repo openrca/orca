@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology.alerts import extractor, handler, probe
+from orca.topology import ingestor
+from orca.topology.alerts import extractor, probe
 from orca.topology.alerts.elastalert import extractor as es_extractor
 
 
@@ -26,4 +27,4 @@ def initialize_linkers(graph):
 
 def initialize_handler(graph):
     source_mapper = extractor.SourceMapper('elastalert')
-    return handler.AlertHandler(graph, es_extractor.AlertExtractor(source_mapper))
+    return ingestor.EntityHandler(graph, es_extractor.AlertExtractor(source_mapper))
