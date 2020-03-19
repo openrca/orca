@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from orca.topology import ingestor
-from orca.topology.alerts import extractor, probe
+from orca.topology.alerts import extractor, linker, probe
 from orca.topology.alerts.falco import extractor as falco_extractor
 
 
@@ -22,7 +22,15 @@ def initialize_probes(graph):
 
 
 def initialize_linkers(graph):
-    return []
+    return [
+        linker.Linker(
+            source_kind='alert',
+            target_kind='any',
+            graph=graph,
+            matcher=linker.AlertToSourceMatcher(),
+            bidirectional=False
+        )
+    ]
 
 
 def initialize_handler(graph):

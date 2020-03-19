@@ -13,16 +13,24 @@
 # limitations under the License.
 
 from orca.topology import ingestor
-from orca.topology.alerts import extractor, probe
+from orca.topology.alerts import extractor, linker, probe
 from orca.topology.alerts.elastalert import extractor as es_extractor
 
 
 def initialize_probes(graph):
-    return [probe.Probe(graph=graph, origin='elastalert', kind='alert')]
+    return []
 
 
 def initialize_linkers(graph):
-    return []
+    return [
+        linker.Linker(
+            source_kind='alert',
+            target_kind='any',
+            graph=graph,
+            matcher=linker.AlertToSourceMatcher(),
+            bidirectional=False
+        )
+    ]
 
 
 def initialize_handler(graph):
