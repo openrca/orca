@@ -14,6 +14,8 @@
 
 class EntityHandler(object):
 
+    """Processes entity events received by ingestor."""
+
     def __init__(self, graph, extractor):
         self._graph = graph
         self._extractor = extractor

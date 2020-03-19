@@ -27,6 +27,8 @@ from orca.topology.infra.kiali import manager as kiali
 
 class Manager(cotyledon.ServiceManager):
 
+    """Initializes entity graph, probes and linkers."""
+
     def __init__(self):
         super().__init__()
 

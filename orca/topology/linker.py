@@ -62,6 +62,8 @@ class Dispatcher(graph.EventListener):
 
 class Linker(abc.ABC):
 
+    """Links pairs of nodes based on the matching condition."""
+
     def __init__(self, source_spec, target_spec, graph, matcher, bidirectional=True):
         super().__init__()
         self.source_spec = source_spec
@@ -132,6 +134,8 @@ class Linker(abc.ABC):
 
 
 class Matcher(abc.ABC):
+
+    """Matches pair of nodes based on the matching condition."""
 
     @abc.abstractmethod
     def are_linked(self, noda_a, node_b):

@@ -17,6 +17,8 @@ import abc
 
 class Extractor(abc.ABC):
 
+    """Base class for entity extractors."""
+
     @abc.abstractmethod
     def get_origin(self):
         """Returns origin of extracted entities."""

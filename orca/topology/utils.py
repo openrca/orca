@@ -14,23 +14,25 @@
 
 class NodeSynchronizer(object):
 
+    """Synchronizes nodes from upstream into the graph."""
+
     def __init__(self, graph):
         self._graph = graph
 
-    def synchronize(self, nodes_in_graph, upstream_nodes, delete=True, update=True, create=True):
-        nodes_in_graph = self._build_node_lookup(nodes_in_graph)
+    def synchronize(self, graph_nodes, upstream_nodes, delete=True, update=True, create=True):
+        graph_nodes = self._build_node_lookup(graph_nodes)
         upstream_nodes = self._build_node_lookup(upstream_nodes)
 
-        nodes_in_graph_ids = set(nodes_in_graph.keys())
+        graph_nodes_ids = set(graph_nodes.keys())
         upstream_nodes_ids = set(upstream_nodes.keys())
 
-        nodes_to_delete_ids = nodes_in_graph_ids.difference(upstream_nodes_ids)
-        nodes_to_update_ids = nodes_in_graph_ids.difference(nodes_to_delete_ids)
-        nodes_to_create_ids = upstream_nodes_ids.difference(nodes_in_graph)
+        nodes_to_delete_ids = graph_nodes_ids.difference(upstream_nodes_ids)
+        nodes_to_update_ids = graph_nodes_ids.difference(nodes_to_delete_ids)
+        nodes_to_create_ids = upstream_nodes_ids.difference(graph_nodes)
 
         if delete:
             for node_id in nodes_to_delete_ids:
-                self._graph.delete_node(nodes_in_graph[node_id])
+                self._graph.delete_node(graph_nodes[node_id])
 
         if update:
             for node_id in nodes_to_update_ids:
@@ -45,6 +47,8 @@ class NodeSynchronizer(object):
 
 
 class NodeSpec(object):
+
+    """Value object for keeping basic node spec."""
 
     def __init__(self, origin, kind, properties=None):
         self.origin = origin
