@@ -20,11 +20,13 @@ class Extractor(extractor.Extractor):
 
     """Base class for Falco extractors."""
 
-
-class AlertExtractor(extractor.Extractor):
-
     def get_origin(self):
         return 'falco'
+
+
+class AlertExtractor(Extractor):
+
+    """Extractor for Alert entities."""
 
     def _extract_name(self, entity):
         return entity['rule']

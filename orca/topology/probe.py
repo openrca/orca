@@ -53,8 +53,8 @@ class PullProbe(Probe):
 
     def __init__(self, graph, upstream_proxy, extractor, synchronizer):
         super().__init__(graph)
-        self._extractor = extractor
         self._upstream_proxy = upstream_proxy
+        self._extractor = extractor
         self._synchronizer = synchronizer
 
     def run(self):

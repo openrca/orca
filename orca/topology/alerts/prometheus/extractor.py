@@ -20,13 +20,13 @@ class Extractor(extractor.Extractor):
 
     """Base class for Prometheus extractors."""
 
+    def get_origin(self):
+        return 'prometheus'
+
 
 class AlertExtractor(Extractor):
 
     """Extractor for Alert entities retrieved from Prometheus API."""
-
-    def get_origin(self):
-        return 'prometheus'
 
     def _extract_name(self, entity):
         return entity['labels']['alertname']
