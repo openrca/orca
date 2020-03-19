@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology import ingestor
+from orca.topology import ingestor, utils
 from orca.topology.alerts import extractor, linker, probe
 from orca.topology.alerts.elastalert import extractor as es_extractor
 
@@ -24,8 +24,8 @@ def initialize_probes(graph):
 def initialize_linkers(graph):
     return [
         linker.Linker(
-            source_kind='alert',
-            target_kind='any',
+            source_spec=utils.NodeSpec(origin='elastalert', kind='alert'),
+            target_spec=utils.NodeSpec(origin='any', kind='any'),
             graph=graph,
             matcher=linker.AlertToSourceMatcher(),
             bidirectional=False

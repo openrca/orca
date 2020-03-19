@@ -42,3 +42,11 @@ class NodeSynchronizer(object):
 
     def _build_node_lookup(self, nodes):
         return {node.id: node for node in nodes}
+
+
+class NodeSpec(object):
+
+    def __init__(self, origin, kind, properties=None):
+        self.origin = origin
+        self.kind = kind
+        self.properties = properties

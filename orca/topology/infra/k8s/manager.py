@@ -119,80 +119,80 @@ def initialize_probes(graph):
 def initialize_linkers(graph):
     linkers = [
         linker.Linker(
-            source_kind='pod',
-            target_kind='service',
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
             graph=graph,
             matcher=linker.PodToServiceMatcher()
         ),
         linker.Linker(
-            source_kind='pod',
-            target_kind='replica_set',
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='replica_set'),
             graph=graph,
             matcher=linker.PodToReplicaSetMatcher()
         ),
         linker.Linker(
-            source_kind='pod',
-            target_kind='stateful_set',
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='stateful_set'),
             graph=graph,
             matcher=linker.PodToStatefulSetMatcher()
         ),
         linker.Linker(
-            source_kind='pod',
-            target_kind='daemon_set',
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='daemon_set'),
             graph=graph,
             matcher=linker.PodToDaemonSetMatcher()
         ),
         linker.Linker(
-            source_kind='pod',
-            target_kind='node',
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='node'),
             graph=graph,
             matcher=linker.PodToNodeMatcher()
         ),
         linker.Linker(
-            source_kind='endpoints',
-            target_kind='service',
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='endpoints'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
             graph=graph,
             matcher=linker.EndpointsToServiceMatcher()
         ),
         linker.Linker(
-            source_kind='replica_set',
-            target_kind='deployment',
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='replica_set'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='deployment'),
             graph=graph,
             matcher=linker.ReplicaSetToDeploymentMatcher()
         ),
         linker.Linker(
-            source_kind='config_map',
-            target_kind='pod',
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='config_map'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
             graph=graph,
             matcher=linker.ConfigMapToPodMatcher()
         ),
         linker.Linker(
-            source_kind='secret',
-            target_kind='pod',
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='secret'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
             graph=graph,
             matcher=linker.SecretToPodMatcher()
         ),
         linker.Linker(
-            source_kind='persistent_volume',
-            target_kind='storage_class',
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='persistent_volume'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='storage_class'),
             graph=graph,
             matcher=linker.PersistentVolumeToStorageClassMatcher()
         ),
         linker.Linker(
-            source_kind='persistent_volume',
-            target_kind='persistent_volume_claim',
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='persistent_volume'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='persistent_volume_claim'),
             graph=graph,
             matcher=linker.PersistentVolumeToPersistentVolumeClaimMatcher()
         ),
         linker.Linker(
-            source_kind='persistent_volume_claim',
-            target_kind='pod',
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='persistent_volume_claim'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
             graph=graph,
             matcher=linker.PersistentVolumeClaimToPodMatcher()
         ),
         linker.Linker(
-            source_kind='node',
-            target_kind='cluster',
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='node'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='cluster'),
             graph=graph,
             matcher=linker.NodeToClusterMatcher()
         )
@@ -201,8 +201,8 @@ def initialize_linkers(graph):
     for kind in ('deployment', 'replica_set', 'stateful_set'):
         linkers.append(
             linker.Linker(
-                source_kind=kind,
-                target_kind='horizontal_pod_autoscaler',
+                source_spec=utils.NodeSpec(origin='kubernetes', kind=kind),
+                target_spec=utils.NodeSpec(origin='kubernetes', kind='horszontal_pod_autoscaler'),
                 graph=graph,
                 matcher=linker.HorizontalPodAutoscalerMatcher()
             ))
@@ -211,8 +211,8 @@ def initialize_linkers(graph):
                  'config_map', 'secret', 'persistent_volume_claim', 'horizontal_pod_autoscaler'):
         linkers.append(
             linker.Linker(
-                source_kind=kind,
-                target_kind='namespace',
+                source_spec=utils.NodeSpec(origin='kubernetes', kind=kind),
+                target_spec=utils.NodeSpec(origin='kubernetes', kind='namespace'),
                 graph=graph,
                 matcher=linker.NamespaceMatcher()
             ))

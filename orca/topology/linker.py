@@ -25,9 +25,9 @@ class Dispatcher(graph.EventListener):
         self._linkers = {}
 
     def add_linker(self, linker):
-        self._linkers.setdefault(linker.source_kind, []).append(linker)
+        self._build_linker_lookup(linker.source_spec, linker)
         if linker.bidirectional:
-            self._linkers.setdefault(linker.target_kind, []).append(linker)
+            self._build_linker_lookup(linker.target_spec, linker)
 
     def on_node_added(self, node):
         self._link_node(node)
@@ -47,18 +47,25 @@ class Dispatcher(graph.EventListener):
     def on_link_deleted(self, link):
         return
 
+    def _build_linker_lookup(self, node_spec, linker):
+        self._linkers.setdefault(node_spec.origin, {})
+        self._linkers[node_spec.origin].setdefault(node_spec.kind, []).append(linker)
+
     def _link_node(self, node):
-        if node.kind in self._linkers:
-            for linker in self._linkers[node.kind]:
+        origin_linkers = self._linkers.get(node.origin, None)
+        if not origin_linkers:
+            return
+        if node.kind in origin_linkers:
+            for linker in origin_linkers[node.kind]:
                 linker.link(node)
 
 
 class Linker(abc.ABC):
 
-    def __init__(self, source_kind, target_kind, graph, matcher, bidirectional=True):
+    def __init__(self, source_spec, target_spec, graph, matcher, bidirectional=True):
         super().__init__()
-        self.source_kind = source_kind
-        self.target_kind = target_kind
+        self.source_spec = source_spec
+        self.target_spec = target_spec
         self.bidirectional = bidirectional
         self._graph = graph
         self._matcher = matcher
@@ -88,9 +95,9 @@ class Linker(abc.ABC):
         return self._graph.get_node_links(node, kind=target_kind)
 
     def _get_target_kind(self, node):
-        if node.kind == self.source_kind:
-            return self.target_kind
-        return self.source_kind
+        if node.kind == self.source_spec.kind:
+            return self.target_spec.kind
+        return self.source_spec.kind
 
     def _get_new_links(self, node):
         linked_nodes = self._get_linked_nodes(node)
@@ -101,21 +108,21 @@ class Linker(abc.ABC):
         return links
 
     def _get_linked_nodes(self, node):
-        if node.kind == self.source_kind:
+        if node.kind == self.source_spec.kind:
             return self._get_linked_from_source(node)
         else:
             return self._get_linked_from_target(node)
 
     def _get_linked_from_source(self, source_node):
         linked_nodes = []
-        for target_node in self._graph.get_nodes(kind=self.target_kind):
+        for target_node in self._graph.get_nodes(kind=self.target_spec.kind):
             if self._matcher.are_linked(source_node, target_node):
                 linked_nodes.append(target_node)
         return linked_nodes
 
     def _get_linked_from_target(self, target_node):
         linked_nodes = []
-        for source_node in self._graph.get_nodes(kind=self.source_kind):
+        for source_node in self._graph.get_nodes(kind=self.source_spec.kind):
             if self._matcher.are_linked(source_node, target_node):
                 linked_nodes.append(source_node)
         return linked_nodes

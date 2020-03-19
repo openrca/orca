@@ -45,20 +45,20 @@ def initialize_probes(graph):
 def initialize_linkers(graph):
     return [
         linker.Linker(
-            source_kind='virtual_service',
-            target_kind='gateway',
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='virtual_service'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='gateway'),
             graph=graph,
             matcher=linker.VirtualServiceToGatewayMatcher()
         ),
         linker.Linker(
-            source_kind='virtual_service',
-            target_kind='service',
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='virtual_service'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
             graph=graph,
             matcher=linker.VirtualServiceToServiceMatcher()
         ),
         linker.Linker(
-            source_kind='destination_rule',
-            target_kind='service',
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='destination_rule'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
             graph=graph,
             matcher=linker.DestinationRuleToServiceMatcher()
         )
