@@ -84,4 +84,3 @@ class PullProbe(Probe):
             except exceptions.OrcaError as ex:
                 log.warning("Error while processing an entity: %s", ex)
         return upstream_nodes
-
