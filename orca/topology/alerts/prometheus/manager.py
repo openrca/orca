@@ -12,17 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from orca.common import config
 from orca.common.clients.prometheus import client as prometheus
 from orca.topology import ingestor, probe, utils
 from orca.topology.alerts import extractor, linker
 from orca.topology.alerts.prometheus import extractor as prom_extractor
 from orca.topology.alerts.prometheus import upstream
 
+CONFIG = config.CONFIG
+
 
 def initialize_probes(graph):
     source_mapper = extractor.SourceMapper('prometheus')
-    prom_client = prometheus.PrometheusClient.get(
-        "http://prometheus-prometheus-oper-prometheus.monitoring:9090")
+    prom_client = prometheus.PrometheusClient.get(url=CONFIG.prometheus.url)
     return [
         probe.PullProbe(
             graph=graph,

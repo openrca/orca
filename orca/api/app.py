@@ -15,13 +15,15 @@
 from flask import Flask
 
 from orca import api
+from orca.common import config
 from orca.graph import drivers as graph_drivers
 from orca.graph import graph
 
+CONFIG = config.CONFIG
+
 
 def create_app():
-    # TODO: read graph backend from config
-    graph_client = graph_drivers.DriverFactory.get('neo4j')
+    graph_client = graph_drivers.DriverFactory.get(CONFIG.graph.driver)
     graph_inst = graph.Graph(graph_client)
 
     app = Flask(__name__)

@@ -14,6 +14,7 @@
 
 import cotyledon
 
+from orca.common import config
 from orca.graph import drivers as graph_drivers
 from orca.graph.graph import Graph
 from orca.topology import linker, probe
@@ -23,6 +24,8 @@ from orca.topology.alerts.prometheus import manager as prom
 from orca.topology.infra.istio import manager as istio
 from orca.topology.infra.k8s import manager as k8s
 from orca.topology.infra.kiali import manager as kiali
+
+CONFIG = config.CONFIG
 
 
 class Manager(cotyledon.ServiceManager):
@@ -46,6 +49,5 @@ class Manager(cotyledon.ServiceManager):
                 linker_dispatcher.add_linker(linker_inst)
 
     def _init_graph(self):
-        # TODO: read graph backend from config
-        graph_client = graph_drivers.DriverFactory.get('neo4j')
+        graph_client = graph_drivers.DriverFactory.get(CONFIG.graph.driver)
         return Graph(graph_client)

@@ -12,13 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from orca.common import config
 from orca.common.clients.kiali import client as kiali
 from orca.topology.infra.kiali import probe
+
+CONFIG = config.CONFIG
 
 
 def initialize_probes(graph):
     kiali_client = kiali.KialiClient.get(
-        "http://kiali.istio-system:20001", username="admin", password="admin")
+        url=CONFIG.kiali.url,
+        username=CONFIG.kiali.username,
+        password=CONFIG.kiali.password)
     return [probe.Probe(graph=graph, kiali_client=kiali_client)]
 
 

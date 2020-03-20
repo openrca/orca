@@ -15,11 +15,12 @@
 import abc
 
 from orca import exceptions
-from orca.common import file_utils, logger
+from orca.common import config, file_utils, logger
 from orca.graph import graph
 from orca.topology import extractor
 
-log = logger.get_logger(__name__)
+CONFIG = config.CONFIG
+LOG = logger.get_logger(__name__)
 
 
 class Extractor(extractor.Extractor):
@@ -93,9 +94,7 @@ class SourceMapper(object):
         return {'kind': kind, 'properties': properties}
 
     def _load_mapping(self):
-        # TODO: Read mapping path from config
-        mapping_path = "/etc/orca/alerts-mapping.yaml"
-        mapping_spec = file_utils.load_yaml(mapping_path).get(self._mapping_key)
+        mapping_spec = self._load_mapping_spec()
         if not mapping_spec:
             raise exceptions.MappingNotFound(key=self._mapping_key)
         blacklist_values = mapping_spec.get('blacklist_values')
@@ -108,6 +107,10 @@ class SourceMapper(object):
             lookup[name] = mapping['source_mapping']
             lookup[name].setdefault('blacklist_values', blacklist_values)
         return lookup
+
+    def _load_mapping_spec(self):
+        mapping_path = CONFIG.topology.alerts.mapping_path
+        return file_utils.load_yaml(mapping_path).get(self._mapping_key)
 
     def _validate_value(self, value, mapping):
         if not value:
