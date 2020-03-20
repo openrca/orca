@@ -7,3 +7,5 @@ neo4j
 addict
 pyyaml
 requests
+Werkzeug==0.16.1
+cerberus

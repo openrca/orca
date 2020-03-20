@@ -35,3 +35,13 @@ class MappingNotFound(SourceMappingError):
 class InvalidMappedValue(SourceMappingError):
 
     message = "Got invalid value for mapping '%(key)s': %(value)s."
+
+
+class ConfigError(OrcaError):
+
+    """Base class for configuration errors."""
+
+
+class ConfigParseError(ConfigError):
+
+    message = "Error while parsing configuration: %(errors)s."
