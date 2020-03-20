@@ -1,0 +1,20 @@
+topology:
+  alerts:
+    mapping_path: /etc/orca/alerts-mapping.yaml
+
+graph:
+  driver: neo4j
+
+neo4j:
+  host: orca-neo4j.rca
+  port: 7687
+  username: neo4j
+  password: admin
+
+prometheus:
+  url: http://prometheus-prometheus-oper-prometheus.monitoring:9090
+
+kiali:
+  url: http://kiali.istio-system:20001
+  username: admin
+  password: admin

@@ -5,5 +5,5 @@ metadata:
   labels:
 {{ include "orca.labels" . | indent 4 }}
 data:
-  orca.yaml: |-
+{{ (.Files.Glob "config/orca.yaml").AsConfig | indent 2 }}
 {{ (.Files.Glob "config/alerts-mapping.yaml").AsConfig | indent 2 }}
