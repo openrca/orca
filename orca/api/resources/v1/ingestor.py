@@ -52,7 +52,6 @@ class Prometheus(Ingestor):
 
     def post(self):
         payload = request.json
-        LOG.debug(json.dumps(payload))
         for alert in payload['alerts']:
             self._ingest(alert)
 
