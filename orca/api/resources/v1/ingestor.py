@@ -23,7 +23,7 @@ from orca.topology.alerts.elastalert import manager as es
 from orca.topology.alerts.falco import manager as falco
 from orca.topology.alerts.prometheus import manager as prometheus
 
-log = logger.get_logger(__name__)
+LOG = logger.get_logger(__name__)
 
 
 class Ingestor(Resource):
@@ -36,14 +36,14 @@ class Ingestor(Resource):
 
     def post(self):
         payload = request.json
-        log.debug("Ingested an entity: %s", json.dumps(payload))
+        LOG.debug("Ingested an entity: %s", json.dumps(payload))
         self._ingest(payload)
 
     def _ingest(self, entity):
         try:
             self._entity_handler.handle_event(entity)
         except exceptions.OrcaError as ex:
-            log.warning("Error while processing an entity: %s", ex)
+            LOG.warning("Error while processing an entity: %s", ex)
 
 
 class Prometheus(Ingestor):
@@ -52,7 +52,7 @@ class Prometheus(Ingestor):
 
     def post(self):
         payload = request.json
-        log.debug(json.dumps(payload))
+        LOG.debug(json.dumps(payload))
         for alert in payload['alerts']:
             self._ingest(alert)
 

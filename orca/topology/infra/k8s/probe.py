@@ -16,7 +16,7 @@ from orca.common import logger
 from orca.common.clients.k8s import client as k8s
 from orca.topology import probe
 
-log = logger.get_logger(__name__)
+LOG = logger.get_logger(__name__)
 
 
 class Probe(probe.Probe, k8s.EventHandler):
@@ -31,10 +31,10 @@ class Probe(probe.Probe, k8s.EventHandler):
 
     def run(self):
         extended_kind = self._extractor.get_extended_kind()
-        log.info("Starting sync for entity: %s", extended_kind)
+        LOG.info("Starting sync for entity: %s", extended_kind)
         self._synchronize()
-        log.info("Finished sync for entity: %s", extended_kind)
-        log.info("Starting watch on entity: %s", extended_kind)
+        LOG.info("Finished sync for entity: %s", extended_kind)
+        LOG.info("Starting watch on entity: %s", extended_kind)
         self._start_watch()
 
     def on_added(self, entity):

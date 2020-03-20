@@ -20,7 +20,7 @@ import cotyledon
 from orca import exceptions
 from orca.common import logger
 
-log = logger.get_logger(__name__)
+LOG = logger.get_logger(__name__)
 
 
 class ProbeService(cotyledon.Service):
@@ -60,9 +60,9 @@ class PullProbe(Probe):
     def run(self):
         while True:
             extended_kind = self._extractor.get_extended_kind()
-            log.info("Starting sync for entity: %s", extended_kind)
+            LOG.info("Starting sync for entity: %s", extended_kind)
             self._synchronize()
-            log.info("Finished sync for entity: %s", extended_kind)
+            LOG.info("Finished sync for entity: %s", extended_kind)
             time.sleep(60)
 
     def _synchronize(self):
@@ -82,5 +82,5 @@ class PullProbe(Probe):
                 node = self._extractor.extract(entity)
                 upstream_nodes.append(node)
             except exceptions.OrcaError as ex:
-                log.warning("Error while processing an entity: %s", ex)
+                LOG.warning("Error while processing an entity: %s", ex)
         return upstream_nodes
