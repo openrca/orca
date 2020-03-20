@@ -46,7 +46,7 @@ class Config(object):
     @staticmethod
     def get(schema):
         parser = ConfigParser(schema)
-        return Config("orca.yaml", parser)
+        return Config("/etc/orca/orca.yaml", parser)
 
 
 class ConfigParser(object):
@@ -63,17 +63,53 @@ class ConfigParser(object):
 
         if not is_valid:
             raise exceptions.ConfigParseError(errors=validator.errors)
-
         return dict_lib.Dict(validator.document)
 
 
 SCHEMA = {
+    'topology': {
+        'type': 'dict',
+        'schema': {
+            'alerts': {
+                'type': 'dict',
+                'schema': {
+                    'mapping_path': {
+                        'type': 'string',
+                        'default': "/etc/orca/alerts-mapping.yaml"
+                    }
+                }
+            }
+        }
+    },
+    'graph': {
+        'type': 'dict',
+        'schema': {
+            'driver': {'type': 'string', 'default': 'neo4j'}
+        }
+    },
     'prometheus': {
         'type': 'dict',
         'schema': {
             'url': {'type': 'string'}
         }
+    },
+    'kiali': {
+        'type': 'dict',
+        'schema': {
+            'url': {'type': 'string'},
+            'username': {'type': 'string'},
+            'password': {'type': 'string'}
+        }
+    },
+    'neo4j': {
+        'type': 'dict',
+        'schema': {
+            'host': {'type': 'string'},
+            'port': {'type': 'integer', 'coerce': int, 'default': 7687},
+            'username': {'type': 'string'},
+            'password': {'type': 'string'}
+        }
     }
 }
 
-CONF = Config.get(SCHEMA)
+CONFIG = Config.get(SCHEMA)
