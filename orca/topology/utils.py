@@ -15,33 +15,33 @@
 
 class NodeSynchronizer(object):
 
-    """Synchronizes nodes from upstream into the graph."""
+    """Synchronizes given set of nodes into the graph."""
 
     def __init__(self, graph):
         self._graph = graph
 
-    def synchronize(self, graph_nodes, upstream_nodes, delete=True, update=True, create=True):
-        graph_nodes = self._build_node_lookup(graph_nodes)
-        upstream_nodes = self._build_node_lookup(upstream_nodes)
+    def synchronize(self, current_nodes, new_nodes, delete=True, update=True, create=True):
+        current_nodes = self._build_node_lookup(current_nodes)
+        new_nodes = self._build_node_lookup(new_nodes)
 
-        graph_nodes_ids = set(graph_nodes.keys())
-        upstream_nodes_ids = set(upstream_nodes.keys())
+        current_nodes_ids = set(current_nodes.keys())
+        new_nodes_ids = set(new_nodes.keys())
 
-        nodes_to_delete_ids = graph_nodes_ids.difference(upstream_nodes_ids)
-        nodes_to_update_ids = graph_nodes_ids.difference(nodes_to_delete_ids)
-        nodes_to_create_ids = upstream_nodes_ids.difference(graph_nodes)
+        nodes_to_delete_ids = current_nodes_ids.difference(new_nodes_ids)
+        nodes_to_update_ids = current_nodes_ids.difference(nodes_to_delete_ids)
+        nodes_to_create_ids = new_nodes_ids.difference(current_nodes)
 
         if delete:
             for node_id in nodes_to_delete_ids:
-                self._graph.delete_node(graph_nodes[node_id])
+                self._graph.delete_node(current_nodes[node_id])
 
         if update:
             for node_id in nodes_to_update_ids:
-                self._graph.update_node(upstream_nodes[node_id])
+                self._graph.update_node(new_nodes[node_id])
 
         if create:
             for node_id in nodes_to_create_ids:
-                self._graph.add_node(upstream_nodes[node_id])
+                self._graph.add_node(new_nodes[node_id])
 
     def _build_node_lookup(self, nodes):
         return {node.id: node for node in nodes}
@@ -49,7 +49,7 @@ class NodeSynchronizer(object):
 
 class NodeSpec(object):
 
-    """Value object for keeping basic node spec."""
+    """Value object containing basic node properties."""
 
     def __init__(self, origin, kind, properties=None):
         self.origin = origin

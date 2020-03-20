@@ -41,7 +41,7 @@ class Ingestor(Resource):
 
     def _ingest(self, entity):
         try:
-            self._entity_handler.handle(entity)
+            self._entity_handler.handle_event(entity)
         except exceptions.OrcaError as ex:
             log.warning("Error while processing an entity: %s", ex)
 

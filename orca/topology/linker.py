@@ -64,12 +64,12 @@ class Linker(abc.ABC):
 
     """Links pairs of nodes based on the matching condition."""
 
-    def __init__(self, source_spec, target_spec, graph, matcher, bidirectional=True):
+    def __init__(self, graph, source_spec, target_spec, matcher, bidirectional=True):
         super().__init__()
+        self._graph = graph
         self.source_spec = source_spec
         self.target_spec = target_spec
         self.bidirectional = bidirectional
-        self._graph = graph
         self._matcher = matcher
 
     def link(self, node):

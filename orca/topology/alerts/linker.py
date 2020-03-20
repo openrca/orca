@@ -41,5 +41,7 @@ class AlertToSourceMatcher(Matcher):
     def are_linked(self, alert, obj):
         source_mapping = alert.properties.source_mapping
         if source_mapping.kind == obj.kind:
-            return all(item in obj.properties.items() for item in source_mapping.properties.items())
+            mapping_items = source_mapping.properties.items()
+            obj_items = obj.properties.items()
+            return all(item in obj_items for item in mapping_items)
         return False

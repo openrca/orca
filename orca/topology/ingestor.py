@@ -21,6 +21,6 @@ class EntityHandler(object):
         self._graph = graph
         self._extractor = extractor
 
-    def handle(self, entity):
+    def handle_event(self, entity):
         node = self._extractor.extract(entity)
         self._graph.add_node(node)

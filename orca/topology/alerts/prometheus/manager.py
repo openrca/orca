@@ -36,9 +36,9 @@ def initialize_probes(graph):
 def initialize_linkers(graph):
     return [
         linker.Linker(
+            graph=graph,
             source_spec=utils.NodeSpec(origin='prometheus', kind='alert'),
             target_spec=utils.NodeSpec(origin='any', kind='any'),
-            graph=graph,
             matcher=linker.AlertToSourceMatcher(),
             bidirectional=False
         )
