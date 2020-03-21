@@ -90,7 +90,8 @@ SCHEMA = {
     'prometheus': {
         'type': 'dict',
         'schema': {
-            'url': {'type': 'string'}
+            'url': {'type': 'string'},
+            'resync_period': {'type': 'integer', 'default': 300}
         }
     },
     'kiali': {
@@ -98,7 +99,8 @@ SCHEMA = {
         'schema': {
             'url': {'type': 'string'},
             'username': {'type': 'string'},
-            'password': {'type': 'string'}
+            'password': {'type': 'string'},
+            'resync_period': {'type': 'integer', 'default': 300}
         }
     },
     'neo4j': {

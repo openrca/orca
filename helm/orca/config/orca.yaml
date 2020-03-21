@@ -13,8 +13,10 @@ neo4j:
 
 prometheus:
   url: http://prometheus-prometheus-oper-prometheus.monitoring:9090
+  resync_period: 300
 
 kiali:
   url: http://kiali.istio-system:20001
   username: admin
   password: admin
+  resync_period: 300

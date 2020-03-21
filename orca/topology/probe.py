@@ -51,11 +51,12 @@ class PullProbe(Probe):
 
     """Periodically pulls all entities from the upstream into the graph."""
 
-    def __init__(self, graph, upstream_proxy, extractor, synchronizer):
+    def __init__(self, graph, upstream_proxy, extractor, synchronizer, resync_period=60):
         super().__init__(graph)
         self._upstream_proxy = upstream_proxy
         self._extractor = extractor
         self._synchronizer = synchronizer
+        self._resync_period = resync_period
 
     def run(self):
         while True:
@@ -63,7 +64,7 @@ class PullProbe(Probe):
             LOG.info("Starting sync for entity: %s", extended_kind)
             self._synchronize()
             LOG.info("Finished sync for entity: %s", extended_kind)
-            time.sleep(60)
+            time.sleep(self._resync_period)
 
     def _synchronize(self):
         nodes_in_graph = self._get_nodes_in_graph()

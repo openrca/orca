@@ -24,7 +24,13 @@ def initialize_probes(graph):
         url=CONFIG.kiali.url,
         username=CONFIG.kiali.username,
         password=CONFIG.kiali.password)
-    return [probe.Probe(graph=graph, kiali_client=kiali_client)]
+    return [
+        probe.Probe(
+            graph=graph,
+            kiali_client=kiali_client,
+            resync_period=CONFIG.kiali.resync_period
+        )
+    ]
 
 
 def initialize_linkers(graph):

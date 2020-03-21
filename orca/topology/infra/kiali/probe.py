@@ -25,16 +25,17 @@ class Probe(probe.Probe):
 
     """Probe for synchronizing service graph from Kiali."""
 
-    def __init__(self, graph, kiali_client):
+    def __init__(self, graph, kiali_client, resync_period=60):
         super().__init__(graph)
         self._kiali_client = kiali_client
+        self._resync_period = resync_period
 
     def run(self):
         while True:
             LOG.info("Starting sync for Kiali service graph")
             self._synchronize()
             LOG.info("Finished sync for Kiali service graph")
-            time.sleep(60)
+            time.sleep(self._resync_period)
 
     def _synchronize(self):
         namespaces = self._get_namespaces()

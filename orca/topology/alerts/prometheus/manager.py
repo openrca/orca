@@ -30,7 +30,8 @@ def initialize_probes(graph):
             graph=graph,
             upstream_proxy=upstream.UpstreamProxy(prom_client),
             extractor=prom_extractor.AlertExtractor(source_mapper),
-            synchronizer=utils.NodeSynchronizer(graph)
+            synchronizer=utils.NodeSynchronizer(graph),
+            resync_period=CONFIG.prometheus.resync_period
         )
     ]
 
