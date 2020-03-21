@@ -12,7 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from flask_restplus import Namespace, Resource
+from flask_restplus import Model, Namespace, Resource, fields, marshal
+
+node_fields = Model('Graph Node', {
+    'id': fields.String,
+    'origin': fields.String,
+    'kind': fields.String
+})
+
+link_fields = Model('Graph Link', {
+    'id': fields.String,
+    'source': fields.String(attribute='source.id'),
+    'target': fields.String(attribute='target.id')
+})
+
+graph_fields = Model('Graph', {
+    'nodes': fields.List(
+        fields.Nested(node_fields), attribute='nodes'),
+    'links': fields.List(
+        fields.Nested(link_fields), attribute='links')
+})
 
 
 class Graph(Resource):
@@ -22,8 +41,14 @@ class Graph(Resource):
         self._graph = graph
 
     def get(self):
-        return
+        data = {
+            'nodes': self._graph.get_nodes(),
+            'links': self._graph.get_links()
+        }
+        return marshal(data, graph_fields)
 
 
 def initialize(graph):
-    return Namespace('graph', description='Graph API')
+    api = Namespace('graph', description='Graph API')
+    api.add_resource(Graph, '/', resource_class_args=[graph])
+    return api
