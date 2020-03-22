@@ -29,7 +29,7 @@ class NodeSynchronizer(object):
 
         nodes_to_delete_ids = current_nodes_ids.difference(new_nodes_ids)
         nodes_to_update_ids = current_nodes_ids.difference(nodes_to_delete_ids)
-        nodes_to_create_ids = new_nodes_ids.difference(current_nodes)
+        nodes_to_create_ids = new_nodes_ids.difference(current_nodes_ids)
 
         if delete:
             for node_id in nodes_to_delete_ids:
