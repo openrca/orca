@@ -14,30 +14,31 @@
 
 from orca.common.clients.istio import client as istio
 from orca.common.clients.k8s import client as k8s
-from orca.topology import utils
-from orca.topology.infra.istio import extractor, linker, probe
+from orca.topology import probe, utils
+from orca.topology.infra.istio import extractor, linker
+from orca.topology.infra.k8s import upstream
 
 
 def initialize_probes(graph):
     k8s_client = k8s.ClientFactory.get()
     return [
-        probe.Probe(
+        probe.PushProbe(
             graph=graph,
-            extractor=extractor.VirtualServiceExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph),
-            k8s_client=istio.ResourceProxyFactory.get(k8s_client, 'virtual_service')
+            upstream_proxy=upstream.UpstreamProxy(
+                client=istio.ResourceProxyFactory.get(k8s_client, 'virtual_service')),
+            extractor=extractor.VirtualServiceExtractor()
         ),
-        probe.Probe(
+        probe.PushProbe(
             graph=graph,
-            extractor=extractor.DestinationRuleExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph),
-            k8s_client=istio.ResourceProxyFactory.get(k8s_client, 'destination_rule')
+            upstream_proxy=upstream.UpstreamProxy(
+                client=istio.ResourceProxyFactory.get(k8s_client, 'destination_rule')),
+            extractor=extractor.DestinationRuleExtractor()
         ),
-        probe.Probe(
+        probe.PushProbe(
             graph=graph,
-            extractor=extractor.GatewayExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph),
-            k8s_client=istio.ResourceProxyFactory.get(k8s_client, 'gateway')
+            upstream_proxy=upstream.UpstreamProxy(
+                client=istio.ResourceProxyFactory.get(k8s_client, 'gateway')),
+            extractor=extractor.GatewayExtractor()
         )
     ]
 

@@ -14,101 +14,102 @@
 
 from orca.common.clients.k8s import client as k8s
 from orca.topology import utils
-from orca.topology.infra.k8s import cluster, extractor, linker, probe
+from orca.topology.infra.k8s import cluster, extractor, linker, upstream
+from orca.topology import probe
 
 
 def initialize_probes(graph):
     k8s_client = k8s.ClientFactory.get()
     return [
-        probe.Probe(
+        probe.PushProbe(
             graph=graph,
-            extractor=extractor.PodExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'pod')
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'pod')),
+            extractor=extractor.PodExtractor()
         ),
-        probe.Probe(
+        probe.PushProbe(
             graph=graph,
-            extractor=extractor.ServiceExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'service')
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'service')),
+            extractor=extractor.ServiceExtractor()
         ),
-        probe.Probe(
+        probe.PushProbe(
             graph=graph,
-            extractor=extractor.EndpointsExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'endpoints')
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'endpoints')),
+            extractor=extractor.EndpointsExtractor()
         ),
-        probe.Probe(
+        probe.PushProbe(
             graph=graph,
-            extractor=extractor.DeploymentExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'deployment')
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'deployment')),
+            extractor=extractor.DeploymentExtractor()
         ),
-        probe.Probe(
+        probe.PushProbe(
             graph=graph,
-            extractor=extractor.ReplicaSetExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'replica_set')
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'replica_set')),
+            extractor=extractor.ReplicaSetExtractor()
         ),
-        probe.Probe(
+        probe.PushProbe(
             graph=graph,
-            extractor=extractor.DaemonSetExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'daemon_set')
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'daemon_set')),
+            extractor=extractor.DaemonSetExtractor()
         ),
-        probe.Probe(
+        probe.PushProbe(
             graph=graph,
-            extractor=extractor.StatefulSetExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'stateful_set')
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'stateful_set')),
+            extractor=extractor.StatefulSetExtractor()
         ),
-        probe.Probe(
+        probe.PushProbe(
             graph=graph,
-            extractor=extractor.ConfigMapExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'config_map')
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'config_map')),
+            extractor=extractor.ConfigMapExtractor()
         ),
-        probe.Probe(
+        probe.PushProbe(
             graph=graph,
-            extractor=extractor.SecretExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'secret')
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'secret')),
+            extractor=extractor.SecretExtractor()
         ),
-        probe.Probe(
+        probe.PushProbe(
             graph=graph,
-            extractor=extractor.StorageClassExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'storage_class')
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'storage_class')),
+            extractor=extractor.StorageClassExtractor()
         ),
-        probe.Probe(
+        probe.PushProbe(
             graph=graph,
-            extractor=extractor.PersistentVolumeExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'persistent_volume')
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'persistent_volume')),
+            extractor=extractor.PersistentVolumeExtractor()
         ),
-        probe.Probe(
+        probe.PushProbe(
             graph=graph,
-            extractor=extractor.PersistentVolumeClaimExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'persistent_volume_claim')
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'persistent_volume_claim')),
+            extractor=extractor.PersistentVolumeClaimExtractor()
         ),
-        probe.Probe(
+        probe.PushProbe(
             graph=graph,
-            extractor=extractor.HorizontalPodAutoscalerExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'horizontal_pod_autoscaler')
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'horizontal_pod_autoscaler')),
+            extractor=extractor.HorizontalPodAutoscalerExtractor()
         ),
-        probe.Probe(
+        probe.PushProbe(
             graph=graph,
-            extractor=extractor.NodeExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'node')
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'node')),
+            extractor=extractor.NodeExtractor()
         ),
-        probe.Probe(
+        probe.PushProbe(
             graph=graph,
-            extractor=extractor.NamespaceExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph),
-            k8s_client=k8s.ResourceProxyFactory.get(k8s_client, 'namespace')
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'namespace')),
+            extractor=extractor.NamespaceExtractor()
         ),
         cluster.ClusterProbe(
             graph=graph
