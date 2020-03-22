@@ -11,6 +11,12 @@ neo4j:
   username: neo4j
   password: admin
 
+kubernetes:
+  resync_period: 300
+
+istio:
+  resync_period: 300
+
 prometheus:
   url: http://prometheus-prometheus-oper-prometheus.monitoring:9090
   resync_period: 300

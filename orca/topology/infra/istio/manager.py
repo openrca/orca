@@ -12,16 +12,44 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from orca.common import config
 from orca.common.clients.istio import client as istio
 from orca.common.clients.k8s import client as k8s
 from orca.topology import probe, utils
 from orca.topology.infra.istio import extractor, linker
 from orca.topology.infra.k8s import upstream
 
+CONFIG = config.CONFIG
+
 
 def initialize_probes(graph):
     k8s_client = k8s.ClientFactory.get()
     return [
+        probe.PullProbe(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=istio.ResourceProxyFactory.get(k8s_client, 'virtual_service')),
+            extractor=extractor.VirtualServiceExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.istio.resync_period
+        ),
+        probe.PullProbe(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=istio.ResourceProxyFactory.get(k8s_client, 'destination_rule')),
+            extractor=extractor.DestinationRuleExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.istio.resync_period
+        ),
+        probe.PullProbe(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=istio.ResourceProxyFactory.get(k8s_client, 'gateway')),
+            extractor=extractor.GatewayExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.istio.resync_period
+        ),
+
         probe.PushProbe(
             graph=graph,
             upstream_proxy=upstream.UpstreamProxy(
