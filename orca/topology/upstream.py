@@ -25,3 +25,22 @@ class UpstreamProxy(abc.ABC):
     @abc.abstractmethod
     def get_all(self):
         """Retrieves all entities from the upstream."""
+
+    @abc.abstractmethod
+    def get_events(self, handler=None):
+        """Retrieves entity events from the upstream."""
+
+
+class EventHandler(abc.ABC):
+
+    @abc.abstractmethod
+    def on_added(self, entity):
+        """Callback triggered when entity has been added in the upstream."""
+
+    @abc.abstractmethod
+    def on_updated(self, entity):
+        """Callback triggered when entity has been updated in the upstream."""
+
+    @abc.abstractmethod
+    def on_deleted(self, entity):
+        """Callback triggered when entity has been deleted in the upstream."""

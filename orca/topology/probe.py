@@ -19,6 +19,7 @@ import cotyledon
 
 from orca import exceptions
 from orca.common import logger
+from orca.topology import upstream
 
 LOG = logger.get_logger(__name__)
 
@@ -85,3 +86,30 @@ class PullProbe(Probe):
             except exceptions.OrcaError as ex:
                 LOG.warning("Error while processing an entity: %s", ex)
         return upstream_nodes
+
+
+class PushProbe(Probe, upstream.EventHandler):
+
+    """Consumes events pushed by the upstream."""
+
+    def __init__(self, graph, upstream_proxy, extractor):
+        super().__init__(graph)
+        self._upstream_proxy = upstream_proxy
+        self._extractor = extractor
+
+    def run(self):
+        extended_kind = self._extractor.get_extended_kind()
+        LOG.info("Consuming events for entity: %s", extended_kind)
+        self._upstream_proxy.get_events(handler=self)
+
+    def on_added(self, entity):
+        node = self._extractor.extract(entity)
+        self._graph.add_node(node)
+
+    def on_updated(self, entity):
+        node = self._extractor.extract(entity)
+        self._graph.update_node(node)
+
+    def on_deleted(self, entity):
+        node = self._extractor.extract(entity)
+        self._graph.delete_node(node)

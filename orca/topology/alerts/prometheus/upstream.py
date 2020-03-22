@@ -21,3 +21,6 @@ class UpstreamProxy(upstream.UpstreamProxy):
 
     def get_all(self):
         return self._client.get_alerts()['data']['alerts']
+
+    def get_events(self):
+        raise NotImplementedError()
