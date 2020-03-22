@@ -87,11 +87,16 @@ SCHEMA = {
             'driver': {'type': 'string', 'default': 'neo4j'}
         }
     },
-    'prometheus': {
+    'kubernetes': {
         'type': 'dict',
         'schema': {
-            'url': {'type': 'string'},
-            'resync_period': {'type': 'integer', 'default': 300}
+            'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
+        }
+    },
+    'istio': {
+        'type': 'dict',
+        'schema': {
+            'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
         }
     },
     'kiali': {
@@ -100,7 +105,14 @@ SCHEMA = {
             'url': {'type': 'string'},
             'username': {'type': 'string'},
             'password': {'type': 'string'},
-            'resync_period': {'type': 'integer', 'default': 300}
+            'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
+        }
+    },
+    'prometheus': {
+        'type': 'dict',
+        'schema': {
+            'url': {'type': 'string'},
+            'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
         }
     },
     'neo4j': {

@@ -12,15 +12,138 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from orca.common import config
 from orca.common.clients.k8s import client as k8s
-from orca.topology import utils
+from orca.topology import probe, utils
 from orca.topology.infra.k8s import cluster, extractor, linker, upstream
-from orca.topology import probe
+
+CONFIG = config.CONFIG
 
 
 def initialize_probes(graph):
     k8s_client = k8s.ClientFactory.get()
     return [
+        probe.PullProbe(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'pod')),
+            extractor=extractor.PodExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.kubernetes.resync_period
+        ),
+        probe.PullProbe(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'service')),
+            extractor=extractor.ServiceExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.kubernetes.resync_period
+        ),
+        probe.PullProbe(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'endpoints')),
+            extractor=extractor.EndpointsExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.kubernetes.resync_period
+        ),
+        probe.PullProbe(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'deployment')),
+            extractor=extractor.DeploymentExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.kubernetes.resync_period
+        ),
+        probe.PullProbe(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'replica_set')),
+            extractor=extractor.ReplicaSetExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.kubernetes.resync_period
+        ),
+        probe.PullProbe(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'daemon_set')),
+            extractor=extractor.DaemonSetExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.kubernetes.resync_period
+        ),
+        probe.PullProbe(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'stateful_set')),
+            extractor=extractor.StatefulSetExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.kubernetes.resync_period
+        ),
+        probe.PullProbe(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'config_map')),
+            extractor=extractor.ConfigMapExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.kubernetes.resync_period
+        ),
+        probe.PullProbe(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'secret')),
+            extractor=extractor.SecretExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.kubernetes.resync_period
+        ),
+        probe.PullProbe(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'storage_class')),
+            extractor=extractor.StorageClassExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.kubernetes.resync_period
+        ),
+        probe.PullProbe(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'persistent_volume')),
+            extractor=extractor.PersistentVolumeExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.kubernetes.resync_period
+        ),
+        probe.PullProbe(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'persistent_volume_claim')),
+            extractor=extractor.PersistentVolumeClaimExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.kubernetes.resync_period
+        ),
+        probe.PullProbe(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'horizontal_pod_autoscaler')),
+            extractor=extractor.HorizontalPodAutoscalerExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.kubernetes.resync_period
+        ),
+        probe.PullProbe(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'node')),
+            extractor=extractor.NodeExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.kubernetes.resync_period
+        ),
+        probe.PullProbe(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=k8s.ResourceProxyFactory.get(k8s_client, 'namespace')),
+            extractor=extractor.NamespaceExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.kubernetes.resync_period
+        ),
+
         probe.PushProbe(
             graph=graph,
             upstream_proxy=upstream.UpstreamProxy(

@@ -17,10 +17,17 @@ class NodeSynchronizer(object):
 
     """Synchronizes given set of nodes into the graph."""
 
-    def __init__(self, graph):
+    def __init__(self, graph, delete=True, update=True, create=True):
         self._graph = graph
+        self._delete = delete
+        self._update = update
+        self._create = create
 
-    def synchronize(self, current_nodes, new_nodes, delete=True, update=True, create=True):
+    def synchronize(self, current_nodes, new_nodes, **kwargs):
+        delete = kwargs['delete'] if 'delete' in kwargs else self._delete
+        update = kwargs['update'] if 'update' in kwargs else self._update
+        create = kwargs['create'] if 'create' in kwargs else self._create
+
         current_nodes = self._build_node_lookup(current_nodes)
         new_nodes = self._build_node_lookup(new_nodes)
 
