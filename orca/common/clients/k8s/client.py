@@ -87,17 +87,9 @@ class ResourceProxy(object):
     def get_all(self):
         return self._list_fn().items
 
-    def watch(self, handler):
+    def watch(self):
         for event in self._watch_resource():
-            event_type, event_object = event['type'], event['object']
-            if event_type == "ADDED":
-                handler.on_added(event_object)
-            elif event_type == "MODIFIED":
-                handler.on_updated(event_object)
-            elif event_type == "DELETED":
-                handler.on_deleted(event_object)
-            else:
-                raise Exception("Unknown event type '%s': %s" % (event_type, event_object))
+            yield event
 
     def _watch_resource(self):
         return watch.Watch().stream(self._list_fn)
@@ -122,18 +114,3 @@ class CustomResourceProxy(ResourceProxy):
 
     def _extract_item(self, item):
         return dictlib.Dict(item)
-
-
-class EventHandler(abc.ABC):
-
-    @abc.abstractmethod
-    def on_added(self, event_object):
-        """Triggered when a K8S resource is added."""
-
-    @abc.abstractmethod
-    def on_updated(self, event_object):
-        """Triggered when a K8S resource is updated."""
-
-    @abc.abstractmethod
-    def on_deleted(self, event_object):
-        """Triggered when a K8S resource is deleted."""
