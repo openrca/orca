@@ -11,6 +11,12 @@ neo4j:
   username: neo4j
   password: admin
 
+arangodb:
+  host: orca-arangodb.rca
+  port: 8529
+  username: root
+  password: admin
+
 kubernetes:
   resync_period: 900
 

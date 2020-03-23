@@ -14,6 +14,7 @@
 
 from orca.common import config
 from orca.graph.drivers.neo4j import Neo4jDriver
+from orca.graph.drivers import arangodb
 
 CONFIG = config.CONFIG
 
@@ -28,3 +29,10 @@ class DriverFactory(object):
                 port=CONFIG.neo4j.port,
                 user=CONFIG.neo4j.username,
                 password=CONFIG.neo4j.password)
+        elif backend == 'arangodb':
+            return arangodb.ArangoDBDriver(
+                host=CONFIG.arangodb.host,
+                port=CONFIG.arangodb.port,
+                database=CONFIG.arangodb.database,
+                username=CONFIG.arangodb.username,
+                password=CONFIG.arangodb.password)

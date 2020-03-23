@@ -122,6 +122,16 @@ SCHEMA = {
             'username': {'type': 'string'},
             'password': {'type': 'string'}
         }
+    },
+    'arangodb': {
+        'type': 'dict',
+        'schema': {
+            'host': {'type': 'string'},
+            'port': {'type': 'integer', 'coerce': int, 'default': 8529},
+            'database': {'type': 'string', 'default': 'orca'},
+            'username': {'type': 'string'},
+            'password': {'type': 'string'}
+        }
     }
 }
 
