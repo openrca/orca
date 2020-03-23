@@ -35,8 +35,10 @@ class ServiceGraphProbe(probe.Probe):
     def run(self):
         while True:
             LOG.info("Starting sync for Kiali service graph")
+            start_time = time.time()
             self._synchronize()
-            LOG.info("Finished sync for Kiali service graph")
+            sync_time = time.time() - start_time
+            LOG.info("Finished sync for Kiali service graph (%s seconds)", sync_time)
             time.sleep(self._resync_period)
 
     def _synchronize(self):
