@@ -79,10 +79,8 @@ class Graph(object):
     def unlock(self):
         self._lock.release()
 
-    def get_nodes(self, origin=None, kind=None, properties=None):
-        if not properties:
-            properties = {}
-        return self._driver.get_nodes(origin, kind, properties)
+    def get_nodes(self, **query):
+        return self._driver.get_nodes(**query)
 
     def get_node(self, node_id):
         return self._driver.get_node(node_id)
@@ -107,10 +105,8 @@ class Graph(object):
         self._driver.delete_node(node)
         self._notify_listeners(GraphEvent.NODE_DELETED, node)
 
-    def get_links(self, properties=None):
-        if not properties:
-            properties = {}
-        return self._driver.get_links(properties)
+    def get_links(self, **query):
+        return self._driver.get_links(**query)
 
     def get_link(self, link_id):
         return self._driver.get_link(link_id)
@@ -132,8 +128,8 @@ class Graph(object):
         self._driver.delete_link(link)
         self._notify_listeners(GraphEvent.LINK_DELETED, link)
 
-    def get_node_links(self, node, origin=None, kind=None):
-        return self._driver.get_node_links(node, origin, kind)
+    def get_node_links(self, node, **query):
+        return self._driver.get_node_links(node, **query)
 
     def add_listener(self, listener):
         self._listeners.append(listener)
