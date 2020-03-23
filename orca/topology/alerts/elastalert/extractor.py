@@ -20,7 +20,8 @@ class Extractor(extractor.Extractor):
 
     """Base class for Elastalert extractors."""
 
-    def get_origin(self):
+    @property
+    def origin(self):
         return 'elastalert'
 
 

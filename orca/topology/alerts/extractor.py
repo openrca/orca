@@ -31,7 +31,8 @@ class Extractor(extractor.Extractor):
         super().__init__()
         self._source_mapper = source_mapper
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'alert'
 
     def extract(self, entity):
@@ -42,7 +43,7 @@ class Extractor(extractor.Extractor):
         properties = self._extract_properties(entity)
         properties['name'] = name
         properties['source_mapping'] = source_mapping
-        return graph.Node(node_id, properties, self.get_origin(), self.get_kind())
+        return graph.Node(node_id, properties, self.origin, self.kind)
 
     @abc.abstractmethod
     def _extract_name(self, entity):
@@ -57,7 +58,7 @@ class Extractor(extractor.Extractor):
         """Extract properties from given entity object."""
 
     def _build_id(self, name, source_mapping):
-        id_parts = [self.get_origin(), self.get_kind(), name]
+        id_parts = [self.origin, self.kind, name]
         if source_mapping:
             id_parts.append(source_mapping['kind'])
             source_properties = source_mapping['properties']

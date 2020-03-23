@@ -21,7 +21,8 @@ class Extractor(extractor.Extractor):
 
     """Base class for Istio extractors."""
 
-    def get_origin(self):
+    @property
+    def origin(self):
         return 'istio'
 
 
@@ -29,7 +30,8 @@ class VirtualServiceExtractor(Extractor):
 
     """Extractor for Virtual Service entities."""
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'virtual_service'
 
     def _extract_properties(self, entity):
@@ -48,7 +50,8 @@ class DestinationRuleExtractor(Extractor):
 
     """Extractor for Destination Rule entities."""
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'destination_rule'
 
     def _extract_properties(self, entity):
@@ -63,7 +66,8 @@ class GatewayExtractor(Extractor):
 
     """Extractor for Gateway entities."""
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'gateway'
 
     def _extract_properties(self, entity):

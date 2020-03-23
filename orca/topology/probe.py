@@ -60,8 +60,8 @@ class PullProbe(Probe):
         self._resync_period = resync_period
 
     def run(self):
+        extended_kind = self._extractor.get_extended_kind()
         while True:
-            extended_kind = self._extractor.get_extended_kind()
             LOG.info("Starting sync for entity: %s", extended_kind)
             self._synchronize()
             LOG.info("Finished sync for entity: %s", extended_kind)
@@ -74,7 +74,7 @@ class PullProbe(Probe):
 
     def _get_nodes_in_graph(self):
         return self._graph.get_nodes(
-            origin=self._extractor.get_origin(), kind=self._extractor.get_kind())
+            origin=self._extractor.origin, kind=self._extractor.kind)
 
     def _get_upstream_nodes(self):
         entities = self._upstream_proxy.get_all()

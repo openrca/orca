@@ -19,12 +19,14 @@ class Extractor(abc.ABC):
 
     """Base class for entity extractors."""
 
+    @property
     @abc.abstractmethod
-    def get_origin(self):
+    def origin(self):
         """Returns origin of extracted entities."""
 
+    @property
     @abc.abstractmethod
-    def get_kind(self):
+    def kind(self):
         """Returns kind of extracted entities."""
 
     @abc.abstractmethod
@@ -32,4 +34,4 @@ class Extractor(abc.ABC):
         """Extracts graph node from given raw entity."""
 
     def get_extended_kind(self):
-        return "%s/%s" % (self.get_origin(), self.get_kind())
+        return "%s/%s" % (self.origin, self.kind)

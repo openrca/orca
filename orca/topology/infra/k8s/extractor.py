@@ -23,13 +23,14 @@ class Extractor(extractor.Extractor):
 
     """Base class for Kubernetes extractors."""
 
-    def get_origin(self):
+    @property
+    def origin(self):
         return 'kubernetes'
 
     def extract(self, entity):
         node_id = self._extract_id(entity)
         properties = self._extract_properties(entity)
-        return graph.Node(node_id, properties, self.get_origin(), self.get_kind())
+        return graph.Node(node_id, properties, self.origin, self.kind)
 
     def _extract_id(self, entity):
         return entity.metadata.uid
@@ -43,7 +44,8 @@ class PodExtractor(Extractor):
 
     """Extractor for Pod entities."""
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'pod'
 
     def _extract_properties(self, entity):
@@ -107,7 +109,8 @@ class ServiceExtractor(Extractor):
 
     """Extractor for Service entities."""
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'service'
 
     def _extract_properties(self, entity):
@@ -127,7 +130,8 @@ class EndpointsExtractor(Extractor):
 
     """Extractor for Endpoint entities."""
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'endpoints'
 
     def _extract_properties(self, entity):
@@ -141,7 +145,8 @@ class DeploymentExtractor(Extractor):
 
     """Extractor for Deployment entities."""
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'deployment'
 
     def _extract_properties(self, entity):
@@ -156,7 +161,8 @@ class ReplicaSetExtractor(Extractor):
 
     """Extractor for Replica Set entities."""
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'replica_set'
 
     def _extract_properties(self, entity):
@@ -173,7 +179,8 @@ class DaemonSetExtractor(Extractor):
 
     """Extractor for Daemon Set entities."""
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'daemon_set'
 
     def _extract_properties(self, entity):
@@ -189,7 +196,8 @@ class StatefulSetExtractor(Extractor):
 
     """Extractor for Stateful Set entities."""
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'stateful_set'
 
     def _extract_properties(self, entity):
@@ -206,7 +214,8 @@ class ConfigMapExtractor(Extractor):
 
     """Extractor for Config Map entities."""
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'config_map'
 
     def _extract_properties(self, entity):
@@ -220,7 +229,8 @@ class SecretExtractor(Extractor):
 
     """Extractor for Secret entities."""
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'secret'
 
     def _extract_properties(self, entity):
@@ -234,7 +244,8 @@ class StorageClassExtractor(Extractor):
 
     """Extractor for Storage Class entities."""
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'storage_class'
 
     def _extract_properties(self, entity):
@@ -250,7 +261,8 @@ class PersistentVolumeExtractor(Extractor):
 
     """Extractor for Persistent Volume entities."""
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'persistent_volume'
 
     def _extract_properties(self, entity):
@@ -277,7 +289,8 @@ class PersistentVolumeClaimExtractor(Extractor):
 
     """Extractor for Persistent Volume Claim entities."""
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'persistent_volume_claim'
 
     def _extract_properties(self, entity):
@@ -293,7 +306,8 @@ class HorizontalPodAutoscalerExtractor(Extractor):
 
     """Extractor for Horizontal Pod Autoscaler entities."""
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'horizontal_pod_autoscaler'
 
     def _extract_properties(self, entity):
@@ -313,7 +327,8 @@ class NodeExtractor(Extractor):
 
     """Extractor for Node entities."""
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'node'
 
     def _extract_properties(self, entity):
@@ -326,7 +341,8 @@ class NamespaceExtractor(Extractor):
 
     """Extractor for Namespace entities."""
 
-    def get_kind(self):
+    @property
+    def kind(self):
         return 'namespace'
 
     def _extract_properties(self, entity):
