@@ -80,10 +80,12 @@ class Graph(object):
         self._lock.release()
 
     def get_nodes(self, origin=None, kind=None, properties=None):
+        if not properties:
+            properties = {}
         return self._driver.get_nodes(origin, kind, properties)
 
-    def get_node(self, id, origin=None, kind=None, properties=None):
-        return self._driver.get_node(id, origin, kind, properties)
+    def get_node(self, node_id):
+        return self._driver.get_node(node_id)
 
     def add_node(self, node):
         LOG.debug("Adding node: %s", node)
@@ -106,10 +108,12 @@ class Graph(object):
         self._notify_listeners(GraphEvent.NODE_DELETED, node)
 
     def get_links(self, properties=None):
+        if not properties:
+            properties = {}
         return self._driver.get_links(properties)
 
-    def get_link(self, id, properties=None):
-        return self._driver.get_link(id, properties)
+    def get_link(self, link_id):
+        return self._driver.get_link(link_id)
 
     def add_link(self, link):
         LOG.debug("Adding link: %s", link)
