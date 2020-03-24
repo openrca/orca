@@ -1,11 +1,10 @@
-flask
-flask_restplus
-honcho
-cotyledon
-kubernetes
-neo4j
-addict
-pyyaml
-requests
-Werkzeug==0.16.1
-cerberus
+addict                      # MIT
+cerberus                    # ISC
+cotyledon                   # Apache License 2.0
+flask                       # BSD 3-Clause License
+flask_restplus              # BSD 3-Clause License
+honcho                      # MIT
+kubernetes                  # Apache License 2.0
+neo4j                       # Apache License 2.0
+pyyaml                      # MIT
+requests                    # Apache License 2.0
