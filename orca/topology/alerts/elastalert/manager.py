@@ -35,4 +35,4 @@ def initialize_linkers(graph):
 
 def initialize_handler(graph):
     source_mapper = extractor.SourceMapper('elastalert')
-    return ingestor.EntityHandler(graph, es_extractor.AlertExtractor(source_mapper))
+    return ingestor.EventHandler(graph, es_extractor.AlertExtractor(source_mapper))

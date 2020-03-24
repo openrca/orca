@@ -19,13 +19,11 @@ class Extractor(abc.ABC):
 
     """Base class for entity extractors."""
 
-    @property
-    @abc.abstractmethod
+    @abc.abstractproperty
     def origin(self):
         """Returns origin of extracted entities."""
 
-    @property
-    @abc.abstractmethod
+    @abc.abstractproperty
     def kind(self):
         """Returns kind of extracted entities."""
 
