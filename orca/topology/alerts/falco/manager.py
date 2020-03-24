@@ -35,4 +35,4 @@ def initialize_linkers(graph):
 
 def initialize_handler(graph):
     source_mapper = extractor.SourceMapper('falco')
-    return ingestor.EntityHandler(graph, falco_extractor.AlertExtractor(source_mapper))
+    return ingestor.EventHandler(graph, falco_extractor.AlertExtractor(source_mapper))

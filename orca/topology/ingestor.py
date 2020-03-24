@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-class EntityHandler(object):
+class EventHandler(object):
 
     """Processes entity events received by ingestor."""
 

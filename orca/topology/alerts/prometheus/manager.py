@@ -50,4 +50,4 @@ def initialize_linkers(graph):
 
 def initialize_handler(graph):
     source_mapper = extractor.SourceMapper('prometheus')
-    return ingestor.EntityHandler(graph, prom_extractor.AlertEventExtractor(source_mapper))
+    return ingestor.EventHandler(graph, prom_extractor.AlertEventExtractor(source_mapper))
