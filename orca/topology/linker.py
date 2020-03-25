@@ -135,12 +135,3 @@ class Linker(abc.ABC):
 
     def _build_link_lookup(self, links):
         return {link.id: link for link in links}
-
-
-class Matcher(abc.ABC):
-
-    """Matches pair of nodes based on the matching condition."""
-
-    @abc.abstractmethod
-    def are_linked(self, noda_a, node_b):
-        """Determines whether two graph nodes are interconnected."""

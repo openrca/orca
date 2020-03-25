@@ -12,9 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology import linker
+import abc
 
 
-class Linker(linker.Linker):
+class Matcher(abc.ABC):
 
-    """Base class for Istio linkers."""
+    """Matches pair of nodes based on the matching condition."""
+
+    @abc.abstractmethod
+    def are_linked(self, noda_a, node_b):
+        """Determines whether two graph nodes are interconnected."""

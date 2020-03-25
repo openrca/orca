@@ -14,7 +14,7 @@
 
 from orca.common import config
 from orca.topology import ingestor, utils
-from orca.topology.alerts import extractor, linker
+from orca.topology.alerts import extractor, linker, matcher
 from orca.topology.alerts.prometheus import extractor as prom_extractor
 from orca.topology.alerts.prometheus import probe
 
@@ -31,7 +31,7 @@ def initialize_linkers(graph):
             graph=graph,
             source_spec=utils.NodeSpec(origin='prometheus', kind='alert'),
             target_spec=utils.NodeSpec(origin='any', kind='any'),
-            matcher=linker.AlertToSourceMatcher(),
+            matcher=matcher.AlertToSourceMatcher(),
             bidirectional=False
         )
     ]
