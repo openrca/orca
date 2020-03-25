@@ -7,6 +7,9 @@ OpenRCA
 .. image:: https://img.shields.io/github/license/openrca/orca
    :target: https://github.com/openrca/orca
 
+.. image:: https://img.shields.io/gitter/room/openrca/community
+   :target: https://gitter.im/openrca/community
+
 .. raw:: html
 
     <h2 align="center">
