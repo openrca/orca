@@ -21,73 +21,65 @@ from orca.topology.infra.k8s import upstream
 CONFIG = config.CONFIG
 
 
-class VirtualServicePullProbe(probe.PullProbe):
+class PullProbe(probe.PullProbe):
 
     @classmethod
-    def get(cls, graph):
+    def get(cls, graph, kind, extractor):
         return cls(
             graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=istio.ResourceProxyFactory.get('virtual_service')),
-            extractor=extractor.VirtualServiceExtractor(),
+            upstream_proxy=upstream.UpstreamProxy(istio.ResourceProxyFactory.get(kind)),
+            extractor=extractor,
             synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.kubernetes.resync_period)
+            resync_period=CONFIG.istio.resync_period)
 
 
-class DestinationRulePullProbe(probe.PullProbe):
+class PushProbe(probe.PushProbe):
+
+    @classmethod
+    def get(cls, graph, kind, extractor):
+        return cls(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(istio.ResourceProxyFactory.get(kind)),
+            extractor=extractor)
+
+
+class VirtualServicePullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=istio.ResourceProxyFactory.get('destination_rule')),
-            extractor=extractor.DestinationRuleExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.kubernetes.resync_period)
+        return super().get(graph, 'virtual_service', extractor.VirtualServiceExtractor())
 
 
-class GatewayPullProbe(probe.PullProbe):
+class DestinationRulePullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=istio.ResourceProxyFactory.get('gateway')),
-            extractor=extractor.GatewayExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.kubernetes.resync_period)
+        return super().get(graph, 'destination_rule', extractor.DestinationRuleExtractor())
 
 
-class VirtualServicePushProbe(probe.PushProbe):
+class GatewayPullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=istio.ResourceProxyFactory.get('virtual_service')),
-            extractor=extractor.VirtualServiceExtractor())
+        return super().get(graph, 'gateway', extractor.GatewayExtractor())
 
 
-class DestinationRulePushProbe(probe.PushProbe):
+class VirtualServicePushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=istio.ResourceProxyFactory.get('destination_rule')),
-            extractor=extractor.DestinationRuleExtractor())
+        return super().get(graph, 'virtual_service', extractor.VirtualServiceExtractor())
 
 
-class GatewayPushProbe(probe.PushProbe):
+class DestinationRulePushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=istio.ResourceProxyFactory.get('gateway')),
-            extractor=extractor.GatewayExtractor())
+        return super().get(graph, 'destination_rule', extractor.DestinationRuleExtractor())
+
+
+class GatewayPushProbe(PushProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'gateway', extractor.GatewayExtractor())
