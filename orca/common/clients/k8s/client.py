@@ -27,52 +27,53 @@ class ClientFactory(object):
 class ResourceProxyFactory(object):
 
     @staticmethod
-    def get(k8s_client, kind):
+    def get(kind):
+        client = ClientFactory.get()
         if kind == 'pod':
             return ResourceProxy(
-                k8s_client.CoreV1Api().list_pod_for_all_namespaces)
+                client.CoreV1Api().list_pod_for_all_namespaces)
         elif kind == 'service':
             return ResourceProxy(
-                k8s_client.CoreV1Api().list_service_for_all_namespaces)
+                client.CoreV1Api().list_service_for_all_namespaces)
         elif kind == 'endpoints':
             return ResourceProxy(
-                k8s_client.CoreV1Api().list_endpoints_for_all_namespaces)
+                client.CoreV1Api().list_endpoints_for_all_namespaces)
         elif kind == 'config_map':
             return ResourceProxy(
-                k8s_client.CoreV1Api().list_config_map_for_all_namespaces)
+                client.CoreV1Api().list_config_map_for_all_namespaces)
         elif kind == 'secret':
             return ResourceProxy(
-                k8s_client.CoreV1Api().list_secret_for_all_namespaces)
+                client.CoreV1Api().list_secret_for_all_namespaces)
         elif kind == 'node':
             return ResourceProxy(
-                k8s_client.CoreV1Api().list_node)
+                client.CoreV1Api().list_node)
         elif kind == 'deployment':
             return ResourceProxy(
-                k8s_client.AppsV1Api().list_deployment_for_all_namespaces)
+                client.AppsV1Api().list_deployment_for_all_namespaces)
         elif kind == 'stateful_set':
             return ResourceProxy(
-                k8s_client.AppsV1Api().list_stateful_set_for_all_namespaces)
+                client.AppsV1Api().list_stateful_set_for_all_namespaces)
         elif kind == 'daemon_set':
             return ResourceProxy(
-                k8s_client.AppsV1Api().list_daemon_set_for_all_namespaces)
+                client.AppsV1Api().list_daemon_set_for_all_namespaces)
         elif kind == 'replica_set':
             return ResourceProxy(
-                k8s_client.ExtensionsV1beta1Api().list_replica_set_for_all_namespaces)
+                client.ExtensionsV1beta1Api().list_replica_set_for_all_namespaces)
         elif kind == 'storage_class':
             return ResourceProxy(
-                k8s_client.StorageV1Api().list_storage_class)
+                client.StorageV1Api().list_storage_class)
         elif kind == 'persistent_volume':
             return ResourceProxy(
-                k8s_client.CoreV1Api().list_persistent_volume)
+                client.CoreV1Api().list_persistent_volume)
         elif kind == 'persistent_volume_claim':
             return ResourceProxy(
-                k8s_client.CoreV1Api().list_persistent_volume_claim_for_all_namespaces)
+                client.CoreV1Api().list_persistent_volume_claim_for_all_namespaces)
         elif kind == 'namespace':
             return ResourceProxy(
-                k8s_client.CoreV1Api().list_namespace)
+                client.CoreV1Api().list_namespace)
         elif kind == 'horizontal_pod_autoscaler':
             return ResourceProxy(
-                k8s_client.AutoscalingV1Api().list_horizontal_pod_autoscaler_for_all_namespaces)
+                client.AutoscalingV1Api().list_horizontal_pod_autoscaler_for_all_namespaces)
         else:
             raise Exception("Unknown kind %s" % kind)
 

@@ -23,12 +23,11 @@ CONFIG = config.CONFIG
 
 
 def initialize_probes(graph):
-    k8s_client = k8s.ClientFactory.get()
     return [
         probe.PullProbe(
             graph=graph,
             upstream_proxy=upstream.UpstreamProxy(
-                client=istio.ResourceProxyFactory.get(k8s_client, 'virtual_service')),
+                client=istio.ResourceProxyFactory.get('virtual_service')),
             extractor=extractor.VirtualServiceExtractor(),
             synchronizer=utils.NodeSynchronizer(graph, create=False),
             resync_period=CONFIG.istio.resync_period
@@ -36,7 +35,7 @@ def initialize_probes(graph):
         probe.PullProbe(
             graph=graph,
             upstream_proxy=upstream.UpstreamProxy(
-                client=istio.ResourceProxyFactory.get(k8s_client, 'destination_rule')),
+                client=istio.ResourceProxyFactory.get('destination_rule')),
             extractor=extractor.DestinationRuleExtractor(),
             synchronizer=utils.NodeSynchronizer(graph, create=False),
             resync_period=CONFIG.istio.resync_period
@@ -44,7 +43,7 @@ def initialize_probes(graph):
         probe.PullProbe(
             graph=graph,
             upstream_proxy=upstream.UpstreamProxy(
-                client=istio.ResourceProxyFactory.get(k8s_client, 'gateway')),
+                client=istio.ResourceProxyFactory.get('gateway')),
             extractor=extractor.GatewayExtractor(),
             synchronizer=utils.NodeSynchronizer(graph, create=False),
             resync_period=CONFIG.istio.resync_period
@@ -53,19 +52,19 @@ def initialize_probes(graph):
         probe.PushProbe(
             graph=graph,
             upstream_proxy=upstream.UpstreamProxy(
-                client=istio.ResourceProxyFactory.get(k8s_client, 'virtual_service')),
+                client=istio.ResourceProxyFactory.get('virtual_service')),
             extractor=extractor.VirtualServiceExtractor()
         ),
         probe.PushProbe(
             graph=graph,
             upstream_proxy=upstream.UpstreamProxy(
-                client=istio.ResourceProxyFactory.get(k8s_client, 'destination_rule')),
+                client=istio.ResourceProxyFactory.get('destination_rule')),
             extractor=extractor.DestinationRuleExtractor()
         ),
         probe.PushProbe(
             graph=graph,
             upstream_proxy=upstream.UpstreamProxy(
-                client=istio.ResourceProxyFactory.get(k8s_client, 'gateway')),
+                client=istio.ResourceProxyFactory.get('gateway')),
             extractor=extractor.GatewayExtractor()
         )
     ]
