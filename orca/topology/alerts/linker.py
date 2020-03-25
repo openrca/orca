@@ -26,7 +26,9 @@ class Linker(linker.Linker):
     def _get_linked_nodes(self, alert_node):
         source_mapping = alert_node.properties.source_mapping
         return self._graph.get_nodes(
-            kind=source_mapping.kind, properties=source_mapping.properties)
+            origin=source_mapping.origin,
+            kind=source_mapping.kind,
+            properties=source_mapping.properties)
 
 
 class Matcher(linker.Matcher):
@@ -40,8 +42,10 @@ class AlertToSourceMatcher(Matcher):
 
     def are_linked(self, alert, obj):
         source_mapping = alert.properties.source_mapping
-        if source_mapping.kind == obj.kind:
-            mapping_items = source_mapping.properties.items()
-            obj_items = obj.properties.items()
-            return all(item in obj_items for item in mapping_items)
-        return False
+        if not source_mapping.origin == obj.origin:
+            return False
+        if not source_mapping.kind == obj.kind:
+            return False
+        mapping_items = source_mapping.properties.items()
+        obj_items = obj.properties.items()
+        return all(item in obj_items for item in mapping_items)

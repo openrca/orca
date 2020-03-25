@@ -77,7 +77,8 @@ class Probe(probe.Probe):
                     self._link_services(source_node, target_node, properties)
 
     def _get_service(self, mapping):
-        matches = self._graph.get_nodes('service', properties=mapping)
+        matches = self._graph.get_nodes(
+            origin='kubernetes', kind='service', properties=mapping)
         if matches:
             return matches[0]
 

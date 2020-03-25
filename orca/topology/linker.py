@@ -117,14 +117,18 @@ class Linker(abc.ABC):
 
     def _get_linked_from_source(self, source_node):
         linked_nodes = []
-        for target_node in self._graph.get_nodes(kind=self.target_spec.kind):
+        target_nodes = self._graph.get_nodes(
+            origin=self.target_spec.origin, kind=self.target_spec.kind)
+        for target_node in target_nodes:
             if self._matcher.are_linked(source_node, target_node):
                 linked_nodes.append(target_node)
         return linked_nodes
 
     def _get_linked_from_target(self, target_node):
         linked_nodes = []
-        for source_node in self._graph.get_nodes(kind=self.source_spec.kind):
+        source_nodes = self._graph.get_nodes(
+            origin=self.source_spec.origin, kind=self.source_spec.kind)
+        for source_node in source_nodes:
             if self._matcher.are_linked(source_node, target_node):
                 linked_nodes.append(source_node)
         return linked_nodes

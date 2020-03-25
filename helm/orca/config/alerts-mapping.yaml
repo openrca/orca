@@ -2,153 +2,181 @@ prometheus:
   mappings:
     - name: KubePodNotReady
       source_mapping:
+        origin: kubernetes
         kind: pod
         properties:
           name: pod
           namespace: namespace
     - name: KubePodCrashLooping
       source_mapping:
+        origin: kubernetes
         kind: pod
         properties:
           name: pod
           namespace: namespace
     - name: KubeContainerWaiting
       source_mapping:
+        origin: kubernetes
         kind: pod
         properties:
           name: pod
           namespace: namespace
     - name: KubeDeploymentReplicasMismatch
       source_mapping:
+        origin: kubernetes
         kind: deployment
         properties:
           name: deployment
           namespace: namespace
     - name: KubeStatefulSetReplicasMismatch
       source_mapping:
+        origin: kubernetes
         kind: stateful_set
         properties:
           name: statefulset
           namespace: namespace
     - name: KubeStatefulSetGenerationMismatch
       source_mapping:
+        origin: kubernetes
         kind: stateful_set
         properties:
           name: statefulset
           namespace: namespace
     - name: KubeStatefulSetUpdateNotRolledOut
       source_mapping:
+        origin: kubernetes
         kind: stateful_set
         properties:
           name: statefulset
           namespace: namespace
     - name: CPUThrottlingHigh
       source_mapping:
+        origin: kubernetes
         kind: pod
         properties:
           name: pod
           namespace: namespace
     - name: KubeAPILatencyHigh
       source_mapping:
+        origin: kubernetes
         kind: cluster
         properties: {}
     - name: KubeHpaMaxedOut
       source_mapping:
+        origin: kubernetes
         kind: horizontal_pod_autoscaler
         properties:
           name: hpa
           namespace: namespace
     - name: KubeHpaReplicasMismatch
       source_mapping:
+        origin: kubernetes
         kind: horizontal_pod_autoscaler
         properties:
           name: hpa
           namespace: namespace
     - name: KubeDaemonSetMisScheduled
       source_mapping:
+        origin: kubernetes
         kind: daemon_set
         properties:
           name: daemonset
           namespace: namespace
     - name: KubeDaemonSetNotScheduled
       source_mapping:
+        origin: kubernetes
         kind: daemon_set
         properties:
           name: daemonset
           namespace: namespace
     - name: KubeDaemonSetRolloutStuck
       source_mapping:
+        origin: kubernetes
         kind: daemon_set
         properties:
           name: daemonset
           namespace: namespace
     - name: KubePersistentVolumeErrors
       source_mapping:
+        origin: kubernetes
         kind: persistent_volume
         properties:
           name: persistentvolume
     - name: KubePersistentVolumeFullInFourDays
       source_mapping:
+        origin: kubernetes
         kind: persistent_volume
         properties:
           name: persistentvolume
     - name: KubePersistentVolumeUsageCritical
       source_mapping:
+        origin: kubernetes
         kind: persistent_volume
         properties:
           name: persistentvolume
     - name: KubeNodeNotReady
       source_mapping:
+        origin: kubernetes
         kind: node
         properties:
           name: node
     - name: KubeNodeUnreachable
       source_mapping:
+        origin: kubernetes
         kind: node
         properties:
           name: node
     - name: KubeletDown
       source_mapping:
+        origin: kubernetes
         kind: node
         properties:
           name: node
     - name: KubeletTooManyPods
       source_mapping:
+        origin: kubernetes
         kind: node
         properties:
           name: node
     - name: NodeFilesystemAlmostOutOfFiles
       source_mapping:
+        origin: kubernetes
         kind: node
         properties:
           name: instance
     - name: NodeFilesystemAlmostOutOfSpace
       source_mapping:
+        origin: kubernetes
         kind: node
         properties:
           name: instance
     - name: NodeFilesystemFilesFillingUp
       source_mapping:
+        origin: kubernetes
         kind: node
         properties:
           name: instance
     - name: NodeFilesystemSpaceFillingUp
       source_mapping:
+        origin: kubernetes
         kind: node
         properties:
           name: instance
     - name: NodeNetworkReceiveErrs
       source_mapping:
+        origin: kubernetes
         kind: node
         properties:
           name: instance
     - name: NodeNetworkTransmitErrs
       source_mapping:
+        origin: kubernetes
         kind: node
         properties:
           name: instance
     - name: NodeFilesystemAlmostOutOfFiles
       source_mapping:
+        origin: kubernetes
         kind: node
         properties:
           name: instance
@@ -159,44 +187,52 @@ falco:
   mappings:
     - name: "Launch Sensitive Mount Container"
       source_mapping:
+        origin: kubernetes
         kind: pod
         properties:
           name: k8s.pod.name
           namespace: k8s.ns.name
     - name: "Launch Privileged Container"
       source_mapping:
+        origin: kubernetes
         kind: pod
         properties:
           name: k8s.pod.name
           namespace: k8s.ns.name
     - name: "Create Sensitive Mount Pod"
       source_mapping:
+        origin: kubernetes
         kind: pod
         properties:
           name: ka.resp.name
           namespace: ka.target.namespace
     - name: "Create Privileged Pod"
       source_mapping:
+        origin: kubernetes
         kind: pod
         properties:
           name: ka.resp.name
           namespace: ka.target.namespace
     - name: "Terminal shell in container"
       source_mapping:
+        origin: kubernetes
         kind: pod
         properties:
           name: k8s.pod.name
           namespace: k8s.ns.name
     - name: "Detect outbound connections to common miner pool ports"
       source_mapping:
+        origin: kubernetes
         kind: pod
         properties:
           name: k8s.pod.name
           namespace: k8s.ns.name
+
 elastalert:
   mappings:
     - name: "Application error"
       source_mapping:
+        origin: kubernetes
         kind: pod
         properties:
           name: pod_name

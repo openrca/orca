@@ -84,6 +84,7 @@ class SourceMapper(object):
         mapping = self._mapping.get(name)
         if not mapping:
             raise exceptions.MappingNotFound(key=name)
+        origin = mapping['origin']
         kind = mapping['kind']
         properties = {}
         for prop, prop_mapping in mapping['properties'].items():
@@ -92,7 +93,7 @@ class SourceMapper(object):
             if not valid:
                 raise exceptions.InvalidMappedValue(key=name, value=value)
             properties[prop] = value
-        return {'kind': kind, 'properties': properties}
+        return {'origin': origin, 'kind': kind, 'properties': properties}
 
     def _load_mapping(self):
         mapping_spec = self._load_mapping_spec()
