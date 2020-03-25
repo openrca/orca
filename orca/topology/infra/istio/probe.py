@@ -12,9 +12,82 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology.infra.k8s import probe
+from orca.common import config
+from orca.common.clients.istio import client as istio
+from orca.topology import probe, utils
+from orca.topology.infra.istio import extractor
+from orca.topology.infra.k8s import upstream
+
+CONFIG = config.CONFIG
 
 
-class Probe(probe.Probe):
+class VirtualServicePullProbe(probe.PullProbe):
 
-    """Probe for Istio entities."""
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=istio.ResourceProxyFactory.get('virtual_service')),
+            extractor=extractor.VirtualServiceExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.kubernetes.resync_period)
+
+
+class DestinationRulePullProbe(probe.PullProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=istio.ResourceProxyFactory.get('destination_rule')),
+            extractor=extractor.DestinationRuleExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.kubernetes.resync_period)
+
+
+class GatewayPullProbe(probe.PullProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=istio.ResourceProxyFactory.get('gateway')),
+            extractor=extractor.GatewayExtractor(),
+            synchronizer=utils.NodeSynchronizer(graph, create=False),
+            resync_period=CONFIG.kubernetes.resync_period)
+
+
+class VirtualServicePushProbe(probe.PushProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=istio.ResourceProxyFactory.get('virtual_service')),
+            extractor=extractor.VirtualServiceExtractor())
+
+
+class DestinationRulePushProbe(probe.PushProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=istio.ResourceProxyFactory.get('destination_rule')),
+            extractor=extractor.DestinationRuleExtractor())
+
+
+class GatewayPushProbe(probe.PushProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(
+                client=istio.ResourceProxyFactory.get('gateway')),
+            extractor=extractor.GatewayExtractor())
