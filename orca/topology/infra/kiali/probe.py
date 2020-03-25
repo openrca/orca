@@ -14,14 +14,16 @@
 
 import time
 
-from orca.common import logger
+from orca.common import config, logger
+from orca.common.clients.kiali import client as kiali
 from orca.graph import graph
 from orca.topology import probe
 
+CONFIG = config.CONFIG
 LOG = logger.get_logger(__name__)
 
 
-class Probe(probe.Probe):
+class ServiceGraphProbe(probe.Probe):
 
     """Probe for synchronizing service graph from Kiali."""
 
@@ -91,3 +93,15 @@ class Probe(probe.Probe):
             self._graph.update_link(link)
         else:
             self._graph.add_link(link)
+
+    @classmethod
+    def get(cls, graph):
+        kiali_client = kiali.KialiClient.get(
+            url=CONFIG.kiali.url,
+            username=CONFIG.kiali.username,
+            password=CONFIG.kiali.password)
+        return cls(
+            graph=graph,
+            kiali_client=kiali_client,
+            resync_period=CONFIG.kiali.resync_period
+        )
