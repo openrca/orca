@@ -20,361 +20,236 @@ from orca.topology.infra.k8s import extractor, upstream
 CONFIG = config.CONFIG
 
 
-class PodPullProbe(probe.PullProbe):
+class PullProbe(probe.PullProbe):
 
     @classmethod
-    def get(cls, graph):
+    def get(cls, graph, kind, extractor):
         return cls(
             graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('pod')),
-            extractor=extractor.PodExtractor(),
+            upstream_proxy=upstream.UpstreamProxy(k8s.ResourceProxyFactory.get(kind)),
+            extractor=extractor,
             synchronizer=utils.NodeSynchronizer(graph, create=False),
             resync_period=CONFIG.kubernetes.resync_period)
 
 
-class ServicePullProbe(probe.PullProbe):
+class PushProbe(probe.PushProbe):
+
+    @classmethod
+    def get(cls, graph, kind, extractor):
+        return cls(
+            graph=graph,
+            upstream_proxy=upstream.UpstreamProxy(k8s.ResourceProxyFactory.get(kind)),
+            extractor=extractor)
+
+
+class PodPullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('service')),
-            extractor=extractor.ServiceExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.kubernetes.resync_period)
+        return super().get(graph, 'pod', extractor.PodExtractor())
 
 
-class EndpointsPullProbe(probe.PullProbe):
+class ServicePullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('endpoints')),
-            extractor=extractor.EndpointsExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.kubernetes.resync_period)
+        return super().get(graph, 'service', extractor.ServiceExtractor())
 
 
-class DeploymentPullProbe(probe.PullProbe):
+class EndpointsPullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('deployment')),
-            extractor=extractor.DeploymentExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.kubernetes.resync_period)
+        return super().get(graph, 'endpoints', extractor.EndpointsExtractor())
 
 
-class ReplicaSetPullProbe(probe.PullProbe):
+class DeploymentPullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('replica_set')),
-            extractor=extractor.ReplicaSetExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.kubernetes.resync_period)
+        return super().get(graph, 'deployment', extractor.DeploymentExtractor())
 
 
-class DaemonSetPullProbe(probe.PullProbe):
+class ReplicaSetPullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('daemon_set')),
-            extractor=extractor.DaemonSetExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.kubernetes.resync_period)
+        return super().get(graph, 'replica_set', extractor.ReplicaSetExtractor())
 
 
-class StatefulSetPullProbe(probe.PullProbe):
+class DaemonSetPullProbe(PullProbe):
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'daemon_set', extractor.DaemonSetExtractor())
+
+
+class StatefulSetPullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('stateful_set')),
-            extractor=extractor.StatefulSetExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.kubernetes.resync_period)
+        return super().get(graph, 'stateful_set', extractor.StatefulSetExtractor())
 
 
-class ConfigMapPullProbe(probe.PullProbe):
+class ConfigMapPullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('config_map')),
-            extractor=extractor.ConfigMapExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.kubernetes.resync_period)
+        return super().get(graph, 'config_map', extractor.ConfigMapExtractor())
 
 
-class SecretPullProbe(probe.PullProbe):
+class SecretPullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('secret')),
-            extractor=extractor.SecretExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.kubernetes.resync_period)
+        return super().get(graph, 'secret', extractor.SecretExtractor())
 
 
-class StorageClassPullProbe(probe.PullProbe):
+class StorageClassPullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('storage_class')),
-            extractor=extractor.StorageClassExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.kubernetes.resync_period)
+        return super().get(graph, 'storage_class', extractor.StorageClassExtractor())
 
 
-class PersistentVolumePullProbe(probe.PullProbe):
+class PersistentVolumePullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('persistent_volume')),
-            extractor=extractor.PersistentVolumeExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.kubernetes.resync_period)
+        return super().get(graph, 'persistent_volume', extractor.PersistentVolumeExtractor())
 
 
-class PersistentVolumeClaimPullProbe(probe.PullProbe):
+class PersistentVolumeClaimPullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('persistent_volume_claim')),
-            extractor=extractor.PersistentVolumeClaimExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.kubernetes.resync_period)
+        return super().get(
+            graph, 'persistent_volume_claim', extractor.PersistentVolumeClaimExtractor())
 
 
-class HorizontalPodAutoscalerPullProbe(probe.PullProbe):
+class HorizontalPodAutoscalerPullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('horizontal_pod_autoscaler')),
-            extractor=extractor.HorizontalPodAutoscalerExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.kubernetes.resync_period)
+        return super().get(
+            graph, 'horizontal_pod_autoscaler', extractor.HorizontalPodAutoscalerExtractor())
 
 
-class NodePullProbe(probe.PullProbe):
+class NodePullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('node')),
-            extractor=extractor.NodeExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.kubernetes.resync_period)
+        return super().get(graph, 'node', extractor.NodeExtractor())
 
 
-class NamespacePullProbe(probe.PullProbe):
+class NamespacePullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('namespace')),
-            extractor=extractor.NamespaceExtractor(),
-            synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.kubernetes.resync_period)
+        return super().get(graph, 'namespace', extractor.NamespaceExtractor())
 
 
-class PodPushProbe(probe.PushProbe):
+class PodPushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('pod')),
-            extractor=extractor.PodExtractor())
+        return super().get(graph, 'pod', extractor.PodExtractor())
 
 
-class ServicePushProbe(probe.PushProbe):
+class ServicePushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('service')),
-            extractor=extractor.ServiceExtractor())
+        return super().get(graph, 'service', extractor.ServiceExtractor())
 
 
-class EndpointsPushProbe(probe.PushProbe):
+class EndpointsPushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('endpoints')),
-            extractor=extractor.EndpointsExtractor())
+        return super().get(graph, 'endpoints', extractor.EndpointsExtractor())
 
 
-class DeploymentPushProbe(probe.PushProbe):
+class DeploymentPushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('deployment')),
-            extractor=extractor.DeploymentExtractor())
+        return super().get(graph, 'deployment', extractor.DeploymentExtractor())
 
 
-class ReplicaSetPushProbe(probe.PushProbe):
+class ReplicaSetPushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('replica_set')),
-            extractor=extractor.ReplicaSetExtractor())
+        return super().get(graph, 'replica_set', extractor.ReplicaSetExtractor())
 
 
-class DaemonSetPushProbe(probe.PushProbe):
+class DaemonSetPushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('daemon_set')),
-            extractor=extractor.DaemonSetExtractor())
+        return super().get(graph, 'daemon_set', extractor.DaemonSetExtractor())
 
 
-class StatefulSetPushProbe(probe.PushProbe):
+class StatefulSetPushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('stateful_set')),
-            extractor=extractor.StatefulSetExtractor())
+        return super().get(graph, 'stateful_set', extractor.StatefulSetExtractor())
 
 
-class ConfigMapPushProbe(probe.PushProbe):
+class ConfigMapPushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('config_map')),
-            extractor=extractor.ConfigMapExtractor())
+        return super().get(graph, 'config_map', extractor.ConfigMapExtractor())
 
 
-class SecretPushProbe(probe.PushProbe):
+class SecretPushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('secret')),
-            extractor=extractor.SecretExtractor())
+        return super().get(graph, 'secret', extractor.SecretExtractor())
 
 
-class StorageClassPushProbe(probe.PushProbe):
+class StorageClassPushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('storage_class')),
-            extractor=extractor.StorageClassExtractor())
+        return super().get(graph, 'storage_class', extractor.StorageClassExtractor())
 
 
-class PersistentVolumePushProbe(probe.PushProbe):
+class PersistentVolumePushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('persistent_volume')),
-            extractor=extractor.PersistentVolumeExtractor())
+        return super().get(graph, 'persistent_volume', extractor.PersistentVolumeExtractor())
 
 
-class PersistentVolumeClaimPushProbe(probe.PushProbe):
+class PersistentVolumeClaimPushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('persistent_volume_claim')),
-            extractor=extractor.PersistentVolumeClaimExtractor())
+        return super().get(
+            graph, 'persistent_volume_claim', extractor.PersistentVolumeClaimExtractor())
 
 
-class HorizontalPodAutoscalerPushProbe(probe.PushProbe):
+class HorizontalPodAutoscalerPushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('horizontal_pod_autoscaler')),
-            extractor=extractor.HorizontalPodAutoscalerExtractor())
+        return super().get(
+            graph, 'horizontal_pod_autoscaler', extractor.HorizontalPodAutoscalerExtractor())
 
 
-class NodePushProbe(probe.PushProbe):
+class NodePushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('node')),
-            extractor=extractor.NodeExtractor())
+        return super().get(graph, 'node', extractor.NodeExtractor())
 
 
-class NamespacePushProbe(probe.PushProbe):
+class NamespacePushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return cls(
-            graph=graph,
-            upstream_proxy=upstream.UpstreamProxy(
-                client=k8s.ResourceProxyFactory.get('namespace')),
-            extractor=extractor.NodeExtractor())
+        return super().get(graph, 'namespace', extractor.NodeExtractor())
