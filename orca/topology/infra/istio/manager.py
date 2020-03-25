@@ -14,7 +14,7 @@
 
 from orca.common import config
 from orca.topology import utils
-from orca.topology.infra.istio import linker, probe
+from orca.topology.infra.istio import linker, probe, matcher
 
 CONFIG = config.CONFIG
 
@@ -36,18 +36,18 @@ def initialize_linkers(graph):
             graph=graph,
             source_spec=utils.NodeSpec(origin='kubernetes', kind='virtual_service'),
             target_spec=utils.NodeSpec(origin='kubernetes', kind='gateway'),
-            matcher=linker.VirtualServiceToGatewayMatcher()
+            matcher=matcher.VirtualServiceToGatewayMatcher()
         ),
         linker.Linker(
             graph=graph,
             source_spec=utils.NodeSpec(origin='kubernetes', kind='virtual_service'),
             target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
-            matcher=linker.VirtualServiceToServiceMatcher()
+            matcher=matcher.VirtualServiceToServiceMatcher()
         ),
         linker.Linker(
             graph=graph,
             source_spec=utils.NodeSpec(origin='kubernetes', kind='destination_rule'),
             target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
-            matcher=linker.DestinationRuleToServiceMatcher()
+            matcher=matcher.DestinationRuleToServiceMatcher()
         )
     ]

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from orca.topology import ingestor, utils
-from orca.topology.alerts import extractor, linker
+from orca.topology.alerts import extractor, linker, matcher
 from orca.topology.alerts.falco import extractor as falco_extractor
 
 
@@ -27,7 +27,7 @@ def initialize_linkers(graph):
             graph=graph,
             source_spec=utils.NodeSpec(origin='falco', kind='alert'),
             target_spec=utils.NodeSpec(origin='any', kind='any'),
-            matcher=linker.AlertToSourceMatcher(),
+            matcher=matcher.AlertToSourceMatcher(),
             bidirectional=False
         )
     ]

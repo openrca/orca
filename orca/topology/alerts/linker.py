@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 from orca.topology import linker
 
 
@@ -29,23 +28,3 @@ class Linker(linker.Linker):
             origin=source_mapping.origin,
             kind=source_mapping.kind,
             properties=source_mapping.properties)
-
-
-class Matcher(linker.Matcher):
-
-    """Base class for alert matchers."""
-
-
-class AlertToSourceMatcher(Matcher):
-
-    """Generic matcher for links between Alert and source objects."""
-
-    def are_linked(self, alert, obj):
-        source_mapping = alert.properties.source_mapping
-        if not source_mapping.origin == obj.origin:
-            return False
-        if not source_mapping.kind == obj.kind:
-            return False
-        mapping_items = source_mapping.properties.items()
-        obj_items = obj.properties.items()
-        return all(item in obj_items for item in mapping_items)
