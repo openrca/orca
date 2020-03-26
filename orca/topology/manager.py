@@ -40,4 +40,4 @@ class Manager(cotyledon.ServiceManager):
         probe_managers = [k8s, istio, prom, kiali]
         for probe_manager in probe_managers:
             for probe_bundle in probe_manager.get_bundles():
-                self.add(probe.ProbeService, workers=1, args=(probe_bundle,))
+                self.add(probe.ProbeRunner, workers=1, args=(probe_bundle,))

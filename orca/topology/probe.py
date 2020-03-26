@@ -26,11 +26,11 @@ CONFIG = config.CONFIG
 LOG = logger.get_logger(__name__)
 
 
-class ProbeService(cotyledon.Service):
+class ProbeRunner(cotyledon.Service):
 
-    def __init__(self, service_id, probe_bundle):
-        super().__init__(service_id)
-        self._service_id = service_id
+    def __init__(self, worker_id, probe_bundle):
+        super().__init__(worker_id)
+        self._worker_id = worker_id
         self._probe_bundle = probe_bundle
         self.__graph = None
 
