@@ -12,9 +12,186 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology import linker
+from orca.topology import linker, utils
+from orca.topology.infra.k8s import matcher
 
 
 class Linker(linker.Linker):
 
     """Base class for Kubernetes linkers."""
+
+
+class PodToServiceLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
+            matcher=matcher.PodToServiceMatcher())
+
+
+class PodToReplicaSetLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='replica_set'),
+            matcher=matcher.PodToReplicaSetMatcher())
+
+
+class PodToStatefulSetLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='stateful_set'),
+            matcher=matcher.PodToStatefulSetMatcher())
+
+
+class PodToDaemonSetLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='daemon_set'),
+            matcher=matcher.PodToDaemonSetMatcher())
+
+
+class PodToNodeLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='node'),
+            matcher=matcher.PodToNodeMatcher())
+
+
+class EndpointsToServiceLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='endpoints'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
+            matcher=matcher.EndpointsToServiceMatcher())
+
+
+class DeploymentToHorizontalPodAutoscalerLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='deployment'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='horizontal_pod_autoscaler'),
+            matcher=matcher.HorizontalPodAutoscalerMatcher())
+
+
+class ReplicaSetToDeploymentLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='replica_set'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='deployment'),
+            matcher=matcher.ReplicaSetToDeploymentMatcher())
+
+
+class ReplicaSetToHorizontalPodAutoscalerLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='replica_set'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='horizontal_pod_autoscaler'),
+            matcher=matcher.HorizontalPodAutoscalerMatcher())
+
+
+class StatefulSetToHorizontalPodAutoscalerLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='stateful_set'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='horizontal_pod_autoscaler'),
+            matcher=matcher.HorizontalPodAutoscalerMatcher())
+
+
+class ConfigMapToPodLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='config_map'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            matcher=matcher.ConfigMapToPodMatcher())
+
+
+class SecretToPodLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='secret'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            matcher=matcher.SecretToPodMatcher())
+
+
+class PersistentVolumeToStorageClassLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='persistent_volume'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='storage_class'),
+            matcher=matcher.PersistentVolumeToStorageClassMatcher())
+
+
+class PersistentVolumeToPersistentVolumeClaimLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='persistent_volume'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='persistent_volume_claim'),
+            matcher=matcher.PersistentVolumeToPersistentVolumeClaimMatcher())
+
+
+class PersistentVolumeClaimToPodLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='persistent_volume_claim'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            matcher=matcher.PersistentVolumeClaimToPodMatcher())
+
+
+class NodeToClusterLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='node'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='cluster'),
+            matcher=matcher.NodeToClusterMatcher())

@@ -12,11 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.common import config
-from orca.topology import utils
-from orca.topology.infra.istio import linker, probe, matcher
-
-CONFIG = config.CONFIG
+from orca.topology.infra.istio import linker, probe
 
 
 def initialize_probes(graph):
@@ -32,22 +28,7 @@ def initialize_probes(graph):
 
 def initialize_linkers(graph):
     return [
-        linker.Linker(
-            graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='virtual_service'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='gateway'),
-            matcher=matcher.VirtualServiceToGatewayMatcher()
-        ),
-        linker.Linker(
-            graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='virtual_service'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
-            matcher=matcher.VirtualServiceToServiceMatcher()
-        ),
-        linker.Linker(
-            graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='destination_rule'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
-            matcher=matcher.DestinationRuleToServiceMatcher()
-        )
+        linker.VirtualServiceToGatewayLinker.get(graph),
+        linker.VirtualServiceToServiceLinker.get(graph),
+        linker.DestinationRuleToServiceLinker.get(graph)
     ]

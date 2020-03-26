@@ -12,20 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology import ingestor
-from orca.topology.alerts import extractor
-from orca.topology.alerts.elastalert import extractor as es_extractor
-from orca.topology.alerts.elastalert import linker
+from orca.topology.alerts import linker
 
 
-def initialize_probes(graph):
-    return []
+class AlertLinker(linker.AlertLinker):
 
-
-def initialize_linkers(graph):
-    return [linker.AlertLinker.get(graph)]
-
-
-def initialize_handler(graph):
-    source_mapper = extractor.SourceMapper('elastalert')
-    return ingestor.EventHandler(graph, es_extractor.AlertExtractor(source_mapper))
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'falco')

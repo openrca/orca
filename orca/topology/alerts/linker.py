@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology import linker
+from orca.topology import linker, utils
+from orca.topology.alerts import matcher
 
 
 class Linker(linker.Linker):
@@ -28,3 +29,15 @@ class Linker(linker.Linker):
             origin=source_mapping.origin,
             kind=source_mapping.kind,
             properties=source_mapping.properties)
+
+
+class AlertLinker(Linker):
+
+    @classmethod
+    def get(cls, graph, origin):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin=origin, kind='alert'),
+            target_spec=utils.NodeSpec(origin='any', kind='any'),
+            matcher=matcher.AlertToSourceMatcher(),
+            bidirectional=False)

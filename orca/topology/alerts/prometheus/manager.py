@@ -13,10 +13,10 @@
 # limitations under the License.
 
 from orca.common import config
-from orca.topology import ingestor, utils
-from orca.topology.alerts import extractor, linker, matcher
+from orca.topology import ingestor
+from orca.topology.alerts import extractor
 from orca.topology.alerts.prometheus import extractor as prom_extractor
-from orca.topology.alerts.prometheus import probe
+from orca.topology.alerts.prometheus import probe, linker
 
 CONFIG = config.CONFIG
 
@@ -26,15 +26,7 @@ def initialize_probes(graph):
 
 
 def initialize_linkers(graph):
-    return [
-        linker.Linker(
-            graph=graph,
-            source_spec=utils.NodeSpec(origin='prometheus', kind='alert'),
-            target_spec=utils.NodeSpec(origin='any', kind='any'),
-            matcher=matcher.AlertToSourceMatcher(),
-            bidirectional=False
-        )
-    ]
+    return [linker.AlertLinker.get(graph)]
 
 
 def initialize_handler(graph):
