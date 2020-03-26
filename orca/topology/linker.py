@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import abc
+from collections import defaultdict
 
 from orca.graph import graph
 
@@ -22,7 +23,7 @@ class EventDispatcher(graph.EventListener):
     """Listens for graph events and triggers node linking on node updates."""
 
     def __init__(self):
-        self._linkers = {}
+        self._linkers = defaultdict(lambda: defaultdict(list))
 
     def add_linker(self, linker):
         self._build_linker_lookup(linker.source_spec, linker)
@@ -48,8 +49,7 @@ class EventDispatcher(graph.EventListener):
         return
 
     def _build_linker_lookup(self, node_spec, linker):
-        self._linkers.setdefault(node_spec.origin, {})
-        self._linkers[node_spec.origin].setdefault(node_spec.kind, []).append(linker)
+        self._linkers[node_spec.origin][node_spec.kind].append(linker)
 
     def _link_node(self, node):
         origin_linkers = self._linkers.get(node.origin, None)
