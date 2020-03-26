@@ -17,3 +17,9 @@ class ProbeBundle(object):
     def __init__(self, probe, linkers):
         self.probe = probe
         self.linkers = linkers
+
+    def get_probe(self, graph):
+        return self.probe.get(graph)
+
+    def get_linkers(self, graph):
+        return [linker.get(graph) for linker in self.linkers]

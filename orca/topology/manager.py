@@ -32,9 +32,6 @@ class Manager(cotyledon.ServiceManager):
 
     """Initializes probe runners."""
 
-    def __init__(self):
-        super().__init__()
-
     def initialize(self):
         # probe_managers = [k8s, istio, prom, falco, es, kiali]
         probe_managers = [k8s, istio, prom, kiali]
