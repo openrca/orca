@@ -16,6 +16,7 @@ import abc
 import time
 
 import cotyledon
+
 from orca import exceptions
 from orca.common import config, logger
 from orca.graph import graph
@@ -27,16 +28,17 @@ LOG = logger.get_logger(__name__)
 
 class ProbeRunner(cotyledon.Service):
 
-    def __init__(self, worker_id, probe_bundle):
+    def __init__(self, worker_id, probe_bundle, lock):
         super().__init__(worker_id)
         self._worker_id = worker_id
         self._probe_bundle = probe_bundle
+        self._lock = lock
         self.__graph = None
 
     @property
     def _graph(self):
         if not self.__graph:
-            self.__graph = graph.Graph.get()
+            self.__graph = graph.Graph.get(self._lock)
         return self.__graph
 
     def run(self):

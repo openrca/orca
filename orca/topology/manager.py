@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import multiprocessing
+
 import cotyledon
 
 from orca.common import config
@@ -33,8 +35,9 @@ class Manager(cotyledon.ServiceManager):
     """Initializes probe runners."""
 
     def initialize(self):
+        graph_lock = multiprocessing.Lock()
         # probe_managers = [k8s, istio, prom, falco, es, kiali]
         probe_managers = [k8s, istio, prom, kiali]
         for probe_manager in probe_managers:
             for probe_bundle in probe_manager.get_bundles():
-                self.add(probe.ProbeRunner, workers=1, args=(probe_bundle,))
+                self.add(probe.ProbeRunner, workers=1, args=(probe_bundle, graph_lock,))
