@@ -73,6 +73,10 @@ class Linker(abc.ABC):
         self._matcher = matcher
 
     def link(self, node):
+        with self._graph.locked():
+            self._link_node(node)
+
+    def _link_node(self, node):
         current_links = self._build_link_lookup(self._get_current_links(node))
         new_links = self._build_link_lookup(self._get_new_links(node))
 
