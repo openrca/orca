@@ -12,14 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology.infra.kiali import probe
-from orca.topology import bundle
+class ProbeBundle(object):
 
-
-def get_bundles():
-    return [
-        bundle.ProbeBundle(
-            probe=probe.ServiceGraphProbe,
-            linkers=[]
-        )
-    ]
+    def __init__(self, probe, linkers):
+        self.probe = probe
+        self.linkers = linkers

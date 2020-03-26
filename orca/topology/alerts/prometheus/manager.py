@@ -13,20 +13,21 @@
 # limitations under the License.
 
 from orca.common import config
-from orca.topology import ingestor
+from orca.topology import bundle, ingestor
 from orca.topology.alerts import extractor
 from orca.topology.alerts.prometheus import extractor as prom_extractor
-from orca.topology.alerts.prometheus import probe, linker
+from orca.topology.alerts.prometheus import linker, probe
 
 CONFIG = config.CONFIG
 
 
-def initialize_probes(graph):
-    return [probe.AlertProbe.get(graph)]
-
-
-def initialize_linkers(graph):
-    return [linker.AlertLinker.get(graph)]
+def get_bundles():
+    return [
+        bundle.ProbeBundle(
+            probe=probe.AlertProbe,
+            linkers=[linker.AlertLinker]
+        )
+    ]
 
 
 def initialize_handler(graph):

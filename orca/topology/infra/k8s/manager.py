@@ -12,61 +12,261 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from orca.topology import bundle
+from orca.topology.infra.istio import linker as istio_linker
 from orca.topology.infra.k8s import cluster, linker, probe
 
 
-def initialize_probes(graph):
+def get_bundles():
     return [
-        probe.PodPullProbe.get(graph),
-        probe.PodPushProbe.get(graph),
-        probe.ServicePullProbe.get(graph),
-        probe.ServicePushProbe.get(graph),
-        probe.EndpointsPullProbe.get(graph),
-        probe.EndpointsPushProbe.get(graph),
-        probe.DeploymentPullProbe.get(graph),
-        probe.DeploymentPushProbe.get(graph),
-        probe.ReplicaSetPullProbe.get(graph),
-        probe.ReplicaSetPushProbe.get(graph),
-        probe.DaemonSetPullProbe.get(graph),
-        probe.DaemonSetPushProbe.get(graph),
-        probe.StatefulSetPullProbe.get(graph),
-        probe.StatefulSetPushProbe.get(graph),
-        probe.ConfigMapPullProbe.get(graph),
-        probe.ConfigMapPushProbe.get(graph),
-        probe.SecretPullProbe.get(graph),
-        probe.SecretPushProbe.get(graph),
-        probe.StorageClassPullProbe.get(graph),
-        probe.StorageClassPushProbe.get(graph),
-        probe.PersistentVolumePullProbe.get(graph),
-        probe.PersistentVolumePushProbe.get(graph),
-        probe.PersistentVolumeClaimPullProbe.get(graph),
-        probe.PersistentVolumeClaimPushProbe.get(graph),
-        probe.HorizontalPodAutoscalerPullProbe.get(graph),
-        probe.HorizontalPodAutoscalerPushProbe.get(graph),
-        probe.NodePullProbe.get(graph),
-        probe.NodePushProbe.get(graph),
-        probe.NamespacePullProbe.get(graph),
-        probe.NamespacePushProbe.get(graph),
-        cluster.ClusterProbe(graph=graph)
-    ]
+        bundle.ProbeBundle(
+            probe=probe.PodPullProbe,
+            linkers=[
+                linker.PodToServiceLinker,
+                linker.PodToReplicaSetLinker,
+                linker.PodToStatefulSetLinker,
+                linker.PodToDaemonSetLinker,
+                linker.PodToNodeLinker,
+                linker.ConfigMapToPodLinker,
+                linker.SecretToPodLinker,
+                linker.PersistentVolumeClaimToPodLinker
+            ]
+        ),
 
+        bundle.ProbeBundle(
+            probe=probe.PodPushProbe,
+            linkers=[
+                linker.PodToServiceLinker,
+                linker.PodToReplicaSetLinker,
+                linker.PodToStatefulSetLinker,
+                linker.PodToDaemonSetLinker,
+                linker.PodToNodeLinker,
+                linker.ConfigMapToPodLinker,
+                linker.SecretToPodLinker,
+                linker.PersistentVolumeClaimToPodLinker
+            ]
+        ),
 
-def initialize_linkers(graph):
-    return [
-        linker.PodToServiceLinker.get(graph),
-        linker.PodToReplicaSetLinker.get(graph),
-        linker.PodToStatefulSetLinker.get(graph),
-        linker.PodToDaemonSetLinker.get(graph),
-        linker.PodToNodeLinker.get(graph),
-        linker.EndpointsToServiceLinker.get(graph),
-        linker.DeploymentToHorizontalPodAutoscalerLinker.get(graph),
-        linker.ReplicaSetToDeploymentLinker.get(graph),
-        linker.ReplicaSetToHorizontalPodAutoscalerLinker.get(graph),
-        linker.StatefulSetToHorizontalPodAutoscalerLinker.get(graph),
-        linker.ConfigMapToPodLinker.get(graph),
-        linker.SecretToPodLinker.get(graph),
-        linker.PersistentVolumeToStorageClassLinker.get(graph),
-        linker.PersistentVolumeToPersistentVolumeClaimLinker.get(graph),
-        linker.PersistentVolumeClaimToPodLinker.get(graph),
-        linker.NodeToClusterLinker.get(graph),
+        bundle.ProbeBundle(
+            probe=probe.ServicePullProbe,
+            linkers=[
+                linker.PodToServiceLinker,
+                linker.EndpointsToServiceLinker,
+                istio_linker.VirtualServiceToServiceLinker,
+                istio_linker.DestinationRuleToServiceLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.ServicePushProbe,
+            linkers=[
+                linker.PodToServiceLinker,
+                linker.EndpointsToServiceLinker,
+                istio_linker.VirtualServiceToServiceLinker,
+                istio_linker.DestinationRuleToServiceLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.EndpointsPullProbe,
+            linkers=[
+                linker.EndpointsToServiceLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.EndpointsPushProbe,
+            linkers=[
+                linker.EndpointsToServiceLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.DeploymentPullProbe,
+            linkers=[
+                linker.DeploymentToHorizontalPodAutoscalerLinker,
+                linker.ReplicaSetToDeploymentLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.DeploymentPushProbe,
+            linkers=[
+                linker.DeploymentToHorizontalPodAutoscalerLinker,
+                linker.ReplicaSetToDeploymentLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.ReplicaSetPullProbe,
+            linkers=[
+                linker.PodToReplicaSetLinker,
+                linker.ReplicaSetToDeploymentLinker,
+                linker.ReplicaSetToHorizontalPodAutoscalerLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.ReplicaSetPushProbe,
+            linkers=[
+                linker.PodToReplicaSetLinker,
+                linker.ReplicaSetToDeploymentLinker,
+                linker.ReplicaSetToHorizontalPodAutoscalerLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.DaemonSetPullProbe,
+            linkers=[
+                linker.PodToDaemonSetLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.DaemonSetPushProbe,
+            linkers=[
+                linker.PodToDaemonSetLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.StatefulSetPullProbe,
+            linkers=[
+                linker.PodToStatefulSetLinker,
+                linker.StatefulSetToHorizontalPodAutoscalerLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.StatefulSetPushProbe,
+            linkers=[
+                linker.PodToStatefulSetLinker,
+                linker.StatefulSetToHorizontalPodAutoscalerLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.ConfigMapPullProbe,
+            linkers=[
+                linker.ConfigMapToPodLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.ConfigMapPushProbe,
+            linkers=[
+                linker.ConfigMapToPodLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.SecretPullProbe,
+            linkers=[
+                linker.SecretToPodLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.SecretPushProbe,
+            linkers=[
+                linker.SecretToPodLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.StorageClassPullProbe,
+            linkers=[
+                linker.PersistentVolumeToStorageClassLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.StorageClassPushProbe,
+            linkers=[
+                linker.PersistentVolumeToStorageClassLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.PersistentVolumePullProbe,
+            linkers=[
+                linker.PersistentVolumeToStorageClassLinker,
+                linker.PersistentVolumeToPersistentVolumeClaimLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.PersistentVolumePushProbe,
+            linkers=[
+                linker.PersistentVolumeToStorageClassLinker,
+                linker.PersistentVolumeToPersistentVolumeClaimLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.PersistentVolumeClaimPullProbe,
+            linkers=[
+                linker.PersistentVolumeToPersistentVolumeClaimLinker,
+                linker.PersistentVolumeClaimToPodLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.PersistentVolumeClaimPushProbe,
+            linkers=[
+                linker.PersistentVolumeToPersistentVolumeClaimLinker,
+                linker.PersistentVolumeClaimToPodLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.HorizontalPodAutoscalerPullProbe,
+            linkers=[
+                linker.DeploymentToHorizontalPodAutoscalerLinker,
+                linker.ReplicaSetToHorizontalPodAutoscalerLinker,
+                linker.StatefulSetToHorizontalPodAutoscalerLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.HorizontalPodAutoscalerPushProbe,
+            linkers=[
+                linker.DeploymentToHorizontalPodAutoscalerLinker,
+                linker.ReplicaSetToHorizontalPodAutoscalerLinker,
+                linker.StatefulSetToHorizontalPodAutoscalerLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.NodePullProbe,
+            linkers=[
+                linker.PodToNodeLinker,
+                linker.NodeToClusterLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.NodePushProbe,
+            linkers=[
+                linker.PodToNodeLinker,
+                linker.NodeToClusterLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.NamespacePullProbe,
+            linkers=[]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.NamespacePushProbe,
+            linkers=[]
+        ),
+
+        bundle.ProbeBundle(
+            probe=cluster.ClusterProbe,
+            linkers=[
+                linker.NodeToClusterLinker
+            ]
+        )
     ]
