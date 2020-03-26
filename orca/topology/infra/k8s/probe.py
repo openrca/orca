@@ -252,4 +252,4 @@ class NamespacePushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return super().get(graph, 'namespace', extractor.NodeExtractor())
+        return super().get(graph, 'namespace', extractor.NamespaceExtractor())
