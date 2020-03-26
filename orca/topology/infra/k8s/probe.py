@@ -49,7 +49,21 @@ class PodPullProbe(PullProbe):
         return super().get(graph, 'pod', extractor.PodExtractor())
 
 
+class PodPushProbe(PushProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'pod', extractor.PodExtractor())
+
+
 class ServicePullProbe(PullProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'service', extractor.ServiceExtractor())
+
+
+class ServicePushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
@@ -63,7 +77,21 @@ class EndpointsPullProbe(PullProbe):
         return super().get(graph, 'endpoints', extractor.EndpointsExtractor())
 
 
+class EndpointsPushProbe(PushProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'endpoints', extractor.EndpointsExtractor())
+
+
 class DeploymentPullProbe(PullProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'deployment', extractor.DeploymentExtractor())
+
+
+class DeploymentPushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
@@ -77,13 +105,34 @@ class ReplicaSetPullProbe(PullProbe):
         return super().get(graph, 'replica_set', extractor.ReplicaSetExtractor())
 
 
+class ReplicaSetPushProbe(PushProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'replica_set', extractor.ReplicaSetExtractor())
+
+
 class DaemonSetPullProbe(PullProbe):
     @classmethod
     def get(cls, graph):
         return super().get(graph, 'daemon_set', extractor.DaemonSetExtractor())
 
 
+class DaemonSetPushProbe(PushProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'daemon_set', extractor.DaemonSetExtractor())
+
+
 class StatefulSetPullProbe(PullProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'stateful_set', extractor.StatefulSetExtractor())
+
+
+class StatefulSetPushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
@@ -97,7 +146,21 @@ class ConfigMapPullProbe(PullProbe):
         return super().get(graph, 'config_map', extractor.ConfigMapExtractor())
 
 
+class ConfigMapPushProbe(PushProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'config_map', extractor.ConfigMapExtractor())
+
+
 class SecretPullProbe(PullProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'secret', extractor.SecretExtractor())
+
+
+class SecretPushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
@@ -111,6 +174,13 @@ class StorageClassPullProbe(PullProbe):
         return super().get(graph, 'storage_class', extractor.StorageClassExtractor())
 
 
+class StorageClassPushProbe(PushProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'storage_class', extractor.StorageClassExtractor())
+
+
 class PersistentVolumePullProbe(PullProbe):
 
     @classmethod
@@ -118,7 +188,22 @@ class PersistentVolumePullProbe(PullProbe):
         return super().get(graph, 'persistent_volume', extractor.PersistentVolumeExtractor())
 
 
+class PersistentVolumePushProbe(PushProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'persistent_volume', extractor.PersistentVolumeExtractor())
+
+
 class PersistentVolumeClaimPullProbe(PullProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(
+            graph, 'persistent_volume_claim', extractor.PersistentVolumeClaimExtractor())
+
+
+class PersistentVolumeClaimPushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
@@ -134,7 +219,22 @@ class HorizontalPodAutoscalerPullProbe(PullProbe):
             graph, 'horizontal_pod_autoscaler', extractor.HorizontalPodAutoscalerExtractor())
 
 
+class HorizontalPodAutoscalerPushProbe(PushProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(
+            graph, 'horizontal_pod_autoscaler', extractor.HorizontalPodAutoscalerExtractor())
+
+
 class NodePullProbe(PullProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'node', extractor.NodeExtractor())
+
+
+class NodePushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
@@ -146,106 +246,6 @@ class NamespacePullProbe(PullProbe):
     @classmethod
     def get(cls, graph):
         return super().get(graph, 'namespace', extractor.NamespaceExtractor())
-
-
-class PodPushProbe(PushProbe):
-
-    @classmethod
-    def get(cls, graph):
-        return super().get(graph, 'pod', extractor.PodExtractor())
-
-
-class ServicePushProbe(PushProbe):
-
-    @classmethod
-    def get(cls, graph):
-        return super().get(graph, 'service', extractor.ServiceExtractor())
-
-
-class EndpointsPushProbe(PushProbe):
-
-    @classmethod
-    def get(cls, graph):
-        return super().get(graph, 'endpoints', extractor.EndpointsExtractor())
-
-
-class DeploymentPushProbe(PushProbe):
-
-    @classmethod
-    def get(cls, graph):
-        return super().get(graph, 'deployment', extractor.DeploymentExtractor())
-
-
-class ReplicaSetPushProbe(PushProbe):
-
-    @classmethod
-    def get(cls, graph):
-        return super().get(graph, 'replica_set', extractor.ReplicaSetExtractor())
-
-
-class DaemonSetPushProbe(PushProbe):
-
-    @classmethod
-    def get(cls, graph):
-        return super().get(graph, 'daemon_set', extractor.DaemonSetExtractor())
-
-
-class StatefulSetPushProbe(PushProbe):
-
-    @classmethod
-    def get(cls, graph):
-        return super().get(graph, 'stateful_set', extractor.StatefulSetExtractor())
-
-
-class ConfigMapPushProbe(PushProbe):
-
-    @classmethod
-    def get(cls, graph):
-        return super().get(graph, 'config_map', extractor.ConfigMapExtractor())
-
-
-class SecretPushProbe(PushProbe):
-
-    @classmethod
-    def get(cls, graph):
-        return super().get(graph, 'secret', extractor.SecretExtractor())
-
-
-class StorageClassPushProbe(PushProbe):
-
-    @classmethod
-    def get(cls, graph):
-        return super().get(graph, 'storage_class', extractor.StorageClassExtractor())
-
-
-class PersistentVolumePushProbe(PushProbe):
-
-    @classmethod
-    def get(cls, graph):
-        return super().get(graph, 'persistent_volume', extractor.PersistentVolumeExtractor())
-
-
-class PersistentVolumeClaimPushProbe(PushProbe):
-
-    @classmethod
-    def get(cls, graph):
-        return super().get(
-            graph, 'persistent_volume_claim', extractor.PersistentVolumeClaimExtractor())
-
-
-class HorizontalPodAutoscalerPushProbe(PushProbe):
-
-    @classmethod
-    def get(cls, graph):
-        return super().get(
-            graph, 'horizontal_pod_autoscaler', extractor.HorizontalPodAutoscalerExtractor())
-
-
-class NodePushProbe(PushProbe):
-
-    @classmethod
-    def get(cls, graph):
-        return super().get(graph, 'node', extractor.NodeExtractor())
 
 
 class NamespacePushProbe(PushProbe):
