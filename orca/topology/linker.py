@@ -17,7 +17,7 @@ import abc
 from orca.graph import graph
 
 
-class Dispatcher(graph.EventListener):
+class EventDispatcher(graph.EventListener):
 
     """Listens for graph events and triggers node linking on node updates."""
 
