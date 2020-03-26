@@ -28,6 +28,8 @@ LOG = logger.get_logger(__name__)
 
 class ProbeRunner(cotyledon.Service):
 
+    """Runs entity probe from given probe bundle."""
+
     def __init__(self, worker_id, probe_bundle, lock):
         super().__init__(worker_id)
         self._worker_id = worker_id

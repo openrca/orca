@@ -24,6 +24,8 @@ CONFIG = config.CONFIG
 
 class AlertProbe(probe.PullProbe):
 
+    """Alert pull probe."""
+
     @classmethod
     def get(cls, graph):
         source_mapper = extractor.SourceMapper('prometheus')

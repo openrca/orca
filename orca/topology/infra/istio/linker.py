@@ -24,6 +24,8 @@ class Linker(linker.Linker):
 
 class VirtualServiceToGatewayLinker(Linker):
 
+    """Links Virtual Service entities to Gateway entities."""
+
     @classmethod
     def get(cls, graph):
         return cls(
@@ -35,6 +37,8 @@ class VirtualServiceToGatewayLinker(Linker):
 
 class VirtualServiceToServiceLinker(Linker):
 
+    """Links Virtual Service entities to Service entities."""
+
     @classmethod
     def get(cls, graph):
         return cls(
@@ -45,6 +49,8 @@ class VirtualServiceToServiceLinker(Linker):
 
 
 class DestinationRuleToServiceLinker(Linker):
+
+    """Links Destination Rule entities to Service entities."""
 
     @classmethod
     def get(cls, graph):

@@ -23,6 +23,8 @@ class Linker(linker.Linker):
 
 class PodToServiceLinker(Linker):
 
+    """Links Pod entities to Service entities."""
+
     @classmethod
     def get(cls, graph):
         return cls(
@@ -33,6 +35,8 @@ class PodToServiceLinker(Linker):
 
 
 class PodToReplicaSetLinker(Linker):
+
+    """Links Pod entities to Replica Set entities."""
 
     @classmethod
     def get(cls, graph):
@@ -45,6 +49,8 @@ class PodToReplicaSetLinker(Linker):
 
 class PodToStatefulSetLinker(Linker):
 
+    """Links Pod entities to Stateful Set entities."""
+
     @classmethod
     def get(cls, graph):
         return cls(
@@ -55,6 +61,8 @@ class PodToStatefulSetLinker(Linker):
 
 
 class PodToDaemonSetLinker(Linker):
+
+    """Links Pod entities to Daemon Set entities."""
 
     @classmethod
     def get(cls, graph):
@@ -67,6 +75,8 @@ class PodToDaemonSetLinker(Linker):
 
 class PodToNodeLinker(Linker):
 
+    """Links Pod entities to Node entities."""
+
     @classmethod
     def get(cls, graph):
         return cls(
@@ -77,6 +87,8 @@ class PodToNodeLinker(Linker):
 
 
 class EndpointsToServiceLinker(Linker):
+
+    """Links Endpoint entities to Service entities."""
 
     @classmethod
     def get(cls, graph):
@@ -89,6 +101,8 @@ class EndpointsToServiceLinker(Linker):
 
 class DeploymentToHorizontalPodAutoscalerLinker(Linker):
 
+    """Links Deployment entities to Horizontal Pod Autoscaler entities."""
+
     @classmethod
     def get(cls, graph):
         return cls(
@@ -99,6 +113,8 @@ class DeploymentToHorizontalPodAutoscalerLinker(Linker):
 
 
 class ReplicaSetToDeploymentLinker(Linker):
+
+    """Links Replica Set entities to Deployment entities."""
 
     @classmethod
     def get(cls, graph):
@@ -111,6 +127,8 @@ class ReplicaSetToDeploymentLinker(Linker):
 
 class ReplicaSetToHorizontalPodAutoscalerLinker(Linker):
 
+    """Links Replica Set entities to Horizontal Pod Autoscaler entities."""
+
     @classmethod
     def get(cls, graph):
         return cls(
@@ -121,6 +139,8 @@ class ReplicaSetToHorizontalPodAutoscalerLinker(Linker):
 
 
 class StatefulSetToHorizontalPodAutoscalerLinker(Linker):
+
+    """Links Stateful Set entities to Horizontal Pod Autoscaler entities."""
 
     @classmethod
     def get(cls, graph):
@@ -133,6 +153,8 @@ class StatefulSetToHorizontalPodAutoscalerLinker(Linker):
 
 class ConfigMapToPodLinker(Linker):
 
+    """Links Config Map entities to Pod entities."""
+
     @classmethod
     def get(cls, graph):
         return cls(
@@ -143,6 +165,8 @@ class ConfigMapToPodLinker(Linker):
 
 
 class SecretToPodLinker(Linker):
+
+    """Links Secret entities to Pod entities."""
 
     @classmethod
     def get(cls, graph):
@@ -155,6 +179,8 @@ class SecretToPodLinker(Linker):
 
 class PersistentVolumeToStorageClassLinker(Linker):
 
+    """Links Persistent Volume entities to Storage Class entities."""
+
     @classmethod
     def get(cls, graph):
         return cls(
@@ -165,6 +191,8 @@ class PersistentVolumeToStorageClassLinker(Linker):
 
 
 class PersistentVolumeToPersistentVolumeClaimLinker(Linker):
+
+    """Links Persistent Volume entities to Persistent Volume Claim entities."""
 
     @classmethod
     def get(cls, graph):
@@ -177,6 +205,8 @@ class PersistentVolumeToPersistentVolumeClaimLinker(Linker):
 
 class PersistentVolumeClaimToPodLinker(Linker):
 
+    """Links Persistent Volume Claim entities to Pod entities."""
+
     @classmethod
     def get(cls, graph):
         return cls(
@@ -187,6 +217,8 @@ class PersistentVolumeClaimToPodLinker(Linker):
 
 
 class NodeToClusterLinker(Linker):
+
+    """Links Node entitites."""
 
     @classmethod
     def get(cls, graph):
