@@ -30,17 +30,17 @@ class ProbeRunner(cotyledon.Service):
 
     """Runs entity probe from given probe bundle."""
 
-    def __init__(self, worker_id, probe_bundle, lock):
+    def __init__(self, worker_id, probe_bundle, graph_lock):
         super().__init__(worker_id)
         self._worker_id = worker_id
         self._probe_bundle = probe_bundle
-        self._lock = lock
+        self._graph_lock = graph_lock
         self.__graph = None
 
     @property
     def _graph(self):
         if not self.__graph:
-            self.__graph = graph.Graph.get(self._lock)
+            self.__graph = graph.Graph.get(self._graph_lock)
         return self.__graph
 
     def run(self):

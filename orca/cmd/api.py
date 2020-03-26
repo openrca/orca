@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.api.app import create_app
+from orca.api import manager
 
 
 def main():
-    app = create_app()
-    app.run(host='0.0.0.0')
+    api_manager = manager.Manager()
+    api_manager.initialize()
+    api_manager.run()
