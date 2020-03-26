@@ -61,6 +61,11 @@ prometheus:
         origin: kubernetes
         kind: cluster
         properties: {}
+    - name: KubeAPIErrorsHigh
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
     - name: KubeHpaMaxedOut
       source_mapping:
         origin: kubernetes
