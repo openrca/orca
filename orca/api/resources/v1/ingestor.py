@@ -43,7 +43,7 @@ class Ingestor(Resource):
         try:
             self._entity_handler.handle_event(entity)
         except exceptions.OrcaError as ex:
-            LOG.warning("Error while processing an entity: %s", ex)
+            LOG.debug("Error while processing an entity: %s", ex)
 
 
 class Prometheus(Ingestor):
