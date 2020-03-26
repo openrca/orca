@@ -50,7 +50,21 @@ class VirtualServicePullProbe(PullProbe):
         return super().get(graph, 'virtual_service', extractor.VirtualServiceExtractor())
 
 
+class VirtualServicePushProbe(PushProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'virtual_service', extractor.VirtualServiceExtractor())
+
+
 class DestinationRulePullProbe(PullProbe):
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'destination_rule', extractor.DestinationRuleExtractor())
+
+
+class DestinationRulePushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
@@ -62,20 +76,6 @@ class GatewayPullProbe(PullProbe):
     @classmethod
     def get(cls, graph):
         return super().get(graph, 'gateway', extractor.GatewayExtractor())
-
-
-class VirtualServicePushProbe(PushProbe):
-
-    @classmethod
-    def get(cls, graph):
-        return super().get(graph, 'virtual_service', extractor.VirtualServiceExtractor())
-
-
-class DestinationRulePushProbe(PushProbe):
-
-    @classmethod
-    def get(cls, graph):
-        return super().get(graph, 'destination_rule', extractor.DestinationRuleExtractor())
 
 
 class GatewayPushProbe(PushProbe):
