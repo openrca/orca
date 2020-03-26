@@ -13,22 +13,52 @@
 # limitations under the License.
 
 from orca.topology.infra.istio import linker, probe
+from orca.topology import bundle
 
 
-def initialize_probes(graph):
+def get_bundles():
     return [
-        probe.VirtualServicePullProbe.get(graph),
-        probe.VirtualServicePushProbe.get(graph),
-        probe.DestinationRulePullProbe.get(graph),
-        probe.DestinationRulePushProbe.get(graph),
-        probe.GatewayPullProbe.get(graph),
-        probe.GatewayPushProbe.get(graph)
-    ]
+        bundle.ProbeBundle(
+            probe=probe.VirtualServicePullProbe,
+            linkers=[
+                linker.VirtualServiceToGatewayLinker,
+                linker.VirtualServiceToServiceLinker
+            ]
+        ),
 
+        bundle.ProbeBundle(
+            probe=probe.VirtualServicePushProbe,
+            linkers=[
+                linker.VirtualServiceToGatewayLinker,
+                linker.VirtualServiceToServiceLinker
+            ]
+        ),
 
-def initialize_linkers(graph):
-    return [
-        linker.VirtualServiceToGatewayLinker.get(graph),
-        linker.VirtualServiceToServiceLinker.get(graph),
-        linker.DestinationRuleToServiceLinker.get(graph)
+        bundle.ProbeBundle(
+            probe=probe.DestinationRulePullProbe,
+            linkers=[
+                linker.DestinationRuleToServiceLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.DestinationRulePushProbe,
+            linkers=[
+                linker.DestinationRuleToServiceLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.GatewayPullProbe,
+            linkers=[
+                linker.VirtualServiceToGatewayLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.GatewayPushProbe,
+            linkers=[
+                linker.VirtualServiceToGatewayLinker
+            ]
+        ),
     ]

@@ -16,23 +16,51 @@ import abc
 import time
 
 import cotyledon
-
 from orca import exceptions
-from orca.common import logger
-from orca.topology import upstream
+from orca.common import config, logger
+from orca.graph import drivers as graph_drivers
+from orca.graph import graph
+from orca.topology import linker, upstream
 
+CONFIG = config.CONFIG
 LOG = logger.get_logger(__name__)
 
 
 class ProbeService(cotyledon.Service):
 
-    def __init__(self, service_id, probe):
+    def __init__(self, service_id, probe_bundle):
         super().__init__(service_id)
         self._service_id = service_id
-        self._probe = probe
+        self._probe_bundle = probe_bundle
+        self.__graph = None
+
+    @property
+    def _graph(self):
+        if not self.__graph:
+            self.__graph = self._initialize_graph()
+        return self.__graph
 
     def run(self):
-        self._probe.run()
+        probe = self._initialize_probe()
+        linkers = self._initialize_linkers()
+        self._initialize_dispatcher(linkers)
+        probe.run()
+
+    def _initialize_graph(self):
+        graph_client = graph_drivers.DriverFactory.get(CONFIG.graph.driver)
+        return graph.Graph(graph_client)
+
+    def _initialize_probe(self):
+        return self._probe_bundle.probe.get(self._graph)
+
+    def _initialize_linkers(self):
+        return [linker.get(self._graph) for linker in self._probe_bundle.linkers]
+
+    def _initialize_dispatcher(self, linkers):
+        dispatcher = linker.Dispatcher()
+        for linker_ints in linkers:
+            dispatcher.add_linker(linker_ints)
+        self._graph.add_listener(dispatcher)
 
 
 class Probe(abc.ABC):
@@ -46,6 +74,10 @@ class Probe(abc.ABC):
     @abc.abstractmethod
     def run(self):
         """Starts entity probe."""
+
+    @classmethod
+    def get(cls, graph):
+        return cls(graph)
 
 
 class PullProbe(Probe):

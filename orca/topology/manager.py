@@ -30,24 +30,14 @@ CONFIG = config.CONFIG
 
 class Manager(cotyledon.ServiceManager):
 
-    """Initializes entity graph, probes and linkers."""
+    """Initializes probe runners."""
 
     def __init__(self):
         super().__init__()
 
     def initialize(self):
-        graph = self._init_graph()
-        linker_dispatcher = linker.Dispatcher()
-        graph.add_listener(linker_dispatcher)
-
-        probe_managers = [k8s, istio, prom, falco, es, kiali]
+        # probe_managers = [k8s, istio, prom, falco, es, kiali]
+        probe_managers = [k8s, istio, prom, kiali]
         for probe_manager in probe_managers:
-            for probe_inst in probe_manager.initialize_probes(graph):
-                self.add(probe.ProbeService, workers=1, args=(probe_inst,))
-
-            for linker_inst in probe_manager.initialize_linkers(graph):
-                linker_dispatcher.add_linker(linker_inst)
-
-    def _init_graph(self):
-        graph_client = graph_drivers.DriverFactory.get(CONFIG.graph.driver)
-        return Graph(graph_client)
+            for probe_bundle in probe_manager.get_bundles():
+                self.add(probe.ProbeService, workers=1, args=(probe_bundle,))
