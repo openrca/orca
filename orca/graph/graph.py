@@ -15,6 +15,7 @@
 import abc
 import enum
 import uuid
+import contextlib
 
 import addict as dictlib
 
@@ -59,9 +60,24 @@ class Link(GraphObject):
 
 class Graph(object):
 
-    def __init__(self, driver):
+    def __init__(self, driver, lock):
         self._driver = driver
+        self._lock = lock
         self._listeners = []
+
+    @contextlib.contextmanager
+    def locked(self):
+        self.lock()
+        try:
+            yield self
+        finally:
+            self.unlock()
+
+    def lock(self):
+        self._lock.acquire()
+
+    def unlock(self):
+        self._lock.release()
 
     def get_nodes(self, origin=None, kind=None, properties=None):
         return self._driver.get_nodes(origin, kind, properties)
@@ -136,9 +152,9 @@ class Graph(object):
                 raise Exception("Unknown event type: %s" % event_type)
 
     @classmethod
-    def get(cls):
+    def get(cls, lock):
         driver = drivers.DriverFactory.get(CONFIG.graph.driver)
-        return cls(driver)
+        return cls(driver, lock)
 
     @staticmethod
     def create_node(id, properties, origin, kind):
