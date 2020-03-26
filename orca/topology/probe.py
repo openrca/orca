@@ -18,7 +18,6 @@ import time
 import cotyledon
 from orca import exceptions
 from orca.common import config, logger
-from orca.graph import drivers as graph_drivers
 from orca.graph import graph
 from orca.topology import linker, upstream
 
@@ -37,27 +36,17 @@ class ProbeRunner(cotyledon.Service):
     @property
     def _graph(self):
         if not self.__graph:
-            self.__graph = self._initialize_graph()
+            self.__graph = graph.Graph.get()
         return self.__graph
 
     def run(self):
-        probe = self._initialize_probe()
-        linkers = self._initialize_linkers()
-        self._initialize_dispatcher(linkers)
+        probe = self._probe_bundle.get_probe(self._graph)
+        linkers = self._probe_bundle.get_linkers(self._graph)
+        self._setup_event_dispatcher(linkers)
         probe.run()
 
-    def _initialize_graph(self):
-        graph_client = graph_drivers.DriverFactory.get(CONFIG.graph.driver)
-        return graph.Graph(graph_client)
-
-    def _initialize_probe(self):
-        return self._probe_bundle.probe.get(self._graph)
-
-    def _initialize_linkers(self):
-        return [linker.get(self._graph) for linker in self._probe_bundle.linkers]
-
-    def _initialize_dispatcher(self, linkers):
-        dispatcher = linker.Dispatcher()
+    def _setup_event_dispatcher(self, linkers):
+        dispatcher = linker.EventDispatcher()
         for linker_ints in linkers:
             dispatcher.add_linker(linker_ints)
         self._graph.add_listener(dispatcher)
