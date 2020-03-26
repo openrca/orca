@@ -18,8 +18,10 @@ import uuid
 
 import addict as dictlib
 
-from orca.common import logger
+from orca.common import config, logger
+from orca.graph import drivers
 
+CONFIG = config.CONFIG
 LOG = logger.get_logger(__name__)
 
 
@@ -132,6 +134,11 @@ class Graph(object):
                 listener.on_link_deleted(graph_obj)
             else:
                 raise Exception("Unknown event type: %s" % event_type)
+
+    @classmethod
+    def get(cls):
+        driver = drivers.DriverFactory.get(CONFIG.graph.driver)
+        return cls(driver)
 
     @staticmethod
     def create_node(id, properties, origin, kind):
