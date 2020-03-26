@@ -254,16 +254,6 @@ def get_bundles():
         ),
 
         bundle.ProbeBundle(
-            probe=probe.NamespacePullProbe,
-            linkers=[]
-        ),
-
-        bundle.ProbeBundle(
-            probe=probe.NamespacePushProbe,
-            linkers=[]
-        ),
-
-        bundle.ProbeBundle(
             probe=cluster.ClusterProbe,
             linkers=[
                 linker.NodeToClusterLinker
