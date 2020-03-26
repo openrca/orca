@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 class ProbeBundle(object):
 
     """Value object holding probe runtime spec."""
@@ -19,9 +20,3 @@ class ProbeBundle(object):
     def __init__(self, probe, linkers):
         self.probe = probe
         self.linkers = linkers
-
-    def get_probe(self, graph):
-        return self.probe.get(graph)
-
-    def get_linkers(self, graph):
-        return [linker.get(graph) for linker in self.linkers]

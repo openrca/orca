@@ -18,7 +18,6 @@ from flask import Flask
 
 from orca import api
 from orca.common import config
-from orca.graph import drivers as graph_drivers
 from orca.graph import graph
 
 CONFIG = config.CONFIG
