@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology import ingestor, utils
-from orca.topology.alerts import extractor, linker, matcher
+from orca.topology import ingestor
+from orca.topology.alerts import extractor
 from orca.topology.alerts.falco import extractor as falco_extractor
+from orca.topology.alerts.falco import linker
 
 
 def initialize_probes(graph):
@@ -22,15 +23,7 @@ def initialize_probes(graph):
 
 
 def initialize_linkers(graph):
-    return [
-        linker.Linker(
-            graph=graph,
-            source_spec=utils.NodeSpec(origin='falco', kind='alert'),
-            target_spec=utils.NodeSpec(origin='any', kind='any'),
-            matcher=matcher.AlertToSourceMatcher(),
-            bidirectional=False
-        )
-    ]
+    return [linker.AlertLinker.get(graph)]
 
 
 def initialize_handler(graph):

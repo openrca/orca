@@ -12,9 +12,44 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from orca.topology import utils
 from orca.topology import linker
+from orca.topology.infra.istio import matcher
 
 
 class Linker(linker.Linker):
 
     """Base class for Istio linkers."""
+
+
+class VirtualServiceToGatewayLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='virtual_service'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='gateway'),
+            matcher=matcher.VirtualServiceToGatewayMatcher())
+
+
+class VirtualServiceToServiceLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='virtual_service'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
+            matcher=matcher.VirtualServiceToServiceMatcher())
+
+
+class DestinationRuleToServiceLinker(Linker):
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='destination_rule'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
+            matcher=matcher.DestinationRuleToServiceMatcher())
