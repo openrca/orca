@@ -44,10 +44,21 @@ class ProbeRunner(cotyledon.Service):
         return self.__graph
 
     def run(self):
-        probe = self._probe_bundle.get_probe(self._graph)
-        linkers = self._probe_bundle.get_linkers(self._graph)
+        probe = self._initialize_probe()
+        linkers = self._initialize_linkers()
         self._setup_event_dispatcher(linkers)
         probe.run()
+
+    def _initialize_probe(self):
+        probe_module = self._probe_bundle.probe
+        return probe_module.get(self._graph)
+
+    def _initialize_linkers(self):
+        linkers = []
+        linker_modules = self._probe_bundle.linkers
+        for linker_module in linker_modules:
+            linkers.append(linker_module.get(self._graph))
+        return linkers
 
     def _setup_event_dispatcher(self, linkers):
         dispatcher = linker.EventDispatcher()
