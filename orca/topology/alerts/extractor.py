@@ -70,6 +70,8 @@ class Extractor(extractor.Extractor):
 
 class SourceMapper(object):
 
+    """Retrieves source mapping for given alert entities."""
+
     def __init__(self, mapping_key):
         self._mapping_key = mapping_key
         self.__mapping = None

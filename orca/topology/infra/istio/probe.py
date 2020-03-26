@@ -23,6 +23,8 @@ CONFIG = config.CONFIG
 
 class PullProbe(probe.PullProbe):
 
+    """Base pull probe for Istio."""
+
     @classmethod
     def get(cls, graph, kind, extractor):
         return cls(
@@ -35,6 +37,8 @@ class PullProbe(probe.PullProbe):
 
 class PushProbe(probe.PushProbe):
 
+    """Base push probe for Istio."""
+
     @classmethod
     def get(cls, graph, kind, extractor):
         return cls(
@@ -45,12 +49,16 @@ class PushProbe(probe.PushProbe):
 
 class VirtualServicePullProbe(PullProbe):
 
+    """Virtual Service pull probe."""
+
     @classmethod
     def get(cls, graph):
         return super().get(graph, 'virtual_service', extractor.VirtualServiceExtractor())
 
 
 class VirtualServicePushProbe(PushProbe):
+
+    """Virtual Service push probe."""
 
     @classmethod
     def get(cls, graph):
@@ -59,12 +67,16 @@ class VirtualServicePushProbe(PushProbe):
 
 class DestinationRulePullProbe(PullProbe):
 
+    """Destination Rule pull probe."""
+
     @classmethod
     def get(cls, graph):
         return super().get(graph, 'destination_rule', extractor.DestinationRuleExtractor())
 
 
 class DestinationRulePushProbe(PushProbe):
+
+    """Destination Rule push probe."""
 
     @classmethod
     def get(cls, graph):
@@ -73,12 +85,16 @@ class DestinationRulePushProbe(PushProbe):
 
 class GatewayPullProbe(PullProbe):
 
+    """Gateway pull probe."""
+
     @classmethod
     def get(cls, graph):
         return super().get(graph, 'gateway', extractor.GatewayExtractor())
 
 
 class GatewayPushProbe(PushProbe):
+
+    """Gateway push probe."""
 
     @classmethod
     def get(cls, graph):

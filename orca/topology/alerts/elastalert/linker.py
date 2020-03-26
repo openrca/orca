@@ -17,6 +17,8 @@ from orca.topology.alerts import linker
 
 class AlertLinker(linker.AlertLinker):
 
+    """Links Alert entities."""
+
     @classmethod
     def get(cls, graph):
         return super().get(graph, 'elastalert')

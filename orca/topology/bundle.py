@@ -14,6 +14,8 @@
 
 class ProbeBundle(object):
 
+    """Value object holding probe runtime spec."""
+
     def __init__(self, probe, linkers):
         self.probe = probe
         self.linkers = linkers

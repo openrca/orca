@@ -33,6 +33,8 @@ class Linker(linker.Linker):
 
 class AlertLinker(Linker):
 
+    """Links Alert entities."""
+
     @classmethod
     def get(cls, graph, origin):
         return cls(

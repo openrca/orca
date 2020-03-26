@@ -21,6 +21,8 @@ LOG = logger.get_logger(__name__)
 
 class ClusterProbe(probe.Probe):
 
+    """Seed probe for creating root 'cluster' node."""
+
     def run(self):
         LOG.info("Registering root node for entity: cluster")
         node_id = graph.Graph.generate_id("cluster")
