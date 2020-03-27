@@ -11,3 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+from orca.topology.infra.kiali import probe
+from orca.topology import bundle
+
+
+def get_probes():
+    return [
+        bundle.ProbeBundle(
+            probe=probe.ServiceGraphProbe,
+            linkers=[]
+        )
+    ]

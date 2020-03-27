@@ -11,3 +11,54 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+from orca.topology.infra.istio import linker, probe
+from orca.topology import bundle
+
+
+def get_probes():
+    return [
+        bundle.ProbeBundle(
+            probe=probe.VirtualServicePullProbe,
+            linkers=[
+                linker.VirtualServiceToGatewayLinker,
+                linker.VirtualServiceToServiceLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.VirtualServicePushProbe,
+            linkers=[
+                linker.VirtualServiceToGatewayLinker,
+                linker.VirtualServiceToServiceLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.DestinationRulePullProbe,
+            linkers=[
+                linker.DestinationRuleToServiceLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.DestinationRulePushProbe,
+            linkers=[
+                linker.DestinationRuleToServiceLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.GatewayPullProbe,
+            linkers=[
+                linker.VirtualServiceToGatewayLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.GatewayPushProbe,
+            linkers=[
+                linker.VirtualServiceToGatewayLinker
+            ]
+        ),
+    ]
