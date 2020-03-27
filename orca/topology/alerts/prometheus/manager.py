@@ -16,7 +16,7 @@ from orca.topology import bundle
 from orca.topology.alerts.prometheus import ingestor, linker, probe
 
 
-def get_bundles():
+def get_probes():
     return [
         bundle.ProbeBundle(
             probe=probe.AlertProbe,

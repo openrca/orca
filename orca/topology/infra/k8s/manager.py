@@ -17,7 +17,7 @@ from orca.topology.infra.istio import linker as istio_linker
 from orca.topology.infra.k8s import cluster, linker, probe
 
 
-def get_bundles():
+def get_probes():
     return [
         bundle.ProbeBundle(
             probe=probe.PodPullProbe,

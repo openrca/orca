@@ -34,5 +34,5 @@ class Manager(cotyledon.ServiceManager):
         graph_lock = multiprocessing.Lock()
         probe_managers = [k8s, istio, prom, kiali]
         for probe_manager in probe_managers:
-            for probe_bundle in probe_manager.get_bundles():
+            for probe_bundle in probe_manager.get_probes():
                 self.add(probe.ProbeRunner, workers=1, args=(probe_bundle, graph_lock))
