@@ -25,7 +25,7 @@ class PrometheusClient(rest_client.APIClient):
     def instant_query(self, query):
         return self._connector.get("query", query=query)
 
-    @staticmethod
-    def get(url="http://localhost:9090", api_prefix="/api/v1"):
+    @classmethod
+    def get(cls, url="http://localhost:9090", api_prefix="/api/v1"):
         connector = rest_client.APIConnector(url, api_prefix=api_prefix)
-        return PrometheusClient(connector)
+        return cls(connector)

@@ -29,10 +29,10 @@ class KialiClient(rest_client.APIClient):
         return self._connector.get(
             "/namespaces/graph", namespaces=namespace_list, graphType=graph_type)
 
-    @staticmethod
-    def get(url="http://localhost:20001", api_prefix="/kiali/api", username=None, password=None):
+    @classmethod
+    def get(cls, url="http://localhost:20001", api_prefix="/kiali/api", username=None, password=None):
         basic_auth = None
         if username and password:
             basic_auth = auth.HTTPBasicAuth(username, password)
         connector = rest_client.APIConnector(url, api_prefix=api_prefix, auth=basic_auth)
-        return KialiClient(connector)
+        return cls(connector)

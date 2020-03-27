@@ -43,10 +43,10 @@ class Config(object):
     def _get(self, name):
         return getattr(self._cache, name)
 
-    @staticmethod
-    def get(schema):
+    @classmethod
+    def get(cls, schema):
         parser = ConfigParser(schema)
-        return Config("/etc/orca/orca.yaml", parser)
+        return cls("/etc/orca/orca.yaml", parser)
 
 
 class ConfigParser(object):
