@@ -18,10 +18,10 @@ import cotyledon
 
 from orca.common import config
 from orca.topology import probe
-from orca.topology.alerts.prometheus import manager as prom
-from orca.topology.infra.istio import manager as istio
-from orca.topology.infra.k8s import manager as k8s
-from orca.topology.infra.kiali import manager as kiali
+from orca.topology.alerts import prometheus
+from orca.topology.infra import istio
+from orca.topology.infra import k8s
+from orca.topology.infra import kiali
 
 CONFIG = config.CONFIG
 
@@ -32,7 +32,7 @@ class Manager(cotyledon.ServiceManager):
 
     def initialize(self):
         graph_lock = multiprocessing.Lock()
-        probe_managers = [k8s, istio, prom, kiali]
-        for probe_manager in probe_managers:
-            for probe_bundle in probe_manager.get_probes():
+        probe_modules = [k8s, istio, kiali, prometheus]
+        for probe_module in probe_modules:
+            for probe_bundle in probe_module.get_probes():
                 self.add(probe.ProbeRunner, workers=1, args=(probe_bundle, graph_lock))

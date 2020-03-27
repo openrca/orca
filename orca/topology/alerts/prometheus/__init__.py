@@ -11,3 +11,25 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+from orca.topology import bundle
+from orca.topology.alerts.prometheus import ingestor, linker, probe
+
+
+def get_probes():
+    return [
+        bundle.ProbeBundle(
+            probe=probe.AlertProbe,
+            linkers=[linker.AlertLinker]
+        )
+    ]
+
+
+def get_ingestors():
+    return [
+        bundle.IngestorBundle(
+            name='prometheus',
+            ingestor=ingestor.AlertIngestor,
+            linkers=[linker.AlertLinker]
+        )
+    ]
