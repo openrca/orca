@@ -15,9 +15,7 @@
 from orca.common import config
 from orca.common.clients.prometheus import client as prometheus
 from orca.topology import probe, utils
-from orca.topology.alerts import extractor
-from orca.topology.alerts.prometheus import extractor as prom_extractor
-from orca.topology.alerts.prometheus import upstream
+from orca.topology.alerts.prometheus import extractor, upstream
 
 CONFIG = config.CONFIG
 
@@ -28,11 +26,11 @@ class AlertProbe(probe.PullProbe):
 
     @classmethod
     def get(cls, graph):
-        source_mapper = extractor.SourceMapper('prometheus')
-        prom_client = prometheus.PrometheusClient.get(url=CONFIG.prometheus.url)
+        prom_client = prometheus.PrometheusClient.get(
+            url=CONFIG.prometheus.url)
         return cls(
             graph=graph,
             upstream_proxy=upstream.UpstreamProxy(prom_client),
-            extractor=prom_extractor.AlertExtractor(source_mapper),
+            extractor=extractor.AlertExtractor.get(),
             synchronizer=utils.NodeSynchronizer(graph),
             resync_period=CONFIG.prometheus.resync_period)
