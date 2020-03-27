@@ -17,8 +17,8 @@ import abc
 
 class Matcher(abc.ABC):
 
-    """Matches pair of nodes based on the matching condition."""
+    """Matches pairs of nodes based on the matching condition."""
 
     @abc.abstractmethod
     def are_linked(self, noda_a, node_b):
-        """Determines whether two graph nodes are interconnected."""
+        """Determines whether two graph nodes should be interconnected."""

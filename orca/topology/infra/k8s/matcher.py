@@ -74,8 +74,8 @@ class EndpointsToServiceMatcher(Matcher):
 
     def are_linked(self, endpoints, service):
         matched_namespace = match_namespace(endpoints, service)
-        match_name = endpoints.properties.name == service.properties.name
-        return matched_namespace and match_name
+        matched_name = endpoints.properties.name == service.properties.name
+        return matched_namespace and matched_name
 
 
 class ReplicaSetToDeploymentMatcher(Matcher):
@@ -158,8 +158,8 @@ class HorizontalPodAutoscalerMatcher(Matcher):
 
     def are_linked(self, obj, hpa):
         matched_namespace = match_namespace(obj, hpa)
-        match_target_ref = self._match_target_ref(obj, hpa)
-        return matched_namespace and match_target_ref
+        matched_target_ref = self._match_target_ref(obj, hpa)
+        return matched_namespace and matched_target_ref
 
     def _match_target_ref(self, obj, hpa):
         return hpa.properties.target_ref.kind == obj.kind and \
@@ -218,12 +218,12 @@ class NamespaceMatcher(Matcher):
         return namespace.properties.name == obj.properties.namespace
 
 
-def match_namespace(node_a, node_b):
-    return node_a.properties.namespace == node_b.properties.namespace
+def match_namespace(obj_a, obj_b):
+    return obj_a.properties.namespace == obj_b.properties.namespace
 
 
-def match_selector(node, selector):
-    labels = node.properties.labels
+def match_selector(obj, selector):
+    labels = obj.properties.labels
     if selector and labels:
         return all(item in labels.items() for item in selector.items())
     return False

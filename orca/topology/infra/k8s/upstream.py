@@ -24,12 +24,13 @@ class UpstreamProxy(upstream.UpstreamProxy):
 
     def get_events(self, handler):
         for event in self._client.watch():
-            event_type, event_object = event['type'], event['object']
+            event_type = event['type']
+            entity = event['object']
             if event_type == "ADDED":
-                handler.on_added(event_object)
+                handler.on_added(entity)
             elif event_type == "MODIFIED":
-                handler.on_updated(event_object)
+                handler.on_updated(entity)
             elif event_type == "DELETED":
-                handler.on_deleted(event_object)
+                handler.on_deleted(entity)
             else:
-                raise Exception("Unknown event type '%s': %s" % (event_type, event_object))
+                raise Exception("Unknown event type: %s" % event_type)

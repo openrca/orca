@@ -33,7 +33,7 @@ class Linker(linker.Linker):
 
 class AlertLinker(Linker):
 
-    """Links Alert entities."""
+    """Links Alert entities to source object entities."""
 
     @classmethod
     def get(cls, graph, origin):

@@ -52,12 +52,8 @@ class EventDispatcher(graph.EventListener):
         self._linkers[node_spec.origin][node_spec.kind].append(linker)
 
     def _link_node(self, node):
-        origin_linkers = self._linkers.get(node.origin, None)
-        if not origin_linkers:
-            return
-        if node.kind in origin_linkers:
-            for linker in origin_linkers[node.kind]:
-                linker.link(node)
+        for linker in self._linkers[node.origin][node.kind]:
+            linker.link(node)
 
 
 class Linker(abc.ABC):
