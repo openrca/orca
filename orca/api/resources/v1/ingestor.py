@@ -19,62 +19,39 @@ from flask_restplus import Namespace, Resource
 
 from orca import exceptions
 from orca.common import logger
-from orca.topology.alerts.elastalert import manager as es
+from orca.topology import linker
+from orca.topology.alerts.elastalert import manager as elastalert
 from orca.topology.alerts.falco import manager as falco
 from orca.topology.alerts.prometheus import manager as prometheus
 
 LOG = logger.get_logger(__name__)
 
 
-class Ingestor(Resource):
+class IngestorResource(Resource):
 
-    """Base class for alert ingestors."""
+    """Endpoint for ingesting events from the upstream."""
 
-    def __init__(self, api, entity_handler):
+    def __init__(self, api, ingestor):
         super().__init__()
-        self._entity_handler = entity_handler
+        self._ingestor = ingestor
 
     def post(self):
         payload = request.json
-        LOG.debug("Ingested an entity: %s", json.dumps(payload))
-        self._ingest(payload)
-
-    def _ingest(self, entity):
-        try:
-            self._entity_handler.handle_event(entity)
-        except exceptions.OrcaError as ex:
-            LOG.debug("Error while processing an entity: %s", ex)
-
-
-class Prometheus(Ingestor):
-
-    """Prometheus ingest endpoint."""
-
-    def post(self):
-        payload = request.json
-        for alert in payload['alerts']:
-            self._ingest(alert)
-
-
-class Falco(Ingestor):
-
-    """Falco ingest endpoint."""
-
-
-class Elastalert(Ingestor):
-
-    """Elastalert ingest endpoint."""
+        self._ingestor.ingest(payload)
 
 
 def initialize(graph):
     api = Namespace('ingestor', description='Ingestor API')
-    api.add_resource(
-        Prometheus, '/prometheus',
-        resource_class_args=[prometheus.initialize_handler(graph)])
-    api.add_resource(
-        Falco, '/falco',
-        resource_class_args=[falco.initialize_handler(graph)])
-    api.add_resource(
-        Elastalert, '/elastalert',
-        resource_class_args=[es.initialize_handler(graph)])
+    ingestor_modules = [prometheus, falco, elastalert]
+    linkers = []
+    for ingestor_module in ingestor_modules:
+        for ingestor_bundle in ingestor_module.get_ingestors():
+            for linker_module in ingestor_bundle.linkers:
+               linkers.append(linker_module.get(graph))
+            api.add_resource(IngestorResource, "/%s" % ingestor_bundle.name.lower(),
+                resource_class_args=(ingestor_bundle.ingestor.get(graph),))
+    dispatcher = linker.EventDispatcher()
+    for linker_instance in linkers:
+        dispatcher.add_linker(linker_instance)
+    graph.add_listener(dispatcher)
     return api

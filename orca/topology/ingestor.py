@@ -12,15 +12,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from orca import exceptions
+from orca.common import logger
 
-class EventHandler(object):
+LOG = logger.get_logger(__name__)
 
-    """Processes entity events received by ingestor."""
+
+class Ingestor(object):
+
+    """Processes entity events received from the upstream."""
 
     def __init__(self, graph, extractor):
         self._graph = graph
         self._extractor = extractor
 
-    def handle_event(self, entity):
-        node = self._extractor.extract(entity)
-        self._graph.add_node(node)
+    def ingest(self, event):
+        try:
+            self._ingest_event(event)
+        except exceptions.OrcaError as ex:
+            LOG.debug("Error while extracting an entity: %s", ex)
+
+    def _ingest_event(self, event):
+        node = self._extractor.extract(event)
+        if self._graph.get_node(node.id):
+            self._graph.update_node(node)
+        else:
+            self._graph.add_node(node)
