@@ -12,17 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology import ingestor
-from orca.topology.alerts.elastalert import extractor, linker
+from orca.topology import bundle
+from orca.topology.alerts.elastalert import linker, ingestor
 
 
-def initialize_probes(graph):
-    return []
-
-
-def initialize_linkers(graph):
-    return [linker.AlertLinker.get(graph)]
-
-
-def initialize_handler(graph):
-    return ingestor.EventHandler(graph, extractor.AlertExtractor.get())
+def get_ingestors():
+    return [
+        bundle.IngestorBundle(
+            name='elastalert',
+            ingestor=ingestor.AlertIngestor,
+            linkers=[linker.AlertLinker]
+        )
+    ]

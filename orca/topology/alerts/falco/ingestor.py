@@ -12,21 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-class ProbeBundle(object):
-
-    """Value object holding probe runtime spec."""
-
-    def __init__(self, probe, linkers):
-        self.probe = probe
-        self.linkers = linkers
+from orca.topology import ingestor
+from orca.topology.alerts.falco import extractor
 
 
-class IngestorBundle(object):
+class AlertIngestor(ingestor.Ingestor):
 
-    """Value object holding ingestor runtime spec."""
-
-    def __init__(self, name, ingestor, linkers):
-        self.name = name
-        self.ingestor = ingestor
-        self.linkers = linkers
+    @classmethod
+    def get(cls, graph):
+        return cls(graph, extractor.AlertExtractor.get())

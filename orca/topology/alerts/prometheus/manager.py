@@ -12,11 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.common import config
-from orca.topology import bundle, ingestor
-from orca.topology.alerts.prometheus import extractor, linker, probe
-
-CONFIG = config.CONFIG
+from orca.topology import bundle
+from orca.topology.alerts.prometheus import ingestor, linker, probe
 
 
 def get_bundles():
@@ -28,5 +25,11 @@ def get_bundles():
     ]
 
 
-def initialize_handler(graph):
-    return ingestor.EventHandler(graph, extractor.AlertEventExtractor.get())
+def get_ingestors():
+    return [
+        bundle.IngestorBundle(
+            name='prometheus',
+            ingestor=ingestor.AlertIngestor,
+            linkers=[linker.AlertLinker]
+        )
+    ]
