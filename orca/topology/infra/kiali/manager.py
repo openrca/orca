@@ -16,7 +16,7 @@ from orca.topology.infra.kiali import probe
 from orca.topology import bundle
 
 
-def get_bundles():
+def get_probes():
     return [
         bundle.ProbeBundle(
             probe=probe.ServiceGraphProbe,
