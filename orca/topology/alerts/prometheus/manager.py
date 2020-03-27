@@ -14,9 +14,7 @@
 
 from orca.common import config
 from orca.topology import bundle, ingestor
-from orca.topology.alerts import extractor
-from orca.topology.alerts.prometheus import extractor as prom_extractor
-from orca.topology.alerts.prometheus import linker, probe
+from orca.topology.alerts.prometheus import extractor, linker, probe
 
 CONFIG = config.CONFIG
 
@@ -31,5 +29,4 @@ def get_bundles():
 
 
 def initialize_handler(graph):
-    source_mapper = extractor.SourceMapper('prometheus')
-    return ingestor.EventHandler(graph, prom_extractor.AlertEventExtractor(source_mapper))
+    return ingestor.EventHandler(graph, extractor.AlertEventExtractor.get())

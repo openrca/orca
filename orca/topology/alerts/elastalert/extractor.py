@@ -24,6 +24,10 @@ class Extractor(extractor.Extractor):
     def origin(self):
         return 'elastalert'
 
+    @classmethod
+    def get(cls):
+        return super().get('elastalert')
+
 
 class AlertExtractor(Extractor):
 

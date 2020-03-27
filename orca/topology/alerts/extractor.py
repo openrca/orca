@@ -67,6 +67,11 @@ class Extractor(extractor.Extractor):
         node_id = "-".join(id_parts).replace(" ", "-").lower()
         return node_id
 
+    @classmethod
+    def get(cls, origin):
+        source_mapper = SourceMapper(origin)
+        return cls(source_mapper)
+
 
 class SourceMapper(object):
 

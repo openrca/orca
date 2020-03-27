@@ -24,6 +24,10 @@ class Extractor(extractor.Extractor):
     def origin(self):
         return 'prometheus'
 
+    @classmethod
+    def get(cls):
+        return super().get('prometheus')
+
 
 class AlertExtractor(Extractor):
 

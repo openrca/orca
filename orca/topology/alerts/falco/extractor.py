@@ -24,6 +24,10 @@ class Extractor(extractor.Extractor):
     def origin(self):
         return 'falco'
 
+    @classmethod
+    def get(cls):
+        return super().get('falco')
+
 
 class AlertExtractor(Extractor):
 
