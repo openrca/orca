@@ -60,7 +60,6 @@ class ConfigParser(object):
         config_dict = file_utils.load_yaml(config_path)
         validator = cerberus.Validator(self._schema)
         is_valid = validator.validate(config_dict)
-
         if not is_valid:
             raise exceptions.ConfigParseError(errors=validator.errors)
         return dict_lib.Dict(validator.document)

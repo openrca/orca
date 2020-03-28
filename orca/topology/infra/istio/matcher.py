@@ -70,6 +70,6 @@ def match_host_to_service(namespace, host, service):
     host_parts = host.split('.')
     service_name = host_parts[0]
     service_namespace = host_parts[1] if len(host_parts) > 1 else namespace
-    matched_name  = service_name == service.properties.name
+    matched_name = service_name == service.properties.name
     matched_namespace = service_namespace == service.properties.namespace
     return matched_name and matched_namespace

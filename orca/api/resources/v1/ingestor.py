@@ -12,12 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
-
 from flask import request
 from flask_restplus import Namespace, Resource
 
-from orca import exceptions
 from orca.common import logger
 from orca.topology import linker
 from orca.topology.alerts import elastalert
