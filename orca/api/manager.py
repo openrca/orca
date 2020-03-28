@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import multiprocessing
 
 import cotyledon
@@ -42,8 +43,13 @@ class APIService(cotyledon.Service):
         return self.__graph
 
     def run(self):
+        self._set_logging()
         app = self._initialize_application()
         app.run(host='0.0.0.0')
+
+    def _set_logging(self):
+        log = logging.getLogger('werkzeug')
+        log.setLevel(logging.ERROR)
 
     def _initialize_application(self):
         app = flask.Flask(__name__)
