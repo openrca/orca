@@ -40,18 +40,36 @@ class IngestorResource(Resource):
         self._ingestor.ingest(payload)
 
 
+class IngestorRegistry(object):
+
+    """Registers ingestor API resources and graph linkers."""
+
+    def __init__(self, api, graph, event_dispatcher):
+        self._api = api
+        self._graph = graph
+        self._event_dispatcher = event_dispatcher
+
+    def register(self, ingestor_bundle):
+        for linker_module in ingestor_bundle.linkers:
+            linker_instance = linker_module.get(self._graph)
+            self._event_dispatcher.add_linker(linker_instance)
+
+        ingestor = ingestor_bundle.ingestor.get(self._graph)
+        endpoint = "/%s" % ingestor_bundle.name.lower()
+
+        self._api.add_resource(
+            IngestorResource, endpoint, resource_class_args=(ingestor,))
+
+
 def initialize(graph):
     api = Namespace('ingestor', description='Ingestor API')
+
+    event_dispatcher = linker.EventDispatcher()
+    graph.add_listener(event_dispatcher)
+    ingestor_registry = IngestorRegistry(api, graph, event_dispatcher)
+
     ingestor_modules = [prometheus, falco, elastalert]
-    linkers = []
     for ingestor_module in ingestor_modules:
         for ingestor_bundle in ingestor_module.get_ingestors():
-            for linker_module in ingestor_bundle.linkers:
-               linkers.append(linker_module.get(graph))
-            api.add_resource(IngestorResource, "/%s" % ingestor_bundle.name.lower(),
-                resource_class_args=(ingestor_bundle.ingestor.get(graph),))
-    dispatcher = linker.EventDispatcher()
-    for linker_instance in linkers:
-        dispatcher.add_linker(linker_instance)
-    graph.add_listener(dispatcher)
+            ingestor_registry.register(ingestor_bundle)
     return api
