@@ -61,10 +61,10 @@ class ProbeRunner(cotyledon.Service):
         return linkers
 
     def _setup_event_dispatcher(self, linkers):
-        dispatcher = linker.EventDispatcher()
+        event_dispatcher = linker.EventDispatcher()
         for linker_instance in linkers:
-            dispatcher.add_linker(linker_instance)
-        self._graph.add_listener(dispatcher)
+            event_dispatcher.add_linker(linker_instance)
+        self._graph.add_listener(event_dispatcher)
 
 
 class Probe(abc.ABC):
