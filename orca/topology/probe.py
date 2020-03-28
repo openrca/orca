@@ -102,7 +102,7 @@ class PullProbe(Probe):
             start_time = time.time()
             self._synchronize()
             sync_time = time.time() - start_time
-            LOG.info("Finished sync for entity: %s (%s seconds)", extended_kind, sync_time)
+            LOG.info("Finished sync for entity: %s (%.2f seconds)", extended_kind, sync_time)
             time.sleep(self._resync_period)
 
     def _synchronize(self):
