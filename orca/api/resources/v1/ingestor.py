@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from flask import request
-from flask_restplus import Namespace, Resource
+from flask_restx import Namespace, Resource
 
 from orca.common import logger
 from orca.topology import linker
