@@ -22,12 +22,11 @@ Objectives
 ----------
 
 - Holistic insight into application infrastructure (infra graph)
-- Integration hub for telemetry projects (Prometheus, Elasticsearch, Falco)
+- Integration hub for telemetry projects (Prometheus, Elasticsearch, Falco and others)
 - Time-based infrastructure analysis
-- Automated diagnostic workflows for Kubernetes infra and workloads
+- Automated diagnostics for common applications (databases, load balancers, message queues)
 - ML-supported root cause inference
-- Policy-driven RCA instrumentation
-- Novel approach for site reliability testing and chaos engineering
+- Site reliability engineering and chaos testing
 
 Installation
 ------------
@@ -36,13 +35,8 @@ Install using Helm chart:
 
 ::
 
-    $ cd ./helm
-    $ helm install ./orca --namespace rca --name orca
+    $ helm install ./helm/orca --namespace rca --name orca
 
-Usage
------
-
-TODO: Write usage instructions
 
 Development
 -----
