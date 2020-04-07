@@ -197,6 +197,9 @@ class ArangoDBDriver(driver.Driver):
         document['origin'] = node.origin
         document['kind'] = node.kind
         document['properties'] = copy.deepcopy(node.properties)
+        document['created_at'] = node.created_at
+        document['updated_at'] = node.updated_at
+        document['deleted_at'] = node.deleted_at
         return document
 
     def _build_node_obj(self, node_doc):
@@ -204,7 +207,11 @@ class ArangoDBDriver(driver.Driver):
         properties = node_doc.pop('properties')
         origin = node_doc.pop('origin')
         kind = node_doc.pop('kind')
-        return graph.Node(node_id, properties, origin, kind)
+        created_at = node_doc.pop('created_at')
+        updated_at = node_doc.pop('updated_at')
+        deleted_at = node_doc.pop('deleted_at')
+        return graph.Node(node_id, properties, origin, kind,
+            created_at=created_at, updated_at=updated_at, deleted_at=deleted_at)
 
     def _build_link_doc(self, link):
         document = {}
@@ -212,6 +219,9 @@ class ArangoDBDriver(driver.Driver):
         document['_from'] = self._build_id('nodes', link.source)
         document['_to'] = self._build_id('nodes', link.target)
         document['properties'] = copy.deepcopy(link.properties)
+        document['created_at'] = link.created_at
+        document['updated_at'] = link.updated_at
+        document['deleted_at'] = link.deleted_at
         return document
 
     def _build_link_obj(self, link_doc, source_doc, target_doc):
@@ -219,4 +229,8 @@ class ArangoDBDriver(driver.Driver):
         properties = link_doc.pop('properties')
         source_node = self._build_node_obj(source_doc)
         target_node = self._build_node_obj(target_doc)
-        return graph.Link(link_id, properties, source_node, target_node)
+        created_at = link_doc.pop('created_at')
+        updated_at = link_doc.pop('updated_at')
+        deleted_at = link_doc.pop('deleted_at')
+        return graph.Link(link_id, properties, source_node, target_node,
+            created_at=created_at, updated_at=updated_at, deleted_at=deleted_at)
