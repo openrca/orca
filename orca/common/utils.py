@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from datetime import datetime
+
 
 def flatten_dict(d, parent_key='', sep='_'):
     items = []
@@ -22,3 +24,7 @@ def flatten_dict(d, parent_key='', sep='_'):
         else:
             items.append((new_key, v))
     return dict(items)
+
+
+def get_utc():
+    return int(datetime.utcnow().timestamp())

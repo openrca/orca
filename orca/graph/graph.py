@@ -19,7 +19,7 @@ import contextlib
 
 import addict as dictlib
 
-from orca.common import config, logger
+from orca.common import config, logger, utils
 from orca.graph import drivers
 
 CONFIG = config.CONFIG
@@ -28,16 +28,19 @@ LOG = logger.get_logger(__name__)
 
 class GraphObject(abc.ABC):
 
-    def __init__(self, id, properties):
+    def __init__(self, id, properties, **kwargs):
         super().__init__()
         self.id = id
         self.properties = dictlib.Dict(properties)
+        self.created_at = kwargs.get('created_at')
+        self.updated_at = kwargs.get('updated_at')
+        self.deleted_at = kwargs.get('deleted_at')
 
 
 class Node(GraphObject):
 
-    def __init__(self, id, properties, origin, kind):
-        super().__init__(id, properties)
+    def __init__(self, id, properties, origin, kind, **kwargs):
+        super().__init__(id, properties, **kwargs)
         self.origin = origin
         self.kind = kind
 
@@ -48,8 +51,8 @@ class Node(GraphObject):
 
 class Link(GraphObject):
 
-    def __init__(self, id, properties, source, target):
-        super().__init__(id, properties)
+    def __init__(self, id, properties, source, target, **kwargs):
+        super().__init__(id, properties, **kwargs)
         self.source = source
         self.target = target
 
@@ -93,11 +96,14 @@ class Graph(object):
         LOG.debug("Adding node: %s", node)
         if self.get_node(node.id):
             return
+        node.created_at = utils.get_utc()
+        node.updated_at = node.created_at
         self._driver.add_node(node)
         self._notify_listeners(GraphEvent.NODE_ADDED, node)
 
     def update_node(self, node):
         LOG.debug("Updating node: %s", node)
+        node.updated_at = utils.get_utc()
         self._driver.update_node(node)
         self._notify_listeners(GraphEvent.NODE_UPDATED, node)
 
@@ -106,6 +112,7 @@ class Graph(object):
         links = self._driver.get_node_links(node)
         for link in links:
             self._driver.delete_link(link)
+        node.deleted_at = utils.get_utc()
         self._driver.delete_node(node)
         self._notify_listeners(GraphEvent.NODE_DELETED, node)
 
@@ -119,16 +126,20 @@ class Graph(object):
         LOG.debug("Adding link: %s", link)
         if self.get_link(link.id):
             return
+        link.created_at = utils.get_utc()
+        link.updated_at = link.created_at
         self._driver.add_link(link)
         self._notify_listeners(GraphEvent.LINK_ADDED, link)
 
     def update_link(self, link):
         LOG.debug("Updating link: %s", link)
+        link.updated_at = utils.get_utc()
         self._driver.update_link(link)
         self._notify_listeners(GraphEvent.LINK_UPDATED, link)
 
     def delete_link(self, link):
         LOG.debug("Deleting link: %s", link)
+        link.deleted_at = utils.get_utc()
         self._driver.delete_link(link)
         self._notify_listeners(GraphEvent.LINK_DELETED, link)
 
