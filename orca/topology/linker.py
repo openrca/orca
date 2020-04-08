@@ -26,9 +26,9 @@ class EventDispatcher(graph.EventListener):
         self._linkers = defaultdict(lambda: defaultdict(list))
 
     def add_linker(self, linker):
-        self._build_linker_lookup(linker.source_spec, linker)
+        self._build_lookup(linker.source_spec, linker)
         if linker.bidirectional:
-            self._build_linker_lookup(linker.target_spec, linker)
+            self._build_lookup(linker.target_spec, linker)
 
     def on_node_added(self, node):
         self._link_node(node)
@@ -48,7 +48,7 @@ class EventDispatcher(graph.EventListener):
     def on_link_deleted(self, link):
         return
 
-    def _build_linker_lookup(self, node_spec, linker):
+    def _build_lookup(self, node_spec, linker):
         self._linkers[node_spec.origin][node_spec.kind].append(linker)
 
     def _link_node(self, node):

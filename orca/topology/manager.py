@@ -16,14 +16,11 @@ import multiprocessing
 
 import cotyledon
 
-from orca.common import config
 from orca.topology import probe
 from orca.topology.alerts import prometheus
 from orca.topology.infra import istio
 from orca.topology.infra import k8s
 from orca.topology.infra import kiali
-
-CONFIG = config.CONFIG
 
 
 class Manager(cotyledon.ServiceManager):
