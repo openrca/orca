@@ -27,6 +27,7 @@ class Ingestor(object):
         self._extractor = extractor
 
     def ingest(self, event):
+        LOG.debug("Ingested event: %s", event)
         try:
             self._ingest_event(event)
         except exceptions.OrcaError as ex:
