@@ -93,27 +93,34 @@ class Graph(object):
         return self._driver.get_node(node_id)
 
     def add_node(self, node):
-        LOG.debug("Adding node: %s", node)
         if self.get_node(node.id):
             return
         node.created_at = utils.get_utc()
         node.updated_at = node.created_at
+        LOG.debug("Adding node: %s", node)
         self._driver.add_node(node)
         self._notify_listeners(GraphEvent.NODE_ADDED, node)
 
-    def update_node(self, node):
-        LOG.debug("Updating node: %s", node)
+    def update_node(self, new_node):
+        node = self.get_node(new_node.id)
+        if not node:
+            return
+        node.properties = new_node.properties
         node.updated_at = utils.get_utc()
+        LOG.debug("Updating node: %s", node)
         self._driver.update_node(node)
         self._notify_listeners(GraphEvent.NODE_UPDATED, node)
 
-    def delete_node(self, node):
-        LOG.debug("Deleting node: %s", node)
+    def delete_node(self, new_node):
+        node = self.get_node(new_node.id)
+        if not node:
+            return
         links = self._driver.get_node_links(node)
         for link in links:
-            self._driver.delete_link(link)
+            self.delete_link(link)
         node.deleted_at = utils.get_utc()
-        self._driver.delete_node(node)
+        LOG.debug("Deleting node: %s", node)
+        self._driver.update_node(node)
         self._notify_listeners(GraphEvent.NODE_DELETED, node)
 
     def get_links(self, **query):
@@ -123,24 +130,31 @@ class Graph(object):
         return self._driver.get_link(link_id)
 
     def add_link(self, link):
-        LOG.debug("Adding link: %s", link)
         if self.get_link(link.id):
             return
         link.created_at = utils.get_utc()
         link.updated_at = link.created_at
+        LOG.debug("Adding link: %s", link)
         self._driver.add_link(link)
         self._notify_listeners(GraphEvent.LINK_ADDED, link)
 
-    def update_link(self, link):
-        LOG.debug("Updating link: %s", link)
+    def update_link(self, new_link):
+        link = self.get_link(new_link.id)
+        if not link:
+            return
+        link.properties = new_link.properties
         link.updated_at = utils.get_utc()
+        LOG.debug("Updating link: %s", new_link)
         self._driver.update_link(link)
         self._notify_listeners(GraphEvent.LINK_UPDATED, link)
 
-    def delete_link(self, link):
-        LOG.debug("Deleting link: %s", link)
+    def delete_link(self, new_link):
+        link = self.get_link(new_link.id)
+        if not link:
+            return
         link.deleted_at = utils.get_utc()
-        self._driver.delete_link(link)
+        LOG.debug("Deleting link: %s", link)
+        self._driver.update_link(link)
         self._notify_listeners(GraphEvent.LINK_DELETED, link)
 
     def get_node_links(self, node, **query):
