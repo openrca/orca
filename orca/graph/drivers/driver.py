@@ -20,6 +20,10 @@ class Driver(abc.ABC):
     """Abstract Graph DB driver."""
 
     @abc.abstractmethod
+    def setup(self):
+        """Initializes graph database."""
+
+    @abc.abstractmethod
     def get_nodes(self, kind, properties):
         """Gets all graph nodes."""
 

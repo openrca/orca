@@ -41,6 +41,9 @@ class Neo4jDriver(driver.Driver):
             self._client = graph_lib.GraphDatabase.driver(uri, auth=auth)
         return self._client
 
+    def setup(self):
+        return
+
     def get_nodes(self, origin=None, kind=None, properties=None):
         node_pattern = self._build_node_pattern(None, origin, kind, None)
         query = "MATCH %s RETURN node" % (node_pattern)

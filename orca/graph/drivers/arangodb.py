@@ -39,19 +39,19 @@ class ArangoDBDriver(driver.Driver):
     @property
     def _client(self):
         if not self.__client:
-            self.__client = self._initialize_client()
+            self.__client = self._get_client()
         return self.__client
 
     @property
     def _database(self):
         if not self.__database:
-            self.__database = self._initialize_database()
+            self.__database = self._use_database(self._database_name)
         return self.__database
 
     @property
     def _graph(self):
         if not self.__graph:
-            self.__graph = self._initialize_graph()
+            self.__graph = self._use_graph('graph')
         return self.__graph
 
     @property
@@ -61,6 +61,24 @@ class ArangoDBDriver(driver.Driver):
     @property
     def _links(self):
         return self._graph.edge_collection('links')
+
+    def setup(self):
+        sys_db = self._use_database('_system')
+        if not sys_db.has_database(self._database_name):
+            sys_db.create_database(self._database_name)
+        db = self._use_database(self._database_name)
+
+        if not db.has_graph('graph'):
+            db.create_graph('graph')
+        graph = db.graph('graph')
+
+        if not graph.has_vertex_collection('nodes'):
+            graph.create_vertex_collection('nodes')
+        if not graph.has_edge_definition('links'):
+            graph.create_edge_definition(
+                edge_collection='links',
+                from_vertex_collections=['nodes'],
+                to_vertex_collections=['nodes'])
 
     def get_nodes(self, **query):
         query_pattern = ('FOR node in nodes %(filters)s RETURN node')
@@ -142,34 +160,18 @@ class ArangoDBDriver(driver.Driver):
             links.append(link)
         return links
 
-    def _initialize_client(self):
+    def _get_client(self):
         return arango.ArangoClient(hosts=self._get_db_uri())
 
     def _get_db_uri(self):
         return "http://%s:%s" % (self._host, self._port)
 
-    def _initialize_database(self):
-        sys_db = self._use_database('_system')
-        if not sys_db.has_database(self._database_name):
-            sys_db.create_database(self._database_name)
-        return self._use_database(self._database_name)
-
     def _use_database(self, database):
         return self._client.db(
             database, username=self._username, password=self._password)
 
-    def _initialize_graph(self):
-        if not self._database.has_graph('graph'):
-            self._database.create_graph('graph')
-        graph = self._database.graph('graph')
-        if not graph.has_vertex_collection('nodes'):
-            graph.create_vertex_collection('nodes')
-        if not graph.has_edge_definition('links'):
-            graph.create_edge_definition(
-                edge_collection='links',
-                from_vertex_collections=['nodes'],
-                to_vertex_collections=['nodes'])
-        return graph
+    def _use_graph(self, graph):
+        return self._database.graph(graph)
 
     def _build_key(self, graph_obj):
         return str(graph_obj.id)

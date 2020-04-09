@@ -79,6 +79,10 @@ class Graph(object):
     def unlock(self):
         self._lock.release()
 
+    def setup(self):
+        LOG.info("Initializing graph database")
+        self._driver.setup()
+
     def get_nodes(self, **query):
         return self._driver.get_nodes(**query)
 

@@ -16,11 +16,10 @@ import multiprocessing
 
 import cotyledon
 
+from orca.graph import graph
 from orca.topology import probe
 from orca.topology.alerts import prometheus
-from orca.topology.infra import istio
-from orca.topology.infra import k8s
-from orca.topology.infra import kiali
+from orca.topology.infra import istio, k8s, kiali
 
 
 class Manager(cotyledon.ServiceManager):
@@ -29,6 +28,8 @@ class Manager(cotyledon.ServiceManager):
 
     def initialize(self):
         graph_lock = multiprocessing.Lock()
+        graph.Graph.get(graph_lock).setup()
+
         probe_modules = [k8s, istio, kiali, prometheus]
         for probe_module in probe_modules:
             for probe_bundle in probe_module.get_probes():
