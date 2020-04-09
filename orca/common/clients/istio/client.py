@@ -22,21 +22,27 @@ class ResourceProxyFactory(object):
         client = k8s.ClientFactory.get()
         if kind == 'virtual_service':
             return k8s.CustomResourceProxy(
-                'virtual_service', client.CustomObjectsApi().list_cluster_custom_object,
+                kind='virtual_service',
+                list_fn=client.CustomObjectsApi().list_cluster_custom_object,
                 group="networking.istio.io",
                 version="v1alpha3",
-                plural="virtualservices")
+                plural="virtualservices"
+            )
         elif kind == 'destination_rule':
             return k8s.CustomResourceProxy(
-                'destination_rule', client.CustomObjectsApi().list_cluster_custom_object,
+                kind='destination_rule',
+                list_fn=client.CustomObjectsApi().list_cluster_custom_object,
                 group="networking.istio.io",
                 version="v1alpha3",
-                plural="destinationrules")
+                plural="destinationrules"
+            )
         elif kind == 'gateway':
             return k8s.CustomResourceProxy(
-                'gateway', client.CustomObjectsApi().list_cluster_custom_object,
+                kind='gateway',
+                list_fn=client.CustomObjectsApi().list_cluster_custom_object,
                 group="networking.istio.io",
                 version="v1alpha3",
-                plural="gateways")
+                plural="gateways"
+            )
         else:
             raise Exception("Unknown kind %s" % kind)

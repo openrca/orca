@@ -36,52 +36,79 @@ class ResourceProxyFactory(object):
         client = ClientFactory.get()
         if kind == 'pod':
             return ResourceProxy(
-                'pod', client.CoreV1Api().list_pod_for_all_namespaces)
+                kind='pod',
+                list_fn=client.CoreV1Api().list_pod_for_all_namespaces
+            )
         elif kind == 'service':
             return ResourceProxy(
-                'service', client.CoreV1Api().list_service_for_all_namespaces)
+                kind='service',
+                list_fn=client.CoreV1Api().list_service_for_all_namespaces
+            )
         elif kind == 'endpoints':
             return ResourceProxy(
-                'endpoints', client.CoreV1Api().list_endpoints_for_all_namespaces)
+                kind='endpoints',
+                list_fn=client.CoreV1Api().list_endpoints_for_all_namespaces
+            )
         elif kind == 'config_map':
             return ResourceProxy(
-                'config_map', client.CoreV1Api().list_config_map_for_all_namespaces)
+                kind='config_map',
+                list_fn=client.CoreV1Api().list_config_map_for_all_namespaces
+            )
         elif kind == 'secret':
             return ResourceProxy(
-                'secret', client.CoreV1Api().list_secret_for_all_namespaces)
+                kind='secret',
+                list_fn=client.CoreV1Api().list_secret_for_all_namespaces
+            )
         elif kind == 'node':
             return ResourceProxy(
-                'node', client.CoreV1Api().list_node)
+                kind='node',
+                list_fn=client.CoreV1Api().list_node
+            )
         elif kind == 'deployment':
             return ResourceProxy(
-                'deployment', client.AppsV1Api().list_deployment_for_all_namespaces)
+                kind='deployment',
+                list_fn=client.AppsV1Api().list_deployment_for_all_namespaces
+            )
         elif kind == 'stateful_set':
             return ResourceProxy(
-                'stateful_set', client.AppsV1Api().list_stateful_set_for_all_namespaces)
+                kind='stateful_set',
+                list_fn=client.AppsV1Api().list_stateful_set_for_all_namespaces
+            )
         elif kind == 'daemon_set':
             return ResourceProxy(
-                'daemon_set', client.AppsV1Api().list_daemon_set_for_all_namespaces)
+                kind='daemon_set',
+                list_fn=client.AppsV1Api().list_daemon_set_for_all_namespaces
+            )
         elif kind == 'replica_set':
             return ResourceProxy(
-                'replica_set',
-                client.ExtensionsV1beta1Api().list_replica_set_for_all_namespaces)
+                kind='replica_set',
+                list_fn=client.ExtensionsV1beta1Api().list_replica_set_for_all_namespaces
+            )
         elif kind == 'storage_class':
             return ResourceProxy(
-                'storage_class', client.StorageV1Api().list_storage_class)
+                kind='storage_class',
+                list_fn=client.StorageV1Api().list_storage_class
+            )
         elif kind == 'persistent_volume':
             return ResourceProxy(
-                'persistent_volume', client.CoreV1Api().list_persistent_volume)
+                kind='persistent_volume',
+                list_fn=client.CoreV1Api().list_persistent_volume
+            )
         elif kind == 'persistent_volume_claim':
             return ResourceProxy(
-                'persistent_volume_claim',
-                client.CoreV1Api().list_persistent_volume_claim_for_all_namespaces)
+                kind='persistent_volume_claim',
+                list_fn=client.CoreV1Api().list_persistent_volume_claim_for_all_namespaces
+            )
         elif kind == 'namespace':
             return ResourceProxy(
-                'namespace', client.CoreV1Api().list_namespace)
+                kind='namespace',
+                list_fn=client.CoreV1Api().list_namespace
+            )
         elif kind == 'horizontal_pod_autoscaler':
             return ResourceProxy(
-                'horizontal_pod_autoscaler',
-                client.AutoscalingV1Api().list_horizontal_pod_autoscaler_for_all_namespaces)
+                kind='horizontal_pod_autoscaler',
+                list_fn=client.AutoscalingV1Api().list_horizontal_pod_autoscaler_for_all_namespaces
+            )
         else:
             raise Exception("Unknown kind %s" % kind)
 
