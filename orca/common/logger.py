@@ -15,13 +15,20 @@
 import logging
 import sys
 
+from orca.common import config
+
+CONFIG = config.CONFIG
+
 FORMATTER = logging.Formatter(
     "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
 
 def get_logger(logger_name):
     logger = logging.getLogger(logger_name)
-    logger.setLevel(logging.INFO)
+
+    log_level = CONFIG.logging.log_level.upper()
+    logger.setLevel(logging.getLevelName(log_level))
+
     logger.addHandler(get_console_handler())
     logger.propagate = False
     return logger

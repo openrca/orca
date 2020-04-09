@@ -32,3 +32,6 @@ kiali:
   username: admin
   password: admin
   resync_period: 60
+
+logging:
+  log_level: info

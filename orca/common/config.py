@@ -132,6 +132,16 @@ SCHEMA = {
             'username': {'type': 'string'},
             'password': {'type': 'string'}
         }
+    },
+    'logging': {
+        'type': 'dict',
+        'schema': {
+            'log_level': {
+                'type': 'string',
+                'default': 'info',
+                'allowed': ['critical', 'error', 'warning', 'info', 'debug']
+            }
+        }
     }
 }
 
