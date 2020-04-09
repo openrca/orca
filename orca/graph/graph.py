@@ -111,8 +111,8 @@ class Graph(object):
         self._driver.update_node(node)
         self._notify_listeners(GraphEvent.NODE_UPDATED, node)
 
-    def delete_node(self, new_node):
-        node = self.get_node(new_node.id)
+    def delete_node(self, node_id):
+        node = self.get_node(node_id)
         if not node:
             return
         links = self._driver.get_node_links(node)
@@ -148,8 +148,8 @@ class Graph(object):
         self._driver.update_link(link)
         self._notify_listeners(GraphEvent.LINK_UPDATED, link)
 
-    def delete_link(self, new_link):
-        link = self.get_link(new_link.id)
+    def delete_link(self, link_id):
+        link = self.get_link(link_id)
         if not link:
             return
         link.deleted_at = utils.get_utc()

@@ -84,7 +84,7 @@ class Linker(abc.ABC):
         links_to_create_ids = new_links_ids.difference(current_links_ids)
 
         for link_id in links_to_delete_ids:
-            self._graph.delete_link(current_links[link_id])
+            self._graph.delete_link(link_id)
 
         for link_id in links_to_update_ids:
             self._graph.update_link(new_links[link_id])
