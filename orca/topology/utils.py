@@ -40,7 +40,7 @@ class NodeSynchronizer(object):
 
         if delete:
             for node_id in nodes_to_delete_ids:
-                self._graph.delete_node(current_nodes[node_id])
+                self._graph.delete_node(node_id)
 
         if update:
             for node_id in nodes_to_update_ids:

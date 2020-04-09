@@ -150,4 +150,4 @@ class PushProbe(Probe, upstream.EventHandler):
 
     def on_deleted(self, entity):
         node = self._extractor.extract(entity)
-        self._graph.delete_node(node)
+        self._graph.delete_node(node.id)
