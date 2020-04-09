@@ -15,6 +15,11 @@
 import addict as dictlib
 from kubernetes import client, config, watch
 
+from orca.common import logger
+from orca.common.clients.k8s import exceptions
+
+LOG = logger.get_logger(__name__)
+
 
 class ClientFactory(object):
 
@@ -87,8 +92,25 @@ class ResourceProxy(object):
         return self._list_fn().items
 
     def watch(self):
-        for event in self._watch_resource():
-            yield event
+        while True:
+            for event in self._watch_resource():
+                event_type, event_obj = event['type'], event['object']
+
+                # "410 Gone" is for the "resource version too old" error, we must restart watching.
+                # The error occurs when the watch stream is inactive for more than a few minutes.
+                if event_type == 'ERROR' and event_obj.code == 410:
+                    return
+
+                # Other watch errors should be fatal for the consumer.
+                if event_type == 'ERROR':
+                    raise exceptions.WatchError(reason=event_obj.message)
+
+                # Ensure that the event is something we understand and can handle.
+                if event_type not in ['ADDED', 'MODIFIED', 'DELETED']:
+                    raise exceptions.UnknownWatchEvent(event_type=event_type)
+
+                # Yield normal events to the consumer. Errors are already filtered out.
+                yield event
 
     def _watch_resource(self):
         return watch.Watch().stream(self._list_fn)
