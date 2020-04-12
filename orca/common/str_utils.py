@@ -17,3 +17,7 @@ def escape(s):
     escaped = s.replace('"', '\\"')
     escaped = escaped.replace('\n', '\\n')
     return escaped
+
+
+def to_bool(s):
+    return s.lower() in ('true', '1')
