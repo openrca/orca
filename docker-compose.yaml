@@ -5,7 +5,6 @@ services:
     ports:
       - "5000:5000"
   graphdb:
-    image: "neo4j"
+    image: "arangodb"
     ports:
-      - "7474:7474"
-      - "7687:7687"
+      - "8529:8529"

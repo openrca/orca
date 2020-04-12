@@ -58,13 +58,6 @@ arangodb:
   username: root
   password: admin
 
-neo4j:
-  enabled: false
-  host: neo4j
-  port: 7687
-  username: neo4j
-  password: admin
-
 probes:
   kubernetes:
     enabled: true

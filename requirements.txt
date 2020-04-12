@@ -5,7 +5,6 @@ flask                       # BSD 3-Clause License
 flask-restx                 # BSD 3-Clause License
 honcho                      # MIT
 kubernetes                  # Apache License 2.0
-neo4j                       # Apache License 2.0
 python-arango               # MIT
 pyyaml                      # MIT
 requests                    # Apache License 2.0
