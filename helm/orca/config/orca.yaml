@@ -3,7 +3,7 @@ topology:
     mapping_path: /etc/orca/alerts-mapping.yaml
 
 graph:
-  driver: neo4j
+  driver: arangodb
 
 neo4j:
   host: orca-neo4j.rca
