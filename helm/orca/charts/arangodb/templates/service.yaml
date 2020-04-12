@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "arangodb.fullname" . }}
+  name: {{ include "arangodb.name" . }}
   labels:
 {{ include "arangodb.labels" . | indent 4 }}
 spec:

@@ -5,5 +5,60 @@ metadata:
   labels:
 {{ include "orca.labels" . | indent 4 }}
 data:
-{{ (.Files.Glob "config/orca.yaml").AsConfig | indent 2 }}
+  orca.yaml: |-
+    graph:
+      driver: {{ .Values.graph.driver }}
+
+      neo4j:
+        enabled: {{ .Values.neo4j.enabled }}
+        host: {{ .Values.neo4j.host }}
+        port: {{ .Values.neo4j.port }}
+        username: {{ .Values.neo4j.username }}
+        password: {{ .Values.neo4j.password }}
+
+      arangodb:
+        enabled: {{ .Values.arangodb.enabled }}
+        host: {{ .Values.arangodb.host }}
+        port: {{ .Values.arangodb.port }}
+        username: {{ .Values.arangodb.username }}
+        password: {{ .Values.arangodb.password }}
+
+    topology:
+      alerts:
+        mapping_path: /etc/orca/alerts-mapping.yaml
+
+    probes:
+      kubernetes:
+        enabled: {{ .Values.probes.kubernetes.enabled }}
+        resync_period: {{ .Values.probes.kubernetes.resync_period }}
+
+      istio:
+        enabled: {{ .Values.probes.istio.enabled }}
+        resync_period: {{ .Values.probes.istio.resync_period }}
+
+      kiali:
+        enabled: {{ .Values.probes.kiali.enabled }}
+        url: {{ .Values.probes.kiali.url }}
+        username: {{ .Values.probes.kiali.username }}
+        password: {{ .Values.probes.kiali.password }}
+        resync_period: {{ .Values.probes.kiali.resync_period }}
+
+      prometheus:
+        enabled: {{ .Values.probes.kubernetes.prometheud }}
+        url: {{ .Values.probes.prometheus.url }}
+        resync_period: {{ .Values.probes.prometheus.resync_period }}
+
+    ingestors:
+      prometheus:
+        enabled: {{ .Values.ingestors.prometheus.enabled }}
+
+      falco:
+        enabled: {{ .Values.ingestors.falco.enabled }}
+
+      elastalert:
+        enabled: {{ .Values.ingestors.elastalert.enabled }}
+
+    logging:
+      log_level: {{ .Values.logging.log_level }}
+
 {{ (.Files.Glob "config/alerts-mapping.yaml").AsConfig | indent 2 }}

@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "neo4j.fullname" . }}
+  name: {{ include "neo4j.name" . }}
   labels:
 {{ include "neo4j.labels" . | indent 4 }}
 spec:
