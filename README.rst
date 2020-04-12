@@ -18,6 +18,13 @@ OpenRCA
     Automated Root Cause Analysis for Kubernetes
     </h2>
 
+OpenRCA attempts to facilitate root cause inference of issues emerging in Kubernetes clusters. By
+constructing a real-time cluster topology graph enriched with telemetry data obtained from
+integrated telemetry sources (Prometheus, Elasticsearch, Falco, Istio, and others), provides
+operators with a powerful analytical toolkit for dealing with daily application failures,
+bottlenecks, and misconfigurations. Moreover, it comes with algorithms that leverage the collected
+graph data to pinpoint sources of complex cluster defects.
+
 Objectives
 ----------
 
