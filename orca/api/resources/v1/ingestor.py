@@ -15,12 +15,11 @@
 from flask import request
 from flask_restx import Namespace, Resource
 
-from orca.common import logger
+from orca.common import config, logger
 from orca.topology import linker
-from orca.topology.alerts import elastalert
-from orca.topology.alerts import falco
-from orca.topology.alerts import prometheus
+from orca.topology import alerts
 
+CONFIG = config.CONFIG
 LOG = logger.get_logger(__name__)
 
 
@@ -65,7 +64,17 @@ def initialize(graph):
     graph.add_listener(event_dispatcher)
     ingestor_registry = IngestorRegistry(api, graph, event_dispatcher)
 
-    ingestor_modules = [prometheus, falco, elastalert]
+    ingestor_modules = []
+
+    if CONFIG.ingestors.prometheus.enabled:
+        ingestor_modules.append(alerts.prometheus)
+
+    if CONFIG.ingestors.falco.enabled:
+        ingestor_modules.append(alerts.falco)
+
+    if CONFIG.ingestors.elastalert.enabled:
+        ingestor_modules.append(alerts.elastalert)
+
     for ingestor_module in ingestor_modules:
         for ingestor_bundle in ingestor_module.get_ingestors():
             ingestor_registry.register(ingestor_bundle)

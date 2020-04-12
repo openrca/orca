@@ -144,6 +144,29 @@ SCHEMA = {
             }
         }
     },
+    'ingestors': {
+        'type': 'dict',
+        'schema': {
+            'prometheus': {
+                'type': 'dict',
+                'schema': {
+                    'enabled': {'type': 'boolean', 'coerce': bool, 'default': False}
+                }
+            },
+            'falco': {
+                'type': 'dict',
+                'schema': {
+                    'enabled': {'type': 'boolean', 'coerce': bool, 'default': False}
+                }
+            },
+            'elastalert': {
+                'type': 'dict',
+                'schema': {
+                    'enabled': {'type': 'boolean', 'coerce': bool, 'default': False}
+                }
+            }
+        }
+    },
     'logging': {
         'type': 'dict',
         'schema': {

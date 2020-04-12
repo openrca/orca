@@ -40,5 +40,15 @@ probes:
     url: http://prometheus-prometheus-oper-prometheus.monitoring:9090
     resync_period: 60
 
+ingestors:
+  prometheus:
+    enabled: false
+
+  falco:
+    enabled: false
+
+  elastalert:
+    enabled: false
+
 logging:
   log_level: info
