@@ -43,30 +43,3 @@ Install using Helm chart:
 ::
 
     $ helm install ./helm/orca --namespace rca --name orca
-
-
-Development
------
-
-Using Docker Compose:
-
-::
-
-    $ docker-compose build
-    $ docker-compose up
-    $ docker-compose down
-
-Using Telepresence:
-
-::
-
-    $ telepresence \
-        --namespace rca \
-        --mount=/tmp/telepresence \
-        --swap-deployment orca \
-        --docker-run \
-            --rm \
-            -it \
-            -v=/tmp/telepresence/var/run/secrets:/var/run/secrets \
-            -v=/tmp/telepresence/etc/orca:/etc/orca \
-            -v $(pwd):/app
