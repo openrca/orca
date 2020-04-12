@@ -13,14 +13,16 @@
 # limitations under the License.
 
 import multiprocessing
+import pprint
 
 import cotyledon
 
-from orca.common import config
+from orca.common import config, logger
 from orca.graph import graph
 from orca.topology import alerts, infra, probe
 
 CONFIG = config.CONFIG
+LOG = logger.get_logger(__name__)
 
 
 class Manager(cotyledon.ServiceManager):
@@ -28,6 +30,9 @@ class Manager(cotyledon.ServiceManager):
     """Initializes probe runners."""
 
     def initialize(self):
+        config_dump = pprint.pformat(CONFIG.to_dict(), indent=1)
+        LOG.info("Configuration:\n%s", config_dump)
+
         graph_lock = multiprocessing.Lock()
         graph.Graph.get(graph_lock).setup()
 
