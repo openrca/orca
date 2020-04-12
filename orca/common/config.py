@@ -83,7 +83,7 @@ SCHEMA = {
     'graph': {
         'type': 'dict',
         'schema': {
-            'driver': {'type': 'string', 'default': 'neo4j'}
+            'driver': {'type': 'string', 'default': 'arangodb'}
         }
     },
     'kubernetes': {
