@@ -1,3 +1,7 @@
 dependencies:
+  - name: arangodb
+    version: 0.1.0
+    condition: arangodb.enabled
   - name: neo4j
     version: 0.1.0
+    condition: neo4j.enabled

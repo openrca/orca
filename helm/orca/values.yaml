@@ -47,3 +47,49 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+graph:
+  driver: arangodb
+
+arangodb:
+  enabled: true
+  host: arangodb
+  port: 8529
+  username: root
+  password: admin
+
+neo4j:
+  enabled: false
+  host: neo4j
+  port: 7687
+  username: neo4j
+  password: admin
+
+probes:
+  kubernetes:
+    enabled: true
+    resync_period: 900
+  istio:
+    enabled: false
+    resync_period: 900
+  kiali:
+    enabled: false
+    resync_period: 60
+    url:
+    username:
+    password:
+  prometheus:
+    enabled: false
+    resync_period: 60
+    url:
+
+ingestors:
+  prometheus:
+    enabled: false
+  falco:
+    enabled: false
+  elastalert:
+    enabled: false
+
+logging:
+  log_level: info
