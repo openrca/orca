@@ -15,7 +15,7 @@ OpenRCA
     <h2 align="center">
         <img src="docs/images/orca-logo.png" alt="OpenRCA" height="200px">
     <br>
-    Automated Root Cause Analysis for Kubernetes
+    Root Cause Analysis for Kubernetes
     </h2>
 
 OpenRCA attempts to facilitate root cause inference of issues emerging in Kubernetes clusters. By
@@ -29,7 +29,7 @@ Objectives
 ----------
 
 - Real-time cluster topology visualization
-- Integration hub for telemetry data (Prometheus, Elasticsearch, Falco and others)
+- Integration hub for telemetry data (Prometheus, Elasticsearch, Falco, Istio, and others)
 - Post-mortem analysis
 - Automated root cause inference
 - Diagnostics framework for common applications (databases, load balancers, message queues)
