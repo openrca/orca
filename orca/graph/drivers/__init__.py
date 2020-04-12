@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from orca.common import config
-from orca.graph.drivers.neo4j import Neo4jDriver
 from orca.graph.drivers import arangodb
 
 CONFIG = config.CONFIG
@@ -22,14 +21,8 @@ CONFIG = config.CONFIG
 class DriverFactory(object):
 
     @staticmethod
-    def get(backend='neo4j'):
-        if backend == 'neo4j':
-            return Neo4jDriver(
-                host=CONFIG.graph.neo4j.host,
-                port=CONFIG.graph.neo4j.port,
-                user=CONFIG.graph.neo4j.username,
-                password=CONFIG.graph.neo4j.password)
-        elif backend == 'arangodb':
+    def get(backend):
+        if backend == 'arangodb':
             return arangodb.ArangoDBDriver(
                 host=CONFIG.graph.arangodb.host,
                 port=CONFIG.graph.arangodb.port,

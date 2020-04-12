@@ -70,20 +70,6 @@ SCHEMA = {
         'type': 'dict',
         'schema': {
             'driver': {'type': 'string', 'default': 'arangodb'},
-            'neo4j': {
-                'type': 'dict',
-                'schema': {
-                     'enabled': {
-                        'type': 'boolean',
-                        'coerce': (str, str_utils.to_bool),
-                        'default': False
-                    },
-                    'host': {'type': 'string'},
-                    'port': {'type': 'integer', 'coerce': int, 'default': 7687},
-                    'username': {'type': 'string'},
-                    'password': {'type': 'string'}
-                }
-            },
             'arangodb': {
                 'type': 'dict',
                 'schema': {
