@@ -99,11 +99,11 @@ class ServiceGraphProbe(probe.Probe):
     @classmethod
     def get(cls, graph):
         kiali_client = kiali.KialiClient.get(
-            url=CONFIG.kiali.url,
-            username=CONFIG.kiali.username,
-            password=CONFIG.kiali.password)
+            url=CONFIG.probes.kiali.url,
+            username=CONFIG.probes.kiali.username,
+            password=CONFIG.probes.kiali.password)
         return cls(
             graph=graph,
             kiali_client=kiali_client,
-            resync_period=CONFIG.kiali.resync_period
+            resync_period=CONFIG.probes.kiali.resync_period
         )

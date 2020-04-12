@@ -1,37 +1,38 @@
+graph:
+  driver: arangodb
+
+  neo4j:
+    host: orca-neo4j.rca
+    port: 7687
+    username: neo4j
+    password: admin
+
+  arangodb:
+    host: orca-arangodb.rca
+    port: 8529
+    username: root
+    password: admin
+
 topology:
   alerts:
     mapping_path: /etc/orca/alerts-mapping.yaml
 
-graph:
-  driver: arangodb
+probes:
+  kubernetes:
+    resync_period: 900
 
-neo4j:
-  host: orca-neo4j.rca
-  port: 7687
-  username: neo4j
-  password: admin
+  istio:
+    resync_period: 900
 
-arangodb:
-  host: orca-arangodb.rca
-  port: 8529
-  username: root
-  password: admin
+  prometheus:
+    url: http://prometheus-prometheus-oper-prometheus.monitoring:9090
+    resync_period: 60
 
-kubernetes:
-  resync_period: 900
-
-istio:
-  resync_period: 900
-
-prometheus:
-  url: http://prometheus-prometheus-oper-prometheus.monitoring:9090
-  resync_period: 60
-
-kiali:
-  url: http://kiali.istio-system:20001
-  username: admin
-  password: admin
-  resync_period: 60
+  kiali:
+    url: http://kiali.istio-system:20001
+    username: admin
+    password: admin
+    resync_period: 60
 
 logging:
   log_level: info

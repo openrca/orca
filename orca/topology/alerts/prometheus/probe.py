@@ -27,10 +27,10 @@ class AlertProbe(probe.PullProbe):
     @classmethod
     def get(cls, graph):
         prom_client = prometheus.PrometheusClient.get(
-            url=CONFIG.prometheus.url)
+            url=CONFIG.probes.prometheus.url)
         return cls(
             graph=graph,
             upstream_proxy=upstream.UpstreamProxy(prom_client),
             extractor=extractor.AlertExtractor.get(),
             synchronizer=utils.NodeSynchronizer(graph),
-            resync_period=CONFIG.prometheus.resync_period)
+            resync_period=CONFIG.probes.prometheus.resync_period)

@@ -32,7 +32,7 @@ class PullProbe(probe.PullProbe):
             upstream_proxy=upstream.UpstreamProxy(istio.ResourceProxyFactory.get(kind)),
             extractor=extractor,
             synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.istio.resync_period)
+            resync_period=CONFIG.probes.istio.resync_period)
 
 
 class PushProbe(probe.PushProbe):
