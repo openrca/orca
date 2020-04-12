@@ -2,12 +2,14 @@ graph:
   driver: arangodb
 
   neo4j:
+    enabled: false
     host: orca-neo4j.rca
     port: 7687
     username: neo4j
     password: admin
 
   arangodb:
+    enabled: true
     host: orca-arangodb.rca
     port: 8529
     username: root
@@ -19,19 +21,23 @@ topology:
 
 probes:
   kubernetes:
+    enabled: true
     resync_period: 900
 
   istio:
+    enabled: false
     resync_period: 900
 
-  prometheus:
-    url: http://prometheus-prometheus-oper-prometheus.monitoring:9090
-    resync_period: 60
-
   kiali:
+    enabled: false
     url: http://kiali.istio-system:20001
     username: admin
     password: admin
+    resync_period: 60
+
+  prometheus:
+    enabled: false
+    url: http://prometheus-prometheus-oper-prometheus.monitoring:9090
     resync_period: 60
 
 logging:

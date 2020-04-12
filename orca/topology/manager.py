@@ -16,10 +16,11 @@ import multiprocessing
 
 import cotyledon
 
+from orca.common import config
 from orca.graph import graph
-from orca.topology import probe
-from orca.topology.alerts import prometheus
-from orca.topology.infra import istio, k8s, kiali
+from orca.topology import alerts, infra, probe
+
+CONFIG = config.CONFIG
 
 
 class Manager(cotyledon.ServiceManager):
@@ -30,7 +31,20 @@ class Manager(cotyledon.ServiceManager):
         graph_lock = multiprocessing.Lock()
         graph.Graph.get(graph_lock).setup()
 
-        probe_modules = [k8s, istio, kiali, prometheus]
+        probe_modules = []
+
+        if CONFIG.probes.kubernetes.enabled:
+            probe_modules.append(infra.k8s)
+
+        if CONFIG.probes.istio.enabled:
+            probe_modules.append(infra.istio)
+
+        if CONFIG.probes.kiali.enabled:
+            probe_modules.append(infra.kiali)
+
+        if CONFIG.probes.prometheus.enabled:
+            probe_modules.append(alerts.prometheus)
+
         for probe_module in probe_modules:
             for probe_bundle in probe_module.get_probes():
                 self.add(probe.ProbeRunner, workers=1, args=(probe_bundle, graph_lock))
