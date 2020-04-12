@@ -73,6 +73,7 @@ SCHEMA = {
             'neo4j': {
                 'type': 'dict',
                 'schema': {
+                    'enabled': {'type': 'boolean', 'coerce': bool, 'default': False},
                     'host': {'type': 'string'},
                     'port': {'type': 'integer', 'coerce': int, 'default': 7687},
                     'username': {'type': 'string'},
@@ -82,6 +83,7 @@ SCHEMA = {
             'arangodb': {
                 'type': 'dict',
                 'schema': {
+                    'enabled': {'type': 'boolean', 'coerce': bool, 'default': True},
                     'host': {'type': 'string'},
                     'port': {'type': 'integer', 'coerce': int, 'default': 8529},
                     'database': {'type': 'string', 'default': 'orca'},
@@ -111,18 +113,21 @@ SCHEMA = {
             'kubernetes': {
                 'type': 'dict',
                 'schema': {
+                    'enabled': {'type': 'boolean', 'coerce': bool, 'default': True},
                     'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
                 }
             },
             'istio': {
                 'type': 'dict',
                 'schema': {
+                    'enabled': {'type': 'boolean', 'coerce': bool, 'default': False},
                     'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
                 }
             },
             'kiali': {
                 'type': 'dict',
                 'schema': {
+                    'enabled': {'type': 'boolean', 'coerce': bool, 'default': False},
                     'url': {'type': 'string'},
                     'username': {'type': 'string'},
                     'password': {'type': 'string'},
@@ -132,6 +137,7 @@ SCHEMA = {
             'prometheus': {
                 'type': 'dict',
                 'schema': {
+                    'enabled': {'type': 'boolean', 'coerce': bool, 'default': False},
                     'url': {'type': 'string'},
                     'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
                 }
