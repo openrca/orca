@@ -28,11 +28,11 @@ graph data to pinpoint sources of complex cluster defects.
 Objectives
 ----------
 
-- Holistic insight into application infrastructure (infra graph)
-- Integration hub for telemetry projects (Prometheus, Elasticsearch, Falco and others)
-- Time-based infrastructure analysis
-- Automated diagnostics for common applications (databases, load balancers, message queues)
-- ML-supported root cause inference
+- Real-time cluster topology visualization
+- Integration hub for telemetry data (Prometheus, Elasticsearch, Falco and others)
+- Post-mortem analysis
+- Automated root cause inference
+- Diagnostics framework for common applications (databases, load balancers, message queues)
 - Site reliability engineering and chaos testing
 
 Installation
