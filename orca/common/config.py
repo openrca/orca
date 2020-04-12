@@ -66,6 +66,31 @@ class ConfigParser(object):
 
 
 SCHEMA = {
+    'graph': {
+        'type': 'dict',
+        'schema': {
+            'driver': {'type': 'string', 'default': 'arangodb'},
+            'neo4j': {
+                'type': 'dict',
+                'schema': {
+                    'host': {'type': 'string'},
+                    'port': {'type': 'integer', 'coerce': int, 'default': 7687},
+                    'username': {'type': 'string'},
+                    'password': {'type': 'string'}
+                }
+            },
+            'arangodb': {
+                'type': 'dict',
+                'schema': {
+                    'host': {'type': 'string'},
+                    'port': {'type': 'integer', 'coerce': int, 'default': 8529},
+                    'database': {'type': 'string', 'default': 'orca'},
+                    'username': {'type': 'string'},
+                    'password': {'type': 'string'}
+                }
+            }
+        }
+    },
     'topology': {
         'type': 'dict',
         'schema': {
@@ -80,57 +105,37 @@ SCHEMA = {
             }
         }
     },
-    'graph': {
+    'probes': {
         'type': 'dict',
         'schema': {
-            'driver': {'type': 'string', 'default': 'arangodb'}
-        }
-    },
-    'kubernetes': {
-        'type': 'dict',
-        'schema': {
-            'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
-        }
-    },
-    'istio': {
-        'type': 'dict',
-        'schema': {
-            'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
-        }
-    },
-    'kiali': {
-        'type': 'dict',
-        'schema': {
-            'url': {'type': 'string'},
-            'username': {'type': 'string'},
-            'password': {'type': 'string'},
-            'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
-        }
-    },
-    'prometheus': {
-        'type': 'dict',
-        'schema': {
-            'url': {'type': 'string'},
-            'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
-        }
-    },
-    'neo4j': {
-        'type': 'dict',
-        'schema': {
-            'host': {'type': 'string'},
-            'port': {'type': 'integer', 'coerce': int, 'default': 7687},
-            'username': {'type': 'string'},
-            'password': {'type': 'string'}
-        }
-    },
-    'arangodb': {
-        'type': 'dict',
-        'schema': {
-            'host': {'type': 'string'},
-            'port': {'type': 'integer', 'coerce': int, 'default': 8529},
-            'database': {'type': 'string', 'default': 'orca'},
-            'username': {'type': 'string'},
-            'password': {'type': 'string'}
+            'kubernetes': {
+                'type': 'dict',
+                'schema': {
+                    'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
+                }
+            },
+            'istio': {
+                'type': 'dict',
+                'schema': {
+                    'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
+                }
+            },
+            'kiali': {
+                'type': 'dict',
+                'schema': {
+                    'url': {'type': 'string'},
+                    'username': {'type': 'string'},
+                    'password': {'type': 'string'},
+                    'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
+                }
+            },
+            'prometheus': {
+                'type': 'dict',
+                'schema': {
+                    'url': {'type': 'string'},
+                    'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
+                }
+            }
         }
     },
     'logging': {

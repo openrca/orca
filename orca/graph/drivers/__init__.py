@@ -25,14 +25,14 @@ class DriverFactory(object):
     def get(backend='neo4j'):
         if backend == 'neo4j':
             return Neo4jDriver(
-                host=CONFIG.neo4j.host,
-                port=CONFIG.neo4j.port,
-                user=CONFIG.neo4j.username,
-                password=CONFIG.neo4j.password)
+                host=CONFIG.graph.neo4j.host,
+                port=CONFIG.graph.neo4j.port,
+                user=CONFIG.graph.neo4j.username,
+                password=CONFIG.graph.neo4j.password)
         elif backend == 'arangodb':
             return arangodb.ArangoDBDriver(
-                host=CONFIG.arangodb.host,
-                port=CONFIG.arangodb.port,
-                database=CONFIG.arangodb.database,
-                username=CONFIG.arangodb.username,
-                password=CONFIG.arangodb.password)
+                host=CONFIG.graph.arangodb.host,
+                port=CONFIG.graph.arangodb.port,
+                database=CONFIG.graph.arangodb.database,
+                username=CONFIG.graph.arangodb.username,
+                password=CONFIG.graph.arangodb.password)

@@ -31,7 +31,7 @@ class PullProbe(probe.PullProbe):
             upstream_proxy=upstream.UpstreamProxy(k8s.ResourceProxyFactory.get(kind)),
             extractor=extractor,
             synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.kubernetes.resync_period)
+            resync_period=CONFIG.probes.kubernetes.resync_period)
 
 
 class PushProbe(probe.PushProbe):
