@@ -117,7 +117,7 @@ class Graph(object):
             return
         links = self._driver.get_node_links(node)
         for link in links:
-            self.delete_link(link)
+            self.delete_link(link.id)
         node.deleted_at = utils.get_utc()
         LOG.debug("Deleting node: %s", node)
         self._driver.update_node(node)
