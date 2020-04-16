@@ -55,14 +55,6 @@ class ArangoDBDriver(driver.Driver):
             self.__graph = self._use_graph('graph')
         return self.__graph
 
-    @property
-    def _nodes(self):
-        return self._graph.vertex_collection('nodes')
-
-    @property
-    def _links(self):
-        return self._graph.edge_collection('links')
-
     def setup(self):
         sys_db = self._use_database('_system')
         if not sys_db.has_database(self._database_name):
@@ -80,6 +72,13 @@ class ArangoDBDriver(driver.Driver):
                 edge_collection='links',
                 from_vertex_collections=['nodes'],
                 to_vertex_collections=['nodes'])
+
+        nodes_col = graph.vertex_collection('nodes')
+        nodes_col.add_hash_index(fields=['id'], unique=False)
+
+        links_col = graph.edge_collection('links')
+        links_col.add_hash_index(fields=['id'], unique=False)
+
 
     def get_nodes(self, **query):
         query_pattern = ('FOR node in nodes %(filters)s RETURN node')
