@@ -13,12 +13,13 @@
 # limitations under the License.
 
 import copy
+import json
 
 import arango
 
+from orca.common import utils
 from orca.graph import graph
 from orca.graph.drivers import driver
-from orca.common import utils
 
 
 class ArangoDBDriver(driver.Driver):
@@ -87,20 +88,35 @@ class ArangoDBDriver(driver.Driver):
         return [self._build_node_obj(document) for document in documents]
 
     def get_node(self, node_id):
-        document = self._nodes.get(node_id)
-        if document:
-            return self._build_node_obj(document)
+        query_pattern = (
+            'FOR node in nodes '
+            'FILTER node.id == "%(node_id)s" '
+            'LIMIT 1 '
+            'RETURN node')
+        documents = self._execute_aql(query_pattern, node_id=node_id)
+        if documents:
+            return self._build_node_obj(documents[0])
 
     def add_node(self, node):
-        document = self._build_node_doc(node)
-        self._nodes.insert(document)
+        query_pattern = (
+            'INSERT %(document)s INTO nodes')
+        document = self._serialize_node(node)
+        self._execute_aql(query_pattern, document=document)
 
     def update_node(self, node):
-        document = self._build_node_doc(node)
-        self._nodes.update(document)
+        query_pattern = (
+            'FOR node in nodes '
+            'FILTER node.id == "%(node_id)s" '
+            'UPDATE node WITH %(document)s IN nodes')
+        document = self._serialize_node(node)
+        self._execute_aql(query_pattern, node_id=node.id, document=document)
 
     def delete_node(self, node):
-        self._nodes.delete(self._build_key(node))
+        query_pattern = (
+            'FOR node in nodes '
+            'FILTER node.id == "%(node_id)s" '
+            'REMOVE node IN nodes')
+        self._execute_aql(query_pattern, node_id=node.id)
 
     def get_links(self, **query):
         query_pattern = (
@@ -121,7 +137,7 @@ class ArangoDBDriver(driver.Driver):
     def get_link(self, link_id):
         query_pattern = (
             'FOR link in links '
-            'FILTER link._key == "%(link_id)s" '
+            'FILTER link.id == "%(link_id)s" '
             'LET source = DOCUMENT(link._from) '
             'LET target = DOCUMENT(link._to) '
             'LIMIT 1 '
@@ -134,19 +150,36 @@ class ArangoDBDriver(driver.Driver):
             document['link'], document['source'], document['target'])
 
     def add_link(self, link):
-        document = self._build_link_doc(link)
-        self._links.insert(document)
+        query_pattern = (
+            'LET source = FIRST( '
+            'FOR node in nodes FILTER node.id == "%(source_id)s" LIMIT 1 RETURN node) '
+            'LET target = FIRST( '
+            'FOR node in nodes FILTER node.id == "%(target_id)s" LIMIT 1 RETURN node) '
+            'LET link = MERGE(%(document)s, {"_from": source._id, "_to": target._id})'
+            'INSERT link INTO links')
+        document = self._serialize_link(link)
+        self._execute_aql(
+            query_pattern, source_id=link.source.id, target_id=link.target.id, document=document)
 
     def update_link(self, link):
-        document = self._build_link_doc(link)
-        self._links.update(document)
+        query_pattern = (
+            'FOR link IN links '
+            'FILTER link.id == "%(link_id)s" '
+            'UPDATE link WITH %(document)s IN links')
+        document = self._serialize_link(link)
+        self._execute_aql(query_pattern, link_id=link.id, document=document)
 
     def delete_link(self, link):
-        self._links.delete(self._build_key(link))
+        query_pattern = (
+            'FOR link in links '
+            'FILTER link.id == "%(link_id)s" '
+            'REMOVE link IN links')
+        self._execute_aql(query_pattern, link_id=link.id)
 
     def get_node_links(self, node, **query):
         query_pattern = (
-            'LET source = DOCUMENT("nodes/%(source_id)s") '
+            'LET source = FIRST( '
+            'FOR node in nodes FILTER node.id == "%(source_id)s" LIMIT 1 RETURN node) '
             'FOR target, link in 1..1 ANY source links '
             "%(filters)s "
             'RETURN {link, source, target}')
@@ -173,12 +206,6 @@ class ArangoDBDriver(driver.Driver):
     def _use_graph(self, graph):
         return self._database.graph(graph)
 
-    def _build_key(self, graph_obj):
-        return str(graph_obj.id)
-
-    def _build_id(self, collection, graph_obj):
-        return "%s/%s" % (collection, graph_obj.id)
-
     def _build_filters(self, query, handle):
         flatten_query = utils.flatten_dict(query, sep='.')
         filters = []
@@ -191,46 +218,46 @@ class ArangoDBDriver(driver.Driver):
         cursor = self._database.aql.execute(query)
         return list(cursor)
 
-    def _build_node_doc(self, node):
+    def _serialize_node(self, node):
         document = {}
-        document['_key'] = self._build_key(node)
+        document['id'] = node.id
         document['origin'] = node.origin
         document['kind'] = node.kind
         document['properties'] = copy.deepcopy(node.properties)
         document['created_at'] = node.created_at
         document['updated_at'] = node.updated_at
         document['deleted_at'] = node.deleted_at
-        return document
+        return json.dumps(document)
 
     def _build_node_obj(self, node_doc):
-        node_id = node_doc.pop('_key')
+        node_id = node_doc.pop('id')
         properties = node_doc.pop('properties')
         origin = node_doc.pop('origin')
         kind = node_doc.pop('kind')
         created_at = node_doc.pop('created_at')
         updated_at = node_doc.pop('updated_at')
         deleted_at = node_doc.pop('deleted_at')
-        return graph.Node(node_id, properties, origin, kind,
+        return graph.Node(
+            node_id, properties, origin, kind,
             created_at=created_at, updated_at=updated_at, deleted_at=deleted_at)
 
-    def _build_link_doc(self, link):
+    def _serialize_link(self, link):
         document = {}
-        document['_key'] = self._build_key(link)
-        document['_from'] = self._build_id('nodes', link.source)
-        document['_to'] = self._build_id('nodes', link.target)
+        document['id'] = link.id
         document['properties'] = copy.deepcopy(link.properties)
         document['created_at'] = link.created_at
         document['updated_at'] = link.updated_at
         document['deleted_at'] = link.deleted_at
-        return document
+        return json.dumps(document)
 
     def _build_link_obj(self, link_doc, source_doc, target_doc):
-        link_id = link_doc.pop('_key')
+        link_id = link_doc.pop('id')
         properties = link_doc.pop('properties')
         source_node = self._build_node_obj(source_doc)
         target_node = self._build_node_obj(target_doc)
         created_at = link_doc.pop('created_at')
         updated_at = link_doc.pop('updated_at')
         deleted_at = link_doc.pop('deleted_at')
-        return graph.Link(link_id, properties, source_node, target_node,
+        return graph.Link(
+            link_id, properties, source_node, target_node,
             created_at=created_at, updated_at=updated_at, deleted_at=deleted_at)
