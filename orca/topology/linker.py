@@ -93,16 +93,12 @@ class Linker(abc.ABC):
             self._graph.add_link(new_links[link_id])
 
     def _get_current_links(self, node):
-        target_kind = self._get_target_kind(node)
-        return self._graph.get_node_links(node, kind=target_kind)
-
-    def _get_target_kind(self, node):
-        if node.kind == self.source_spec.kind:
-            return self.target_spec.kind
-        return self.source_spec.kind
+        target_spec = self._get_target_spec(node)
+        return self._graph.get_node_links(
+            node, origin=target_spec.origin, kind=target_spec.kind)
 
     def _get_new_links(self, node):
-        if node.kind == self.source_spec.kind:
+        if self._is_source(node):
             return self._get_links_from_source(node)
         return self._get_links_from_target(node)
 
@@ -123,6 +119,17 @@ class Linker(abc.ABC):
             if self._matcher.are_linked(source_node, target_node):
                 links.append(graph.Graph.create_link({}, source_node, target_node))
         return links
+
+    def _get_target_spec(self, node):
+        if self._is_source(node):
+            return self.target_spec
+        return self.source_spec
+
+    def _is_source(self, node):
+        if node.origin == self.source_spec.origin and \
+           node.kind == self.source_spec.kind:
+            return True
+        return False
 
     def _build_link_lookup(self, links):
         return {link.id: link for link in links}
