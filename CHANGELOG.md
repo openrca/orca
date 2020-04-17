@@ -10,6 +10,7 @@
 - Add ArangoDB graph backend [\#12](https://github.com/openrca/orca/issues/12)
 - Add time signatures to graph nodes [\#11](https://github.com/openrca/orca/issues/11)
 - Add contribution guide [\#10](https://github.com/openrca/orca/issues/10)
+- Separate upstream IDs from IDs managed by graph DB [\#54](https://github.com/openrca/orca/pull/54) ([bzurkowski](https://github.com/bzurkowski))
 - Parametrize Helm chart [\#46](https://github.com/openrca/orca/pull/46) ([bzurkowski](https://github.com/bzurkowski))
 - Configurable probe enablement [\#45](https://github.com/openrca/orca/pull/45) ([bzurkowski](https://github.com/bzurkowski))
 - Remove Neo4j graph backend [\#43](https://github.com/openrca/orca/pull/43) ([bzurkowski](https://github.com/bzurkowski))
@@ -26,10 +27,13 @@
 
 **Fixed bugs:**
 
+- Falco unable to start: "error opening device /host/dev/falco0" [\#55](https://github.com/openrca/orca/issues/55)
 - Failed to perform API request to Prometheus [\#38](https://github.com/openrca/orca/issues/38)
 - Cannot log into noe4j [\#36](https://github.com/openrca/orca/issues/36)
 - Neo4j: Failed to read from defunct connection [\#32](https://github.com/openrca/orca/issues/32)
 - Istio watches fail periodically [\#18](https://github.com/openrca/orca/issues/18)
+- Filter out soft-deleted elements in graph operations [\#57](https://github.com/openrca/orca/pull/57) ([bzurkowski](https://github.com/bzurkowski))
+- Fix non-deterministic link source-target ordering [\#56](https://github.com/openrca/orca/pull/56) ([bzurkowski](https://github.com/bzurkowski))
 
 **Merged pull requests:**
 
