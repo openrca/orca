@@ -81,7 +81,11 @@ class ArangoDBDriver(driver.Driver):
 
 
     def get_nodes(self, **query):
-        query_pattern = ('FOR node in nodes %(filters)s RETURN node')
+        query_pattern = (
+            'FOR node in nodes '
+            'FILTER node.deleted_at == null '
+            '%(filters)s '
+            'RETURN node')
         filters = self._build_filters(query, handle='node')
         documents = self._execute_aql(query_pattern, filters=filters)
         return [self._build_node_obj(document) for document in documents]
@@ -89,6 +93,7 @@ class ArangoDBDriver(driver.Driver):
     def get_node(self, node_id):
         query_pattern = (
             'FOR node in nodes '
+            'FILTER node.deleted_at == null '
             'FILTER node.id == "%(node_id)s" '
             'LIMIT 1 '
             'RETURN node')
@@ -105,6 +110,7 @@ class ArangoDBDriver(driver.Driver):
     def update_node(self, node):
         query_pattern = (
             'FOR node in nodes '
+            'FILTER node.deleted_at == null '
             'FILTER node.id == "%(node_id)s" '
             'UPDATE node WITH %(document)s IN nodes')
         document = self._serialize_node(node)
@@ -120,6 +126,7 @@ class ArangoDBDriver(driver.Driver):
     def get_links(self, **query):
         query_pattern = (
             'FOR link in links '
+            'FILTER link.deleted_at == null '
             '%(filters)s '
             'LET source = DOCUMENT(link._from) '
             'LET target = DOCUMENT(link._to)'
@@ -136,6 +143,7 @@ class ArangoDBDriver(driver.Driver):
     def get_link(self, link_id):
         query_pattern = (
             'FOR link in links '
+            'FILTER link.deleted_at == null '
             'FILTER link.id == "%(link_id)s" '
             'LET source = DOCUMENT(link._from) '
             'LET target = DOCUMENT(link._to) '
@@ -151,9 +159,15 @@ class ArangoDBDriver(driver.Driver):
     def add_link(self, link):
         query_pattern = (
             'LET source = FIRST( '
-            'FOR node in nodes FILTER node.id == "%(source_id)s" LIMIT 1 RETURN node) '
+            'FOR node in nodes '
+            'FILTER node.deleted_at == null '
+            'FILTER node.id == "%(source_id)s" '
+            'LIMIT 1 RETURN node) '
             'LET target = FIRST( '
-            'FOR node in nodes FILTER node.id == "%(target_id)s" LIMIT 1 RETURN node) '
+            'FOR node in nodes '
+            'FILTER node.deleted_at == null '
+            'FILTER node.id == "%(target_id)s" '
+            'LIMIT 1 RETURN node) '
             'LET link = MERGE(%(document)s, {"_from": source._id, "_to": target._id})'
             'INSERT link INTO links')
         document = self._serialize_link(link)
@@ -163,6 +177,7 @@ class ArangoDBDriver(driver.Driver):
     def update_link(self, link):
         query_pattern = (
             'FOR link IN links '
+            'FILTER link.deleted_at == null '
             'FILTER link.id == "%(link_id)s" '
             'UPDATE link WITH %(document)s IN links')
         document = self._serialize_link(link)
@@ -178,8 +193,12 @@ class ArangoDBDriver(driver.Driver):
     def get_node_links(self, node, **query):
         query_pattern = (
             'LET source = FIRST( '
-            'FOR node in nodes FILTER node.id == "%(source_id)s" LIMIT 1 RETURN node) '
+            'FOR node in nodes '
+            'FILTER node.deleted_at == null '
+            'FILTER node.id == "%(source_id)s" '
+            'LIMIT 1 RETURN node) '
             'FOR target, link in 1..1 ANY source links '
+            'FILTER link.deleted_at == null '
             "%(filters)s "
             'RETURN {link, source, target}')
         filters = self._build_filters(query, handle='target')
