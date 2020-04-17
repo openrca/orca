@@ -1,5 +1,5 @@
 image:
-  tag: 0.20.0
+  tag: 0.21.0
 
 auditLog:
   enabled: true
