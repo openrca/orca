@@ -102,36 +102,27 @@ class Linker(abc.ABC):
         return self.source_spec.kind
 
     def _get_new_links(self, node):
-        linked_nodes = self._get_linked_nodes(node)
-        links = []
-        for linked_node in linked_nodes:
-            link = graph.Graph.create_link({}, node, linked_node)
-            links.append(link)
-        return links
-
-    def _get_linked_nodes(self, node):
         if node.kind == self.source_spec.kind:
-            return self._get_linked_from_source(node)
-        else:
-            return self._get_linked_from_target(node)
+            return self._get_links_from_source(node)
+        return self._get_links_from_target(node)
 
-    def _get_linked_from_source(self, source_node):
-        linked_nodes = []
+    def _get_links_from_source(self, source_node):
+        links = []
         target_nodes = self._graph.get_nodes(
             origin=self.target_spec.origin, kind=self.target_spec.kind)
         for target_node in target_nodes:
             if self._matcher.are_linked(source_node, target_node):
-                linked_nodes.append(target_node)
-        return linked_nodes
+                links.append(graph.Graph.create_link({}, source_node, target_node))
+        return links
 
-    def _get_linked_from_target(self, target_node):
-        linked_nodes = []
+    def _get_links_from_target(self, target_node):
+        links = []
         source_nodes = self._graph.get_nodes(
             origin=self.source_spec.origin, kind=self.source_spec.kind)
         for source_node in source_nodes:
             if self._matcher.are_linked(source_node, target_node):
-                linked_nodes.append(source_node)
-        return linked_nodes
+                links.append(graph.Graph.create_link({}, source_node, target_node))
+        return links
 
     def _build_link_lookup(self, links):
         return {link.id: link for link in links}
