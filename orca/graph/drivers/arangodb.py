@@ -79,7 +79,6 @@ class ArangoDBDriver(driver.Driver):
         links_col = graph.edge_collection('links')
         links_col.add_hash_index(fields=['id'], unique=False)
 
-
     def get_nodes(self, **query):
         query_pattern = (
             'FOR node in nodes '

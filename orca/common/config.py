@@ -73,7 +73,7 @@ SCHEMA = {
             'arangodb': {
                 'type': 'dict',
                 'schema': {
-                     'enabled': {
+                    'enabled': {
                         'type': 'boolean',
                         'coerce': (str, str_utils.to_bool),
                         'default': True
