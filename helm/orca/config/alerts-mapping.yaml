@@ -28,6 +28,13 @@ prometheus:
         properties:
           name: deployment
           namespace: namespace
+    - name: KubeDeploymentGenerationMismatch
+      source_mapping:
+        origin: kubernetes
+        kind: deployment
+        properties:
+          name: deployment
+          namespace: namespace
     - name: KubeStatefulSetReplicasMismatch
       source_mapping:
         origin: kubernetes
@@ -185,10 +192,28 @@ prometheus:
         kind: node
         properties:
           name: instance
+    - name: NodeClockSkewDetected
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: instance
+    - name: NodeClockNotSynchronising
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: instance
+    - name: NodeHighNumberConntrackEntriesUsed
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: instance
     - name: KubeCronJobRunning
       source_mapping:
         origin: kubernetes
-        kind: cronjob
+        kind: cron_job
         properties:
           name: cronjob
           namespace: namespace
@@ -239,9 +264,13 @@ prometheus:
     - name: KubeCPUQuotaOvercommit
       source_mapping:
         origin: kubernetes
-        kind: namespace
-        properties:
-          name: namespace
+        kind: cluster
+        properties: {}
+    - name: KubeMemoryQuotaOvercommit
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
     - name: KubeMemoryQuotaOvercommit
       source_mapping:
         origin: kubernetes
@@ -287,9 +316,10 @@ prometheus:
     - name: TargetDown
       source_mapping:
         origin: kubernetes
-        kind: namespace
+        kind: service
         properties:
-          name: namespace
+          name: service
+          namespace: namespace
     - name: KubeClientErrors
       source_mapping:
         origin: kubernetes
@@ -303,24 +333,6 @@ prometheus:
         properties:
           name: pod
           namespace: namespace
-    - name: NodeClockSkewDetected
-      source_mapping:
-        origin: kubernetes
-        kind: node
-        properties:
-          name: instance
-    - name: NodeClockNotSynchronising
-      source_mapping:
-        origin: kubernetes
-        kind: node
-        properties:
-          name: instance
-    - name: NodeHighNumberConntrackEntriesUsed
-      source_mapping:
-        origin: kubernetes
-        kind: node
-        properties:
-          name: instance
     - name: PrometheusBadConfig
       source_mapping:
         origin: kubernetes
@@ -429,15 +441,17 @@ prometheus:
     - name: PrometheusOperatorReconcileErrors
       source_mapping:
         origin: kubernetes
-        kind: namespace
+        kind: pod
         properties:
-          name: namespace
+          name: pod
+          namespace: namespace
     - name: PrometheusOperatorNodeLookupErrors
       source_mapping:
         origin: kubernetes
-        kind: namespace
+        kind: pod
         properties:
-          name: namespace
+          name: pod
+          namespace: namespace
     - name: AlertmanagerConfigInconsistent
       source_mapping:
         origin: kubernetes
@@ -485,13 +499,6 @@ prometheus:
         origin: kubernetes
         kind: cluster
         properties: {}
-    - name: KubeDeploymentGenerationMismatch
-      source_mapping:
-        origin: kubernetes
-        kind: deployment
-        properties:
-          name: deployment
-          namespace: namespace
     - name: etcdInsufficientMembers
       source_mapping:
         origin: kubernetes
@@ -500,81 +507,80 @@ prometheus:
     - name: etcdGRPCRequestsSlow
       source_mapping:
         origin: kubernetes
-        kind: node
+        kind: pod
         properties:
-          name: instance
+          ip: instance
     - name: etcdHTTPRequestsSlow
       source_mapping:
         origin: kubernetes
-        kind: node
+        kind: pod
         properties:
-          name: instance
+          ip: instance
     - name: etcdHighCommitDurations
       source_mapping:
         origin: kubernetes
-        kind: node
+        kind: pod
         properties:
-          name: instance
+          ip: instance
     - name: etcdHighFsyncDurations
       source_mapping:
         origin: kubernetes
-        kind: node
+        kind: pod
         properties:
-          name: instance
+          ip: instance
     - name: etcdHighNumberOfFailedGRPCRequests
       source_mapping:
         origin: kubernetes
-        kind: node
+        kind: pod
         properties:
-          name: instance
+          ip: instance
     - name: etcdHighNumberOfFailedHTTPRequests
       source_mapping:
         origin: kubernetes
-        kind: node
+        kind: pod
         properties:
-          name: instance
+          ip: instance
     - name: etcdHighNumberOfFailedProposals
       source_mapping:
         origin: kubernetes
-        kind: node
+        kind: pod
         properties:
-          name: instance
+          ip: instance
     - name: etcdHighNumberOfLeaderChanges
       source_mapping:
         origin: kubernetes
-        kind: node
+        kind: pod
         properties:
-          name: instance
+          ip: instance
     - name: etcdMemberCommunicationSlow
       source_mapping:
         origin: kubernetes
-        kind: node
+        kind: pod
         properties:
-          name: instance
+          ip: instance
     - name: etcdNoLeader
       source_mapping:
         origin: kubernetes
-        kind: node
+        kind: pod
         properties:
-          name: instance
+          ip: instance
     - name: KubePersistentVolumeFillingUp
       source_mapping:
         origin: kubernetes
         kind: persistent_volume_claim
         properties:
           name: persistentvolumeclaim
+          namespace: namespace
     - name: AggregatedAPIDown
       source_mapping:
         origin: kubernetes
-        kind: namespace
-        properties:
-          name: namespace
+        kind: cluster
+        properties: {}
     - name: AggregatedAPIErrors
       source_mapping:
         origin: kubernetes
-        kind: namespace
-        properties:
-          name: namespace
+        kind: cluster
+        properties: {}
     - name: ErrorBudgetBurn
       source_mapping:
         origin: kubernetes
