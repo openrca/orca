@@ -641,6 +641,51 @@ falco:
         properties:
           name: k8s.pod.name
           namespace: k8s.ns.name
+    - name: "Create HostNetwork Pod"
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: ka.resp.name
+          namespace: ka.target.namespace
+    - name: "Create/Modify Configmap With Private Credentials"
+      source_mapping:
+        origin: kubernetes
+        kind: config_map
+        properties:
+          name: ka.req.configmap.name
+    - name: "Attach/Exec Pod"
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: ka.target.name
+          namespace: ka.target.namespace
+    - name: "Create Disallowed Namespace"
+      source_mapping:
+        origin: kubernetes
+        kind: namespace
+        properties:
+          name: ka.target.name
+    - name: "Ingress Object without TLS Certificate Created"
+      source_mapping:
+        origin: kubernetes
+        kind: ingress
+        properties:
+          name: ka.target.name
+          namespace: ka.target.namespace
+    - name: "Untrusted Node Successfully Joined the Cluster"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: ka.target.name
+    - name: "Untrusted Node Unsuccessfully Tried to Join the Cluster"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: ka.target.name
 
 elastalert:
   mappings:
