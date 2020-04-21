@@ -271,12 +271,6 @@ prometheus:
         origin: kubernetes
         kind: cluster
         properties: {}
-    - name: KubeMemoryQuotaOvercommit
-      source_mapping:
-        origin: kubernetes
-        kind: namespace
-        properties:
-          name: namespace
     - name: KubeQuotaExceeded
       source_mapping:
         origin: kubernetes
@@ -323,9 +317,8 @@ prometheus:
     - name: KubeClientErrors
       source_mapping:
         origin: kubernetes
-        kind: node
-        properties:
-          name: instance
+        kind: cluster
+        properties: {}
     - name: ClockSkewDetected
       source_mapping:
         origin: kubernetes
