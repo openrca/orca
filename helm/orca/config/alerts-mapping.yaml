@@ -28,6 +28,13 @@ prometheus:
         properties:
           name: deployment
           namespace: namespace
+    - name: KubeDeploymentGenerationMismatch
+      source_mapping:
+        origin: kubernetes
+        kind: deployment
+        properties:
+          name: deployment
+          namespace: namespace
     - name: KubeStatefulSetReplicasMismatch
       source_mapping:
         origin: kubernetes
@@ -185,6 +192,408 @@ prometheus:
         kind: node
         properties:
           name: instance
+    - name: NodeClockSkewDetected
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: instance
+    - name: NodeClockNotSynchronising
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: instance
+    - name: NodeHighNumberConntrackEntriesUsed
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: instance
+    - name: KubeCronJobRunning
+      source_mapping:
+        origin: kubernetes
+        kind: cron_job
+        properties:
+          name: cronjob
+          namespace: namespace
+    - name: KubeJobCompletion
+      source_mapping:
+        origin: kubernetes
+        kind: job
+        properties:
+          name: job_name
+          namespace: namespace
+    - name: KubeJobFailed
+      source_mapping:
+        origin: kubernetes
+        kind: job
+        properties:
+          name: job_name
+          namespace: namespace
+    - name: KubeAPIDown
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: KubeSchedulerDown
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: KubeControllerManagerDown
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: KubeCPUOvercommit
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: KubeMemOvercommit
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: KubeMemoryOvercommit
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: KubeCPUQuotaOvercommit
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: KubeMemoryQuotaOvercommit
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: KubeQuotaExceeded
+      source_mapping:
+        origin: kubernetes
+        kind: namespace
+        properties:
+          name: namespace
+    - name: KubeVersionMismatch
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: KubeStateMetricsDown
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: AlertmanagerDown
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: NodeExporterDown
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: PrometheusDown
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: PrometheusOperatorDown
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: TargetDown
+      source_mapping:
+        origin: kubernetes
+        kind: service
+        properties:
+          name: service
+          namespace: namespace
+    - name: KubeClientErrors
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: ClockSkewDetected
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: PrometheusBadConfig
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: PrometheusNotificationQueueRunningFull
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: PrometheusErrorSendingAlertsToSomeAlertmanagers
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: PrometheusErrorSendingAlertsToAnyAlertmanager
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: PrometheusNotConnectedToAlertmanagers
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: PrometheusDuplicateTimestamps
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: PrometheusMissingRuleEvaluations
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: PrometheusNotIngestingSamples
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: PrometheusOutOfOrderTimestamps
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: PrometheusRemoteStorageFailures
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: PrometheusRemoteWriteBehind
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: PrometheusRemoteWriteDesiredShards
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: PrometheusRuleFailures
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: PrometheusTSDBCompactionsFailing
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: PrometheusTSDBReloadsFailing
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: PrometheusOperatorReconcileErrors
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: PrometheusOperatorNodeLookupErrors
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: AlertmanagerConfigInconsistent
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: AlertmanagerFailedReload
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: AlertmanagerMembersInconsistent
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: NodeNetworkInterfaceFlapping
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod
+          namespace: namespace
+    - name: KubeNodeReadinessFlapping
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: KubeletPlegDurationHigh
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: KubeletPodStartUpLatencyHigh
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: KubeClientCertificateExpiration
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: etcdInsufficientMembers
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: etcdGRPCRequestsSlow
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          ip: instance
+    - name: etcdHTTPRequestsSlow
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          ip: instance
+    - name: etcdHighCommitDurations
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          ip: instance
+    - name: etcdHighFsyncDurations
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          ip: instance
+    - name: etcdHighNumberOfFailedGRPCRequests
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          ip: instance
+    - name: etcdHighNumberOfFailedHTTPRequests
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          ip: instance
+    - name: etcdHighNumberOfFailedProposals
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          ip: instance
+    - name: etcdHighNumberOfLeaderChanges
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          ip: instance
+    - name: etcdMemberCommunicationSlow
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          ip: instance
+    - name: etcdNoLeader
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          ip: instance
+    - name: KubePersistentVolumeFillingUp
+      source_mapping:
+        origin: kubernetes
+        kind: persistent_volume_claim
+        properties:
+          name: persistentvolumeclaim
+          namespace: namespace
+    - name: AggregatedAPIDown
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: AggregatedAPIErrors
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: ErrorBudgetBurn
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: KubeAPIErrorBudgetBurn
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: KubeStateMetricsListErrors
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
+    - name: KubeStateMetricsWatchErrors
+      source_mapping:
+        origin: kubernetes
+        kind: cluster
+        properties: {}
 
 falco:
   blacklist_values:
