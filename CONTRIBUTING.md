@@ -41,13 +41,14 @@ roadmap.
 ## Development environment
 
 To help you get started, below is a curated list of steps needed to prepare a development
-environment. We didn't bother writing detailed instructions, because others did it well a long time
-ago. Most steps will redirect you to trusted sources with complete setup instructions.
+environment. We didn't bother writing detailed instructions for each tool, because others did it
+well a long time ago. Most steps will redirect you to trusted sources with complete setup
+instructions.
 
 ### Setting up Python
 
 Many OpenRCA components are written in the Python programming language. To build, you'll need a
-Python development environment. If you haven't set up a Python yet, please follow
+Python development environment. If you haven't already, please follow
 [these](https://docs.python.org/3/using/index.html) instructions to install Python with the required
 toolset.
 
