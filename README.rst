@@ -43,3 +43,11 @@ Install using Helm chart:
 ::
 
     $ helm install ./helm/orca --namespace rca --name orca
+
+Contact
+-------
+
+Reach project contributors via these channels:
+
+* [Gitter chat room](https://gitter.im/openrca/community)
+* [Github issues](https://github.com/openrca/orca/issues)
