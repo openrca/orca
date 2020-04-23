@@ -3,7 +3,7 @@
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/3912/badge)](https://bestpractices.coreinfrastructure.org/projects/3912)
 [![Build Status](https://travis-ci.org/openrca/orca.svg?branch=master)](https://travis-ci.org/openrca/orca)
 [![License](https://img.shields.io/github/license/openrca/orca)](https://github.com/openrca/orca)
-[![Travis](https://img.shields.io/gitter/room/openrca/community)](https://gitter.im/openrca/community)
+[![Gitter](https://img.shields.io/gitter/room/openrca/community)](https://gitter.im/openrca/community)
 
 <h2 align="center">
     <img src="docs/images/orca-logo.png" alt="OpenRCA" height="200px">
