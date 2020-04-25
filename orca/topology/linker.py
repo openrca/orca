@@ -115,21 +115,29 @@ class Linker(abc.ABC):
 
     def _get_links_from_source(self, source_node):
         links = []
+        query = self._get_target_query(source_node)
         target_nodes = self._graph.get_nodes(
-            origin=self.target_spec.origin, kind=self.target_spec.kind)
+            origin=self.target_spec.origin, kind=self.target_spec.kind, **query)
         for target_node in target_nodes:
             if self._matcher.are_linked(source_node, target_node):
                 links.append(graph.Graph.create_link({}, source_node, target_node))
         return links
 
+    def _get_target_query(self, source_node):
+        return {}
+
     def _get_links_from_target(self, target_node):
         links = []
+        query = self._get_source_query(target_node)
         source_nodes = self._graph.get_nodes(
-            origin=self.source_spec.origin, kind=self.source_spec.kind)
+            origin=self.source_spec.origin, kind=self.source_spec.kind, **query)
         for source_node in source_nodes:
             if self._matcher.are_linked(source_node, target_node):
                 links.append(graph.Graph.create_link({}, source_node, target_node))
         return links
+
+    def _get_source_query(self, target_node):
+        return {}
 
     def _build_link_lookup(self, links):
         return {link.id: link for link in links}

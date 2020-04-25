@@ -21,7 +21,25 @@ class Linker(linker.Linker):
     """Base class for Kubernetes linkers."""
 
 
-class PodToServiceLinker(Linker):
+class NamespacedLinker(Linker):
+
+    """Scopes linked entities by namespace."""
+
+    def _get_target_query(self, node):
+        return self._get_namespace_query(node)
+
+    def _get_source_query(self, node):
+        return self._get_namespace_query(node)
+
+    def _get_namespace_query(self, node):
+        return {
+            'properties': {
+                'namespace': node.properties.namespace
+            }
+        }
+
+
+class PodToServiceLinker(NamespacedLinker):
 
     """Links Pod entities to Service entities."""
 
@@ -34,7 +52,7 @@ class PodToServiceLinker(Linker):
             matcher=matcher.PodToServiceMatcher())
 
 
-class PodToReplicaSetLinker(Linker):
+class PodToReplicaSetLinker(NamespacedLinker):
 
     """Links Pod entities to Replica Set entities."""
 
@@ -47,7 +65,7 @@ class PodToReplicaSetLinker(Linker):
             matcher=matcher.PodToReplicaSetMatcher())
 
 
-class PodToStatefulSetLinker(Linker):
+class PodToStatefulSetLinker(NamespacedLinker):
 
     """Links Pod entities to Stateful Set entities."""
 
@@ -60,7 +78,7 @@ class PodToStatefulSetLinker(Linker):
             matcher=matcher.PodToStatefulSetMatcher())
 
 
-class PodToDaemonSetLinker(Linker):
+class PodToDaemonSetLinker(NamespacedLinker):
 
     """Links Pod entities to Daemon Set entities."""
 
@@ -86,7 +104,7 @@ class PodToNodeLinker(Linker):
             matcher=matcher.PodToNodeMatcher())
 
 
-class EndpointsToServiceLinker(Linker):
+class EndpointsToServiceLinker(NamespacedLinker):
 
     """Links Endpoint entities to Service entities."""
 
@@ -99,7 +117,7 @@ class EndpointsToServiceLinker(Linker):
             matcher=matcher.EndpointsToServiceMatcher())
 
 
-class DeploymentToHorizontalPodAutoscalerLinker(Linker):
+class DeploymentToHorizontalPodAutoscalerLinker(NamespacedLinker):
 
     """Links Deployment entities to Horizontal Pod Autoscaler entities."""
 
@@ -112,7 +130,7 @@ class DeploymentToHorizontalPodAutoscalerLinker(Linker):
             matcher=matcher.HorizontalPodAutoscalerMatcher())
 
 
-class ReplicaSetToDeploymentLinker(Linker):
+class ReplicaSetToDeploymentLinker(NamespacedLinker):
 
     """Links Replica Set entities to Deployment entities."""
 
@@ -125,7 +143,7 @@ class ReplicaSetToDeploymentLinker(Linker):
             matcher=matcher.ReplicaSetToDeploymentMatcher())
 
 
-class ReplicaSetToHorizontalPodAutoscalerLinker(Linker):
+class ReplicaSetToHorizontalPodAutoscalerLinker(NamespacedLinker):
 
     """Links Replica Set entities to Horizontal Pod Autoscaler entities."""
 
@@ -138,7 +156,7 @@ class ReplicaSetToHorizontalPodAutoscalerLinker(Linker):
             matcher=matcher.HorizontalPodAutoscalerMatcher())
 
 
-class StatefulSetToHorizontalPodAutoscalerLinker(Linker):
+class StatefulSetToHorizontalPodAutoscalerLinker(NamespacedLinker):
 
     """Links Stateful Set entities to Horizontal Pod Autoscaler entities."""
 
@@ -151,7 +169,7 @@ class StatefulSetToHorizontalPodAutoscalerLinker(Linker):
             matcher=matcher.HorizontalPodAutoscalerMatcher())
 
 
-class ConfigMapToPodLinker(Linker):
+class ConfigMapToPodLinker(NamespacedLinker):
 
     """Links Config Map entities to Pod entities."""
 
@@ -164,7 +182,7 @@ class ConfigMapToPodLinker(Linker):
             matcher=matcher.ConfigMapToPodMatcher())
 
 
-class SecretToPodLinker(Linker):
+class SecretToPodLinker(NamespacedLinker):
 
     """Links Secret entities to Pod entities."""
 
@@ -203,7 +221,7 @@ class PersistentVolumeToPersistentVolumeClaimLinker(Linker):
             matcher=matcher.PersistentVolumeToPersistentVolumeClaimMatcher())
 
 
-class PersistentVolumeClaimToPodLinker(Linker):
+class PersistentVolumeClaimToPodLinker(NamespacedLinker):
 
     """Links Persistent Volume Claim entities to Pod entities."""
 
