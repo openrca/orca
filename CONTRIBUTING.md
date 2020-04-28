@@ -98,12 +98,20 @@ $ telepresence \
         -it \
         -v=/tmp/telepresence/var/run/secrets:/var/run/secrets \
         -v=/tmp/telepresence/etc/orca:/etc/orca \
-        -v $(pwd):/app
+        -v $(pwd):/app \
+        openrca/rca
 ```
 
 The command above swaps the deployment specified by `--namespace` and `--swap-deployment` flags with
 a Docker container started in your local station using parameters provided via `--docker-run` flag.
 Besides, it attaches secrets and config maps from the Kubernetes cluster to the local container.
+
+Note, the Docker image for running the local container must be prior built using the Dockerfile
+provided in project repository:
+
+```
+$ docker build -t openrca/orca .
+```
 
 ## Workflow
 
