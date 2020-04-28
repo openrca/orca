@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from orca.graph import graph
 from orca.topology import linker, utils
 from orca.topology.alerts import matcher
 
@@ -23,7 +24,7 @@ class Linker(linker.Linker):
     def _get_current_links(self, node):
         return self._graph.get_node_links(node)
 
-    def _get_linked_nodes(self, alert_node):
+    def _get_target_nodes(self, alert_node):
         source_mapping = alert_node.properties.source_mapping
         return self._graph.get_nodes(
             origin=source_mapping.origin,
