@@ -53,7 +53,12 @@ class AlertExtractor(Extractor):
         return entity['labels']['severity']
 
     def _extract_message(self, entity):
-        return str_utils.escape(entity['annotations']['message'])
+        annotations = entity['annotations']
+        message = annotations.get('message')
+        if not message:
+            message = annotations.get('summary')
+        if message:
+            return str_utils.escape(message)
 
 
 class AlertEventExtractor(AlertExtractor):
