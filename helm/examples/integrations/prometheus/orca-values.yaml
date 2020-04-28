@@ -8,6 +8,7 @@ prometheus:
         cpu: 4000m
         memory: 8000Mi
     serviceMonitorSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
 
 prometheus-node-exporter:
   resources:
@@ -42,7 +43,6 @@ alertmanager:
       receiver: "webhook"
       repeat_interval: 12h
       routes: []
-
 
 grafana:
   sidecar:
