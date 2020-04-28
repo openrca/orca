@@ -37,7 +37,7 @@ data:
         resync_period: {{ .Values.probes.kiali.resync_period }}
 
       prometheus:
-        enabled: {{ .Values.probes.kubernetes.prometheud }}
+        enabled: {{ .Values.probes.prometheus.enabled }}
         url: {{ .Values.probes.prometheus.url }}
         resync_period: {{ .Values.probes.prometheus.resync_period }}
 
