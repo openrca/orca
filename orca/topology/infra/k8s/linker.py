@@ -227,3 +227,16 @@ class NodeToClusterLinker(Linker):
             source_spec=utils.NodeSpec(origin='kubernetes', kind='node'),
             target_spec=utils.NodeSpec(origin='kubernetes', kind='cluster'),
             matcher=matcher.NodeToClusterMatcher())
+
+
+class IngressToServiceLinker(Linker):
+
+    """Links Ingress entities to Service entities."""
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='ingress'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
+            matcher=matcher.IngressToServiceMatcher())

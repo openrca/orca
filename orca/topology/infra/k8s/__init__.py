@@ -53,7 +53,8 @@ def get_probes():
                 linker.PodToServiceLinker,
                 linker.EndpointsToServiceLinker,
                 istio_linker.VirtualServiceToServiceLinker,
-                istio_linker.DestinationRuleToServiceLinker
+                istio_linker.DestinationRuleToServiceLinker,
+                linker.IngressToServiceLinker
             ]
         ),
 
@@ -63,7 +64,8 @@ def get_probes():
                 linker.PodToServiceLinker,
                 linker.EndpointsToServiceLinker,
                 istio_linker.VirtualServiceToServiceLinker,
-                istio_linker.DestinationRuleToServiceLinker
+                istio_linker.DestinationRuleToServiceLinker,
+                linker.IngressToServiceLinker
             ]
         ),
 
@@ -250,6 +252,20 @@ def get_probes():
             linkers=[
                 linker.PodToNodeLinker,
                 linker.NodeToClusterLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.IngressPullProbe,
+            linkers=[
+                linker.IngressToServiceLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.IngressPushProbe,
+            linkers=[
+                linker.IngressToServiceLinker
             ]
         ),
 

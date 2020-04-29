@@ -353,3 +353,36 @@ class NamespaceExtractor(Extractor):
             properties['labels'] = entity.metadata.labels.copy()
         properties['phase'] = entity.status.phase
         return properties
+
+
+class IngressExtractor(Extractor):
+
+    """Extractor for Ingress entities."""
+
+    @property
+    def kind(self):
+        return 'ingress'
+
+    def _extract_properties(self, entity):
+        properties = {}
+        properties['name'] = entity.metadata.name
+        properties['namespace'] = entity.metadata.namespace
+        properties['rules'] = self._extract_rules(entity)
+        return properties
+
+    def _extract_rules(self, entity):
+        rules = []
+        for rule in entity.spec.rules:
+            properties = {}
+            properties['paths']  = self._extract_values(rule)
+            rules.append(properties)
+        return rules
+
+    def _extract_values(self, rule):
+        values = []
+        for path in rule.http.paths:
+            properties = {}
+            properties['service_name'] = path.backend.service_name
+            properties['service_port'] = path.backend.service_port
+            values.append(properties)
+        return values

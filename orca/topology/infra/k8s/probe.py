@@ -318,3 +318,21 @@ class NamespacePushProbe(PushProbe):
     @classmethod
     def get(cls, graph):
         return super().get(graph, 'namespace', extractor.NamespaceExtractor())
+
+
+class IngressPullProbe(PullProbe):
+
+    """Ingress pull probe."""
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'ingress', extractor.IngressExtractor())
+
+
+class IngressPushProbe(PushProbe):
+
+    """Ingress push probe."""
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'ingress', extractor.IngressExtractor())
