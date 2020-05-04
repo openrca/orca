@@ -374,15 +374,17 @@ class IngressExtractor(Extractor):
         rules = []
         for rule in entity.spec.rules:
             properties = {}
-            properties['paths']  = self._extract_values(rule)
+            properties['host'] = rule.host
+            properties['paths']  = self._extract_paths(rule)
             rules.append(properties)
         return rules
 
-    def _extract_values(self, rule):
-        values = []
+    def _extract_paths(self, rule):
+        paths = []
         for path in rule.http.paths:
             properties = {}
             properties['service_name'] = path.backend.service_name
             properties['service_port'] = path.backend.service_port
-            values.append(properties)
-        return values
+            properties['path'] = path.path
+            paths.append(properties)
+        return paths

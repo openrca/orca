@@ -220,14 +220,14 @@ class NamespaceMatcher(Matcher):
 
 class IngressToServiceMatcher(Matcher):
 
-    """Generic matcher for links between Ingress and Service entities."""
+    """Matcher for links between Ingress and Service entities."""
 
     def are_linked(self, ingress, service):
         matched_namespace = match_namespace(ingress, service)
-        matched_service = self._match_service(ingress, service)
+        matched_service = self._match_rules(ingress, service)
         return matched_namespace and matched_service
 
-    def _match_service(self, ingress, service):
+    def _match_rules(self, ingress, service):
         for rule in ingress.properties.rules:
             for path in rule.paths:
                 if path.service_name == service.properties.name:
