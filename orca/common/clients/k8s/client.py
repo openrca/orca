@@ -109,6 +109,11 @@ class ResourceProxyFactory(object):
                 kind='horizontal_pod_autoscaler',
                 list_fn=client.AutoscalingV1Api().list_horizontal_pod_autoscaler_for_all_namespaces
             )
+        elif kind == 'ingress':
+            return ResourceProxy(
+                kind='ingress',
+                list_fn=client.ExtensionsV1beta1Api().list_ingress_for_all_namespaces
+            )
         else:
             raise Exception("Unknown kind %s" % kind)
 

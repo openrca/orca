@@ -218,6 +218,23 @@ class NamespaceMatcher(Matcher):
         return namespace.properties.name == obj.properties.namespace
 
 
+class IngressToServiceMatcher(Matcher):
+
+    """Matcher for links between Ingress and Service entities."""
+
+    def are_linked(self, ingress, service):
+        matched_namespace = match_namespace(ingress, service)
+        matched_service = self._match_rules(ingress, service)
+        return matched_namespace and matched_service
+
+    def _match_rules(self, ingress, service):
+        for rule in ingress.properties.rules:
+            for path in rule.paths:
+                if path.service_name == service.properties.name:
+                    return True
+        return False
+
+
 def match_namespace(obj_a, obj_b):
     return obj_a.properties.namespace == obj_b.properties.namespace
 
