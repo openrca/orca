@@ -119,6 +119,11 @@ class ResourceProxyFactory(object):
                 kind='job',
                 list_fn=client.BatchV1Api().list_job_for_all_namespaces
             )
+        elif kind == 'cron_job':
+            return ResourceProxy(
+                kind='cron_job',
+                list_fn=client.BatchV1beta1Api().list_cron_job_for_all_namespaces
+            )
         else:
             raise Exception("Unknown kind %s" % kind)
 

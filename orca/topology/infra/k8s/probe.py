@@ -355,3 +355,21 @@ class JobPushProbe(PushProbe):
     def get(cls, graph):
         return super().get(graph, 'job', extractor.JobExtractor())
 
+
+class CronJobPullProbe(PullProbe):
+
+    """CronJob pull probe."""
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'cron_job', extractor.CronJobExtractor())
+
+
+class CronJobPushProbe(PushProbe):
+
+    """CronJob push probe."""
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'cron_job', extractor.CronJobExtractor())
+
