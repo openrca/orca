@@ -114,6 +114,11 @@ class ResourceProxyFactory(object):
                 kind='ingress',
                 list_fn=client.ExtensionsV1beta1Api().list_ingress_for_all_namespaces
             )
+        elif kind == 'job':
+            return ResourceProxy(
+                kind='job',
+                list_fn=client.BatchV1Api().list_job_for_all_namespaces
+            )
         else:
             raise Exception("Unknown kind %s" % kind)
 

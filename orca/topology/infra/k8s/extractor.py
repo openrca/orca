@@ -388,3 +388,28 @@ class IngressExtractor(Extractor):
             properties['path'] = path.path
             paths.append(properties)
         return paths
+
+
+class JobExtractor(Extractor):
+
+    """Extractor for Job entities."""
+
+    @property
+    def kind(self):
+        return 'job'
+
+    def _extract_properties(self, entity):
+        properties = {}
+        properties['name'] = entity.metadata.name
+        properties['namespace'] = entity.metadata.namespace
+        properties['labels'] = entity.metadata.labels.copy()
+        properties['selector'] = entity.spec.selector.match_labels
+        properties['cron_job_ref'] = self._extract_references(entity)
+        return properties
+
+    def _extract_references(self, entity):
+        if not entity.metadata.owner_references:
+            return None
+        for reference in entity.metadata.owner_references:
+            return {'name': reference.name, 'uid': reference.uid}
+

@@ -29,7 +29,8 @@ def get_probes():
                 linker.PodToNodeLinker,
                 linker.ConfigMapToPodLinker,
                 linker.SecretToPodLinker,
-                linker.PersistentVolumeClaimToPodLinker
+                linker.PersistentVolumeClaimToPodLinker,
+                linker.JobToPodLinker
             ]
         ),
 
@@ -43,7 +44,8 @@ def get_probes():
                 linker.PodToNodeLinker,
                 linker.ConfigMapToPodLinker,
                 linker.SecretToPodLinker,
-                linker.PersistentVolumeClaimToPodLinker
+                linker.PersistentVolumeClaimToPodLinker,
+                linker.JobToPodLinker
             ]
         ),
 
@@ -252,6 +254,20 @@ def get_probes():
             linkers=[
                 linker.PodToNodeLinker,
                 linker.NodeToClusterLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.JobPullProbe,
+            linkers=[
+                linker.JobToPodLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.JobPushProbe,
+            linkers=[
+                linker.JobToPodLinker
             ]
         ),
 
