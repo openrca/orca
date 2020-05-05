@@ -6,7 +6,7 @@
 [![Gitter](https://img.shields.io/gitter/room/openrca/community)](https://gitter.im/openrca/community)
 
 <h2 align="center">
-    <img src="docs/images/orca-logo.png" alt="OpenRCA" height="200px">
+    <img src="docs/images/orca-logo.svg" alt="OpenRCA" height="200px">
     <br>
     Root Cause Analysis for Kubernetes
 </h2>
