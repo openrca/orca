@@ -240,3 +240,17 @@ class IngressToServiceLinker(Linker):
             source_spec=utils.NodeSpec(origin='kubernetes', kind='ingress'),
             target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
             matcher=matcher.IngressToServiceMatcher())
+
+
+class JobToPodLinker(Linker):
+
+    """Links Job entities to Pod entities."""
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='job'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            matcher=matcher.JobToPodMatcher())
+

@@ -336,3 +336,22 @@ class IngressPushProbe(PushProbe):
     @classmethod
     def get(cls, graph):
         return super().get(graph, 'ingress', extractor.IngressExtractor())
+
+
+class JobPullProbe(PullProbe):
+
+    """Job pull probe."""
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'job', extractor.JobExtractor())
+
+
+class JobPushProbe(PushProbe):
+
+    """Job push probe."""
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'job', extractor.JobExtractor())
+

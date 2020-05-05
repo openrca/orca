@@ -235,6 +235,16 @@ class IngressToServiceMatcher(Matcher):
         return False
 
 
+class JobToPodMatcher(Matcher):
+
+    """Matcher for links between Job and Pod entities."""
+
+    def are_linked(self, job, pod):
+        matched_namespace = match_namespace(job, pod)
+        matched_selector = match_selector(pod, job.properties.selector)
+        return matched_namespace and matched_selector
+
+
 def match_namespace(obj_a, obj_b):
     return obj_a.properties.namespace == obj_b.properties.namespace
 
