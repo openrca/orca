@@ -260,14 +260,16 @@ def get_probes():
         bundle.ProbeBundle(
             probe=probe.JobPullProbe,
             linkers=[
-                linker.JobToPodLinker
+                linker.JobToPodLinker,
+                linker.CronJobToJobLinker
             ]
         ),
 
         bundle.ProbeBundle(
             probe=probe.JobPushProbe,
             linkers=[
-                linker.JobToPodLinker
+                linker.JobToPodLinker,
+                linker.CronJobToJobLinker
             ]
         ),
 
@@ -282,6 +284,20 @@ def get_probes():
             probe=probe.IngressPushProbe,
             linkers=[
                 linker.IngressToServiceLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.CronJobPullProbe,
+            linkers=[
+                linker.CronJobToJobLinker
+            ]
+        ),
+
+        bundle.ProbeBundle(
+            probe=probe.CronJobPushProbe,
+            linkers=[
+                linker.CronJobToJobLinker
             ]
         ),
 

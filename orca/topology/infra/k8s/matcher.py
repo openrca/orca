@@ -245,6 +245,22 @@ class JobToPodMatcher(Matcher):
         return matched_namespace and matched_selector
 
 
+class CronJobToJobMatcher(Matcher):
+
+    """Matcher for links between CronJob and Job entities."""
+
+    def are_linked(self, cron_job, job):
+        matched_namespace = match_namespace(cron_job, job)
+        matched_cron_job = self._match_cron_job(cron_job, job)
+        return matched_namespace and matched_cron_job
+
+    def _match_cron_job(self, cron_job, job):
+        if job.properties.cron_job_ref:
+            if job.properties.cron_job_ref.uid == cron_job.id:
+                return True
+        return False
+
+
 def match_namespace(obj_a, obj_b):
     return obj_a.properties.namespace == obj_b.properties.namespace
 

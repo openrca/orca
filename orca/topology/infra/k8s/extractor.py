@@ -413,3 +413,18 @@ class JobExtractor(Extractor):
         for reference in entity.metadata.owner_references:
             return {'name': reference.name, 'uid': reference.uid}
 
+
+class CronJobExtractor(Extractor):
+
+    """Extractor for CronJob entities."""
+
+    @property
+    def kind(self):
+        return 'cron_job'
+
+    def _extract_properties(self, entity):
+        properties = {}
+        properties['name'] = entity.metadata.name
+        properties['namespace'] = entity.metadata.namespace
+        properties['schedule'] = entity.spec.schedule
+        return properties
