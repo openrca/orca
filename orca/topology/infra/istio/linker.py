@@ -22,40 +22,40 @@ class Linker(linker.Linker):
     """Base class for Istio linkers."""
 
 
-class VirtualServiceToGatewayLinker(Linker):
+class GatewayToVirtualServiceLinker(Linker):
 
-    """Links Virtual Service entities to Gateway entities."""
-
-    @classmethod
-    def get(cls, graph):
-        return cls(
-            graph=graph,
-            source_spec=utils.NodeSpec(origin='istio', kind='virtual_service'),
-            target_spec=utils.NodeSpec(origin='istio', kind='gateway'),
-            matcher=matcher.VirtualServiceToGatewayMatcher())
-
-
-class VirtualServiceToServiceLinker(Linker):
-
-    """Links Virtual Service entities to Service entities."""
+    """Links Gateway entities to Virtual Service entities."""
 
     @classmethod
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='istio', kind='virtual_service'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
-            matcher=matcher.VirtualServiceToServiceMatcher())
+            source_spec=utils.NodeSpec(origin='istio', kind='gateway'),
+            target_spec=utils.NodeSpec(origin='istio', kind='virtual_service'),
+            matcher=matcher.GatewayToVirtualServiceMatcher())
 
 
-class DestinationRuleToServiceLinker(Linker):
+class ServiceToVirtualServiceLinker(Linker):
 
-    """Links Destination Rule entities to Service entities."""
+    """Links Service entities to Virtual Service entities."""
 
     @classmethod
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='istio', kind='destination_rule'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
-            matcher=matcher.DestinationRuleToServiceMatcher())
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
+            target_spec=utils.NodeSpec(origin='istio', kind='virtual_service'),
+            matcher=matcher.ServiceToVirtualServiceMatcher())
+
+
+class ServiceToDestinationRuleLinker(Linker):
+
+    """Links Service entities to Destination Rule entities."""
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
+            target_spec=utils.NodeSpec(origin='istio', kind='destination_rule'),
+            matcher=matcher.ServiceToDestinationRuleMatcher())

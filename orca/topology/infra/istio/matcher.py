@@ -20,22 +20,22 @@ class Matcher(matcher.Matcher):
     """Base class for Istio matchers."""
 
 
-class VirtualServiceToGatewayMatcher(Matcher):
+class GatewayToVirtualServiceMatcher(Matcher):
 
-    """Matcher for links between Virtual Service and Gateway entities."""
+    """Matcher for links between Gateway and Virtual Service entities."""
 
-    def are_linked(self, virtual_service, gateway):
+    def are_linked(self, gateway, virtual_service):
         return self._match_gateway(virtual_service, gateway)
 
     def _match_gateway(self, virtual_service, gateway):
         return gateway.properties.name in virtual_service.properties.gateways
 
 
-class VirtualServiceToServiceMatcher(Matcher):
+class ServiceToVirtualServiceMatcher(Matcher):
 
-    """Matcher for links between Virtual Service and Service entities."""
+    """Matcher for links between Service and Virtual Service entities."""
 
-    def are_linked(self, virtual_service, service):
+    def are_linked(self, service, virtual_service):
         namespace = virtual_service.properties.namespace
         if self._match_route_destination(
            namespace, virtual_service.properties.http, service):
@@ -57,11 +57,11 @@ class VirtualServiceToServiceMatcher(Matcher):
         return False
 
 
-class DestinationRuleToServiceMatcher(Matcher):
+class ServiceToDestinationRuleMatcher(Matcher):
 
-    """Matcher for links between Destination Rule and Service entities."""
+    """Matcher for links between Service and Destination Rule entities."""
 
-    def are_linked(self, destination_rule, service):
+    def are_linked(self, service, destination_rule):
         return match_host_to_service(
             destination_rule.properties.namespace, destination_rule.properties.host, service)
 
