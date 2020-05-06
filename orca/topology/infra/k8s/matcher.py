@@ -256,9 +256,8 @@ class CronJobToJobMatcher(Matcher):
 
     def _match_cron_job(self, cron_job, job):
         if job.properties.cron_job_ref:
-            for reference in job.properties.cron_job_ref:
-               if reference.uid == cron_job.id:
-                   return True
+            if job.properties.cron_job_ref.uid == cron_job.id:
+                return True
         return False
 
 
