@@ -20,41 +20,41 @@ class Matcher(matcher.Matcher):
     """Base class for Kubernetes matchers."""
 
 
-class PodToServiceMatcher(Matcher):
+class ServiceToPodMatcher(Matcher):
 
-    """Matcher for links between Pod and Service entities."""
+    """Matcher for links between Service and Pod entities."""
 
-    def are_linked(self, pod, service):
+    def are_linked(self, service, pod):
         matched_namespace = match_namespace(pod, service)
         matched_selector = match_selector(pod, service.properties.selector)
         return matched_namespace and matched_selector
 
 
-class PodToReplicaSetMatcher(Matcher):
+class ReplicaSetToPodMatcher(Matcher):
 
-    """Matcher for links between Pod and Replica Set entities."""
+    """Matcher for links between ReplicaSet and Pod entities."""
 
-    def are_linked(self, pod, replica_set):
+    def are_linked(self, replica_set, pod):
         matched_namespace = match_namespace(pod, replica_set)
         matched_selector = match_selector(pod, replica_set.properties.selector)
         return matched_namespace and matched_selector
 
 
-class PodToStatefulSetMatcher(Matcher):
+class StatefulSetToPodMatcher(Matcher):
 
-    """Matcher for links between Pod and Stateful Set entities."""
+    """Matcher for links between Stateful Set and Pod entities."""
 
-    def are_linked(self, pod, stateful_set):
+    def are_linked(self, stateful_set, pod):
         matched_namespace = match_namespace(pod, stateful_set)
         matched_selector = match_selector(pod, stateful_set.properties.selector)
         return matched_namespace and matched_selector
 
 
-class PodToDaemonSetMatcher(Matcher):
+class DaemonSetToPodMatcher(Matcher):
 
-    """Matcher for links between Pod and Daemon Set entities."""
+    """Matcher for links between Daemon Set and Pod entities."""
 
-    def are_linked(self, pod, daemon_set):
+    def are_linked(self, daemon_set, pod):
         matched_namespace = match_namespace(pod, daemon_set)
         matched_selector = match_selector(pod, daemon_set.properties.selector)
         return matched_namespace and matched_selector
@@ -68,31 +68,31 @@ class PodToNodeMatcher(Matcher):
         return pod.properties.node == node.properties.name
 
 
-class EndpointsToServiceMatcher(Matcher):
+class ServiceToEndpointsMatcher(Matcher):
 
-    """Matcher for links between Endpoint and Service entities."""
+    """Matcher for links between Service and Endpoint entities."""
 
-    def are_linked(self, endpoints, service):
+    def are_linked(self, service, endpoints):
         matched_namespace = match_namespace(endpoints, service)
         matched_name = endpoints.properties.name == service.properties.name
         return matched_namespace and matched_name
 
 
-class ReplicaSetToDeploymentMatcher(Matcher):
+class DeploymentToReplicaSetMatcher(Matcher):
 
-    """Matcher for links between Replica Set and Deployment entities."""
+    """Matcher for links between Deployment and Replica Set entities."""
 
-    def are_linked(self, replica_set, deployment):
+    def are_linked(self, deployment, replica_set):
         matched_namespace = match_namespace(replica_set, deployment)
         matched_selector = match_selector(replica_set, deployment.properties.selector)
         return matched_namespace and matched_selector
 
 
-class ConfigMapToPodMatcher(Matcher):
+class PodToConfigMapMatcher(Matcher):
 
-    """Matcher for links between Config Map and Pod entities."""
+    """Matcher for links between Pod and Config Map entities."""
 
-    def are_linked(self, config_map, pod):
+    def are_linked(self, pod, config_map):
         matched_namespace = match_namespace(config_map, pod)
         matched_env = self._match_env(config_map, pod)
         matched_volume = self._match_volume(config_map, pod)
@@ -120,11 +120,11 @@ class ConfigMapToPodMatcher(Matcher):
         return False
 
 
-class SecretToPodMatcher(Matcher):
+class PodToSecretMatcher(Matcher):
 
-    """Matcher for links between Secret and Pod entities."""
+    """Matcher for links between Pod and Secret entities."""
 
-    def are_linked(self, secret, pod):
+    def are_linked(self, pod, secret):
         matched_namespace = match_namespace(secret, pod)
         matched_env = self._match_env(secret, pod)
         matched_volume = self._match_volume(secret, pod)
@@ -156,7 +156,7 @@ class HorizontalPodAutoscalerMatcher(Matcher):
 
     """Generic matcher for links between Horizontal Pod Autoscaler and related objects."""
 
-    def are_linked(self, obj, hpa):
+    def are_linked(self, hpa, obj):
         matched_namespace = match_namespace(obj, hpa)
         matched_target_ref = self._match_target_ref(obj, hpa)
         return matched_namespace and matched_target_ref
@@ -177,19 +177,19 @@ class PersistentVolumeToStorageClassMatcher(Matcher):
         return False
 
 
-class PersistentVolumeToPersistentVolumeClaimMatcher(Matcher):
+class PersistentVolumeClaimToPersistentVolumeMatcher(Matcher):
 
-    """Matcher for links between Persistent Volume and Persistent Volume Claim entities."""
+    """Matcher for links between Persistent Volume Claim and Persistent Volume entities."""
 
-    def are_linked(self, pv, pvc):
+    def are_linked(self, pvc, pv):
         return pv.properties.name == pvc.properties.volume_name
 
 
-class PersistentVolumeClaimToPodMatcher(Matcher):
+class PodToPersistentVolumeClaimMatcher(Matcher):
 
-    """Matcher for links between Persistent Volume Claim and Pod entities."""
+    """Matcher for links between Pod and Persistent Volume Claim entities."""
 
-    def are_linked(self, pvc, pod):
+    def are_linked(self, pod, pvc):
         matched_namespace = match_namespace(pvc, pod)
         matched_volume = self._match_volume(pvc, pod)
         return matched_namespace and matched_volume
@@ -202,11 +202,11 @@ class PersistentVolumeClaimToPodMatcher(Matcher):
         return False
 
 
-class NodeToClusterMatcher(Matcher):
+class ClusterToNodeMatcher(Matcher):
 
-    """Matcher for links between Node and Cluster entities."""
+    """Matcher for links between Cluster and Node entities."""
 
-    def are_linked(self, pod, node):
+    def are_linked(self, cluster, node):
         return True
 
 
