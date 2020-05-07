@@ -31,7 +31,7 @@ class VirtualServiceToGatewayLinker(Linker):
         return cls(
             graph=graph,
             source_spec=utils.NodeSpec(origin='istio', kind='virtual_service'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='gateway'),
+            target_spec=utils.NodeSpec(origin='istio', kind='gateway'),
             matcher=matcher.VirtualServiceToGatewayMatcher())
 
 
