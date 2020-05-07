@@ -146,7 +146,7 @@ class ResourceProxy(object):
                 # "410 Gone" is for the "resource version too old" error, we must restart watching.
                 # The error occurs when the watch stream is inactive for more than a few minutes.
                 if event_type == 'ERROR' and event_obj.code == 410:
-                    return
+                    break
 
                 # Other watch errors should be fatal for the consumer.
                 if event_type == 'ERROR':
