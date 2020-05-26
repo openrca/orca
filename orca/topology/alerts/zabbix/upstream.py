@@ -12,6 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology.alerts import elastalert, falco, prometheus, zabbix
+from orca.topology import upstream
 
-__all__ = ['elastalert', 'falco', 'prometheus', 'zabbix']
+
+class UpstreamProxy(upstream.UpstreamProxy):
+
+    """Upstream proxy for Zabbix."""
+
+    def get_all(self):
+        return self._client.trigger.get(only_true=1,
+                                           active=1,
+                                           output='extend',
+                                           selectHosts=['host'])
+
+    def get_events(self):
+        raise NotImplementedError()

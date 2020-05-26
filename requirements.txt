@@ -8,3 +8,4 @@ kubernetes                  # Apache License 2.0
 python-arango               # MIT
 pyyaml                      # MIT
 requests                    # Apache License 2.0
+pyzabbix

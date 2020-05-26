@@ -696,3 +696,12 @@ elastalert:
         properties:
           name: pod_name
           namespace: namespace_name
+
+zabbix:
+  mappings:
+    - name: "Load average is too high (per CPU load over {$LOAD_AVG_PER_CPU.MAX.WARN} for 5m)"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node

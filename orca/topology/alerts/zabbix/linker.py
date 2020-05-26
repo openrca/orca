@@ -12,6 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology.alerts import elastalert, falco, prometheus, zabbix
+from orca.topology.alerts import linker
 
-__all__ = ['elastalert', 'falco', 'prometheus', 'zabbix']
+
+class AlertLinker(linker.AlertLinker):
+
+    """Links Alert entities."""
+
+    @classmethod
+    def get(cls, graph):
+        return super().get(graph, 'zabbix')

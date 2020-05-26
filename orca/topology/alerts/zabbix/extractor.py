@@ -1,0 +1,54 @@
+# Copyright 2020 OpenRCA Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+from orca.common import str_utils
+from orca.topology.alerts import extractor
+
+
+class Extractor(extractor.Extractor):
+
+    """Base class for Zabbix extractors."""
+
+    @property
+    def origin(self):
+        return 'zabbix'
+
+    @classmethod
+    def get(cls):
+        return super().get('zabbix')
+
+
+class AlertExtractor(Extractor):
+
+    """Extractor for Alert entities retrieved from Zabbix API."""
+
+    def _extract_name(self, entity):
+        return entity['description']
+
+    def _extract_source_labels(self, entity):
+        labels = {}
+        labels['node'] = entity['hosts'][0]['host']
+        return labels
+
+    def _extract_properties(self, entity):
+        properties = {}
+        properties['status'] = self._extract_status(entity)
+        properties['severity'] = self._extract_severity(entity)
+        return properties
+
+    def _extract_status(self, entity):
+        return entity['value']
+
+    def _extract_severity(self, entity):
+        return entity['priority']

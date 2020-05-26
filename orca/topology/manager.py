@@ -50,6 +50,9 @@ class Manager(cotyledon.ServiceManager):
         if CONFIG.probes.prometheus.enabled:
             probe_modules.append(alerts.prometheus)
 
+        if CONFIG.probes.zabbix.enabled:
+            probe_modules.append(alerts.zabbix)
+
         for probe_module in probe_modules:
             for probe_bundle in probe_module.get_probes():
                 self.add(probe.ProbeRunner, workers=1, args=(probe_bundle, graph_lock))

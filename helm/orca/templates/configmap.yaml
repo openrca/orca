@@ -41,6 +41,13 @@ data:
         url: {{ .Values.probes.prometheus.url }}
         resync_period: {{ .Values.probes.prometheus.resync_period }}
 
+      zabbix:
+        enabled: {{ .Values.probes.zabbix.enabled }}
+        url: {{ .Values.probes.zabbix.url }}
+        username: {{ .Values.probes.zabbix.username }}
+        password: {{ .Values.probes.zabbix.password }}
+        resync_period: {{ .Values.probes.zabbix.resync_period }}
+
     ingestors:
       prometheus:
         enabled: {{ .Values.ingestors.prometheus.enabled }}

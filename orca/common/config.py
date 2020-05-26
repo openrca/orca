@@ -151,6 +151,20 @@ SCHEMA = {
                     'url': {'type': 'string'},
                     'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
                 }
+            },
+            'zabbix': {
+                'type': 'dict',
+                'schema': {
+                    'enabled': {
+                        'type': 'boolean',
+                        'coerce': (str, str_utils.to_bool),
+                        'default': False
+                    },
+                    'url': {'type': 'string'},
+                    'username': {'type': 'string'},
+                    'password': {'type': 'string'},
+                    'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
+                }
             }
         }
     },
