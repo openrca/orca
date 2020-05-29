@@ -1,0 +1,28 @@
+ {
+    "status": "0",
+    "recovery_mode": "0",
+    "description":"Load average is too high (per CPU load over {$LOAD_AVG_PER_CPU.MAX.WARN} for 5m)",
+    "state": "0",
+    "url": "",
+    "type": "0",
+    "templateid": "0",
+    "correlation_tag": "",
+    "lastchange": "1511612631",
+    "value": "1",
+    "priority": "3",
+    "triggerid": "16565",
+    "opdata": "Load averages(1m 5m 15m): ({ITEM.LASTVALUE1} {ITEM.LASTVALUE3} {ITEM.LASTVALUE4}), # of CPUs: {ITEM.LASTVALUE2}",
+    "flags": "4",
+    "comments": "Per CPU load average is too high. Your system may be slow to respond.",
+    "error": "",
+    "hosts": [
+      {
+        "host": "node3",
+        "hostid": "10318"
+      }
+    ],
+    "correlation_mode": "0",
+    "expression": "{19277}/{19278}>{$LOAD_AVG_PER_CPU.MAX.WARN}\r\nand {19279}>0\r\nand {19280}>0",
+    "recovery_expression": "",
+    "manual_close": "1"
+  }

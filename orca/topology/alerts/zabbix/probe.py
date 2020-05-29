@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from orca.common import config
-#from orca.common.clients.zabbix import client as zabbix
 from orca.topology import probe, utils
 from orca.topology.alerts.zabbix import extractor, upstream
 from pyzabbix import ZabbixAPI
@@ -28,7 +27,6 @@ class AlertProbe(probe.PullProbe):
     @classmethod
     def get(cls, graph):
         zabbix_client = ZabbixAPI(CONFIG.probes.zabbix.url)
-        zabbix_client.login(CONFIG.probes.zabbix.username, CONFIG.probes.zabbix.password)
         return cls(
             graph=graph,
             upstream_proxy=upstream.UpstreamProxy(zabbix_client),
