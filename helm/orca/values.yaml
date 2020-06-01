@@ -92,3 +92,6 @@ ingestors:
 
 logging:
   log_level: info
+
+ui:
+  enabled: true
