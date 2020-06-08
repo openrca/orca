@@ -37,7 +37,7 @@ class AlertExtractor(Extractor):
         return entity['description']
 
     def _extract_source_labels(self, entity):
-        return {'node': entity['hosts'][0]['host']}
+        return {'node': entity['host']}
 
     def _extract_properties(self, entity):
         properties = {}
@@ -46,7 +46,7 @@ class AlertExtractor(Extractor):
         return properties
 
     def _extract_status(self, entity):
-        return entity['value']
+        return entity['status']
 
     def _extract_severity(self, entity):
         return entity['priority']

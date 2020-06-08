@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology import upstream
 from pyzabbix import ZabbixAPI
+from orca.topology import upstream
 from orca.common import config
 
 CONFIG = config.CONFIG
@@ -23,13 +23,26 @@ class UpstreamProxy(upstream.UpstreamProxy):
 
     """Upstream proxy for Zabbix."""
 
-    def get_all(self):
+    def __init__(self, client):
+        self._client = client
         self._client.login(CONFIG.probes.zabbix.username, CONFIG.probes.zabbix.password)
-        return self._client.trigger.get(
+
+    def get_all(self):
+        all =  self._client.trigger.get(
             only_true=1,
             active=1,
             output='extend',
             selectHosts=['host'])
+        triggers = []
+        for trigger in all:
+            for host in trigger['hosts']:
+                properties = {}
+                properties['host'] = host['host']
+                properties['description'] = trigger['description']
+                properties['status'] = 'active' if trigger['value'] == '1' else 'inactive'
+                properties['priority'] = trigger['priority']
+                triggers.append(properties)
+        return triggers
 
     def get_events(self):
         raise NotImplementedError()

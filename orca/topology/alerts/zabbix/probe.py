@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from pyzabbix import ZabbixAPI
 from orca.common import config
 from orca.topology import probe, utils
 from orca.topology.alerts.zabbix import extractor, upstream
-from pyzabbix import ZabbixAPI
 
 CONFIG = config.CONFIG
 
