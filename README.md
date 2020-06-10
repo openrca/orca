@@ -37,6 +37,8 @@ Install using Helm chart:
 $ helm install ./helm/orca --namespace rca --name orca
 ```
 
+> Use a 2.x version of Helm. Helm 3 is not supported.
+
 ## Contact
 
 Reach project contributors via these channels:
