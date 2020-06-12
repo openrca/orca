@@ -29,6 +29,7 @@ class UpstreamProxy(upstream.UpstreamProxy):
 
     def get_all(self):
         all =  self._client.trigger.get(
+            expandDescription=1,
             only_true=1,
             active=1,
             output='extend',

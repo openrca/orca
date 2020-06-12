@@ -699,42 +699,6 @@ elastalert:
 
 zabbix:
   mappings:
-    - name: "Load average is too high (per CPU load over {$LOAD_AVG_PER_CPU.MAX.WARN} for 5m)"
-      source_mapping:
-        origin: kubernetes
-        kind: node
-        properties:
-          name: node
-    - name: 'Interface eth0: Link down'
-      source_mapping:
-        origin: kubernetes
-        kind: node
-        properties:
-          name: node
-    - name: 'Interface tunl0: Link down'
-      source_mapping:
-        origin: kubernetes
-        kind: node
-        properties:
-          name: node
-    - name: '/etc/hostname: Running out of free inodes (free < {$VFS.FS.INODE.PFREE.MIN.CRIT:/etc/hostname}%)'
-      source_mapping:
-        origin: kubernetes
-        kind: node
-        properties:
-          name: node
-    - name: '/etc/hosts: Running out of free inodes (free < {$VFS.FS.INODE.PFREE.MIN.CRIT:/etc/hosts}%)'
-      source_mapping:
-        origin: kubernetes
-        kind: node
-        properties:
-          name: node
-    - name: 'Zabbix agent is not available (for {$AGENT.TIMEOUT})'
-      source_mapping:
-        origin: kubernetes
-        kind: node
-        properties:
-          name: node
     - name: 'Zabbix alerter processes more than 75% busy'
       source_mapping:
         origin: kubernetes
@@ -933,19 +897,110 @@ zabbix:
         kind: node
         properties:
           name: node
-    - name: "Temperature is above warning threshold: >{$TEMP_WARN:}"
+  regex_mappings:
+    - name: ".*Problem with FAN.*"
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
-    - name: "Temperature is above critical threshold: >{$TEMP_CRIT:}"
+    - name: ".*Overall System Status Error.*"
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
-    - name: "Temperature is too low: <{$TEMP_CRIT_LOW:}"
+    - name: ".*RAID Controller Error.*"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: ".*Error on PSU.*"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: ".*Problem with Temperature.*"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: ".*Error on Voltage Sensor.*"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: ".*Problem with FAN.*"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: ".*Error on Processor.*"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: ".*Error on NIC.*"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: ".*Running out of free inodes.*"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: ".*Disk read/write request responses are too high.*"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: ".*Temperature is above critical threshold.*"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: ".*Temperature is above warning threshold.*"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: ".*Fan.* Critical.*"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: "Interface .*: Link down"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: "Interface .*: High error rate .*"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: "Interface .*: Ethernet has changed to lower speed than it was before"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: "Zabbix agent is not available.*"
       source_mapping:
         origin: kubernetes
         kind: node
