@@ -1,0 +1,28 @@
+  {
+    "status": "0",
+    "recovery_mode": "0",
+    "description": "/etc/resolv.conf: Disk space is low (used > {$VFS.FS.PUSED.MAX.WARN:\"/etc/resolv.conf\"}%)",
+    "state": "0",
+    "url": "",
+    "type": "0",
+    "templateid": "0",
+    "correlation_tag": "",
+    "lastchange": "1590642631",
+    "value": "1",
+    "priority": "2",
+    "triggerid": "16919",
+    "opdata": "Space used: {ITEM.LASTVALUE3} of {ITEM.LASTVALUE2} ({ITEM.LASTVALUE1})",
+    "flags": "4",
+    "comments": "Two conditions should match: First, space utilization should be above {$VFS.FS.PUSED.MAX.WARN:\"/etc/resolv.conf\"}.\r\n Second condition should be one of the following:\r\n - The disk free space is less than 10G.\r\n - The disk will be full in less than 24 hours.",
+    "error": "",
+    "hosts": [
+      {
+        "host": "node3",
+        "hostid": "10318"
+      }
+    ],
+    "correlation_mode": "0",
+    "expression": "{19856}>{$VFS.FS.PUSED.MAX.WARN:\"/etc/resolv.conf\"} and\r\n(({19857}-{19858})<10G or {19859}<1d)",
+    "recovery_expression": "",
+    "manual_close": "1"
+  }

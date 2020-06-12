@@ -696,3 +696,258 @@ elastalert:
         properties:
           name: pod_name
           namespace: namespace_name
+
+zabbix:
+  mappings:
+    - name: "Load average is too high (per CPU load over {$LOAD_AVG_PER_CPU.MAX.WARN} for 5m)"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Interface eth0: Link down'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Interface tunl0: Link down'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: '/etc/hostname: Running out of free inodes (free < {$VFS.FS.INODE.PFREE.MIN.CRIT:/etc/hostname}%)'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: '/etc/hosts: Running out of free inodes (free < {$VFS.FS.INODE.PFREE.MIN.CRIT:/etc/hosts}%)'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix agent is not available (for {$AGENT.TIMEOUT})'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix alerter processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix alert manager processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix alert syncer processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix configuration syncer processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix discoverer processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix escalator processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix history syncer processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix housekeeper processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix http poller processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix icmp pinger processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix ipmi manager processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix ipmi poller processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix java poller processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix LLD manager processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix LLD worker processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix poller processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix preprocessing manager processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix preprocessing worker processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix proxy poller processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix self-monitoring processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix snmp trapper processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix task manager processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix timer processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix trapper processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix unreachable poller processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix value cache working in low memory mode'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: 'Zabbix vmware collector processes more than 75% busy'
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: "Unavailable by ICMP ping"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: "High ICMP ping loss"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: "High ICMP ping response time"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: "System status is in critical state"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: "System is in unrecoverable state!"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: "System status is in warning state"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: "Temperature is above warning threshold: >{$TEMP_WARN:}"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: "Temperature is above critical threshold: >{$TEMP_CRIT:}"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node
+    - name: "Temperature is too low: <{$TEMP_CRIT_LOW:}"
+      source_mapping:
+        origin: kubernetes
+        kind: node
+        properties:
+          name: node

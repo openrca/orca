@@ -12,6 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology.alerts import elastalert, falco, prometheus, zabbix
+from orca.topology import bundle
+from orca.topology.alerts.zabbix import linker, probe
 
-__all__ = ['elastalert', 'falco', 'prometheus', 'zabbix']
+
+def get_probes():
+    return [
+        bundle.ProbeBundle(
+            probe=probe.AlertProbe,
+            linkers=[linker.AlertLinker]
+        )
+    ]

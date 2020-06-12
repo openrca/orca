@@ -75,6 +75,12 @@ probes:
     enabled: false
     resync_period: 60
     url:
+  zabbix:
+    enabled: false
+    resync_period: 60
+    url:
+    username:
+    password:
 
 ingestors:
   prometheus:
