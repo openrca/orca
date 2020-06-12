@@ -34,7 +34,7 @@ class AlertExtractor(Extractor):
     """Extractor for Alert entities retrieved from Zabbix API."""
 
     def _extract_name(self, entity):
-        return entity['description']
+        return entity['trigger'][0]
 
     def _extract_source_labels(self, entity):
         return {'node': entity['host']}
@@ -46,7 +46,7 @@ class AlertExtractor(Extractor):
         return properties
 
     def _extract_status(self, entity):
-        return entity['status']
+        return 'active' if entity['trigger'][2] == '1' else 'inactive'
 
     def _extract_severity(self, entity):
-        return entity['priority']
+        return entity['trigger'][1]

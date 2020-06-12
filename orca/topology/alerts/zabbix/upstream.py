@@ -36,12 +36,10 @@ class UpstreamProxy(upstream.UpstreamProxy):
         triggers = []
         for trigger in all:
             for host in trigger['hosts']:
-                properties = {}
-                properties['host'] = host['host']
-                properties['description'] = trigger['description']
-                properties['status'] = 'active' if trigger['value'] == '1' else 'inactive'
-                properties['priority'] = trigger['priority']
-                triggers.append(properties)
+                payload = {}
+                payload['host'] = host['host']
+                payload['trigger'] = [ trigger.pop(property) for property in ['description','priority','value']]
+                triggers.append(payload)
         return triggers
 
     def get_events(self):
