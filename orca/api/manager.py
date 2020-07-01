@@ -17,6 +17,7 @@ import multiprocessing
 
 import cotyledon
 import flask
+from flask_cors import CORS
 
 from orca import api
 from orca.graph import graph
@@ -54,4 +55,5 @@ class APIService(cotyledon.Service):
     def _initialize_application(self):
         app = flask.Flask(__name__)
         app.register_blueprint(api.initialize(self._graph))
+        CORS(app)
         return app
