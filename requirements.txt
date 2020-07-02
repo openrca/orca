@@ -3,6 +3,7 @@ cerberus                    # ISC
 cotyledon                   # Apache License 2.0
 flask                       # BSD 3-Clause License
 flask-restx                 # BSD 3-Clause License
+flask_cors                  # MIT
 honcho                      # MIT
 kubernetes                  # Apache License 2.0
 python-arango               # MIT
