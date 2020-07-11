@@ -14,10 +14,15 @@
 
 from flask_restx import Model, Namespace, Resource, fields, marshal
 
+
 node_fields = Model('Graph Node', {
     'id': fields.String,
     'origin': fields.String,
-    'kind': fields.String
+    'kind': fields.String,
+    'properties': {
+        'name': fields.String(attribute='properties.name'),
+        'namespace': fields.String(attribute='properties.namespace', default="n/a")
+    }
 })
 
 link_fields = Model('Graph Link', {
