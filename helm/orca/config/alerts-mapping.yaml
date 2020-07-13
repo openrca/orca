@@ -1,6 +1,7 @@
 prometheus:
   mappings:
     - name: KubePodNotReady
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -8,6 +9,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: KubePodCrashLooping
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -15,6 +17,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: KubeContainerWaiting
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -22,6 +25,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: KubeDeploymentReplicasMismatch
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: deployment
@@ -29,6 +33,7 @@ prometheus:
           name: deployment
           namespace: namespace
     - name: KubeDeploymentGenerationMismatch
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: deployment
@@ -36,6 +41,7 @@ prometheus:
           name: deployment
           namespace: namespace
     - name: KubeStatefulSetReplicasMismatch
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: stateful_set
@@ -43,6 +49,7 @@ prometheus:
           name: statefulset
           namespace: namespace
     - name: KubeStatefulSetGenerationMismatch
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: stateful_set
@@ -50,6 +57,7 @@ prometheus:
           name: statefulset
           namespace: namespace
     - name: KubeStatefulSetUpdateNotRolledOut
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: stateful_set
@@ -57,6 +65,7 @@ prometheus:
           name: statefulset
           namespace: namespace
     - name: CPUThrottlingHigh
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -64,16 +73,19 @@ prometheus:
           name: pod
           namespace: namespace
     - name: KubeAPILatencyHigh
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: KubeAPIErrorsHigh
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: KubeHpaMaxedOut
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: horizontal_pod_autoscaler
@@ -81,6 +93,7 @@ prometheus:
           name: hpa
           namespace: namespace
     - name: KubeHpaReplicasMismatch
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: horizontal_pod_autoscaler
@@ -88,6 +101,7 @@ prometheus:
           name: hpa
           namespace: namespace
     - name: KubeDaemonSetMisScheduled
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: daemon_set
@@ -95,6 +109,7 @@ prometheus:
           name: daemonset
           namespace: namespace
     - name: KubeDaemonSetNotScheduled
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: daemon_set
@@ -102,6 +117,7 @@ prometheus:
           name: daemonset
           namespace: namespace
     - name: KubeDaemonSetRolloutStuck
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: daemon_set
@@ -109,108 +125,126 @@ prometheus:
           name: daemonset
           namespace: namespace
     - name: KubePersistentVolumeErrors
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: persistent_volume
         properties:
           name: persistentvolume
     - name: KubePersistentVolumeFullInFourDays
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: persistent_volume
         properties:
           name: persistentvolume
     - name: KubePersistentVolumeUsageCritical
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: persistent_volume
         properties:
           name: persistentvolume
     - name: KubeNodeNotReady
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: KubeNodeUnreachable
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: KubeletDown
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: KubeletTooManyPods
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: NodeFilesystemAlmostOutOfFiles
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: instance
     - name: NodeFilesystemAlmostOutOfSpace
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: instance
     - name: NodeFilesystemFilesFillingUp
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: instance
     - name: NodeFilesystemSpaceFillingUp
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: instance
     - name: NodeNetworkReceiveErrs
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: instance
     - name: NodeNetworkTransmitErrs
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: instance
     - name: NodeFilesystemAlmostOutOfFiles
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: instance
     - name: NodeClockSkewDetected
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: instance
     - name: NodeClockNotSynchronising
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: instance
     - name: NodeHighNumberConntrackEntriesUsed
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: instance
     - name: KubeCronJobRunning
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cron_job
@@ -218,6 +252,7 @@ prometheus:
           name: cronjob
           namespace: namespace
     - name: KubeJobCompletion
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: job
@@ -225,6 +260,7 @@ prometheus:
           name: job_name
           namespace: namespace
     - name: KubeJobFailed
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: job
@@ -232,41 +268,49 @@ prometheus:
           name: job_name
           namespace: namespace
     - name: KubeAPIDown
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: KubeSchedulerDown
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: KubeControllerManagerDown
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: KubeCPUOvercommit
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: KubeMemOvercommit
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: KubeMemoryOvercommit
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: KubeCPUQuotaOvercommit
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: KubeMemoryQuotaOvercommit
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
@@ -278,36 +322,43 @@ prometheus:
         properties:
           name: namespace
     - name: KubeVersionMismatch
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: KubeStateMetricsDown
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: AlertmanagerDown
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: NodeExporterDown
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: PrometheusDown
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: PrometheusOperatorDown
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: TargetDown
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: service
@@ -315,11 +366,13 @@ prometheus:
           name: service
           namespace: namespace
     - name: KubeClientErrors
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: ClockSkewDetected
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -327,6 +380,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: PrometheusBadConfig
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -334,6 +388,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: PrometheusNotificationQueueRunningFull
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -341,6 +396,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: PrometheusErrorSendingAlertsToSomeAlertmanagers
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -348,6 +404,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: PrometheusErrorSendingAlertsToAnyAlertmanager
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -355,6 +412,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: PrometheusNotConnectedToAlertmanagers
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -362,6 +420,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: PrometheusDuplicateTimestamps
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -369,6 +428,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: PrometheusMissingRuleEvaluations
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -376,6 +436,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: PrometheusNotIngestingSamples
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -383,6 +444,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: PrometheusOutOfOrderTimestamps
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -390,6 +452,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: PrometheusRemoteStorageFailures
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -397,6 +460,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: PrometheusRemoteWriteBehind
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -404,6 +468,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: PrometheusRemoteWriteDesiredShards
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -418,6 +483,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: PrometheusTSDBCompactionsFailing
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -425,6 +491,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: PrometheusTSDBReloadsFailing
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -432,6 +499,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: PrometheusOperatorReconcileErrors
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -439,6 +507,7 @@ prometheus:
           name: pod
           namespace: namespace
     - name: PrometheusOperatorNodeLookupErrors
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -446,11 +515,13 @@ prometheus:
           name: pod
           namespace: namespace
     - name: AlertmanagerConfigInconsistent
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: AlertmanagerFailedReload
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -458,11 +529,13 @@ prometheus:
           name: pod
           namespace: namespace
     - name: AlertmanagerMembersInconsistent
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: NodeNetworkInterfaceFlapping
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -470,94 +543,110 @@ prometheus:
           name: pod
           namespace: namespace
     - name: KubeNodeReadinessFlapping
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: KubeletPlegDurationHigh
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: KubeletPodStartUpLatencyHigh
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: KubeClientCertificateExpiration
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: etcdInsufficientMembers
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: etcdGRPCRequestsSlow
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
         properties:
           ip: instance
     - name: etcdHTTPRequestsSlow
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
         properties:
           ip: instance
     - name: etcdHighCommitDurations
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
         properties:
           ip: instance
     - name: etcdHighFsyncDurations
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
         properties:
           ip: instance
     - name: etcdHighNumberOfFailedGRPCRequests
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
         properties:
           ip: instance
     - name: etcdHighNumberOfFailedHTTPRequests
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
         properties:
           ip: instance
     - name: etcdHighNumberOfFailedProposals
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
         properties:
           ip: instance
     - name: etcdHighNumberOfLeaderChanges
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
         properties:
           ip: instance
     - name: etcdMemberCommunicationSlow
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
         properties:
           ip: instance
     - name: etcdNoLeader
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
         properties:
           ip: instance
     - name: KubePersistentVolumeFillingUp
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: persistent_volume_claim
@@ -565,31 +654,37 @@ prometheus:
           name: persistentvolumeclaim
           namespace: namespace
     - name: AggregatedAPIDown
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: AggregatedAPIErrors
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: ErrorBudgetBurn
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: KubeAPIErrorBudgetBurn
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: KubeStateMetricsListErrors
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
         properties: {}
     - name: KubeStateMetricsWatchErrors
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: cluster
@@ -600,6 +695,7 @@ falco:
     - '<NA>'
   mappings:
     - name: "Launch Sensitive Mount Container"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -607,6 +703,7 @@ falco:
           name: k8s.pod.name
           namespace: k8s.ns.name
     - name: "Launch Privileged Container"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -614,6 +711,7 @@ falco:
           name: k8s.pod.name
           namespace: k8s.ns.name
     - name: "Create Sensitive Mount Pod"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -621,6 +719,7 @@ falco:
           name: ka.resp.name
           namespace: ka.target.namespace
     - name: "Create Privileged Pod"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -628,6 +727,7 @@ falco:
           name: ka.resp.name
           namespace: ka.target.namespace
     - name: "Terminal shell in container"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -635,6 +735,7 @@ falco:
           name: k8s.pod.name
           namespace: k8s.ns.name
     - name: "Detect outbound connections to common miner pool ports"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -642,6 +743,7 @@ falco:
           name: k8s.pod.name
           namespace: k8s.ns.name
     - name: "Create HostNetwork Pod"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -649,12 +751,14 @@ falco:
           name: ka.resp.name
           namespace: ka.target.namespace
     - name: "Create/Modify Configmap With Private Credentials"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: config_map
         properties:
           name: ka.req.configmap.name
     - name: "Attach/Exec Pod"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -662,12 +766,14 @@ falco:
           name: ka.target.name
           namespace: ka.target.namespace
     - name: "Create Disallowed Namespace"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: namespace
         properties:
           name: ka.target.name
     - name: "Ingress Object without TLS Certificate Created"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: ingress
@@ -675,12 +781,14 @@ falco:
           name: ka.target.name
           namespace: ka.target.namespace
     - name: "Untrusted Node Successfully Joined the Cluster"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: ka.target.name
     - name: "Untrusted Node Unsuccessfully Tried to Join the Cluster"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
@@ -690,6 +798,7 @@ falco:
 elastalert:
   mappings:
     - name: "Application error"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: pod
@@ -700,307 +809,357 @@ elastalert:
 zabbix:
   mappings:
     - name: 'Zabbix alerter processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix alert manager processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix alert syncer processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix configuration syncer processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix discoverer processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix escalator processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix history syncer processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix housekeeper processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix http poller processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix icmp pinger processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix ipmi manager processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix ipmi poller processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix java poller processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix LLD manager processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix LLD worker processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix poller processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix preprocessing manager processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix preprocessing worker processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix proxy poller processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix self-monitoring processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix snmp trapper processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix task manager processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix timer processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix trapper processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix unreachable poller processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix value cache working in low memory mode'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: 'Zabbix vmware collector processes more than 75% busy'
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: "Unavailable by ICMP ping"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: "High ICMP ping loss"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: "High ICMP ping response time"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: "System status is in critical state"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: "System is in unrecoverable state!"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: "System status is in warning state"
+      type: plain
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
-  regex_mappings:
     - name: ".*Problem with FAN.*"
+      type: regex
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: ".*Overall System Status Error.*"
+      type: regex
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: ".*RAID Controller Error.*"
+      type: regex
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: ".*Error on PSU.*"
+      type: regex
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: ".*Problem with Temperature.*"
+      type: regex
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: ".*Error on Voltage Sensor.*"
+      type: regex
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: ".*Problem with FAN.*"
+      type: regex
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: ".*Error on Processor.*"
+      type: regex
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: ".*Error on NIC.*"
+      type: regex
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: ".*Running out of free inodes.*"
+      type: regex
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: ".*Disk read/write request responses are too high.*"
+      type: regex
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: ".*Temperature is above critical threshold.*"
+      type: regex
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: ".*Temperature is above warning threshold.*"
+      type: regex
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: ".*Fan.* Critical.*"
+      type: regex
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: "Interface .*: Link down"
+      type: regex
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: "Interface .*: High error rate .*"
+      type: regex
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: "Interface .*: Ethernet has changed to lower speed than it was before"
+      type: regex
       source_mapping:
         origin: kubernetes
         kind: node
         properties:
           name: node
     - name: "Zabbix agent is not available.*"
+      type: regex
       source_mapping:
         origin: kubernetes
         kind: node

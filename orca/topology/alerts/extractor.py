@@ -89,13 +89,9 @@ class SourceMapper(object):
         return self.__mapping
 
     def map(self, name, labels):
-        mapping = self._mapping['plain'].get(name)
+        mapping = self._get_mapping(name)
         if not mapping:
-            try: 
-                key = [regex for regex in self._mapping['regex'].keys() if re.compile(regex).match(name)][0]
-                mapping = self._mapping['regex'].get(key)
-            except:
-                raise exceptions.MappingNotFound(key=name)
+            raise exceptions.MappingNotFound(key=name)
         origin = mapping['origin']
         kind = mapping['kind']
         properties = {}
@@ -107,6 +103,14 @@ class SourceMapper(object):
             properties[prop] = value
         return {'origin': origin, 'kind': kind, 'properties': properties}
 
+    def _get_mapping(self, name):
+        try:
+            mapping = self._mapping['plain'].get(name)
+        except:
+            key = [regex for regex in self._mapping['regex'].keys() if re.match(regex, name)][0]
+            mapping = self._mapping['regex'].get(key)
+        return mapping
+
     def _load_mapping(self):
         mapping_spec = self._load_mapping_spec()
         if not mapping_spec:
@@ -115,18 +119,17 @@ class SourceMapper(object):
         if not blacklist_values:
             blacklist_values = []
         mappings = mapping_spec['mappings']
-        regex_mappings = mapping_spec['regex_mappings']
         lookup = {}
         lookup['plain'] = {}
         lookup['regex'] = {}
         for mapping in mappings:
             name = mapping['name']
-            lookup['plain'][name] = mapping['source_mapping']
-            lookup['plain'][name].setdefault('blacklist_values', blacklist_values)
-        for regex_mapping in regex_mappings:
-            name = regex_mapping['name']
-            lookup['regex'][name] = regex_mapping['source_mapping']
-            lookup['regex'][name].setdefault('blacklist_values', blacklist_values)
+            if mapping['type'] == 'plain':
+                lookup['plain'][name] = mapping['source_mapping']
+                lookup['plain'][name].setdefault('blacklist_values', blacklist_values)
+            else:
+                lookup['regex'][name] = mapping['source_mapping']
+                lookup['regex'][name].setdefault('blacklist_values', blacklist_values)
         return lookup
 
     def _load_mapping_spec(self):
