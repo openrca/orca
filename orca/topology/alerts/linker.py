@@ -26,10 +26,10 @@ class Linker(linker.Linker):
 
     def _get_target_nodes(self, alert_node):
         source_mapping = alert_node.properties.source_mapping
-        return self._graph.get_nodes(
-            origin=source_mapping.origin,
-            kind=source_mapping.kind,
-            properties=source_mapping.properties)
+        properties = {'origin': source_mapping.origin,
+                 'kind': source_mapping.kind,
+                 'properties': source_mapping.properties}
+        return self._graph.get_nodes(properties=properties)
 
 
 class AlertLinker(Linker):
