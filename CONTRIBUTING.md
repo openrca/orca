@@ -99,7 +99,7 @@ $ telepresence \
         -v=/tmp/telepresence/var/run/secrets:/var/run/secrets \
         -v=/tmp/telepresence/etc/orca:/etc/orca \
         -v $(pwd):/app \
-        openrca/rca
+        openrca/orca
 ```
 
 The command above swaps the deployment specified by `--namespace` and `--swap-deployment` flags with
