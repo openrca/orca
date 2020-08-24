@@ -24,11 +24,11 @@ class Driver(abc.ABC):
         """Initializes graph database."""
 
     @abc.abstractmethod
-    def get_nodes(self, kind, properties):
+    def get_nodes(self, time_point, properties):
         """Gets all graph nodes."""
 
     @abc.abstractmethod
-    def get_node(self, id, kind, properties):
+    def get_node(self, id):
         """Gets graph node details."""
 
     @abc.abstractmethod
@@ -44,11 +44,11 @@ class Driver(abc.ABC):
         """Deletes a graph node."""
 
     @abc.abstractmethod
-    def get_links(self, properties):
+    def get_links(self, time_point, properties):
         """Gets all graph links."""
 
     @abc.abstractmethod
-    def get_link(self, id, properties):
+    def get_link(self, id):
         """Gets graph link details."""
 
     @abc.abstractmethod

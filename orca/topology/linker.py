@@ -136,7 +136,8 @@ class Linker(abc.ABC):
         return self._get_nodes_by_spec(self.source_spec)
 
     def _get_nodes_by_spec(self, node_spec):
-        return self._graph.get_nodes(origin=node_spec.origin, kind=node_spec.kind)
+        properties = {'origin': node_spec.origin, 'kind': node_spec.kind}
+        return self._graph.get_nodes(properties=properties)
 
     def _build_link_lookup(self, links):
         return {link.id: link for link in links}

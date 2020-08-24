@@ -47,7 +47,8 @@ class Alerts(Resource):
         self._graph = graph
 
     def get(self):
-        return marshal(self._graph.get_nodes(kind='alert'), alerts_fields)
+        properties = {'kind': 'alert'}
+        return marshal(self._graph.get_nodes(properties=properties), alerts_fields)
 
 
 def initialize(graph):

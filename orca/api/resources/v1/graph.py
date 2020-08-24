@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from flask_restx import Model, Namespace, Resource, fields, marshal
+from flask_restx import Model, Namespace, Resource, fields, marshal, reqparse
 
 
 node_fields = Model('Graph Node', {
@@ -38,6 +38,9 @@ graph_fields = Model('Graph', {
         fields.Nested(link_fields), attribute='links')
 })
 
+query_parser = reqparse.RequestParser()
+query_parser.add_argument('time_point', type=int)
+
 
 class Graph(Resource):
 
@@ -46,9 +49,10 @@ class Graph(Resource):
         self._graph = graph
 
     def get(self):
+        args = query_parser.parse_args()
         data = {
-            'nodes': self._graph.get_nodes(),
-            'links': self._graph.get_links()
+            'nodes': self._graph.get_nodes(time_point=args['time_point']),
+            'links': self._graph.get_links(time_point=args['time_point'])
         }
         return marshal(data, graph_fields)
 

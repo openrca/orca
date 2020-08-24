@@ -79,13 +79,12 @@ class ArangoDBDriver(driver.Driver):
         links_col = graph.edge_collection('links')
         links_col.add_hash_index(fields=['id'], unique=False)
 
-    def get_nodes(self, **query):
+    def get_nodes(self, time_point, properties):
         query_pattern = (
             'FOR node in nodes '
-            'FILTER node.deleted_at == null '
             '%(filters)s '
             'RETURN node')
-        filters = self._build_filters(query, handle='node')
+        filters = self._build_filters(time_point, properties, handle='node')
         documents = self._execute_aql(query_pattern, filters=filters)
         return [self._build_node_obj(document) for document in documents]
 
@@ -122,15 +121,14 @@ class ArangoDBDriver(driver.Driver):
             'REMOVE node IN nodes')
         self._execute_aql(query_pattern, node_id=node.id)
 
-    def get_links(self, **query):
+    def get_links(self, time_point, properties):
         query_pattern = (
             'FOR link in links '
-            'FILTER link.deleted_at == null '
             '%(filters)s '
             'LET source = DOCUMENT(link._from) '
             'LET target = DOCUMENT(link._to)'
             'RETURN {link, source, target}')
-        filters = self._build_filters(query, handle='link')
+        filters = self._build_filters(time_point, properties, handle='link')
         documents = self._execute_aql(query_pattern, filters=filters)
         links = []
         for document in documents:
@@ -200,7 +198,7 @@ class ArangoDBDriver(driver.Driver):
             'FILTER link.deleted_at == null '
             "%(filters)s "
             'RETURN {link, source, target}')
-        filters = self._build_filters(query, handle='target')
+        filters = self._build_property_filters(query, handle='target')
         documents = self._execute_aql(
             query_pattern, source_id=node.id, filters=filters)
         links = []
@@ -223,11 +221,25 @@ class ArangoDBDriver(driver.Driver):
     def _use_graph(self, graph):
         return self._database.graph(graph)
 
-    def _build_filters(self, query, handle):
-        flatten_query = utils.flatten_dict(query, sep='.')
+    def _build_filters(self, time_point, properties, handle):
         filters = []
-        for key, value in flatten_query.items():
+        filters.append(self._build_property_filters(properties, handle=handle))
+        if time_point:
+            filters.append(self._build_time_filter(time_point, handle=handle))
+        return ' '.join(filters)
+
+    def _build_property_filters(self, properties, handle):
+        flatten_properties = utils.flatten_dict(properties, sep='.')
+        filters = []
+        for key, value in flatten_properties.items():
             filters.append('FILTER %s.%s == "%s"' % (handle, key, value))
+        return ' '.join(filters)
+
+    def _build_time_filter(self, time_point, handle):
+        filters = []
+        filters.append('FILTER %s.created_at <= %i' % (handle, time_point))
+        filters.append(
+            'FILTER %s.deleted_at == null OR %s.deleted_at > %i' % (handle, handle, time_point))
         return ' '.join(filters)
 
     def _execute_aql(self, query_pattern, **params):
