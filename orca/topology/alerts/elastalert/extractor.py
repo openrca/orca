@@ -14,6 +14,7 @@
 
 from orca.common import str_utils
 from orca.topology.alerts import extractor
+from orca.topology.alerts import properties as alert_props
 
 
 class Extractor(extractor.Extractor):
@@ -35,6 +36,10 @@ class AlertExtractor(Extractor):
 
     def _extract_name(self, entity):
         return entity['name']
+
+    def _extract_status(self, entity):
+        # TODO: Differentiate UP/DOWN status
+        return alert_props.AlertStatus.UP
 
     def _extract_source_labels(self, entity):
         labels = entity['kubernetes'].copy()

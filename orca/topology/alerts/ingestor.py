@@ -12,12 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology.alerts import ingestor
-from orca.topology.alerts.falco import extractor
+from orca.topology import ingestor
 
 
-class AlertIngestor(ingestor.Ingestor):
+class Ingestor(ingestor.Ingestor):
 
-    @classmethod
-    def get(cls, graph):
-        return cls(graph, extractor.AlertExtractor.get())
+    """Base class for alert ingestors."""
+
+    def _ingest_event(self, event):
+        alert = self._extractor.extract(event)
+        if self._graph.get_node(alert.id):
+            self._graph.update_node(alert)
+            if not alert.is_up:
+                self._graph.delete_node(alert.id)
+        elif alert.is_up:
+            self._graph.add_node(alert)

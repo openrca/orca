@@ -18,6 +18,7 @@ from orca import exceptions
 from orca.common import config, file_utils, logger
 from orca.graph import graph
 from orca.topology import extractor
+from orca.topology.alerts import properties as alert_props
 
 CONFIG = config.CONFIG
 LOG = logger.get_logger(__name__)
@@ -37,17 +38,24 @@ class Extractor(extractor.Extractor):
 
     def extract(self, entity):
         name = self._extract_name(entity)
+        status = self._extract_status(entity)
         labels = self._extract_source_labels(entity)
         source_mapping = self._source_mapper.map(name, labels)
         node_id = self._build_id(name, source_mapping)
         properties = self._extract_properties(entity)
         properties['name'] = name
+        properties['status'] = status
         properties['source_mapping'] = source_mapping
-        return graph.Node(node_id, properties, self.origin, self.kind)
+        node = graph.Node(node_id, properties, self.origin, self.kind)
+        return Alert(node)
 
     @abc.abstractmethod
     def _extract_name(self, entity):
         """Extract name from given entity object."""
+
+    @abc.abstractmethod
+    def _extract_status(self, entity):
+        """Extract alert status from given entity object."""
 
     @abc.abstractmethod
     def _extract_source_labels(self, entity):
@@ -127,3 +135,18 @@ class SourceMapper(object):
         if value in mapping['blacklist_values']:
             return False
         return True
+
+
+class Alert(object):
+
+    """Decorator for alert nodes."""
+
+    def __init__(self, node):
+        self._node = node
+
+    def __getattr__(self, name):
+        return getattr(self._node, name)
+
+    @property
+    def is_up(self):
+        return self._node.properties.status == alert_props.AlertStatus.UP
