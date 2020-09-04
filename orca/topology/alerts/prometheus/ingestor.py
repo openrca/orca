@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology import ingestor
+from orca.topology.alerts import ingestor
 from orca.topology.alerts.prometheus import extractor
 
 

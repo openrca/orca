@@ -14,6 +14,7 @@
 
 from orca.common import str_utils
 from orca.topology.alerts import extractor
+from orca.topology.alerts import properties as alert_props
 
 
 class Extractor(extractor.Extractor):
@@ -36,18 +37,19 @@ class AlertExtractor(Extractor):
     def _extract_name(self, entity):
         return entity['labels']['alertname']
 
+    def _extract_status(self, entity):
+        if entity['state'] == 'firing':
+            return alert_props.AlertStatus.UP
+        return alert_props.AlertStatus.DOWN
+
     def _extract_source_labels(self, entity):
         return entity['labels']
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['status'] = self._extract_status(entity)
         properties['severity'] = self._extract_severity(entity)
         properties['message'] = self._extract_message(entity)
         return properties
-
-    def _extract_status(self, entity):
-        return entity['state']
 
     def _extract_severity(self, entity):
         return entity['labels']['severity']

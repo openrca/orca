@@ -12,12 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.topology.alerts import ingestor
-from orca.topology.alerts.falco import extractor
+class AlertStatus:
 
-
-class AlertIngestor(ingestor.Ingestor):
-
-    @classmethod
-    def get(cls, graph):
-        return cls(graph, extractor.AlertExtractor.get())
+    UP = 'up'
+    DOWN = 'down'
