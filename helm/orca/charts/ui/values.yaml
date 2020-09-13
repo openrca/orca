@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: openrca/orca-ui
-  tag: latest
+  tag: 0.2.0
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
