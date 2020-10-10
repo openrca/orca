@@ -39,6 +39,18 @@ $ helm install ./helm/orca --namespace rca --name orca
 
 > Use a 2.x version of Helm. Helm 3 is not supported.
 
+## Usage
+
+### Dashboard
+
+Port-forward the dashboard for access via the web browser:
+
+```bash
+$ kubectl -n rca port-forward svc/orca-ui 8080
+```
+
+The dashboard should be available at http://localhost:8080.
+
 ## Contact
 
 Reach project contributors via these channels:
