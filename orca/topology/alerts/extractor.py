@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import abc
+import re
 
 from orca import exceptions
 from orca.common import config, file_utils, logger
@@ -96,7 +97,7 @@ class SourceMapper(object):
         return self.__mapping
 
     def map(self, name, labels):
-        mapping = self._mapping.get(name)
+        mapping = self._get_mapping(name)
         if not mapping:
             raise exceptions.MappingNotFound(key=name)
         origin = mapping['origin']
@@ -110,6 +111,14 @@ class SourceMapper(object):
             properties[prop] = value
         return {'origin': origin, 'kind': kind, 'properties': properties}
 
+    def _get_mapping(self, name):
+        try:
+            mapping = self._mapping['plain'].get(name)
+        except:
+            key = [regex for regex in self._mapping['regex'].keys() if re.match(regex, name)][0]
+            mapping = self._mapping['regex'].get(key)
+        return mapping
+
     def _load_mapping(self):
         mapping_spec = self._load_mapping_spec()
         if not mapping_spec:
@@ -119,10 +128,16 @@ class SourceMapper(object):
             blacklist_values = []
         mappings = mapping_spec['mappings']
         lookup = {}
+        lookup['plain'] = {}
+        lookup['regex'] = {}
         for mapping in mappings:
             name = mapping['name']
-            lookup[name] = mapping['source_mapping']
-            lookup[name].setdefault('blacklist_values', blacklist_values)
+            if mapping['type'] == 'plain':
+                lookup['plain'][name] = mapping['source_mapping']
+                lookup['plain'][name].setdefault('blacklist_values', blacklist_values)
+            else:
+                lookup['regex'][name] = mapping['source_mapping']
+                lookup['regex'][name].setdefault('blacklist_values', blacklist_values)
         return lookup
 
     def _load_mapping_spec(self):
