@@ -6,6 +6,7 @@ flask-restx                 # BSD 3-Clause License
 flask_cors                  # MIT
 honcho                      # MIT
 kubernetes                  # Apache License 2.0
+marshmallow                 # MIT
 python-arango               # MIT
 pyyaml                      # MIT
 requests                    # Apache License 2.0
