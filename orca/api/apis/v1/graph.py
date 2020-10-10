@@ -14,29 +14,8 @@
 
 from flask_restx import Model, Namespace, Resource, fields, marshal, reqparse
 
+from orca.api.schema import GraphSchema
 
-node_fields = Model('Graph Node', {
-    'id': fields.String,
-    'origin': fields.String,
-    'kind': fields.String,
-    'properties': {
-        'name': fields.String(attribute='properties.name'),
-        'namespace': fields.String(attribute='properties.namespace', default="n/a")
-    }
-})
-
-link_fields = Model('Graph Link', {
-    'id': fields.String,
-    'source': fields.String(attribute='source.id'),
-    'target': fields.String(attribute='target.id')
-})
-
-graph_fields = Model('Graph', {
-    'nodes': fields.List(
-        fields.Nested(node_fields), attribute='nodes'),
-    'links': fields.List(
-        fields.Nested(link_fields), attribute='links')
-})
 
 query_parser = reqparse.RequestParser()
 query_parser.add_argument('time_point', type=int)
@@ -50,11 +29,13 @@ class Graph(Resource):
 
     def get(self):
         args = query_parser.parse_args()
-        data = {
+        graph_data = {
             'nodes': self._graph.get_nodes(time_point=args['time_point']),
             'links': self._graph.get_links(time_point=args['time_point'])
         }
-        return marshal(data, graph_fields)
+        graph_schema = GraphSchema()
+        result = graph_schema.dump(graph_data)
+        return result, 200
 
 
 def initialize(graph):
