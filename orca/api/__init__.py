@@ -1,9 +1,9 @@
 from flask import Blueprint
 from flask_restx import Api
 
-from orca.api.resources.v1 import graph as graph_ns
-from orca.api.resources.v1 import ingestor as ingestor_ns
-from orca.api.resources.v1 import alert as alert_ns
+from orca.api.apis.v1 import graph as graph_ns
+from orca.api.apis.v1 import ingestor as ingestor_ns
+from orca.api.apis.v1 import alert as alert_ns
 
 def initialize(graph):
     blueprint = Blueprint('api', __name__, url_prefix='/v1')
