@@ -31,6 +31,11 @@ class GraphSchema(Schema):
     links = fields.List(fields.Nested(LinkSchema()))
 
 
+class GraphQuerySchema(Schema):
+
+    time_point = fields.Integer()
+
+
 class AlertSchema(Schema):
 
     id = fields.String()
