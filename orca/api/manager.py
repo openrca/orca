@@ -45,15 +45,16 @@ class APIService(cotyledon.Service):
 
     def run(self):
         self._set_logging()
-        app = self._initialize_application()
+        app = self._init_app()
+        CORS(app)
         app.run(host='0.0.0.0')
 
     def _set_logging(self):
         log = logging.getLogger('werkzeug')
         log.setLevel(logging.ERROR)
 
-    def _initialize_application(self):
+    def _init_app(self):
         app = flask.Flask(__name__)
-        app.register_blueprint(apiv1.initialize(self._graph))
-        CORS(app)
+        api_blueprint = apiv1.initialize(self._graph)
+        app.register_blueprint(api_blueprint)
         return app

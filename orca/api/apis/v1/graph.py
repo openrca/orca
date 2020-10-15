@@ -12,13 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from flask_restx import Model, Namespace, Resource, fields, marshal, reqparse
+from flask_restx import Namespace, Resource, request
 
-from orca.api.schema import GraphSchema
-
-
-query_parser = reqparse.RequestParser()
-query_parser.add_argument('time_point', type=int)
+from orca.api.schema import GraphSchema, GraphQuerySchema
 
 
 class Graph(Resource):
@@ -28,10 +24,11 @@ class Graph(Resource):
         self._graph = graph
 
     def get(self):
-        args = query_parser.parse_args()
+        query_schema = GraphQuerySchema()
+        query = query_schema.load(request.args)
         graph_data = {
-            'nodes': self._graph.get_nodes(time_point=args['time_point']),
-            'links': self._graph.get_links(time_point=args['time_point'])
+            'nodes': self._graph.get_nodes(time_point=query['time_point']),
+            'links': self._graph.get_links(time_point=query['time_point'])
         }
         graph_schema = GraphSchema()
         result = graph_schema.dump(graph_data)
