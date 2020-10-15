@@ -5,7 +5,7 @@ flask==1.1.1                        # BSD 3-Clause License
 flask-restx==0.2.0                  # BSD 3-Clause License
 flask_cors==3.0.9                   # MIT
 honcho==1.0.1                       # MIT
-kubernetes==11.0.0                  # Apache License 2.0
+kubernetes==12.0.0                  # Apache License 2.0
 marshmallow==3.8.0                  # MIT
 python-arango==5.4.0                # MIT
 pyyaml==5.3.1                       # MIT
