@@ -15,7 +15,7 @@
 from flask import request
 from flask_restx import Namespace, Resource
 
-from orca.api.schema import GraphSchema, GraphQuerySchema
+from orca.api.schema import GraphSchema, GraphQuerySchema, DetailedNodeSchema
 
 
 class Graph(Resource):
@@ -36,7 +36,21 @@ class Graph(Resource):
         return result, 200
 
 
+class GraphNode(Resource):
+
+    def __init__(self, api, graph):
+        super().__init__()
+        self._graph = graph
+
+    def get(self, node_id):
+        node = self._graph.get_node(node_id)
+        node_schema = DetailedNodeSchema()
+        result = node_schema.dump(node)
+        return result, 200
+
+
 def initialize(graph):
     api = Namespace('graph', description='Graph API')
     api.add_resource(Graph, '/', resource_class_args=[graph])
+    api.add_resource(GraphNode, '/nodes/<node_id>', resource_class_args=[graph])
     return api
