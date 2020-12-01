@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from flask_restx import Namespace, Resource, request
+from flask import request
+from flask_restx import Namespace, Resource
 
 from orca.api.schema import GraphSchema, GraphQuerySchema
 
