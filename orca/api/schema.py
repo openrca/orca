@@ -19,6 +19,11 @@ class NodeSchema(GraphObjectSchema):
     properties = fields.Nested(PropertiesSchema())
 
 
+class DetailedNodeSchema(NodeSchema):
+
+    properties = fields.Raw()
+
+
 class LinkSchema(GraphObjectSchema):
 
     source = fields.String(attribute='source.id')
@@ -27,7 +32,7 @@ class LinkSchema(GraphObjectSchema):
 
 class GraphSchema(Schema):
 
-    nodes = fields.List(fields.Nested(NodeSchema()))
+    nodes = fields.List(fields.Nested(DetailedNodeSchema()))
     links = fields.List(fields.Nested(LinkSchema()))
 
 
