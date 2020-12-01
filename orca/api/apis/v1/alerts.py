@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from flask_restx import Model, Namespace, Resource, fields, marshal
+from flask_restx import Model, Namespace, Resource
 
 from orca.api.schema import AlertSchema
 
