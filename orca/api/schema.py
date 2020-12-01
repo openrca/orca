@@ -33,7 +33,7 @@ class GraphSchema(Schema):
 
 class GraphQuerySchema(Schema):
 
-    time_point = fields.Integer()
+    time_point = fields.Integer(missing=None)
 
 
 class AlertSchema(Schema):
