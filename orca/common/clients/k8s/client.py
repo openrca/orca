@@ -82,7 +82,7 @@ class ResourceProxyFactory(object):
         elif kind == 'replica_set':
             return ResourceProxy(
                 kind='replica_set',
-                list_fn=client.ExtensionsV1beta1Api().list_replica_set_for_all_namespaces
+                list_fn=client.AppsV1Api().list_replica_set_for_all_namespaces
             )
         elif kind == 'storage_class':
             return ResourceProxy(
