@@ -1,24 +1,10 @@
 apiVersion: install.istio.io/v1alpha1
 kind: IstioOperator
 spec:
-  addonComponents:
-    grafana:
-      enabled: false
-    istiocoredns:
-      enabled: false
-    kiali:
-      enabled: true
-    prometheus:
-      enabled: false
-    prometheusOperator:
-      enabled: true
-    tracing:
-      enabled: true
+  hub: docker.io/istio
+  tag: 1.6.14
   components:
-    base:
-      enabled: true
     proxy:
-      enabled: true
       k8s:
         resources:
           limits:
@@ -27,26 +13,30 @@ spec:
           requests:
             cpu: 100m
             memory: 128Mi
-    citadel:
-      enabled: false
-    cni:
-      enabled: false
-    egressGateways:
-    - enabled: true
+    pilot:
+      k8s:
+        hpaSpec:
+          minReplicas: 1
+          maxReplicas: 3
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 1024Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+    telemetry:
       k8s:
         hpaSpec:
           minReplicas: 1
           maxReplicas: 5
         resources:
           limits:
-            cpu: 2000m
-            memory: 512Mi
+            cpu: 4000m
+            memory: 4096Mi
           requests:
             cpu: 100m
             memory: 128Mi
-      name: istio-egressgateway
-    galley:
-      enabled: false
     ingressGateways:
     - enabled: true
       k8s:
@@ -61,48 +51,25 @@ spec:
             cpu: 100m
             memory: 128Mi
       name: istio-ingressgateway
-    nodeAgent:
+  addonComponents:
+    tracing:
       enabled: false
-    pilot:
+    prometheus:
+      enabled: false
+    prometheusOperator:
       enabled: true
-      k8s:
-        hpaSpec:
-          minReplicas: 1
-          maxReplicas: 3
-        resources:
-          limits:
-            cpu: 2000m
-            memory: 1024Mi
-          requests:
-            cpu: 100m
-            memory: 128Mi
-    policy:
+    grafana:
       enabled: false
-    sidecarInjector:
-      enabled: false
-    telemetry:
+    kiali:
       enabled: true
-      k8s:
-        hpaSpec:
-          minReplicas: 1
-          maxReplicas: 5
-        resources:
-          limits:
-            cpu: 4000m
-            memory: 4096Mi
-          requests:
-            cpu: 100m
-            memory: 128Mi
-  hub: docker.io/istio
-  tag: 1.5.2
   values:
     global:
+      enableTracing: false
+      disablePolicyChecks: true
       controlPlaneSecurityEnabled: false
       proxy:
         concurrency: 2
     kiali:
       createDemoSecret: true
-    pilot:
-      traceSampling: 10
     prometheusOperator:
       createPrometheusResource: false
