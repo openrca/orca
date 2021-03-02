@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from flask import request
 from flask_restx import Model, Namespace, Resource
 
-from orca.api.schema import AlertSchema
+from orca.api.schema import AlertSchema, AlertQuerySchema
 
 
 class Alerts(Resource):
@@ -24,7 +25,10 @@ class Alerts(Resource):
         self._graph = graph
 
     def get(self):
-        alert_data = self._graph.get_nodes(properties={'kind': 'alert'})
+        query_schema = AlertQuerySchema()
+        query = query_schema.load(request.args)
+        alert_data = self._graph.get_nodes(
+            time_point=query['time_point'], properties={'kind': 'alert'})
         alert_schema = AlertSchema(many=True)
         result = alert_schema.dump(alert_data)
         return result, 200

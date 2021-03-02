@@ -51,3 +51,8 @@ class AlertSchema(Schema):
     source = fields.Nested(NodeSchema(), attribute='properties.source_mapping')
     created_at = fields.String()
     updated_at = fields.String()
+
+
+class AlertQuerySchema(Schema):
+
+    time_point = fields.Integer(missing=None)
