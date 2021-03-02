@@ -21,44 +21,44 @@ def get_probes():
         bundle.ProbeBundle(
             probe=probe.VirtualServicePullProbe,
             linkers=[
-                linker.VirtualServiceToGatewayLinker,
-                linker.VirtualServiceToServiceLinker
+                linker.GatewayToVirtualServiceLinker,
+                linker.ServiceToVirtualServiceLinker
             ]
         ),
 
         bundle.ProbeBundle(
             probe=probe.VirtualServicePushProbe,
             linkers=[
-                linker.VirtualServiceToGatewayLinker,
-                linker.VirtualServiceToServiceLinker
+                linker.GatewayToVirtualServiceLinker,
+                linker.ServiceToVirtualServiceLinker
             ]
         ),
 
         bundle.ProbeBundle(
             probe=probe.DestinationRulePullProbe,
             linkers=[
-                linker.DestinationRuleToServiceLinker
+                linker.ServiceToDestinationRuleLinker
             ]
         ),
 
         bundle.ProbeBundle(
             probe=probe.DestinationRulePushProbe,
             linkers=[
-                linker.DestinationRuleToServiceLinker
+                linker.ServiceToDestinationRuleLinker
             ]
         ),
 
         bundle.ProbeBundle(
             probe=probe.GatewayPullProbe,
             linkers=[
-                linker.VirtualServiceToGatewayLinker
+                linker.GatewayToVirtualServiceLinker
             ]
         ),
 
         bundle.ProbeBundle(
             probe=probe.GatewayPushProbe,
             linkers=[
-                linker.VirtualServiceToGatewayLinker
+                linker.GatewayToVirtualServiceLinker
             ]
         ),
     ]

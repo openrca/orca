@@ -21,56 +21,56 @@ class Linker(linker.Linker):
     """Base class for Kubernetes linkers."""
 
 
-class PodToServiceLinker(Linker):
+class ServiceToPodLinker(Linker):
 
-    """Links Pod entities to Service entities."""
-
-    @classmethod
-    def get(cls, graph):
-        return cls(
-            graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
-            matcher=matcher.PodToServiceMatcher())
-
-
-class PodToReplicaSetLinker(Linker):
-
-    """Links Pod entities to Replica Set entities."""
+    """Links Service entities to Pod entities."""
 
     @classmethod
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='replica_set'),
-            matcher=matcher.PodToReplicaSetMatcher())
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            matcher=matcher.ServiceToPodMatcher())
 
 
-class PodToStatefulSetLinker(Linker):
+class ReplicaSetToPodLinker(Linker):
 
-    """Links Pod entities to Stateful Set entities."""
-
-    @classmethod
-    def get(cls, graph):
-        return cls(
-            graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='stateful_set'),
-            matcher=matcher.PodToStatefulSetMatcher())
-
-
-class PodToDaemonSetLinker(Linker):
-
-    """Links Pod entities to Daemon Set entities."""
+    """Links Replica Set entities to Pod entities."""
 
     @classmethod
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='daemon_set'),
-            matcher=matcher.PodToDaemonSetMatcher())
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='replica_set'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            matcher=matcher.ReplicaSetToPodMatcher())
+
+
+class StatefulSetToPodLinker(Linker):
+
+    """Links Stateful Set entities to Pod entities."""
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='stateful_set'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            matcher=matcher.StatefulSetToPodMatcher())
+
+
+class DaemonSetToPodLinker(Linker):
+
+    """Links Daemon Set entities to Pod entities."""
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='daemon_set'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            matcher=matcher.DaemonSetToPodMatcher())
 
 
 class PodToNodeLinker(Linker):
@@ -86,95 +86,95 @@ class PodToNodeLinker(Linker):
             matcher=matcher.PodToNodeMatcher())
 
 
-class EndpointsToServiceLinker(Linker):
+class ServiceToEndpointsLinker(Linker):
 
-    """Links Endpoint entities to Service entities."""
+    """Links Serivce entities to Endpoint entities."""
 
     @classmethod
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='endpoints'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
-            matcher=matcher.EndpointsToServiceMatcher())
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='endpoints'),
+            matcher=matcher.ServiceToEndpointsMatcher())
 
 
-class DeploymentToHorizontalPodAutoscalerLinker(Linker):
+class HorizontalPodAutoscalerToDeploymentLinker(Linker):
 
-    """Links Deployment entities to Horizontal Pod Autoscaler entities."""
+    """Links Horizontal Pod Autoscaler entities to Deployment entities."""
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='horizontal_pod_autoscaler'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='deployment'),
+            matcher=matcher.HorizontalPodAutoscalerMatcher())
+
+
+class DeploymentToReplicaSetLinker(Linker):
+
+    """Links Deployment entities to Replica Set entities."""
 
     @classmethod
     def get(cls, graph):
         return cls(
             graph=graph,
             source_spec=utils.NodeSpec(origin='kubernetes', kind='deployment'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='horizontal_pod_autoscaler'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='replica_set'),
+            matcher=matcher.DeploymentToReplicaSetMatcher())
+
+
+class HorizontalPodAutoscalerToReplicaSetLinker(Linker):
+
+    """Links Horizontal Pod Autoscaler entities to Replica Set entities."""
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='horizontal_pod_autoscaler'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='replica_set'),
             matcher=matcher.HorizontalPodAutoscalerMatcher())
 
 
-class ReplicaSetToDeploymentLinker(Linker):
+class HorizontalPodAutoscalerToStatefulSetLinker(Linker):
 
-    """Links Replica Set entities to Deployment entities."""
-
-    @classmethod
-    def get(cls, graph):
-        return cls(
-            graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='replica_set'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='deployment'),
-            matcher=matcher.ReplicaSetToDeploymentMatcher())
-
-
-class ReplicaSetToHorizontalPodAutoscalerLinker(Linker):
-
-    """Links Replica Set entities to Horizontal Pod Autoscaler entities."""
+    """Links Horizontal Pod Autoscaler entities to Stateful Set entities."""
 
     @classmethod
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='replica_set'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='horizontal_pod_autoscaler'),
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='horizontal_pod_autoscaler'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='stateful_set'),
             matcher=matcher.HorizontalPodAutoscalerMatcher())
 
 
-class StatefulSetToHorizontalPodAutoscalerLinker(Linker):
+class PodToConfigMapLinker(Linker):
 
-    """Links Stateful Set entities to Horizontal Pod Autoscaler entities."""
-
-    @classmethod
-    def get(cls, graph):
-        return cls(
-            graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='stateful_set'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='horizontal_pod_autoscaler'),
-            matcher=matcher.HorizontalPodAutoscalerMatcher())
-
-
-class ConfigMapToPodLinker(Linker):
-
-    """Links Config Map entities to Pod entities."""
+    """Links Pod entities to Config Map entities."""
 
     @classmethod
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='config_map'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
-            matcher=matcher.ConfigMapToPodMatcher())
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='config_map'),
+            matcher=matcher.PodToConfigMapMatcher())
 
 
-class SecretToPodLinker(Linker):
+class PodToSecretLinker(Linker):
 
-    """Links Secret entities to Pod entities."""
+    """Links Pod entities to Secret entities."""
 
     @classmethod
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='secret'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
-            matcher=matcher.SecretToPodMatcher())
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='secret'),
+            matcher=matcher.PodToSecretMatcher())
 
 
 class PersistentVolumeToStorageClassLinker(Linker):
@@ -190,33 +190,33 @@ class PersistentVolumeToStorageClassLinker(Linker):
             matcher=matcher.PersistentVolumeToStorageClassMatcher())
 
 
-class PersistentVolumeToPersistentVolumeClaimLinker(Linker):
+class PersistentVolumeClaimToPersistentVolumeLinker(Linker):
 
-    """Links Persistent Volume entities to Persistent Volume Claim entities."""
-
-    @classmethod
-    def get(cls, graph):
-        return cls(
-            graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='persistent_volume'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='persistent_volume_claim'),
-            matcher=matcher.PersistentVolumeToPersistentVolumeClaimMatcher())
-
-
-class PersistentVolumeClaimToPodLinker(Linker):
-
-    """Links Persistent Volume Claim entities to Pod entities."""
+    """Links Persistent Volume Claim entities to Persistent Volume entities."""
 
     @classmethod
     def get(cls, graph):
         return cls(
             graph=graph,
             source_spec=utils.NodeSpec(origin='kubernetes', kind='persistent_volume_claim'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
-            matcher=matcher.PersistentVolumeClaimToPodMatcher())
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='persistent_volume'),
+            matcher=matcher.PersistentVolumeClaimToPersistentVolumeMatcher())
 
 
-class NodeToClusterLinker(Linker):
+class PodToPersistentVolumeClaimLinker(Linker):
+
+    """Links Pod entities to Persistent Volume Claim entities."""
+
+    @classmethod
+    def get(cls, graph):
+        return cls(
+            graph=graph,
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='persistent_volume_claim'),
+            matcher=matcher.PodToPersistentVolumeClaimMatcher())
+
+
+class ClusterToNodeLinker(Linker):
 
     """Links Node entitites."""
 
@@ -224,9 +224,9 @@ class NodeToClusterLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='node'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='cluster'),
-            matcher=matcher.NodeToClusterMatcher())
+            source_spec=utils.NodeSpec(origin='kubernetes', kind='cluster'),
+            target_spec=utils.NodeSpec(origin='kubernetes', kind='node'),
+            matcher=matcher.ClusterToNodeMatcher())
 
 
 class IngressToServiceLinker(Linker):
