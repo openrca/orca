@@ -56,7 +56,7 @@ class AlertExtractor(Extractor):
 
     def _extract_severity(self, entity):
         labels = self._extract_labels(entity)
-        return labels['severity']
+        return labels.get('severity')
 
     def _extract_message(self, entity):
         annotations = self._extract_annotations(entity)
