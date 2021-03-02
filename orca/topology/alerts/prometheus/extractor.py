@@ -35,7 +35,8 @@ class AlertExtractor(Extractor):
     """Extractor for Alert entities retrieved from Prometheus API."""
 
     def _extract_name(self, entity):
-        return entity['labels']['alertname']
+        labels = self._extract_labels(entity)
+        return labels['alertname']
 
     def _extract_status(self, entity):
         if entity['state'] == 'firing':
@@ -43,24 +44,33 @@ class AlertExtractor(Extractor):
         return alert_props.AlertStatus.DOWN
 
     def _extract_source_labels(self, entity):
-        return entity['labels']
+        return self._extract_labels(entity)
 
     def _extract_properties(self, entity):
         properties = {}
         properties['severity'] = self._extract_severity(entity)
         properties['message'] = self._extract_message(entity)
+        properties['labels'] = self._extract_labels(entity)
+        properties['annotations'] = self._extract_annotations(entity)
         return properties
 
     def _extract_severity(self, entity):
-        return entity['labels']['severity']
+        labels = self._extract_labels(entity)
+        return labels['severity']
 
     def _extract_message(self, entity):
-        annotations = entity['annotations']
+        annotations = self._extract_annotations(entity)
         message = annotations.get('message')
         if not message:
             message = annotations.get('summary')
         if message:
             return str_utils.escape(message)
+
+    def _extract_labels(self, entity):
+        return entity['labels']
+
+    def _extract_annotations(self, entity):
+        return entity['annotations']
 
 
 class AlertEventExtractor(AlertExtractor):
