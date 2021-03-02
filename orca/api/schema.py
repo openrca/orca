@@ -49,6 +49,7 @@ class AlertSchema(Schema):
     message = fields.String(attribute='properties.message')
     severity = fields.String(attribute='properties.severity')
     source = fields.Nested(NodeSchema(), attribute='properties.source_mapping')
+    properties = fields.Raw()
     created_at = fields.String()
     updated_at = fields.String()
 
