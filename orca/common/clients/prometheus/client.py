@@ -25,6 +25,9 @@ class PrometheusClient(rest_client.APIClient):
     def instant_query(self, query):
         return self._connector.get("query", query=query)
 
+    def range_query(self, query, start, end, step):
+        return self._connector.get("query_range", query=query, start=start, end=end, step=step)
+
     @classmethod
     def get(cls, url="http://localhost:9090", api_prefix="/api/v1"):
         connector = rest_client.APIConnector(url, api_prefix=api_prefix)
