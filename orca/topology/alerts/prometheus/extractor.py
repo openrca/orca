@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import dateparser
+
 from orca.common import str_utils
 from orca.topology.alerts import extractor
 from orca.topology.alerts import properties as alert_props
@@ -42,6 +44,9 @@ class AlertExtractor(Extractor):
         if entity['state'] == 'firing':
             return alert_props.AlertStatus.UP
         return alert_props.AlertStatus.DOWN
+
+    def _extract_activation_time(self, entity):
+        return int(dateparser.parse(entity["activeAt"]).timestamp())
 
     def _extract_source_labels(self, entity):
         return self._extract_labels(entity)
@@ -79,3 +84,6 @@ class AlertEventExtractor(AlertExtractor):
 
     def _extract_status(self, entity):
         return entity['status']
+
+    def _extract_activation_time(self, entity):
+        return int(dateparser.parse(entity["startsAt"]).timestamp())
