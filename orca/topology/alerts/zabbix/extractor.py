@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.common import str_utils
+from orca.common import str_utils, utils
 from orca.topology.alerts import extractor
 from orca.topology.alerts import properties as alert_props
 
@@ -41,6 +41,10 @@ class AlertExtractor(Extractor):
         if entity['trigger'][2] == '1':
             return alert_props.AlertStatus.UP
         return alert_props.AlertStatus.DOWN
+
+    def _extract_activation_time(self, entity):
+        # TODO: Extract activation time from alert payload
+        return utils.get_utc()
 
     def _extract_source_labels(self, entity):
         return {'node': entity['host']}

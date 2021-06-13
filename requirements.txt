@@ -1,6 +1,7 @@
 addict==2.2.1                       # MIT
 cerberus==1.3.2                     # ISC
 cotyledon==1.7.3                    # Apache License 2.0
+dateparser==1.0.0                   # BSD 3-Clause License
 flask==1.1.1                        # BSD 3-Clause License
 flask-restx==0.2.0                  # BSD 3-Clause License
 flask_cors==3.0.9                   # MIT

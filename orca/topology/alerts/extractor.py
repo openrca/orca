@@ -39,12 +39,14 @@ class Extractor(extractor.Extractor):
     def extract(self, entity):
         name = self._extract_name(entity)
         status = self._extract_status(entity)
+        activated_at = self._extract_activation_time(entity)
         labels = self._extract_source_labels(entity)
         source_mapping = self._source_mapper.map(name, labels)
         node_id = self._build_id(name, source_mapping)
         properties = self._extract_properties(entity)
         properties['name'] = name
         properties['status'] = status
+        properties['activated_at'] = activated_at
         properties['source_mapping'] = source_mapping
         node = graph.Node(node_id, properties, self.origin, self.kind)
         return Alert(node)
@@ -56,6 +58,10 @@ class Extractor(extractor.Extractor):
     @abc.abstractmethod
     def _extract_status(self, entity):
         """Extract alert status from given entity object."""
+
+    @abc.abstractmethod
+    def _extract_activation_time(self, entity):
+        """Extract alert activation time from given entity object."""
 
     @abc.abstractmethod
     def _extract_source_labels(self, entity):
