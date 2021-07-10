@@ -39,6 +39,7 @@ class GraphSchema(Schema):
 class GraphQuerySchema(Schema):
 
     time_point = fields.Integer(missing=None)
+    deleted = fields.Boolean(missing=False)
 
 
 class AlertSchema(Schema):
@@ -58,3 +59,4 @@ class AlertSchema(Schema):
 class AlertQuerySchema(Schema):
 
     time_point = fields.Integer(missing=None)
+    deleted = fields.Boolean(missing=False)
