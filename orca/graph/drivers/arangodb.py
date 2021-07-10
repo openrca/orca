@@ -79,12 +79,12 @@ class ArangoDBDriver(driver.Driver):
         links_col = graph.edge_collection('links')
         links_col.add_hash_index(fields=['id'], unique=False)
 
-    def get_nodes(self, time_point, properties):
+    def get_nodes(self, time_point, properties, include_deleted):
         query_pattern = (
             'FOR node in nodes '
             '%(filters)s '
             'RETURN node')
-        filters = self._build_filters(time_point, properties, handle='node')
+        filters = self._build_filters(time_point, properties, include_deleted, handle='node')
         documents = self._execute_aql(query_pattern, filters=filters)
         return [self._build_node_obj(document) for document in documents]
 
@@ -121,14 +121,14 @@ class ArangoDBDriver(driver.Driver):
             'REMOVE node IN nodes')
         self._execute_aql(query_pattern, node_id=node.id)
 
-    def get_links(self, time_point, properties):
+    def get_links(self, time_point, properties, include_deleted):
         query_pattern = (
             'FOR link in links '
             '%(filters)s '
             'LET source = DOCUMENT(link._from) '
             'LET target = DOCUMENT(link._to)'
             'RETURN {link, source, target}')
-        filters = self._build_filters(time_point, properties, handle='link')
+        filters = self._build_filters(time_point, properties, include_deleted, handle='link')
         documents = self._execute_aql(query_pattern, filters=filters)
         links = []
         for document in documents:
@@ -221,11 +221,14 @@ class ArangoDBDriver(driver.Driver):
     def _use_graph(self, graph):
         return self._database.graph(graph)
 
-    def _build_filters(self, time_point, properties, handle):
+    def _build_filters(self, time_point, properties, include_deleted, handle):
         filters = []
-        filters.append(self._build_property_filters(properties, handle=handle))
+        if properties:
+            filters.append(self._build_property_filters(properties, handle=handle))
         if time_point:
             filters.append(self._build_time_filter(time_point, handle=handle))
+        if not include_deleted:
+            filters.append(self._build_non_deleted_filter(handle=handle))
         return ' '.join(filters)
 
     def _build_property_filters(self, properties, handle):
@@ -241,6 +244,9 @@ class ArangoDBDriver(driver.Driver):
         filters.append(
             'FILTER %s.deleted_at == null OR %s.deleted_at > %i' % (handle, handle, time_point))
         return ' '.join(filters)
+
+    def _build_non_deleted_filter(self, handle):
+        return "FILTER %s.deleted_at == null" % handle
 
     def _execute_aql(self, query_pattern, **params):
         query = query_pattern % params
