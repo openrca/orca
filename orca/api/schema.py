@@ -45,6 +45,7 @@ class AlertSchema(Schema):
 
     id = fields.String()
     origin = fields.String()
+    kind = fields.String()
     name = fields.String(attribute='properties.name')
     message = fields.String(attribute='properties.message')
     severity = fields.String(attribute='properties.severity')
