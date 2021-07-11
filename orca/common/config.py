@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+
 import addict as dict_lib
 import cerberus
 
@@ -46,7 +48,10 @@ class Config(object):
     @classmethod
     def get(cls, schema):
         parser = ConfigParser(schema)
-        return cls("/etc/orca/orca.yaml", parser)
+        path = os.environ.get("OPENRCA_CONFIG")
+        if not path:
+            path = "/etc/orca/orca.yaml"
+        return cls(path, parser)
 
 
 class ConfigParser(object):
