@@ -86,12 +86,10 @@ class Graph(object):
         LOG.info("Initializing graph database")
         self._driver.setup()
 
-    def get_nodes(self, time_point=None, properties=None):
-        if not time_point:
-            time_point = utils.get_utc()
+    def get_nodes(self, time_point=None, properties=None, include_deleted=False):
         if not properties:
             properties = {}
-        return self._driver.get_nodes(time_point, properties)
+        return self._driver.get_nodes(time_point, properties, include_deleted)
 
     def get_node(self, node_id):
         return self._driver.get_node(node_id)
@@ -127,12 +125,10 @@ class Graph(object):
         self._driver.update_node(node)
         self._notify_listeners(GraphEvent.NODE_DELETED, node)
 
-    def get_links(self, time_point=None, properties=None):
-        if not time_point:
-            time_point = utils.get_utc()
+    def get_links(self, time_point=None, properties=None, include_deleted=False):
         if not properties:
             properties = {}
-        return self._driver.get_links(time_point, properties)
+        return self._driver.get_links(time_point, properties, include_deleted)
 
     def get_link(self, link_id):
         return self._driver.get_link(link_id)

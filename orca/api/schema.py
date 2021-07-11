@@ -39,12 +39,14 @@ class GraphSchema(Schema):
 class GraphQuerySchema(Schema):
 
     time_point = fields.Integer(missing=None)
+    deleted = fields.Boolean(missing=False)
 
 
 class AlertSchema(Schema):
 
     id = fields.String()
     origin = fields.String()
+    kind = fields.String()
     name = fields.String(attribute='properties.name')
     message = fields.String(attribute='properties.message')
     severity = fields.String(attribute='properties.severity')
@@ -57,3 +59,4 @@ class AlertSchema(Schema):
 class AlertQuerySchema(Schema):
 
     time_point = fields.Integer(missing=None)
+    deleted = fields.Boolean(missing=False)

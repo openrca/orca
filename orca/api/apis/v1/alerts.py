@@ -27,8 +27,10 @@ class Alerts(Resource):
     def get(self):
         query_schema = AlertQuerySchema()
         query = query_schema.load(request.args)
+        timepoint = query['time_point']
+        include_deleted = query['deleted']
         alert_data = self._graph.get_nodes(
-            time_point=query['time_point'], properties={'kind': 'alert'})
+            time_point=timepoint, properties={'kind': 'alert'}, include_deleted=include_deleted)
         alert_schema = AlertSchema(many=True)
         result = alert_schema.dump(alert_data)
         return result, 200
