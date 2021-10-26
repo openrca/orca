@@ -1,2 +1,13 @@
+image:
+  tag: "6.8.20"
+
 env:
   ELASTICSEARCH_HOSTS: "http://elasticsearch-client.logging:9200"
+
+resources:
+  requests:
+    cpu: 1000m
+    memory: 1000Mi
+  limits:
+    cpu: 2000m
+    memory: 2000Mi
