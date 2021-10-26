@@ -1,10 +1,13 @@
+image:
+  tag: "6.8.20"
+
 master:
   persistence:
     enabled: false
   resources:
     requests:
-      cpu: 100m
-      memory: 100Mi
+      cpu: 4000m
+      memory: 4000Mi
     limits:
       cpu: 4000m
       memory: 4000Mi
@@ -14,17 +17,17 @@ data:
     enabled: false
   resources:
     requests:
-      cpu: 100m
-      memory: 100Mi
+      cpu: 16000m
+      memory: 16000Mi
     limits:
-      cpu: 4000m
-      memory: 4000Mi
+      cpu: 32000m
+      memory: 32000Mi
 
 client:
   resources:
     requests:
-      cpu: 100m
-      memory: 100Mi
-    limits:
       cpu: 4000m
       memory: 4000Mi
+    limits:
+      cpu: 16000m
+      memory: 16000Mi
