@@ -31,7 +31,7 @@ class Ingestor(object):
         try:
             self._ingest_event(event)
         except exceptions.OrcaError as ex:
-            LOG.debug("Error while extracting an entity: %s", ex)
+            LOG.warning("Error while extracting an entity: %s", ex)
 
     def _ingest_event(self, event):
         node = self._extractor.extract(event)
