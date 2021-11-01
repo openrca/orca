@@ -25,6 +25,7 @@ filebeatConfig:
           fields:
           - "log_processed.attr.command"
           - "log_processed.attr.error"
+          - "log_processed.attr.CRUD"
       ignore_missing: false
       fail_on_error: true
     output.elasticsearch:
