@@ -19,7 +19,7 @@ import cotyledon
 
 from orca.common import config, logger
 from orca.graph import graph
-from orca.topology import alerts, infra, probe
+from orca.topology import alerts, infra, probe, gc
 
 CONFIG = config.CONFIG
 LOG = logger.get_logger(__name__)
@@ -56,3 +56,5 @@ class Manager(cotyledon.ServiceManager):
         for probe_module in probe_modules:
             for probe_bundle in probe_module.get_probes():
                 self.add(probe.ProbeRunner, workers=1, args=(probe_bundle, graph_lock))
+
+        self.add(gc.GarabageCollectorService, workers=1, args=(graph_lock,))

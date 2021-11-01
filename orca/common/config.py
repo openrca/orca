@@ -103,7 +103,13 @@ SCHEMA = {
                         'default': "/etc/orca/alerts-mapping.yaml"
                     }
                 }
-            }
+            },
+            'gc': {
+                'type': 'dict',
+                'schema': {
+                    'interval': {'type': 'integer', 'coerce': int, 'default': 60}
+                }
+            },
         }
     },
     'probes': {

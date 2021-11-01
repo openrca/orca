@@ -19,6 +19,8 @@ data:
     topology:
       alerts:
         mapping_path: /etc/orca/alerts-mapping.yaml
+      gc:
+        interval: 60
 
     probes:
       kubernetes:
