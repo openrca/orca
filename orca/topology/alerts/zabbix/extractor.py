@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from orca.common import str_utils, utils
+from orca.common import utils
 from orca.topology.alerts import extractor
 from orca.topology.alerts import properties as alert_props
 

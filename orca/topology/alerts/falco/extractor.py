@@ -46,7 +46,7 @@ class AlertExtractor(Extractor):
         return utils.get_utc()
 
     def _extract_source_labels(self, entity):
-        return entity['output_fields']
+        return utils.flatten_dict(entity['output_fields'], sep=".")
 
     def _extract_properties(self, entity):
         properties = {}

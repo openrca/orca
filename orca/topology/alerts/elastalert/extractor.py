@@ -49,7 +49,7 @@ class AlertExtractor(Extractor):
         labels = entity['kubernetes'].copy()
         labels.pop('labels', None)
         labels.pop('annotations', None)
-        return labels
+        return utils.flatten_dict(labels, sep=".")
 
     def _extract_properties(self, entity):
         properties = {}

@@ -14,7 +14,7 @@
 
 import dateparser
 
-from orca.common import str_utils
+from orca.common import str_utils, utils
 from orca.topology.alerts import extractor
 from orca.topology.alerts import properties as alert_props
 
@@ -49,7 +49,8 @@ class AlertExtractor(Extractor):
         return int(dateparser.parse(entity["activeAt"]).timestamp())
 
     def _extract_source_labels(self, entity):
-        return self._extract_labels(entity)
+        labels = self._extract_labels(entity)
+        return utils.flatten_dict(labels, sep=".")
 
     def _extract_properties(self, entity):
         properties = {}
