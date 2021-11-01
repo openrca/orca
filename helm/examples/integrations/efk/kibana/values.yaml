@@ -1,8 +1,6 @@
-image:
-  tag: "6.8.20"
+imageTag: "7.15.0"
 
-env:
-  ELASTICSEARCH_HOSTS: "http://elasticsearch-client.logging:9200"
+fullnameOverride: "kibana"
 
 resources:
   requests:

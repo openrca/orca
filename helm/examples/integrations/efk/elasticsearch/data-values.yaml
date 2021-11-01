@@ -1,0 +1,29 @@
+imageTag: "7.15.0"
+
+clusterName: "elasticsearch"
+
+nodeGroup: "data"
+
+replicas: 5
+
+roles:
+  master: "false"
+  ingest: "true"
+  data: "true"
+  ml: "false"
+  remote_cluster_client: "false"
+
+esConfig:
+  elasticsearch.yml: |
+    xpack.security.enabled: false
+
+persistence:
+  enabled: false
+
+resources:
+  requests:
+    cpu: 16000m
+    memory: 16000Mi
+  limits:
+    cpu: 32000m
+    memory: 32000Mi
