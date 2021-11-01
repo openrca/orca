@@ -703,13 +703,20 @@ falco:
 
 elastalert:
   mappings:
-    - name: "Application error"
+    - name: "HostFailedInReplicaSet"
       source_mapping:
         origin: kubernetes
         kind: pod
         properties:
-          name: pod_name
-          namespace: namespace_name
+          name: pod.name
+          namespace: namespace
+    - name: "HeartbeatFailed"
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod.name
+          namespace: namespace
 
 zabbix:
   mappings:

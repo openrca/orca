@@ -13,6 +13,49 @@ realertIntervalMins: 15
 bufferTimeMins: 5
 writebackIndex: elastalert_status
 
+
+rules:
+  psmdb-host-failed-in-replica-set: |-
+    ---
+    name: HostFailedInReplicaSet
+    type: frequency
+    index: filebeat*
+    num_events: 3
+    timeframe:
+      minutes: 1
+    filter:
+    - term:
+        "log_processed.msg": "Host failed in replica set"
+    aggregation_key: "kubernetes.pod_name"
+    alert:
+    - "post"
+    http_post_url: "http://orca.rca:5000/v1/ingestor/elastalert"
+    http_post_static_payload:
+      name: "HostFailedInReplicaSet"
+      status: active
+      severity: error
+      message: "Host failed in Replica Set"
+  psmdb-heartbeat-failed: |-
+    ---
+    name: HeartbeatFailed
+    type: frequency
+    index: filebeat*
+    num_events: 3
+    timeframe:
+      minutes: 1
+    filter:
+    - term:
+        "log_processed.msg": "Heartbeat failed after max retries"
+    aggregation_key: "kubernetes.pod_name"
+    alert:
+    - "post"
+    http_post_url: "http://orca.rca:5000/v1/ingestor/elastalert"
+    http_post_static_payload:
+      name: "HeartbeatFailed"
+      status: active
+      severity: error
+      message: "Heartbeat failed after max retries"
+
 resources:
   requests:
     cpu: 100m
