@@ -38,8 +38,9 @@ class AlertExtractor(Extractor):
         return entity['name']
 
     def _extract_status(self, entity):
-        # TODO: Differentiate UP/DOWN status
-        return alert_props.AlertStatus.UP
+        if entity['status'] == 'active':
+            return alert_props.AlertStatus.UP
+        return alert_props.AlertStatus.DOWN
 
     def _extract_activation_time(self, entity):
         # TODO: Extract activation time from alert payload
@@ -53,7 +54,7 @@ class AlertExtractor(Extractor):
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['status'] = 'active'
+        properties['status'] = entity['status']
         properties['severity'] = entity['severity']
         properties['message'] = str_utils.escape(entity['message'])
         return properties
