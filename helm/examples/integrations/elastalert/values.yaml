@@ -11,7 +11,7 @@ runIntervalMins: 1
 alertRetryLimitMins: 5
 realertIntervalMins: 15
 bufferTimeMins: 5
-writebackIndex: elastalert_status
+writebackIndex: elastalert
 
 
 rules:
@@ -26,7 +26,9 @@ rules:
     filter:
     - term:
         "log_processed.msg": "Host failed in replica set"
-    aggregation_key: "kubernetes.pod_name"
+    query_key: "kubernetes.pod.name"
+    realert:
+      minutes: 1
     alert:
     - "post"
     http_post_url: "http://orca.rca:5000/v1/ingestor/elastalert"
@@ -46,7 +48,9 @@ rules:
     filter:
     - term:
         "log_processed.msg": "Heartbeat failed after max retries"
-    aggregation_key: "kubernetes.pod_name"
+    query_key: "kubernetes.pod.name"
+    realert:
+      minutes: 1
     alert:
     - "post"
     http_post_url: "http://orca.rca:5000/v1/ingestor/elastalert"
