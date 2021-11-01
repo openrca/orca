@@ -1,0 +1,22 @@
+image:
+  tag: 2.2.2
+
+fullnameOverride: "elastalert"
+
+elasticsearch:
+  host: "elasticsearch-client.logging"
+  port: 9200
+
+runIntervalMins: 1
+alertRetryLimitMins: 5
+realertIntervalMins: 15
+bufferTimeMins: 5
+writebackIndex: elastalert_status
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 100Mi
+  limits:
+    cpu: 1000m
+    memory: 1000Mi
