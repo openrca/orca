@@ -1,0 +1,78 @@
+prometheus:
+  prometheusSpec:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 100Mi
+      limits:
+        cpu: 4000m
+        memory: 8000Mi
+    serviceMonitorSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+
+    additionalScrapeConfigs:
+    # enable scraping by pod annotations
+    # (https://github.com/prometheus-operator/kube-prometheus/pull/16#issuecomment-424318647)
+    - job_name: kubernetes-pods
+      kubernetes_sd_configs:
+      - role: pod
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
+      - source_labels: [__meta_kubernetes_namespace]
+        action: replace
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        action: replace
+        target_label: kubernetes_pod_name
+
+prometheus-node-exporter:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      cpu: 2000m
+      memory: 1000Mi
+
+alertmanager:
+  alertmanagerSpec:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 100Mi
+      limits:
+        cpu: 1000m
+        memory: 1000Mi
+
+  config:
+    global:
+      resolve_timeout: 5m
+    receivers:
+    - name: webhook
+      webhook_configs:
+      - url: "http://orca.rca:5000/v1/ingestor/prometheus"
+    route:
+      group_by: ["job"]
+      group_interval: 30s
+      group_wait: 30s
+      receiver: "webhook"
+      repeat_interval: 12h
+      routes: []
+
+grafana:
+  sidecar:
+    dashboards:
+      searchNamespace: ALL
