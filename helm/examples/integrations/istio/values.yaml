@@ -2,7 +2,7 @@ apiVersion: install.istio.io/v1alpha1
 kind: IstioOperator
 spec:
   hub: docker.io/istio
-  tag: 1.6.14
+  tag: 1.11.4
   components:
     proxy:
       k8s:
@@ -25,18 +25,6 @@ spec:
           requests:
             cpu: 100m
             memory: 128Mi
-    telemetry:
-      k8s:
-        hpaSpec:
-          minReplicas: 1
-          maxReplicas: 5
-        resources:
-          limits:
-            cpu: 4000m
-            memory: 4096Mi
-          requests:
-            cpu: 100m
-            memory: 128Mi
     ingressGateways:
     - enabled: true
       k8s:
@@ -51,25 +39,3 @@ spec:
             cpu: 100m
             memory: 128Mi
       name: istio-ingressgateway
-  addonComponents:
-    tracing:
-      enabled: false
-    prometheus:
-      enabled: false
-    prometheusOperator:
-      enabled: true
-    grafana:
-      enabled: false
-    kiali:
-      enabled: true
-  values:
-    global:
-      enableTracing: false
-      disablePolicyChecks: true
-      controlPlaneSecurityEnabled: false
-      proxy:
-        concurrency: 2
-    kiali:
-      createDemoSecret: true
-    prometheusOperator:
-      createPrometheusResource: false
