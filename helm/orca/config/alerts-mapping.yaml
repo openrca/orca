@@ -703,14 +703,14 @@ falco:
 
 elastalert:
   mappings:
-    - name: "HostFailedInReplicaSet"
+    - name: "MongoDBHostFailedInReplicaSet"
       source_mapping:
         origin: kubernetes
         kind: pod
         properties:
           name: pod.name
           namespace: namespace
-    - name: "HeartbeatFailed"
+    - name: "MongoDBHeartbeatFailed"
       source_mapping:
         origin: kubernetes
         kind: pod

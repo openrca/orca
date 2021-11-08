@@ -17,7 +17,7 @@ writebackIndex: elastalert
 rules:
   psmdb-host-failed-in-replica-set: |-
     ---
-    name: HostFailedInReplicaSet
+    name: MongoDBHostFailedInReplicaSet
     type: frequency
     index: filebeat*
     num_events: 3
@@ -33,13 +33,14 @@ rules:
     - "post"
     http_post_url: "http://orca.rca:5000/v1/ingestor/elastalert"
     http_post_static_payload:
-      name: "HostFailedInReplicaSet"
+      name: "MongoDBHostFailedInReplicaSet"
       status: active
       severity: error
       message: "Host failed in Replica Set"
+
   psmdb-heartbeat-failed: |-
     ---
-    name: HeartbeatFailed
+    name: MongoDBHeartbeatFailed
     type: frequency
     index: filebeat*
     num_events: 3
@@ -55,7 +56,7 @@ rules:
     - "post"
     http_post_url: "http://orca.rca:5000/v1/ingestor/elastalert"
     http_post_static_payload:
-      name: "HeartbeatFailed"
+      name: "MongoDBHeartbeatFailed"
       status: active
       severity: error
       message: "Heartbeat failed after max retries"
