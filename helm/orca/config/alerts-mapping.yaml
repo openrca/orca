@@ -717,6 +717,13 @@ elastalert:
         properties:
           name: pod.name
           namespace: namespace
+    - name: "HipsterCartStoreInaccessible"
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod.name
+          namespace: namespace
 
 zabbix:
   mappings:

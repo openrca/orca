@@ -61,6 +61,29 @@ rules:
       severity: error
       message: "Heartbeat failed after max retries"
 
+  hipster-cart-store-inaccessible: |-
+    ---
+    name: HipsterCartStoreInaccessible
+    type: frequency
+    index: filebeat*
+    num_events: 3
+    timeframe:
+      minutes: 1
+    filter:
+    - term:
+        "log_processed.message": "Unable to access cart storage"
+    query_key: "kubernetes.pod.name"
+    realert:
+      minutes: 1
+    alert:
+    - "post"
+    http_post_url: "http://orca.rca:5000/v1/ingestor/elastalert"
+    http_post_static_payload:
+      name: "HipsterCartStoreInaccessible"
+      status: active
+      severity: error
+      message: "Unable to access cart storage"
+
 resources:
   requests:
     cpu: 100m
