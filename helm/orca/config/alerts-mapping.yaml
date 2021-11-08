@@ -608,6 +608,13 @@ prometheus:
         properties:
           name: destination_workload
           namespace: destination_workload_namespace
+    - name: IstioHighGrpcErrorRate
+      source_mapping:
+        origin: kubernetes
+        kind: service
+        properties:
+          name: destination_workload
+          namespace: destination_workload_namespace
 
 falco:
   blacklist_values:
