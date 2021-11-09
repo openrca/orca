@@ -26,6 +26,7 @@ filebeatConfig:
         - "log_processed.attr.command"
         - "log_processed.attr.error"
         - "log_processed.attr.CRUD"
+        - "log_processed.id"
         ignore_missing: true
     output.elasticsearch:
       host: '${NODE_NAME}'
