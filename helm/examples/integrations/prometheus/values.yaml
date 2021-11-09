@@ -2,11 +2,11 @@ prometheus:
   prometheusSpec:
     resources:
       requests:
-        cpu: 100m
-        memory: 100Mi
-      limits:
         cpu: 4000m
         memory: 8000Mi
+      limits:
+        cpu: 4000m
+        memory: 16000Mi
     serviceMonitorSelectorNilUsesHelmValues: false
     ruleSelectorNilUsesHelmValues: false
 
@@ -41,18 +41,18 @@ prometheus:
 prometheus-node-exporter:
   resources:
     requests:
-      cpu: 100m
-      memory: 100Mi
+      cpu: 1000m
+      memory: 1000Mi
     limits:
       cpu: 2000m
-      memory: 1000Mi
+      memory: 2000Mi
 
 alertmanager:
   alertmanagerSpec:
     resources:
       requests:
-        cpu: 100m
-        memory: 100Mi
+        cpu: 1000m
+        memory: 1000Mi
       limits:
         cpu: 1000m
         memory: 1000Mi
