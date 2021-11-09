@@ -8,26 +8,25 @@ filebeatConfig:
     - type: container
       paths:
       - /var/log/containers/*.log
-      processors:
-      - add_kubernetes_metadata:
+    processors:
+    - add_kubernetes_metadata:
         host: ${NODE_NAME}
         matchers:
         - logs_path:
-          logs_path: "/var/log/containers/"
-      - decode_json_fields:
+            logs_path: "/var/log/containers/"
+    - decode_json_fields:
         fields: message
         process_array: false
         max_depth: 5
         target: "log_processed"
         overwrite_keys: false
         add_error_key: true
-      - drop_fields:
-          fields:
-          - "log_processed.attr.command"
-          - "log_processed.attr.error"
-          - "log_processed.attr.CRUD"
-      ignore_missing: false
-      fail_on_error: true
+    - drop_fields:
+        fields:
+        - "log_processed.attr.command"
+        - "log_processed.attr.error"
+        - "log_processed.attr.CRUD"
+        ignore_missing: true
     output.elasticsearch:
       host: '${NODE_NAME}'
       hosts: '${ELASTICSEARCH_HOSTS:elasticsearch-master:9200}'
