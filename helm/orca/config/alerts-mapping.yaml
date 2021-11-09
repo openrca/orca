@@ -599,22 +599,22 @@ prometheus:
         origin: kubernetes
         kind: service
         properties:
-          name: destination_workload
-          namespace: destination_workload_namespace
+          name: destination_service_name
+          namespace: destination_service_namespace
     - name: IstioHigh5xxErrorRate
       source_mapping:
         origin: kubernetes
         kind: service
         properties:
-          name: destination_workload
-          namespace: destination_workload_namespace
+          name: destination_service_name
+          namespace: destination_service_namespace
     - name: IstioHighGrpcErrorRate
       source_mapping:
         origin: kubernetes
         kind: service
         properties:
-          name: destination_workload
-          namespace: destination_workload_namespace
+          name: destination_service_name
+          namespace: destination_service_namespace
 
 falco:
   blacklist_values:
