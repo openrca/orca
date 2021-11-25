@@ -710,14 +710,43 @@ falco:
 
 elastalert:
   mappings:
-    - name: "MongoDBHostFailedInReplicaSet"
+    # TODO(bzurkowski): implement regex-based alert mapping
+    - name: "MongoDBHost0FailedInReplicaSetRs0"
       source_mapping:
         origin: kubernetes
         kind: pod
         properties:
           name: pod.name
           namespace: namespace
-    - name: "MongoDBHeartbeatFailed"
+    - name: "MongoDBHost1FailedInReplicaSetRs0"
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod.name
+          namespace: namespace
+    - name: "MongoDBHost2FailedInReplicaSetRs0"
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod.name
+          namespace: namespace
+    - name: "MongoDBHeartbeatFailedToHost0InReplicaSetRs0"
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod.name
+          namespace: namespace
+    - name: "MongoDBHeartbeatFailedToHost1InReplicaSetRs0"
+      source_mapping:
+        origin: kubernetes
+        kind: pod
+        properties:
+          name: pod.name
+          namespace: namespace
+    - name: "MongoDBHeartbeatFailedToHost2InReplicaSetRs0"
       source_mapping:
         origin: kubernetes
         kind: pod

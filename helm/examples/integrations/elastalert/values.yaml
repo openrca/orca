@@ -31,12 +31,16 @@ rules:
       minutes: 1
     alert:
     - "post"
+    match_enhancements:
+    - "elastalert_modules.enhancements.MongoDBHostFailedInReplicaSet"
     http_post_url: "http://orca.rca:5000/v1/ingestor/elastalert"
+    http_post_payload:
+      name: name
     http_post_static_payload:
-      name: "MongoDBHostFailedInReplicaSet"
       status: active
       severity: error
       message: "Host failed in Replica Set"
+    http_post_all_values: true
 
   psmdb-heartbeat-failed: |-
     ---
@@ -54,12 +58,16 @@ rules:
       minutes: 1
     alert:
     - "post"
+    match_enhancements:
+    - "elastalert_modules.enhancements.MongoDBHeartbeatFailed"
     http_post_url: "http://orca.rca:5000/v1/ingestor/elastalert"
+    http_post_payload:
+      name: name
     http_post_static_payload:
-      name: "MongoDBHeartbeatFailed"
       status: active
       severity: error
       message: "Heartbeat failed after max retries"
+    http_post_all_values: true
 
   hipster-cart-store-inaccessible: |-
     ---
@@ -83,6 +91,14 @@ rules:
       status: active
       severity: error
       message: "Unable to access cart storage"
+
+extraVolumeMounts:
+  - name: enhancements
+    mountPath: /opt/elastalert/elastalert_modules
+extraVolumes:
+  - name: enhancements
+    configMap:
+      name: enhancements
 
 resources:
   requests:
