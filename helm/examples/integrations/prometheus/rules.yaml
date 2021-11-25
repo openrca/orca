@@ -1,0 +1,213 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: orca-kube-apps.rules
+  namespace: rca
+spec:
+  groups:
+  - name: orca.kube-apps.rules
+    rules:
+    - alert: KubePodCrashLooping
+      expr: |-
+        sum(
+          rate(
+            kube_pod_container_status_restarts_total[1m]
+          )
+        ) by (pod, namespace)
+        * 60
+        >
+        0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: Pod is crash looping.
+        description: Pod {{ $labels.namespace }}/{{ $labels.pod }} is restarting {{ printf "%.2f" $value }} times / minute.
+        for: 1
+        query: |-
+          sum(
+            rate(
+              kube_pod_container_status_restarts_total[1m]
+            )
+          ) by (pod, namespace)
+          * 60
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: orca-kube-resources.rules
+  namespace: rca
+spec:
+  groups:
+  - name: orca.kube-resources.rules
+    rules:
+    - alert: CPUThrottlingHigh
+      expr: |-
+        sum(
+          increase(
+            container_cpu_cfs_throttled_periods_total[5m]
+          )
+        ) by (pod, namespace)
+        /
+        sum(
+          increase(
+            container_cpu_cfs_periods_total[5m]
+          )
+        ) by(pod, namespace)
+        >
+        (25/100)
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary: Processes experience elevated CPU throttling.
+        description: "{{ $value | humanizePercentage }} throttling of CPU in namespace {{ $labels.namespace }} in pod {{$labels.pod }}."
+        for: 1
+        query: |-
+          sum(
+            increase(
+              container_cpu_cfs_throttled_periods_total[5m]
+            )
+          ) by (pod, namespace)
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: orca-istio.rules
+  namespace: rca
+spec:
+  groups:
+  - name: orca.istio.rules
+    rules:
+    - alert: IstioRequestDurationHigh
+      expr: |-
+        sum(
+            rate(
+                istio_request_duration_milliseconds_sum[1m]
+            )
+        ) by (destination_service_name, destination_service_namespace)
+        /
+        sum(
+            rate(
+                istio_request_duration_milliseconds_count[1m]
+            )
+        ) by (destination_service_name, destination_service_namespace)
+        > 500
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Istio request duration is higher than usual."
+        description: "Istio request duration between {{ $labels.source_app }} and {{ $labels.destination_app }} exceeds 500ms in last 1 minute."
+        for: 1
+        query: |-
+          sum(
+              rate(
+                  istio_request_duration_milliseconds_sum[1m]
+              )
+          ) by (destination_service_name, destination_service_namespace)
+          /
+          sum(
+              rate(
+                  istio_request_duration_milliseconds_count[1m]
+              )
+          ) by (destination_service_name, destination_service_namespace)
+
+    - alert: IstioHigh5xxErrorRate
+      expr: |-
+        sum(
+          rate(
+            istio_requests_total{
+              reporter="destination",
+              response_code=~"5.*"
+            }[1m]
+          )
+        ) by (destination_service_name, destination_service_namespace)
+        /
+        sum(
+          rate(
+            istio_requests_total{
+              reporter="destination"
+            }[1m]
+          )
+        ) by (destination_service_name, destination_service_namespace)
+        * 100
+        > 5
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Istio high 5xx error rate."
+        description: "High percentage of HTTP 5xx responses in service {{ $labels.destination_app }}: {{ $value }}."
+        for: 1
+        query: |-
+          sum(
+            rate(
+              istio_requests_total{
+                reporter="destination",
+                response_code=~"5.*"
+              }[1m]
+            )
+          ) by (destination_service_name, destination_service_namespace)
+          /
+          sum(
+            rate(
+              istio_requests_total{
+                reporter="destination"
+              }[1m]
+            )
+          ) by (destination_service_name, destination_service_namespace)
+          * 100
+
+    - alert: IstioHighGrpcErrorRate
+      expr: |-
+        sum(
+          rate(
+            istio_requests_total{
+              reporter="source",
+              request_protocol="grpc",
+              grpc_response_status!="0"
+            }[1m]
+          )
+        ) by (destination_service_name, destination_service_namespace)
+        /
+        sum(
+          rate(
+            istio_requests_total{
+              reporter="source",
+              request_protocol="grpc"
+            }[1m]
+          )
+        ) by (destination_service_name, destination_service_namespace)
+        * 100
+        > 5
+      for: 1m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Istio high GRPC error rate."
+        description: "High percentage of GRPC error responses in service {{ $labels.destination_app }}: {{ $value }}."
+        for: 1
+        query: |-
+          sum(
+            rate(
+              istio_requests_total{
+                reporter="source",
+                request_protocol="grpc",
+                grpc_response_status!="0"
+              }[1m]
+            )
+          ) by (destination_service_name, destination_service_namespace)
+          /
+          sum(
+            rate(
+              istio_requests_total{
+                reporter="source",
+                request_protocol="grpc"
+              }[1m]
+            )
+          ) by (destination_service_name, destination_service_namespace)
+          * 100
