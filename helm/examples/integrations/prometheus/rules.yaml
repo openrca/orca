@@ -84,18 +84,14 @@ spec:
     rules:
     - alert: IstioRequestDurationHigh
       expr: |-
-        sum(
+        histogram_quantile(
+          0.99,
+          sum(
             rate(
-                istio_request_duration_milliseconds_sum[1m]
+              istio_request_duration_milliseconds_bucket[1m]
             )
-        ) by (destination_service_name, destination_service_namespace)
-        /
-        sum(
-            rate(
-                istio_request_duration_milliseconds_count[1m]
-            )
-        ) by (destination_service_name, destination_service_namespace)
-        > 500
+          ) by (destination_service_name, destination_service_namespace, le)
+        ) > 500
       for: 1m
       labels:
         severity: warning
@@ -104,17 +100,14 @@ spec:
         description: "Istio request duration between {{ $labels.source_app }} and {{ $labels.destination_app }} exceeds 500ms in last 1 minute."
         for: 1
         query: |-
-          sum(
+          histogram_quantile(
+            0.99,
+            sum(
               rate(
-                  istio_request_duration_milliseconds_sum[1m]
+                istio_request_duration_milliseconds_bucket[1m]
               )
-          ) by (destination_service_name, destination_service_namespace)
-          /
-          sum(
-              rate(
-                  istio_request_duration_milliseconds_count[1m]
-              )
-          ) by (destination_service_name, destination_service_namespace)
+            ) by (destination_service_name, destination_service_namespace, le)
+          )
 
     - alert: IstioHigh5xxErrorRate
       expr: |-
