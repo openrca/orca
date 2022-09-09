@@ -1,6 +1,6 @@
 .PHONY: test
 test:
-	@tox
+	@tox -e py37
 
 .PHONY: lint
 lint:
