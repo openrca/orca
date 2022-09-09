@@ -1,11 +1,11 @@
 .PHONY: test
 test:
-	tox -e pytest
+	@tox
 
 .PHONY: lint
 lint:
-	tox -e lint
+	@tox -e lint
 
 .PHONY: docker-build
 docker-build:
-	docker build . -f Dockerfile -t openrca/orca
+	@docker build . -f Dockerfile -t openrca/orca
