@@ -1,9 +1,9 @@
 PY = py37
-
+s
 .PHONY: test
 test:
-	@tox -e $(PY) $(OPTIONS)
+	tox -e $(PY) $(OPTIONS)
 
 .PHONY: lint
 lint:
-	@tox -e lint
+	tox -e lint
