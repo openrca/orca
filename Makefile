@@ -1,9 +1,11 @@
-PY = py37
-s
 .PHONY: test
 test:
-	tox -e $(PY) $(OPTIONS)
+	tox -e pytest
 
 .PHONY: lint
 lint:
 	tox -e lint
+
+.PHONY: docker-build
+docker-build:
+	docker build . -f Dockerfile -t openrca/orca
