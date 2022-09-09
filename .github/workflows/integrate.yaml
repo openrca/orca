@@ -21,10 +21,10 @@ jobs:
         pip install tox
     - name: Run linter
       run: |
-        tox -e lint
+        make lint PY=py37
     - name: Run tests
       run: |
-        tox -e py37
+        make test PY=py37
   build:
     runs-on: ubuntu-latest
     steps:
