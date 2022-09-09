@@ -375,7 +375,7 @@ class IngressExtractor(Extractor):
         for rule in entity.spec.rules:
             properties = {}
             properties['host'] = rule.host
-            properties['paths']  = self._extract_paths(rule)
+            properties['paths'] = self._extract_paths(rule)
             rules.append(properties)
         return rules
 

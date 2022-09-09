@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import abc
-import time
 
 from orca.common import utils
 
