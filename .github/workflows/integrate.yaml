@@ -22,13 +22,16 @@ jobs:
         pip install --upgrade pip
         pip install tox
 
-    - name: Run tests
-      run: |
-        make test
+    - name: Run formetter
+      uses: psf/black@stable
 
     - name: Run linter
       run: |
         make lint
+
+    - name: Run tests
+      run: |
+        make test
 
   build:
     runs-on: ubuntu-latest
