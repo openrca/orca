@@ -79,10 +79,21 @@ jobs:
     - name: Setup Helm
       uses: azure/setup-helm@v3
 
+    - name: Setup Prometheus
+      run: |
+        helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+        helm repo update
+
+        helm install prometheus prometheus-community/kube-prometheus-stack \
+            --version 12.7.0 \
+            --namespace monitoring \
+            --create-namespace \
+            --values ${{ github.workspace }}/helm/examples/integrations/prometheus/values.yaml
+
     - name: Test kind and helm
       run: |
         helm version
-        kubectl get pods -A
+        kubectl get pods -n monitoring
 
   test-build:
     runs-on: ubuntu-latest
