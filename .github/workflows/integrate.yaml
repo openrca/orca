@@ -13,8 +13,19 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Run formetter
-      uses: psf/black@stable
+    - name: Setup Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.7"
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install tox
+
+    - name: Run formatter
+      run: |
+        make format-check
 
   lint:
     runs-on: ubuntu-latest
@@ -34,7 +45,7 @@ jobs:
 
     - name: Run linter
       run: |
-        tox -e lint
+        make lint
 
   test:
     runs-on: ubuntu-latest
@@ -54,8 +65,7 @@ jobs:
 
     - name: Run tests
       run: |
-        tox -e py37
-
+        make test
 
   build-test:
     runs-on: ubuntu-latest

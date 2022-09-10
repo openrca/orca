@@ -4,7 +4,15 @@ test:
 
 .PHONY: lint
 lint:
-	@tox -e lint
+	@tox -e flake8
+
+.PHONY: format
+format:
+	@tox -e black
+
+.PHONY: format-check
+format-check:
+	@tox -e black -- --check --diff .
 
 .PHONY: docker-build
 docker-build:

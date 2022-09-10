@@ -2,3 +2,4 @@ tox
 pytest
 mock
 flake8
+black
