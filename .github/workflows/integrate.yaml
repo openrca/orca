@@ -67,6 +67,23 @@ jobs:
     - name: Check coverage
       run: make coverage
 
+  test-e2e:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Create kind cluster
+      uses: helm/kind-action@v1.3.0
+
+    - name: Setup Helm
+      uses: azure/setup-helm@v3
+
+    - name: Test kind and helm
+      run: |
+        helm version
+        kubectl get pods -A
+
   test-build:
     runs-on: ubuntu-latest
     steps:
