@@ -1,14 +1,14 @@
 .PHONY: format
 format:
-	@tox -e black
+	@tox -e test-tools -- black .
 
 .PHONY: format-check
 format-check:
-	@tox -e black -- --check --diff .
+	@tox -e test-tools -- black --check --diff .
 
 .PHONY: lint
 lint:
-	@tox -e flake8
+	@tox -e test-tools -- flake8 .
 
 .PHONY: test
 test:
@@ -16,7 +16,7 @@ test:
 
 .PHONY: coverage
 coverage:
-	@tox -e coverage -- report --fail-under=90
+	@tox -e test-tools -- coverage report --fail-under=90
 
 .PHONY: docker-build
 docker-build:
