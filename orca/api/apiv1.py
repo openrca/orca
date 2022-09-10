@@ -5,6 +5,7 @@ from orca.api.apis.v1 import graph as graph_ns
 from orca.api.apis.v1 import ingestor as ingestor_ns
 from orca.api.apis.v1 import alerts as alerts_ns
 
+
 def initialize(graph):
     blueprint = Blueprint('api', __name__, url_prefix='/v1')
     api = Api(blueprint, title='OpenRCA API')

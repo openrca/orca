@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from flask import request
-from flask_restx import Model, Namespace, Resource
+from flask_restx import Namespace, Resource
 
 from orca.api.schema import AlertSchema, AlertQuerySchema
 

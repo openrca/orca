@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pyzabbix import ZabbixAPI
 from orca.topology import upstream
 from orca.common import config
 
@@ -28,7 +27,7 @@ class UpstreamProxy(upstream.UpstreamProxy):
         self._client.login(CONFIG.probes.zabbix.username, CONFIG.probes.zabbix.password)
 
     def get_all(self):
-        all =  self._client.trigger.get(
+        all = self._client.trigger.get(
             only_true=1,
             active=1,
             output='extend',
@@ -38,7 +37,8 @@ class UpstreamProxy(upstream.UpstreamProxy):
             for host in trigger['hosts']:
                 payload = {}
                 payload['host'] = host['host']
-                payload['trigger'] = [ trigger.pop(property) for property in ['description','priority','value']]
+                payload['trigger'] = [
+                    trigger.pop(property) for property in ['description', 'priority', 'value']]
                 triggers.append(payload)
         return triggers
 

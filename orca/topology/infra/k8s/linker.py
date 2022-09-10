@@ -258,7 +258,7 @@ class JobToPodLinker(Linker):
 class CronJobToJobLinker(Linker):
 
     """Links CronJob entities to Job entities."""
-    
+
     @classmethod
     def get(cls, graph):
         return cls(
@@ -266,4 +266,3 @@ class CronJobToJobLinker(Linker):
             source_spec=utils.NodeSpec(origin='kubernetes', kind='cron_job'),
             target_spec=utils.NodeSpec(origin='kubernetes', kind='job'),
             matcher=matcher.CronJobToJobMatcher())
-

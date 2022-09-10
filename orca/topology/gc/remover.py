@@ -28,4 +28,3 @@ class Remover:
             for node in nodes_to_remove:
                 self._graph.delete_node(node.id)
         return nodes_to_remove
-

@@ -372,4 +372,3 @@ class CronJobPushProbe(PushProbe):
     @classmethod
     def get(cls, graph):
         return super().get(graph, 'cron_job', extractor.CronJobExtractor())
-

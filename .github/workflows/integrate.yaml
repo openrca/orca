@@ -1,0 +1,76 @@
+name: Integration
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.7"
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install tox
+
+    - name: Run formatter
+      run: make format-check
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.7"
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install tox
+
+    - name: Run linter
+      run: make lint
+
+  test-unit:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.7"
+
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install tox
+
+    - name: Run tests
+      run: make test
+
+    - name: Check coverage
+      run: make coverage
+
+  test-build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build Docker image
+      run: make docker-build
