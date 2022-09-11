@@ -19,7 +19,6 @@ from orca.api.schema import AlertSchema, AlertQuerySchema
 
 
 class Alerts(Resource):
-
     def __init__(self, api, graph):
         super().__init__()
         self._graph = graph
@@ -27,16 +26,19 @@ class Alerts(Resource):
     def get(self):
         query_schema = AlertQuerySchema()
         query = query_schema.load(request.args)
-        timepoint = query['time_point']
-        include_deleted = query['deleted']
+        timepoint = query["time_point"]
+        include_deleted = query["deleted"]
         alert_data = self._graph.get_nodes(
-            time_point=timepoint, properties={'kind': 'alert'}, include_deleted=include_deleted)
+            time_point=timepoint,
+            properties={"kind": "alert"},
+            include_deleted=include_deleted,
+        )
         alert_schema = AlertSchema(many=True)
         result = alert_schema.dump(alert_data)
         return result, 200
 
 
 def initialize(graph):
-    api = Namespace('alerts', description='Alerts API')
-    api.add_resource(Alerts, '/', resource_class_args=[graph])
+    api = Namespace("alerts", description="Alerts API")
+    api.add_resource(Alerts, "/", resource_class_args=[graph])
     return api

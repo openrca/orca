@@ -17,9 +17,4 @@ from orca.topology import bundle
 
 
 def get_probes():
-    return [
-        bundle.ProbeBundle(
-            probe=probe.ServiceGraphProbe,
-            linkers=[]
-        )
-    ]
+    return [bundle.ProbeBundle(probe=probe.ServiceGraphProbe, linkers=[])]

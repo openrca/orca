@@ -24,16 +24,24 @@ class KialiClient(rest_client.APIClient):
     def list_namespaces(self):
         return self._connector.get("/namespaces")
 
-    def graph_namespaces(self, namespaces, graph_type='service'):
-        namespace_list = ','.join(namespaces)
+    def graph_namespaces(self, namespaces, graph_type="service"):
+        namespace_list = ",".join(namespaces)
         return self._connector.get(
-            "/namespaces/graph", namespaces=namespace_list, graphType=graph_type)
+            "/namespaces/graph", namespaces=namespace_list, graphType=graph_type
+        )
 
     @classmethod
-    def get(cls, url="http://localhost:20001", api_prefix="/kiali/api", username=None,
-            password=None):
+    def get(
+        cls,
+        url="http://localhost:20001",
+        api_prefix="/kiali/api",
+        username=None,
+        password=None,
+    ):
         basic_auth = None
         if username and password:
             basic_auth = auth.HTTPBasicAuth(username, password)
-        connector = rest_client.APIConnector(url, api_prefix=api_prefix, auth=basic_auth)
+        connector = rest_client.APIConnector(
+            url, api_prefix=api_prefix, auth=basic_auth
+        )
         return cls(connector)

@@ -25,11 +25,11 @@ class Extractor(extractor.Extractor):
 
     @property
     def origin(self):
-        return 'prometheus'
+        return "prometheus"
 
     @classmethod
     def get(cls):
-        return super().get('prometheus')
+        return super().get("prometheus")
 
 
 class AlertExtractor(Extractor):
@@ -38,10 +38,10 @@ class AlertExtractor(Extractor):
 
     def _extract_name(self, entity):
         labels = self._extract_labels(entity)
-        return labels['alertname']
+        return labels["alertname"]
 
     def _extract_status(self, entity):
-        if entity['state'] == 'firing':
+        if entity["state"] == "firing":
             return alert_props.AlertStatus.UP
         return alert_props.AlertStatus.DOWN
 
@@ -54,29 +54,29 @@ class AlertExtractor(Extractor):
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['severity'] = self._extract_severity(entity)
-        properties['message'] = self._extract_message(entity)
-        properties['labels'] = self._extract_labels(entity)
-        properties['annotations'] = self._extract_annotations(entity)
+        properties["severity"] = self._extract_severity(entity)
+        properties["message"] = self._extract_message(entity)
+        properties["labels"] = self._extract_labels(entity)
+        properties["annotations"] = self._extract_annotations(entity)
         return properties
 
     def _extract_severity(self, entity):
         labels = self._extract_labels(entity)
-        return labels.get('severity')
+        return labels.get("severity")
 
     def _extract_message(self, entity):
         annotations = self._extract_annotations(entity)
-        message = annotations.get('message')
+        message = annotations.get("message")
         if not message:
-            message = annotations.get('summary')
+            message = annotations.get("summary")
         if message:
             return str_utils.escape(message)
 
     def _extract_labels(self, entity):
-        return entity['labels']
+        return entity["labels"]
 
     def _extract_annotations(self, entity):
-        return entity['annotations']
+        return entity["annotations"]
 
 
 class AlertEventExtractor(AlertExtractor):
@@ -84,7 +84,7 @@ class AlertEventExtractor(AlertExtractor):
     """Extractor for Alert events received from Alertmanager."""
 
     def _extract_status(self, entity):
-        return entity['status']
+        return entity["status"]
 
     def _extract_activation_time(self, entity):
         return int(dateparser.parse(entity["startsAt"]).timestamp())

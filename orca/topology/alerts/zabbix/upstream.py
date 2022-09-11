@@ -28,17 +28,17 @@ class UpstreamProxy(upstream.UpstreamProxy):
 
     def get_all(self):
         all = self._client.trigger.get(
-            only_true=1,
-            active=1,
-            output='extend',
-            selectHosts=['host'])
+            only_true=1, active=1, output="extend", selectHosts=["host"]
+        )
         triggers = []
         for trigger in all:
-            for host in trigger['hosts']:
+            for host in trigger["hosts"]:
                 payload = {}
-                payload['host'] = host['host']
-                payload['trigger'] = [
-                    trigger.pop(property) for property in ['description', 'priority', 'value']]
+                payload["host"] = host["host"]
+                payload["trigger"] = [
+                    trigger.pop(property)
+                    for property in ["description", "priority", "value"]
+                ]
                 triggers.append(payload)
         return triggers
 

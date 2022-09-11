@@ -71,159 +71,159 @@ class ConfigParser(object):
 
 
 SCHEMA = {
-    'graph': {
-        'type': 'dict',
-        'schema': {
-            'driver': {'type': 'string', 'default': 'arangodb'},
-            'arangodb': {
-                'type': 'dict',
-                'schema': {
-                    'enabled': {
-                        'type': 'boolean',
-                        'coerce': (str, str_utils.to_bool),
-                        'default': True
+    "graph": {
+        "type": "dict",
+        "schema": {
+            "driver": {"type": "string", "default": "arangodb"},
+            "arangodb": {
+                "type": "dict",
+                "schema": {
+                    "enabled": {
+                        "type": "boolean",
+                        "coerce": (str, str_utils.to_bool),
+                        "default": True,
                     },
-                    'host': {'type': 'string'},
-                    'port': {'type': 'integer', 'coerce': int, 'default': 8529},
-                    'database': {'type': 'string', 'default': 'orca'},
-                    'username': {'type': 'string'},
-                    'password': {'type': 'string'}
-                }
-            }
-        }
+                    "host": {"type": "string"},
+                    "port": {"type": "integer", "coerce": int, "default": 8529},
+                    "database": {"type": "string", "default": "orca"},
+                    "username": {"type": "string"},
+                    "password": {"type": "string"},
+                },
+            },
+        },
     },
-    'topology': {
-        'type': 'dict',
-        'schema': {
-            'alerts': {
-                'type': 'dict',
-                'schema': {
-                    'mapping_path': {
-                        'type': 'string',
-                        'default': "/etc/orca/alerts-mapping.yaml"
+    "topology": {
+        "type": "dict",
+        "schema": {
+            "alerts": {
+                "type": "dict",
+                "schema": {
+                    "mapping_path": {
+                        "type": "string",
+                        "default": "/etc/orca/alerts-mapping.yaml",
                     }
-                }
+                },
             },
-            'gc': {
-                'type': 'dict',
-                'schema': {
-                    'interval': {'type': 'integer', 'coerce': int, 'default': 60}
-                }
+            "gc": {
+                "type": "dict",
+                "schema": {
+                    "interval": {"type": "integer", "coerce": int, "default": 60}
+                },
             },
-        }
+        },
     },
-    'probes': {
-        'type': 'dict',
-        'schema': {
-            'kubernetes': {
-                'type': 'dict',
-                'schema': {
-                    'enabled': {
-                        'type': 'boolean',
-                        'coerce': (str, str_utils.to_bool),
-                        'default': True
+    "probes": {
+        "type": "dict",
+        "schema": {
+            "kubernetes": {
+                "type": "dict",
+                "schema": {
+                    "enabled": {
+                        "type": "boolean",
+                        "coerce": (str, str_utils.to_bool),
+                        "default": True,
                     },
-                    'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
-                }
+                    "resync_period": {"type": "integer", "coerce": int, "default": 300},
+                },
             },
-            'istio': {
-                'type': 'dict',
-                'schema': {
-                    'enabled': {
-                        'type': 'boolean',
-                        'coerce': (str, str_utils.to_bool),
-                        'default': False
+            "istio": {
+                "type": "dict",
+                "schema": {
+                    "enabled": {
+                        "type": "boolean",
+                        "coerce": (str, str_utils.to_bool),
+                        "default": False,
                     },
-                    'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
-                }
+                    "resync_period": {"type": "integer", "coerce": int, "default": 300},
+                },
             },
-            'kiali': {
-                'type': 'dict',
-                'schema': {
-                    'enabled': {
-                        'type': 'boolean',
-                        'coerce': (str, str_utils.to_bool),
-                        'default': False
+            "kiali": {
+                "type": "dict",
+                "schema": {
+                    "enabled": {
+                        "type": "boolean",
+                        "coerce": (str, str_utils.to_bool),
+                        "default": False,
                     },
-                    'url': {'type': 'string'},
-                    'username': {'type': 'string'},
-                    'password': {'type': 'string'},
-                    'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
-                }
+                    "url": {"type": "string"},
+                    "username": {"type": "string"},
+                    "password": {"type": "string"},
+                    "resync_period": {"type": "integer", "coerce": int, "default": 300},
+                },
             },
-            'prometheus': {
-                'type': 'dict',
-                'schema': {
-                    'enabled': {
-                        'type': 'boolean',
-                        'coerce': (str, str_utils.to_bool),
-                        'default': False
+            "prometheus": {
+                "type": "dict",
+                "schema": {
+                    "enabled": {
+                        "type": "boolean",
+                        "coerce": (str, str_utils.to_bool),
+                        "default": False,
                     },
-                    'url': {'type': 'string'},
-                    'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
-                }
+                    "url": {"type": "string"},
+                    "resync_period": {"type": "integer", "coerce": int, "default": 300},
+                },
             },
-            'zabbix': {
-                'type': 'dict',
-                'schema': {
-                    'enabled': {
-                        'type': 'boolean',
-                        'coerce': (str, str_utils.to_bool),
-                        'default': False
+            "zabbix": {
+                "type": "dict",
+                "schema": {
+                    "enabled": {
+                        "type": "boolean",
+                        "coerce": (str, str_utils.to_bool),
+                        "default": False,
                     },
-                    'url': {'type': 'string'},
-                    'username': {'type': 'string'},
-                    'password': {'type': 'string'},
-                    'resync_period': {'type': 'integer', 'coerce': int, 'default': 300}
-                }
-            }
-        }
+                    "url": {"type": "string"},
+                    "username": {"type": "string"},
+                    "password": {"type": "string"},
+                    "resync_period": {"type": "integer", "coerce": int, "default": 300},
+                },
+            },
+        },
     },
-    'ingestors': {
-        'type': 'dict',
-        'schema': {
-            'prometheus': {
-                'type': 'dict',
-                'schema': {
-                    'enabled': {
-                        'type': 'boolean',
-                        'coerce': (str, str_utils.to_bool),
-                        'default': False
+    "ingestors": {
+        "type": "dict",
+        "schema": {
+            "prometheus": {
+                "type": "dict",
+                "schema": {
+                    "enabled": {
+                        "type": "boolean",
+                        "coerce": (str, str_utils.to_bool),
+                        "default": False,
                     },
-                }
+                },
             },
-            'falco': {
-                'type': 'dict',
-                'schema': {
-                    'enabled': {
-                        'type': 'boolean',
-                        'coerce': (str, str_utils.to_bool),
-                        'default': False
+            "falco": {
+                "type": "dict",
+                "schema": {
+                    "enabled": {
+                        "type": "boolean",
+                        "coerce": (str, str_utils.to_bool),
+                        "default": False,
                     },
-                }
+                },
             },
-            'elastalert': {
-                'type': 'dict',
-                'schema': {
-                    'enabled': {
-                        'type': 'boolean',
-                        'coerce': (str, str_utils.to_bool),
-                        'default': False
+            "elastalert": {
+                "type": "dict",
+                "schema": {
+                    "enabled": {
+                        "type": "boolean",
+                        "coerce": (str, str_utils.to_bool),
+                        "default": False,
                     },
-                }
-            }
-        }
+                },
+            },
+        },
     },
-    'logging': {
-        'type': 'dict',
-        'schema': {
-            'log_level': {
-                'type': 'string',
-                'default': 'info',
-                'allowed': ['critical', 'error', 'warning', 'info', 'debug']
+    "logging": {
+        "type": "dict",
+        "schema": {
+            "log_level": {
+                "type": "string",
+                "default": "info",
+                "allowed": ["critical", "error", "warning", "info", "debug"],
             }
-        }
-    }
+        },
+    },
 }
 
 CONFIG = Config.get(SCHEMA)

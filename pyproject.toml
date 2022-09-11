@@ -4,4 +4,4 @@ build-backend = 'setuptools.build_meta'
 
 [tool.black]
 target-version = ['py37']
-line-length = 100
+line-length = 88

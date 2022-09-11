@@ -14,4 +14,4 @@
 
 from orca.topology.infra import istio, k8s, kiali
 
-__all__ = ['istio', 'k8s', 'kiali']
+__all__ = ["istio", "k8s", "kiali"]

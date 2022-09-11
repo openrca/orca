@@ -24,9 +24,9 @@ class NodeSynchronizer(object):
         self._create = create
 
     def synchronize(self, current_nodes, new_nodes, **kwargs):
-        delete = kwargs['delete'] if 'delete' in kwargs else self._delete
-        update = kwargs['update'] if 'update' in kwargs else self._update
-        create = kwargs['create'] if 'create' in kwargs else self._create
+        delete = kwargs["delete"] if "delete" in kwargs else self._delete
+        update = kwargs["update"] if "update" in kwargs else self._update
+        create = kwargs["create"] if "create" in kwargs else self._create
 
         current_nodes = self._build_node_lookup(current_nodes)
         new_nodes = self._build_node_lookup(new_nodes)

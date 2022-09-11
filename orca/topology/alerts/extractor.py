@@ -34,7 +34,7 @@ class Extractor(extractor.Extractor):
 
     @property
     def kind(self):
-        return 'alert'
+        return "alert"
 
     def extract(self, entity):
         name = self._extract_name(entity)
@@ -44,10 +44,10 @@ class Extractor(extractor.Extractor):
         source_mapping = self._source_mapper.map(name, labels)
         node_id = self._build_id(name, source_mapping)
         properties = self._extract_properties(entity)
-        properties['name'] = name
-        properties['status'] = status
-        properties['activated_at'] = activated_at
-        properties['source_mapping'] = source_mapping
+        properties["name"] = name
+        properties["status"] = status
+        properties["activated_at"] = activated_at
+        properties["source_mapping"] = source_mapping
         node = graph.Node(node_id, properties, self.origin, self.kind)
         return Alert(node)
 
@@ -74,8 +74,8 @@ class Extractor(extractor.Extractor):
     def _build_id(self, name, source_mapping):
         id_parts = [self.origin, self.kind, name]
         if source_mapping:
-            id_parts.append(source_mapping['kind'])
-            source_properties = source_mapping['properties']
+            id_parts.append(source_mapping["kind"])
+            source_properties = source_mapping["properties"]
             for key in sorted(source_properties.keys()):
                 id_parts.append(source_properties[key])
         node_id = "-".join(id_parts).replace(" ", "-").lower()
@@ -105,30 +105,30 @@ class SourceMapper(object):
         mapping = self._mapping.get(name)
         if not mapping:
             raise exceptions.MappingNotFound(key=name)
-        origin = mapping['origin']
-        kind = mapping['kind']
+        origin = mapping["origin"]
+        kind = mapping["kind"]
         properties = {}
-        for prop, prop_mapping in mapping['properties'].items():
+        for prop, prop_mapping in mapping["properties"].items():
             value = labels.get(prop_mapping)
             valid = self._validate_value(value, mapping)
             if not valid:
                 raise exceptions.InvalidMappedValue(key=name, value=value)
             properties[prop] = value
-        return {'origin': origin, 'kind': kind, 'properties': properties}
+        return {"origin": origin, "kind": kind, "properties": properties}
 
     def _load_mapping(self):
         mapping_spec = self._load_mapping_spec()
         if not mapping_spec:
             raise exceptions.MappingNotFound(key=self._mapping_key)
-        blacklist_values = mapping_spec.get('blacklist_values')
+        blacklist_values = mapping_spec.get("blacklist_values")
         if not blacklist_values:
             blacklist_values = []
-        mappings = mapping_spec['mappings']
+        mappings = mapping_spec["mappings"]
         lookup = {}
         for mapping in mappings:
-            name = mapping['name']
-            lookup[name] = mapping['source_mapping']
-            lookup[name].setdefault('blacklist_values', blacklist_values)
+            name = mapping["name"]
+            lookup[name] = mapping["source_mapping"]
+            lookup[name].setdefault("blacklist_values", blacklist_values)
         return lookup
 
     def _load_mapping_spec(self):
@@ -138,7 +138,7 @@ class SourceMapper(object):
     def _validate_value(self, value, mapping):
         if not value:
             return False
-        if value in mapping['blacklist_values']:
+        if value in mapping["blacklist_values"]:
             return False
         return True
 

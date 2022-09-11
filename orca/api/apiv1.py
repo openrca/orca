@@ -7,8 +7,8 @@ from orca.api.apis.v1 import alerts as alerts_ns
 
 
 def initialize(graph):
-    blueprint = Blueprint('api', __name__, url_prefix='/v1')
-    api = Api(blueprint, title='OpenRCA API')
+    blueprint = Blueprint("api", __name__, url_prefix="/v1")
+    api = Api(blueprint, title="OpenRCA API")
     api.add_namespace(graph_ns.initialize(graph))
     api.add_namespace(ingestor_ns.initialize(graph))
     api.add_namespace(alerts_ns.initialize(graph))

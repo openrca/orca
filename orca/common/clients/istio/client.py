@@ -16,33 +16,32 @@ from orca.common.clients.k8s import client as k8s
 
 
 class ResourceProxyFactory(object):
-
     @staticmethod
     def get(kind):
         client = k8s.ClientFactory.get()
-        if kind == 'virtual_service':
+        if kind == "virtual_service":
             return k8s.CustomResourceProxy(
-                kind='virtual_service',
+                kind="virtual_service",
                 list_fn=client.CustomObjectsApi().list_cluster_custom_object,
                 group="networking.istio.io",
                 version="v1alpha3",
-                plural="virtualservices"
+                plural="virtualservices",
             )
-        elif kind == 'destination_rule':
+        elif kind == "destination_rule":
             return k8s.CustomResourceProxy(
-                kind='destination_rule',
+                kind="destination_rule",
                 list_fn=client.CustomObjectsApi().list_cluster_custom_object,
                 group="networking.istio.io",
                 version="v1alpha3",
-                plural="destinationrules"
+                plural="destinationrules",
             )
-        elif kind == 'gateway':
+        elif kind == "gateway":
             return k8s.CustomResourceProxy(
-                kind='gateway',
+                kind="gateway",
                 list_fn=client.CustomObjectsApi().list_cluster_custom_object,
                 group="networking.istio.io",
                 version="v1alpha3",
-                plural="gateways"
+                plural="gateways",
             )
         else:
             raise Exception("Unknown kind %s" % kind)

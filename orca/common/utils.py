@@ -15,7 +15,7 @@
 from datetime import datetime
 
 
-def flatten_dict(d, parent_key='', sep='_'):
+def flatten_dict(d, parent_key="", sep="_"):
     items = []
     for k, v in d.items():
         new_key = parent_key + sep + k if parent_key else k

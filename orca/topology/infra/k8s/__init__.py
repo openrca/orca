@@ -30,10 +30,9 @@ def get_probes():
                 linker.PodToConfigMapLinker,
                 linker.PodToSecretLinker,
                 linker.PodToPersistentVolumeClaimLinker,
-                linker.JobToPodLinker
-            ]
+                linker.JobToPodLinker,
+            ],
         ),
-
         bundle.ProbeBundle(
             probe=probe.PodPushProbe,
             linkers=[
@@ -45,10 +44,9 @@ def get_probes():
                 linker.PodToConfigMapLinker,
                 linker.PodToSecretLinker,
                 linker.PodToPersistentVolumeClaimLinker,
-                linker.JobToPodLinker
-            ]
+                linker.JobToPodLinker,
+            ],
         ),
-
         bundle.ProbeBundle(
             probe=probe.ServicePullProbe,
             linkers=[
@@ -56,10 +54,9 @@ def get_probes():
                 linker.ServiceToEndpointsLinker,
                 istio_linker.ServiceToVirtualServiceLinker,
                 istio_linker.ServiceToDestinationRuleLinker,
-                linker.IngressToServiceLinker
-            ]
+                linker.IngressToServiceLinker,
+            ],
         ),
-
         bundle.ProbeBundle(
             probe=probe.ServicePushProbe,
             linkers=[
@@ -67,244 +64,158 @@ def get_probes():
                 linker.ServiceToEndpointsLinker,
                 istio_linker.ServiceToVirtualServiceLinker,
                 istio_linker.ServiceToDestinationRuleLinker,
-                linker.IngressToServiceLinker
-            ]
+                linker.IngressToServiceLinker,
+            ],
         ),
-
         bundle.ProbeBundle(
-            probe=probe.EndpointsPullProbe,
-            linkers=[
-                linker.ServiceToEndpointsLinker
-            ]
+            probe=probe.EndpointsPullProbe, linkers=[linker.ServiceToEndpointsLinker]
         ),
-
         bundle.ProbeBundle(
-            probe=probe.EndpointsPushProbe,
-            linkers=[
-                linker.ServiceToEndpointsLinker
-            ]
+            probe=probe.EndpointsPushProbe, linkers=[linker.ServiceToEndpointsLinker]
         ),
-
         bundle.ProbeBundle(
             probe=probe.DeploymentPullProbe,
             linkers=[
                 linker.HorizontalPodAutoscalerToDeploymentLinker,
-                linker.DeploymentToReplicaSetLinker
-            ]
+                linker.DeploymentToReplicaSetLinker,
+            ],
         ),
-
         bundle.ProbeBundle(
             probe=probe.DeploymentPushProbe,
             linkers=[
                 linker.HorizontalPodAutoscalerToDeploymentLinker,
-                linker.DeploymentToReplicaSetLinker
-            ]
+                linker.DeploymentToReplicaSetLinker,
+            ],
         ),
-
         bundle.ProbeBundle(
             probe=probe.ReplicaSetPullProbe,
             linkers=[
                 linker.ReplicaSetToPodLinker,
                 linker.DeploymentToReplicaSetLinker,
-                linker.HorizontalPodAutoscalerToReplicaSetLinker
-            ]
+                linker.HorizontalPodAutoscalerToReplicaSetLinker,
+            ],
         ),
-
         bundle.ProbeBundle(
             probe=probe.ReplicaSetPushProbe,
             linkers=[
                 linker.ReplicaSetToPodLinker,
                 linker.DeploymentToReplicaSetLinker,
-                linker.HorizontalPodAutoscalerToReplicaSetLinker
-            ]
+                linker.HorizontalPodAutoscalerToReplicaSetLinker,
+            ],
         ),
-
         bundle.ProbeBundle(
-            probe=probe.DaemonSetPullProbe,
-            linkers=[
-                linker.DaemonSetToPodLinker
-            ]
+            probe=probe.DaemonSetPullProbe, linkers=[linker.DaemonSetToPodLinker]
         ),
-
         bundle.ProbeBundle(
-            probe=probe.DaemonSetPushProbe,
-            linkers=[
-                linker.DaemonSetToPodLinker
-            ]
+            probe=probe.DaemonSetPushProbe, linkers=[linker.DaemonSetToPodLinker]
         ),
-
         bundle.ProbeBundle(
             probe=probe.StatefulSetPullProbe,
             linkers=[
                 linker.StatefulSetToPodLinker,
-                linker.HorizontalPodAutoscalerToStatefulSetLinker
-            ]
+                linker.HorizontalPodAutoscalerToStatefulSetLinker,
+            ],
         ),
-
         bundle.ProbeBundle(
             probe=probe.StatefulSetPushProbe,
             linkers=[
                 linker.StatefulSetToPodLinker,
-                linker.HorizontalPodAutoscalerToStatefulSetLinker
-            ]
+                linker.HorizontalPodAutoscalerToStatefulSetLinker,
+            ],
         ),
-
         bundle.ProbeBundle(
-            probe=probe.ConfigMapPullProbe,
-            linkers=[
-                linker.PodToConfigMapLinker
-            ]
+            probe=probe.ConfigMapPullProbe, linkers=[linker.PodToConfigMapLinker]
         ),
-
         bundle.ProbeBundle(
-            probe=probe.ConfigMapPushProbe,
-            linkers=[
-                linker.PodToConfigMapLinker
-            ]
+            probe=probe.ConfigMapPushProbe, linkers=[linker.PodToConfigMapLinker]
         ),
-
         bundle.ProbeBundle(
-            probe=probe.SecretPullProbe,
-            linkers=[
-                linker.PodToSecretLinker
-            ]
+            probe=probe.SecretPullProbe, linkers=[linker.PodToSecretLinker]
         ),
-
         bundle.ProbeBundle(
-            probe=probe.SecretPushProbe,
-            linkers=[
-                linker.PodToSecretLinker
-            ]
+            probe=probe.SecretPushProbe, linkers=[linker.PodToSecretLinker]
         ),
-
         bundle.ProbeBundle(
             probe=probe.StorageClassPullProbe,
-            linkers=[
-                linker.PersistentVolumeToStorageClassLinker
-            ]
+            linkers=[linker.PersistentVolumeToStorageClassLinker],
         ),
-
         bundle.ProbeBundle(
             probe=probe.StorageClassPushProbe,
-            linkers=[
-                linker.PersistentVolumeToStorageClassLinker
-            ]
+            linkers=[linker.PersistentVolumeToStorageClassLinker],
         ),
-
         bundle.ProbeBundle(
             probe=probe.PersistentVolumePullProbe,
             linkers=[
                 linker.PersistentVolumeToStorageClassLinker,
-                linker.PersistentVolumeClaimToPersistentVolumeLinker
-            ]
+                linker.PersistentVolumeClaimToPersistentVolumeLinker,
+            ],
         ),
-
         bundle.ProbeBundle(
             probe=probe.PersistentVolumePushProbe,
             linkers=[
                 linker.PersistentVolumeToStorageClassLinker,
-                linker.PersistentVolumeClaimToPersistentVolumeLinker
-            ]
+                linker.PersistentVolumeClaimToPersistentVolumeLinker,
+            ],
         ),
-
         bundle.ProbeBundle(
             probe=probe.PersistentVolumeClaimPullProbe,
             linkers=[
                 linker.PersistentVolumeClaimToPersistentVolumeLinker,
-                linker.PodToPersistentVolumeClaimLinker
-            ]
+                linker.PodToPersistentVolumeClaimLinker,
+            ],
         ),
-
         bundle.ProbeBundle(
             probe=probe.PersistentVolumeClaimPushProbe,
             linkers=[
                 linker.PersistentVolumeClaimToPersistentVolumeLinker,
-                linker.PodToPersistentVolumeClaimLinker
-            ]
+                linker.PodToPersistentVolumeClaimLinker,
+            ],
         ),
-
         bundle.ProbeBundle(
             probe=probe.HorizontalPodAutoscalerPullProbe,
             linkers=[
                 linker.HorizontalPodAutoscalerToDeploymentLinker,
                 linker.HorizontalPodAutoscalerToReplicaSetLinker,
-                linker.HorizontalPodAutoscalerToStatefulSetLinker
-            ]
+                linker.HorizontalPodAutoscalerToStatefulSetLinker,
+            ],
         ),
-
         bundle.ProbeBundle(
             probe=probe.HorizontalPodAutoscalerPushProbe,
             linkers=[
                 linker.HorizontalPodAutoscalerToDeploymentLinker,
                 linker.HorizontalPodAutoscalerToReplicaSetLinker,
-                linker.HorizontalPodAutoscalerToStatefulSetLinker
-            ]
+                linker.HorizontalPodAutoscalerToStatefulSetLinker,
+            ],
         ),
-
         bundle.ProbeBundle(
             probe=probe.NodePullProbe,
-            linkers=[
-                linker.PodToNodeLinker,
-                linker.ClusterToNodeLinker
-            ]
+            linkers=[linker.PodToNodeLinker, linker.ClusterToNodeLinker],
         ),
-
         bundle.ProbeBundle(
             probe=probe.NodePushProbe,
-            linkers=[
-                linker.PodToNodeLinker,
-                linker.ClusterToNodeLinker
-            ]
+            linkers=[linker.PodToNodeLinker, linker.ClusterToNodeLinker],
         ),
-
         bundle.ProbeBundle(
             probe=probe.JobPullProbe,
-            linkers=[
-                linker.JobToPodLinker,
-                linker.CronJobToJobLinker
-            ]
+            linkers=[linker.JobToPodLinker, linker.CronJobToJobLinker],
         ),
-
         bundle.ProbeBundle(
             probe=probe.JobPushProbe,
-            linkers=[
-                linker.JobToPodLinker,
-                linker.CronJobToJobLinker
-            ]
+            linkers=[linker.JobToPodLinker, linker.CronJobToJobLinker],
         ),
-
         bundle.ProbeBundle(
-            probe=probe.IngressPullProbe,
-            linkers=[
-                linker.IngressToServiceLinker
-            ]
+            probe=probe.IngressPullProbe, linkers=[linker.IngressToServiceLinker]
         ),
-
         bundle.ProbeBundle(
-            probe=probe.IngressPushProbe,
-            linkers=[
-                linker.IngressToServiceLinker
-            ]
+            probe=probe.IngressPushProbe, linkers=[linker.IngressToServiceLinker]
         ),
-
         bundle.ProbeBundle(
-            probe=probe.CronJobPullProbe,
-            linkers=[
-                linker.CronJobToJobLinker
-            ]
+            probe=probe.CronJobPullProbe, linkers=[linker.CronJobToJobLinker]
         ),
-
         bundle.ProbeBundle(
-            probe=probe.CronJobPushProbe,
-            linkers=[
-                linker.CronJobToJobLinker
-            ]
+            probe=probe.CronJobPushProbe, linkers=[linker.CronJobToJobLinker]
         ),
-
         bundle.ProbeBundle(
-            probe=cluster.ClusterProbe,
-            linkers=[
-                linker.ClusterToNodeLinker
-            ]
-        )
+            probe=cluster.ClusterProbe, linkers=[linker.ClusterToNodeLinker]
+        ),
     ]

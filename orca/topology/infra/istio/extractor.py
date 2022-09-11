@@ -23,7 +23,7 @@ class Extractor(extractor.Extractor):
 
     @property
     def origin(self):
-        return 'istio'
+        return "istio"
 
 
 class VirtualServiceExtractor(Extractor):
@@ -32,17 +32,17 @@ class VirtualServiceExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'virtual_service'
+        return "virtual_service"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
-        properties['gateways'] = entity.spec.gateways.copy()
-        properties['hosts'] = entity.spec.hosts.copy()
-        properties['http'] = copy.deepcopy(entity.spec.http) if entity.spec.http else []
-        properties['tls'] = copy.deepcopy(entity.spec.tls) if entity.spec.tls else []
-        properties['tcp'] = copy.deepcopy(entity.spec.tcp) if entity.spec.tcp else []
+        properties["name"] = entity.metadata.name
+        properties["namespace"] = entity.metadata.namespace
+        properties["gateways"] = entity.spec.gateways.copy()
+        properties["hosts"] = entity.spec.hosts.copy()
+        properties["http"] = copy.deepcopy(entity.spec.http) if entity.spec.http else []
+        properties["tls"] = copy.deepcopy(entity.spec.tls) if entity.spec.tls else []
+        properties["tcp"] = copy.deepcopy(entity.spec.tcp) if entity.spec.tcp else []
         return properties
 
 
@@ -52,13 +52,13 @@ class DestinationRuleExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'destination_rule'
+        return "destination_rule"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
-        properties['host'] = entity.spec.host
+        properties["name"] = entity.metadata.name
+        properties["namespace"] = entity.metadata.namespace
+        properties["host"] = entity.spec.host
         return properties
 
 
@@ -68,10 +68,10 @@ class GatewayExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'gateway'
+        return "gateway"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
+        properties["name"] = entity.metadata.name
+        properties["namespace"] = entity.metadata.namespace
         return properties

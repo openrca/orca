@@ -19,8 +19,7 @@ from orca.common import config
 
 CONFIG = config.CONFIG
 
-FORMATTER = logging.Formatter(
-    "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+FORMATTER = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
 
 def get_logger(logger_name):

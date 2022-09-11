@@ -23,11 +23,11 @@ class Extractor(extractor.Extractor):
 
     @property
     def origin(self):
-        return 'elastalert'
+        return "elastalert"
 
     @classmethod
     def get(cls):
-        return super().get('elastalert')
+        return super().get("elastalert")
 
 
 class AlertExtractor(Extractor):
@@ -35,10 +35,10 @@ class AlertExtractor(Extractor):
     """Extractor for Alert entities."""
 
     def _extract_name(self, entity):
-        return entity['name']
+        return entity["name"]
 
     def _extract_status(self, entity):
-        if entity['status'] == 'active':
+        if entity["status"] == "active":
             return alert_props.AlertStatus.UP
         return alert_props.AlertStatus.DOWN
 
@@ -47,14 +47,14 @@ class AlertExtractor(Extractor):
         return utils.get_utc()
 
     def _extract_source_labels(self, entity):
-        labels = entity['kubernetes'].copy()
-        labels.pop('labels', None)
-        labels.pop('annotations', None)
+        labels = entity["kubernetes"].copy()
+        labels.pop("labels", None)
+        labels.pop("annotations", None)
         return utils.flatten_dict(labels, sep=".")
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['status'] = entity['status']
-        properties['severity'] = entity['severity']
-        properties['message'] = str_utils.escape(entity['message'])
+        properties["status"] = entity["status"]
+        properties["severity"] = entity["severity"]
+        properties["message"] = str_utils.escape(entity["message"])
         return properties

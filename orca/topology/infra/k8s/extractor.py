@@ -25,7 +25,7 @@ class Extractor(extractor.Extractor):
 
     @property
     def origin(self):
-        return 'kubernetes'
+        return "kubernetes"
 
     def extract(self, entity):
         node_id = self._extract_id(entity)
@@ -46,33 +46,33 @@ class PodExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'pod'
+        return "pod"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
+        properties["name"] = entity.metadata.name
+        properties["namespace"] = entity.metadata.namespace
         if entity.metadata.labels:
-            properties['labels'] = entity.metadata.labels.copy()
-        properties['ip'] = entity.status.pod_ip
-        properties['node'] = entity.spec.node_name
-        properties['containers'] = self._extract_containers(entity)
-        properties['volumes'] = self._extract_volumes(entity)
+            properties["labels"] = entity.metadata.labels.copy()
+        properties["ip"] = entity.status.pod_ip
+        properties["node"] = entity.spec.node_name
+        properties["containers"] = self._extract_containers(entity)
+        properties["volumes"] = self._extract_volumes(entity)
         return properties
 
     def _extract_containers(self, entity):
         containers = []
         for container in entity.spec.containers:
             properties = {}
-            properties['name'] = container.name
-            properties['image'] = container.image
-            properties['command'] = None
+            properties["name"] = container.name
+            properties["image"] = container.image
+            properties["command"] = None
             if container.command:
-                properties['command'] = str_utils.escape(" ".join(container.command))
-            properties['env'] = self._extract_env(container)
-            properties['env_from'] = None
+                properties["command"] = str_utils.escape(" ".join(container.command))
+            properties["env"] = self._extract_env(container)
+            properties["env_from"] = None
             if container.env_from:
-                properties['env_from'] = [env.to_dict() for env in container.env_from]
+                properties["env_from"] = [env.to_dict() for env in container.env_from]
             containers.append(properties)
         return containers
 
@@ -82,9 +82,9 @@ class PodExtractor(Extractor):
         env_vars = []
         for env in container.env:
             properties = {}
-            properties['value_from'] = None
+            properties["value_from"] = None
             if env.value_from:
-                properties['value_from'] = env.value_from.to_dict()
+                properties["value_from"] = env.value_from.to_dict()
             env_vars.append(properties)
         return env_vars
 
@@ -92,15 +92,17 @@ class PodExtractor(Extractor):
         volumes = []
         for volume in entity.spec.volumes:
             properties = {}
-            properties['name'] = volume.name
-            properties['secret'] = None
+            properties["name"] = volume.name
+            properties["secret"] = None
             if volume.secret:
-                properties['secret'] = volume.secret.to_dict()
-            properties['config_map'] = None
+                properties["secret"] = volume.secret.to_dict()
+            properties["config_map"] = None
             if volume.config_map:
-                properties['config_map'] = volume.config_map.to_dict()
+                properties["config_map"] = volume.config_map.to_dict()
             if volume.persistent_volume_claim:
-                properties['persistent_volume_claim'] = volume.persistent_volume_claim.to_dict()
+                properties[
+                    "persistent_volume_claim"
+                ] = volume.persistent_volume_claim.to_dict()
             volumes.append(properties)
         return volumes
 
@@ -111,18 +113,18 @@ class ServiceExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'service'
+        return "service"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
-        properties['type'] = entity.spec.type
-        properties['ip'] = entity.spec.cluster_ip
+        properties["name"] = entity.metadata.name
+        properties["namespace"] = entity.metadata.namespace
+        properties["type"] = entity.spec.type
+        properties["ip"] = entity.spec.cluster_ip
         if entity.spec.selector:
-            properties['selector'] = entity.spec.selector.copy()
+            properties["selector"] = entity.spec.selector.copy()
         else:
-            properties['selector'] = {}
+            properties["selector"] = {}
         return properties
 
 
@@ -132,12 +134,12 @@ class EndpointsExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'endpoints'
+        return "endpoints"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
+        properties["name"] = entity.metadata.name
+        properties["namespace"] = entity.metadata.namespace
         return properties
 
 
@@ -147,13 +149,13 @@ class DeploymentExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'deployment'
+        return "deployment"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
-        properties['selector'] = entity.spec.selector.match_labels
+        properties["name"] = entity.metadata.name
+        properties["namespace"] = entity.metadata.namespace
+        properties["selector"] = entity.spec.selector.match_labels
         return properties
 
 
@@ -163,15 +165,15 @@ class ReplicaSetExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'replica_set'
+        return "replica_set"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
-        properties['labels'] = entity.metadata.labels.copy()
-        properties['replicas'] = entity.spec.replicas
-        properties['selector'] = entity.spec.selector.match_labels
+        properties["name"] = entity.metadata.name
+        properties["namespace"] = entity.metadata.namespace
+        properties["labels"] = entity.metadata.labels.copy()
+        properties["replicas"] = entity.spec.replicas
+        properties["selector"] = entity.spec.selector.match_labels
         return properties
 
 
@@ -181,14 +183,14 @@ class DaemonSetExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'daemon_set'
+        return "daemon_set"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
-        properties['labels'] = entity.metadata.labels.copy()
-        properties['selector'] = entity.spec.selector.match_labels
+        properties["name"] = entity.metadata.name
+        properties["namespace"] = entity.metadata.namespace
+        properties["labels"] = entity.metadata.labels.copy()
+        properties["selector"] = entity.spec.selector.match_labels
         return properties
 
 
@@ -198,15 +200,15 @@ class StatefulSetExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'stateful_set'
+        return "stateful_set"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
-        properties['labels'] = entity.metadata.labels.copy()
-        properties['replicas'] = entity.spec.replicas
-        properties['selector'] = entity.spec.selector.match_labels
+        properties["name"] = entity.metadata.name
+        properties["namespace"] = entity.metadata.namespace
+        properties["labels"] = entity.metadata.labels.copy()
+        properties["replicas"] = entity.spec.replicas
+        properties["selector"] = entity.spec.selector.match_labels
         return properties
 
 
@@ -216,12 +218,12 @@ class ConfigMapExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'config_map'
+        return "config_map"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
+        properties["name"] = entity.metadata.name
+        properties["namespace"] = entity.metadata.namespace
         return properties
 
 
@@ -231,12 +233,12 @@ class SecretExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'secret'
+        return "secret"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
+        properties["name"] = entity.metadata.name
+        properties["namespace"] = entity.metadata.namespace
         return properties
 
 
@@ -246,14 +248,14 @@ class StorageClassExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'storage_class'
+        return "storage_class"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['provisioner'] = entity.provisioner
-        properties['reclaim_policy'] = entity.reclaim_policy
-        properties['parameters'] = entity.parameters.copy()
+        properties["name"] = entity.metadata.name
+        properties["provisioner"] = entity.provisioner
+        properties["reclaim_policy"] = entity.reclaim_policy
+        properties["parameters"] = entity.parameters.copy()
         return properties
 
 
@@ -263,25 +265,25 @@ class PersistentVolumeExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'persistent_volume'
+        return "persistent_volume"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['storage_class'] = entity.spec.storage_class_name
+        properties["name"] = entity.metadata.name
+        properties["storage_class"] = entity.spec.storage_class_name
         if entity.spec.nfs:
-            properties['nfs'] = self._extract_nfs(entity.spec.nfs)
-        properties['host_path'] = entity.spec.host_path
-        properties['capacity'] = None
+            properties["nfs"] = self._extract_nfs(entity.spec.nfs)
+        properties["host_path"] = entity.spec.host_path
+        properties["capacity"] = None
         if entity.spec.capacity:
-            properties['capacity'] = entity.spec.capacity.copy()
+            properties["capacity"] = entity.spec.capacity.copy()
         return properties
 
     def _extract_nfs(self, nfs):
         nfs_properties = {}
-        nfs_properties['path'] = nfs.path
-        nfs_properties['read_only'] = nfs.read_only
-        nfs_properties['server'] = nfs.server
+        nfs_properties["path"] = nfs.path
+        nfs_properties["read_only"] = nfs.read_only
+        nfs_properties["server"] = nfs.server
         return nfs_properties
 
 
@@ -291,14 +293,14 @@ class PersistentVolumeClaimExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'persistent_volume_claim'
+        return "persistent_volume_claim"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
-        properties['storage_class'] = entity.spec.storage_class_name
-        properties['volume_name'] = entity.spec.volume_name
+        properties["name"] = entity.metadata.name
+        properties["namespace"] = entity.metadata.namespace
+        properties["storage_class"] = entity.spec.storage_class_name
+        properties["volume_name"] = entity.spec.volume_name
         return properties
 
 
@@ -308,19 +310,21 @@ class HorizontalPodAutoscalerExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'horizontal_pod_autoscaler'
+        return "horizontal_pod_autoscaler"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
-        properties['min_replicas'] = entity.spec.min_replicas
-        properties['max_replicas'] = entity.spec.max_replicas
-        properties['target_ref'] = self._extract_target_ref(entity.spec.scale_target_ref)
+        properties["name"] = entity.metadata.name
+        properties["namespace"] = entity.metadata.namespace
+        properties["min_replicas"] = entity.spec.min_replicas
+        properties["max_replicas"] = entity.spec.max_replicas
+        properties["target_ref"] = self._extract_target_ref(
+            entity.spec.scale_target_ref
+        )
         return properties
 
     def _extract_target_ref(self, target_ref):
-        return {'kind': target_ref.kind.lower(), 'name': target_ref.name}
+        return {"kind": target_ref.kind.lower(), "name": target_ref.name}
 
 
 class NodeExtractor(Extractor):
@@ -329,11 +333,11 @@ class NodeExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'node'
+        return "node"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
+        properties["name"] = entity.metadata.name
         return properties
 
 
@@ -343,15 +347,15 @@ class NamespaceExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'namespace'
+        return "namespace"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['labels'] = None
+        properties["name"] = entity.metadata.name
+        properties["labels"] = None
         if entity.metadata.labels:
-            properties['labels'] = entity.metadata.labels.copy()
-        properties['phase'] = entity.status.phase
+            properties["labels"] = entity.metadata.labels.copy()
+        properties["phase"] = entity.status.phase
         return properties
 
 
@@ -361,21 +365,21 @@ class IngressExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'ingress'
+        return "ingress"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
-        properties['rules'] = self._extract_rules(entity)
+        properties["name"] = entity.metadata.name
+        properties["namespace"] = entity.metadata.namespace
+        properties["rules"] = self._extract_rules(entity)
         return properties
 
     def _extract_rules(self, entity):
         rules = []
         for rule in entity.spec.rules:
             properties = {}
-            properties['host'] = rule.host
-            properties['paths'] = self._extract_paths(rule)
+            properties["host"] = rule.host
+            properties["paths"] = self._extract_paths(rule)
             rules.append(properties)
         return rules
 
@@ -383,9 +387,9 @@ class IngressExtractor(Extractor):
         paths = []
         for path in rule.http.paths:
             properties = {}
-            properties['service_name'] = path.backend.service_name
-            properties['service_port'] = path.backend.service_port
-            properties['path'] = path.path
+            properties["service_name"] = path.backend.service_name
+            properties["service_port"] = path.backend.service_port
+            properties["path"] = path.path
             paths.append(properties)
         return paths
 
@@ -396,22 +400,22 @@ class JobExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'job'
+        return "job"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
-        properties['labels'] = entity.metadata.labels.copy()
-        properties['selector'] = entity.spec.selector.match_labels
-        properties['cron_job_ref'] = self._extract_references(entity)
+        properties["name"] = entity.metadata.name
+        properties["namespace"] = entity.metadata.namespace
+        properties["labels"] = entity.metadata.labels.copy()
+        properties["selector"] = entity.spec.selector.match_labels
+        properties["cron_job_ref"] = self._extract_references(entity)
         return properties
 
     def _extract_references(self, entity):
         if not entity.metadata.owner_references:
             return None
         for reference in entity.metadata.owner_references:
-            return {'name': reference.name, 'uid': reference.uid}
+            return {"name": reference.name, "uid": reference.uid}
 
 
 class CronJobExtractor(Extractor):
@@ -420,11 +424,11 @@ class CronJobExtractor(Extractor):
 
     @property
     def kind(self):
-        return 'cron_job'
+        return "cron_job"
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['name'] = entity.metadata.name
-        properties['namespace'] = entity.metadata.namespace
-        properties['schedule'] = entity.spec.schedule
+        properties["name"] = entity.metadata.name
+        properties["namespace"] = entity.metadata.namespace
+        properties["schedule"] = entity.spec.schedule
         return properties

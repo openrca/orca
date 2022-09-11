@@ -40,7 +40,8 @@ class StaleNodeCollector(Collector):
 
     def collect(self):
         nodes = self._graph.get_nodes(
-            properties={'origin': self._node_spec.origin, 'kind': self._node_spec.kind})
+            properties={"origin": self._node_spec.origin, "kind": self._node_spec.kind}
+        )
         nodes_to_remove = []
         for node in nodes:
             if utils.get_utc() - node.updated_at > self._staleness_period:
