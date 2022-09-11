@@ -1,3 +1,5 @@
+IMAGE ?= openrca/orca
+
 .PHONY: format
 format:
 	@tox -e test-tools -- black .
@@ -20,4 +22,8 @@ coverage:
 
 .PHONY: docker-build
 docker-build:
-	@docker build . -f Dockerfile -t openrca/orca
+	@docker build . -f Dockerfile -t $(IMAGE)
+
+.PHONY: docker-scan
+docker-scan:
+	@docker scan --accept-license --file Dockerfile --dependency-tree $(IMAGE)

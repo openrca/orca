@@ -67,10 +67,20 @@ jobs:
     - name: Check coverage
       run: make coverage
 
-  test-build:
+  test-docker:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
 
+    - name: Install latest Docker
+      run: |
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs)  stable"
+        sudo apt-get update
+        sudo apt-get install docker-ce
+
     - name: Build Docker image
       run: make docker-build
+
+    - name: Scan Docker image for vulnerabilities
+      run: make docker-scan
