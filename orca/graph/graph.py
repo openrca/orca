@@ -43,7 +43,11 @@ class Node(GraphObject):
         self.kind = kind
 
     def __repr__(self):
-        return "<Node id=%s properties=%s kind=%s>" % (self.id, self.properties, self.kind)
+        return "<Node id=%s properties=%s kind=%s>" % (
+            self.id,
+            self.properties,
+            self.kind,
+        )
 
 
 class Link(GraphObject):

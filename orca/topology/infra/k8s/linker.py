@@ -113,7 +113,9 @@ class HorizontalPodAutoscalerToDeploymentLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin="kubernetes", kind="horizontal_pod_autoscaler"),
+            source_spec=utils.NodeSpec(
+                origin="kubernetes", kind="horizontal_pod_autoscaler"
+            ),
             target_spec=utils.NodeSpec(origin="kubernetes", kind="deployment"),
             matcher=matcher.HorizontalPodAutoscalerMatcher(),
         )
@@ -141,7 +143,9 @@ class HorizontalPodAutoscalerToReplicaSetLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin="kubernetes", kind="horizontal_pod_autoscaler"),
+            source_spec=utils.NodeSpec(
+                origin="kubernetes", kind="horizontal_pod_autoscaler"
+            ),
             target_spec=utils.NodeSpec(origin="kubernetes", kind="replica_set"),
             matcher=matcher.HorizontalPodAutoscalerMatcher(),
         )
@@ -155,7 +159,9 @@ class HorizontalPodAutoscalerToStatefulSetLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin="kubernetes", kind="horizontal_pod_autoscaler"),
+            source_spec=utils.NodeSpec(
+                origin="kubernetes", kind="horizontal_pod_autoscaler"
+            ),
             target_spec=utils.NodeSpec(origin="kubernetes", kind="stateful_set"),
             matcher=matcher.HorizontalPodAutoscalerMatcher(),
         )
@@ -211,7 +217,9 @@ class PersistentVolumeClaimToPersistentVolumeLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin="kubernetes", kind="persistent_volume_claim"),
+            source_spec=utils.NodeSpec(
+                origin="kubernetes", kind="persistent_volume_claim"
+            ),
             target_spec=utils.NodeSpec(origin="kubernetes", kind="persistent_volume"),
             matcher=matcher.PersistentVolumeClaimToPersistentVolumeMatcher(),
         )
@@ -226,7 +234,9 @@ class PodToPersistentVolumeClaimLinker(Linker):
         return cls(
             graph=graph,
             source_spec=utils.NodeSpec(origin="kubernetes", kind="pod"),
-            target_spec=utils.NodeSpec(origin="kubernetes", kind="persistent_volume_claim"),
+            target_spec=utils.NodeSpec(
+                origin="kubernetes", kind="persistent_volume_claim"
+            ),
             matcher=matcher.PodToPersistentVolumeClaimMatcher(),
         )
 

@@ -105,7 +105,8 @@ class PodToConfigMapMatcher(Matcher):
                     if (
                         env_var.value_from
                         and env_var.value_from.config_map_key_ref
-                        and env_var.value_from.config_map_key_ref.name == config_map.properties.name
+                        and env_var.value_from.config_map_key_ref.name
+                        == config_map.properties.name
                     ):
                         return True
             if container.env_from:
@@ -119,7 +120,10 @@ class PodToConfigMapMatcher(Matcher):
 
     def _match_volume(self, config_map, pod):
         for volume in pod.properties.volumes:
-            if volume.config_map and volume.config_map.name == config_map.properties.name:
+            if (
+                volume.config_map
+                and volume.config_map.name == config_map.properties.name
+            ):
                 return True
         return False
 
@@ -141,12 +145,16 @@ class PodToSecretMatcher(Matcher):
                     if (
                         env_var.value_from
                         and env_var.value_from.secret_key_ref
-                        and env_var.value_from.secret_key_ref.name == secret.properties.name
+                        and env_var.value_from.secret_key_ref.name
+                        == secret.properties.name
                     ):
                         return True
             if container.env_from:
                 for env_from in container.env_from:
-                    if env_from.secret_ref and env_from.secret_ref.name == secret.properties.name:
+                    if (
+                        env_from.secret_ref
+                        and env_from.secret_ref.name == secret.properties.name
+                    ):
                         return True
         return False
 
@@ -180,7 +188,8 @@ class PersistentVolumeToStorageClassMatcher(Matcher):
     def are_linked(self, persistent_volume, storage_class):
         if (
             persistent_volume.properties.storage_class
-            and persistent_volume.properties.storage_class == storage_class.properties.name
+            and persistent_volume.properties.storage_class
+            == storage_class.properties.name
         ):
             return True
         return False

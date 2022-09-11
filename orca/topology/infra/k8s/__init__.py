@@ -103,8 +103,12 @@ def get_probes():
                 linker.HorizontalPodAutoscalerToReplicaSetLinker,
             ],
         ),
-        bundle.ProbeBundle(probe=probe.DaemonSetPullProbe, linkers=[linker.DaemonSetToPodLinker]),
-        bundle.ProbeBundle(probe=probe.DaemonSetPushProbe, linkers=[linker.DaemonSetToPodLinker]),
+        bundle.ProbeBundle(
+            probe=probe.DaemonSetPullProbe, linkers=[linker.DaemonSetToPodLinker]
+        ),
+        bundle.ProbeBundle(
+            probe=probe.DaemonSetPushProbe, linkers=[linker.DaemonSetToPodLinker]
+        ),
         bundle.ProbeBundle(
             probe=probe.StatefulSetPullProbe,
             linkers=[
@@ -119,15 +123,25 @@ def get_probes():
                 linker.HorizontalPodAutoscalerToStatefulSetLinker,
             ],
         ),
-        bundle.ProbeBundle(probe=probe.ConfigMapPullProbe, linkers=[linker.PodToConfigMapLinker]),
-        bundle.ProbeBundle(probe=probe.ConfigMapPushProbe, linkers=[linker.PodToConfigMapLinker]),
-        bundle.ProbeBundle(probe=probe.SecretPullProbe, linkers=[linker.PodToSecretLinker]),
-        bundle.ProbeBundle(probe=probe.SecretPushProbe, linkers=[linker.PodToSecretLinker]),
         bundle.ProbeBundle(
-            probe=probe.StorageClassPullProbe, linkers=[linker.PersistentVolumeToStorageClassLinker]
+            probe=probe.ConfigMapPullProbe, linkers=[linker.PodToConfigMapLinker]
         ),
         bundle.ProbeBundle(
-            probe=probe.StorageClassPushProbe, linkers=[linker.PersistentVolumeToStorageClassLinker]
+            probe=probe.ConfigMapPushProbe, linkers=[linker.PodToConfigMapLinker]
+        ),
+        bundle.ProbeBundle(
+            probe=probe.SecretPullProbe, linkers=[linker.PodToSecretLinker]
+        ),
+        bundle.ProbeBundle(
+            probe=probe.SecretPushProbe, linkers=[linker.PodToSecretLinker]
+        ),
+        bundle.ProbeBundle(
+            probe=probe.StorageClassPullProbe,
+            linkers=[linker.PersistentVolumeToStorageClassLinker],
+        ),
+        bundle.ProbeBundle(
+            probe=probe.StorageClassPushProbe,
+            linkers=[linker.PersistentVolumeToStorageClassLinker],
         ),
         bundle.ProbeBundle(
             probe=probe.PersistentVolumePullProbe,
@@ -174,20 +188,34 @@ def get_probes():
             ],
         ),
         bundle.ProbeBundle(
-            probe=probe.NodePullProbe, linkers=[linker.PodToNodeLinker, linker.ClusterToNodeLinker]
+            probe=probe.NodePullProbe,
+            linkers=[linker.PodToNodeLinker, linker.ClusterToNodeLinker],
         ),
         bundle.ProbeBundle(
-            probe=probe.NodePushProbe, linkers=[linker.PodToNodeLinker, linker.ClusterToNodeLinker]
+            probe=probe.NodePushProbe,
+            linkers=[linker.PodToNodeLinker, linker.ClusterToNodeLinker],
         ),
         bundle.ProbeBundle(
-            probe=probe.JobPullProbe, linkers=[linker.JobToPodLinker, linker.CronJobToJobLinker]
+            probe=probe.JobPullProbe,
+            linkers=[linker.JobToPodLinker, linker.CronJobToJobLinker],
         ),
         bundle.ProbeBundle(
-            probe=probe.JobPushProbe, linkers=[linker.JobToPodLinker, linker.CronJobToJobLinker]
+            probe=probe.JobPushProbe,
+            linkers=[linker.JobToPodLinker, linker.CronJobToJobLinker],
         ),
-        bundle.ProbeBundle(probe=probe.IngressPullProbe, linkers=[linker.IngressToServiceLinker]),
-        bundle.ProbeBundle(probe=probe.IngressPushProbe, linkers=[linker.IngressToServiceLinker]),
-        bundle.ProbeBundle(probe=probe.CronJobPullProbe, linkers=[linker.CronJobToJobLinker]),
-        bundle.ProbeBundle(probe=probe.CronJobPushProbe, linkers=[linker.CronJobToJobLinker]),
-        bundle.ProbeBundle(probe=cluster.ClusterProbe, linkers=[linker.ClusterToNodeLinker]),
+        bundle.ProbeBundle(
+            probe=probe.IngressPullProbe, linkers=[linker.IngressToServiceLinker]
+        ),
+        bundle.ProbeBundle(
+            probe=probe.IngressPushProbe, linkers=[linker.IngressToServiceLinker]
+        ),
+        bundle.ProbeBundle(
+            probe=probe.CronJobPullProbe, linkers=[linker.CronJobToJobLinker]
+        ),
+        bundle.ProbeBundle(
+            probe=probe.CronJobPushProbe, linkers=[linker.CronJobToJobLinker]
+        ),
+        bundle.ProbeBundle(
+            probe=cluster.ClusterProbe, linkers=[linker.ClusterToNodeLinker]
+        ),
     ]

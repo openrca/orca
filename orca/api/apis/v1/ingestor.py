@@ -53,7 +53,9 @@ class IngestorRegistry(object):
         ingestor = ingestor_bundle.ingestor.get(self._graph)
         endpoint = "/%s" % ingestor_bundle.name.lower()
 
-        self._api.add_resource(IngestorResource, endpoint, resource_class_args=(ingestor,))
+        self._api.add_resource(
+            IngestorResource, endpoint, resource_class_args=(ingestor,)
+        )
 
 
 def initialize(graph):

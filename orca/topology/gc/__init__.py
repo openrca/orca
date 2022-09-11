@@ -42,8 +42,12 @@ class GarabageCollectorService(cotyledon.Service):
 
     def run(self):
         garbage_collectors = [
-            collector.StaleNodeCollector(self._graph, utils.NodeSpec("elastalert", "alert"), 300),
-            collector.StaleNodeCollector(self._graph, utils.NodeSpec("falco", "alert"), 300),
+            collector.StaleNodeCollector(
+                self._graph, utils.NodeSpec("elastalert", "alert"), 300
+            ),
+            collector.StaleNodeCollector(
+                self._graph, utils.NodeSpec("falco", "alert"), 300
+            ),
         ]
 
         garbage_remover = remover.Remover(self._graph, garbage_collectors)
@@ -54,5 +58,7 @@ class GarabageCollectorService(cotyledon.Service):
             start_time = time.time()
             removed_nodes = garbage_remover.run()
             gc_time = time.time() - start_time
-            LOG.info("Garbage collected %i nodes (%.2f seconds)", len(removed_nodes), gc_time)
+            LOG.info(
+                "Garbage collected %i nodes (%.2f seconds)", len(removed_nodes), gc_time
+            )
             time.sleep(gc_interval)

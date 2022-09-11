@@ -234,7 +234,9 @@ class PersistentVolumePullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return super().get(graph, "persistent_volume", extractor.PersistentVolumeExtractor())
+        return super().get(
+            graph, "persistent_volume", extractor.PersistentVolumeExtractor()
+        )
 
 
 class PersistentVolumePushProbe(PushProbe):
@@ -243,7 +245,9 @@ class PersistentVolumePushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return super().get(graph, "persistent_volume", extractor.PersistentVolumeExtractor())
+        return super().get(
+            graph, "persistent_volume", extractor.PersistentVolumeExtractor()
+        )
 
 
 class PersistentVolumeClaimPullProbe(PullProbe):
@@ -275,7 +279,9 @@ class HorizontalPodAutoscalerPullProbe(PullProbe):
     @classmethod
     def get(cls, graph):
         return super().get(
-            graph, "horizontal_pod_autoscaler", extractor.HorizontalPodAutoscalerExtractor()
+            graph,
+            "horizontal_pod_autoscaler",
+            extractor.HorizontalPodAutoscalerExtractor(),
         )
 
 
@@ -286,7 +292,9 @@ class HorizontalPodAutoscalerPushProbe(PushProbe):
     @classmethod
     def get(cls, graph):
         return super().get(
-            graph, "horizontal_pod_autoscaler", extractor.HorizontalPodAutoscalerExtractor()
+            graph,
+            "horizontal_pod_autoscaler",
+            extractor.HorizontalPodAutoscalerExtractor(),
         )
 
 

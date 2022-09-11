@@ -100,7 +100,9 @@ class PodExtractor(Extractor):
             if volume.config_map:
                 properties["config_map"] = volume.config_map.to_dict()
             if volume.persistent_volume_claim:
-                properties["persistent_volume_claim"] = volume.persistent_volume_claim.to_dict()
+                properties[
+                    "persistent_volume_claim"
+                ] = volume.persistent_volume_claim.to_dict()
             volumes.append(properties)
         return volumes
 
@@ -316,7 +318,9 @@ class HorizontalPodAutoscalerExtractor(Extractor):
         properties["namespace"] = entity.metadata.namespace
         properties["min_replicas"] = entity.spec.min_replicas
         properties["max_replicas"] = entity.spec.max_replicas
-        properties["target_ref"] = self._extract_target_ref(entity.spec.scale_target_ref)
+        properties["target_ref"] = self._extract_target_ref(
+            entity.spec.scale_target_ref
+        )
         return properties
 
     def _extract_target_ref(self, target_ref):

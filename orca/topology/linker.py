@@ -94,7 +94,9 @@ class Linker(abc.ABC):
 
     def _get_current_links(self, node):
         target_spec = self._get_target_spec(node)
-        return self._graph.get_node_links(node, origin=target_spec.origin, kind=target_spec.kind)
+        return self._graph.get_node_links(
+            node, origin=target_spec.origin, kind=target_spec.kind
+        )
 
     def _get_target_spec(self, node):
         if self._is_source(node):
@@ -107,7 +109,10 @@ class Linker(abc.ABC):
         return self._get_links_from_target(node)
 
     def _is_source(self, node):
-        if node.origin == self.source_spec.origin and node.kind == self.source_spec.kind:
+        if (
+            node.origin == self.source_spec.origin
+            and node.kind == self.source_spec.kind
+        ):
             return True
         return False
 

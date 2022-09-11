@@ -105,5 +105,7 @@ class ServiceGraphProbe(probe.Probe):
             password=CONFIG.probes.kiali.password,
         )
         return cls(
-            graph=graph, kiali_client=kiali_client, resync_period=CONFIG.probes.kiali.resync_period
+            graph=graph,
+            kiali_client=kiali_client,
+            resync_period=CONFIG.probes.kiali.resync_period,
         )

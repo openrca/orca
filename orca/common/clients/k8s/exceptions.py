@@ -27,4 +27,6 @@ class WatchError(KubernetesClientError):
 
 class UnknownWatchEvent(KubernetesClientError):
 
-    message = "Encountered an event of unknown type in the watch stream: %(event_type)s."
+    message = (
+        "Encountered an event of unknown type in the watch stream: %(event_type)s."
+    )

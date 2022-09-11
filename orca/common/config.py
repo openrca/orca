@@ -98,12 +98,17 @@ SCHEMA = {
             "alerts": {
                 "type": "dict",
                 "schema": {
-                    "mapping_path": {"type": "string", "default": "/etc/orca/alerts-mapping.yaml"}
+                    "mapping_path": {
+                        "type": "string",
+                        "default": "/etc/orca/alerts-mapping.yaml",
+                    }
                 },
             },
             "gc": {
                 "type": "dict",
-                "schema": {"interval": {"type": "integer", "coerce": int, "default": 60}},
+                "schema": {
+                    "interval": {"type": "integer", "coerce": int, "default": 60}
+                },
             },
         },
     },

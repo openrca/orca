@@ -29,8 +29,12 @@ class Graph(Resource):
         timepoint = query["time_point"]
         include_deleted = query["deleted"]
         graph_data = {
-            "nodes": self._graph.get_nodes(time_point=timepoint, include_deleted=include_deleted),
-            "links": self._graph.get_links(time_point=timepoint, include_deleted=include_deleted),
+            "nodes": self._graph.get_nodes(
+                time_point=timepoint, include_deleted=include_deleted
+            ),
+            "links": self._graph.get_links(
+                time_point=timepoint, include_deleted=include_deleted
+            ),
         }
         graph_schema = GraphSchema()
         result = graph_schema.dump(graph_data)

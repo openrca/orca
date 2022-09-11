@@ -33,18 +33,23 @@ class ResourceProxyFactory(object):
     def get(kind):
         client = ClientFactory.get()
         if kind == "pod":
-            return ResourceProxy(kind="pod", list_fn=client.CoreV1Api().list_pod_for_all_namespaces)
+            return ResourceProxy(
+                kind="pod", list_fn=client.CoreV1Api().list_pod_for_all_namespaces
+            )
         elif kind == "service":
             return ResourceProxy(
-                kind="service", list_fn=client.CoreV1Api().list_service_for_all_namespaces
+                kind="service",
+                list_fn=client.CoreV1Api().list_service_for_all_namespaces,
             )
         elif kind == "endpoints":
             return ResourceProxy(
-                kind="endpoints", list_fn=client.CoreV1Api().list_endpoints_for_all_namespaces
+                kind="endpoints",
+                list_fn=client.CoreV1Api().list_endpoints_for_all_namespaces,
             )
         elif kind == "config_map":
             return ResourceProxy(
-                kind="config_map", list_fn=client.CoreV1Api().list_config_map_for_all_namespaces
+                kind="config_map",
+                list_fn=client.CoreV1Api().list_config_map_for_all_namespaces,
             )
         elif kind == "secret":
             return ResourceProxy(
@@ -54,19 +59,23 @@ class ResourceProxyFactory(object):
             return ResourceProxy(kind="node", list_fn=client.CoreV1Api().list_node)
         elif kind == "deployment":
             return ResourceProxy(
-                kind="deployment", list_fn=client.AppsV1Api().list_deployment_for_all_namespaces
+                kind="deployment",
+                list_fn=client.AppsV1Api().list_deployment_for_all_namespaces,
             )
         elif kind == "stateful_set":
             return ResourceProxy(
-                kind="stateful_set", list_fn=client.AppsV1Api().list_stateful_set_for_all_namespaces
+                kind="stateful_set",
+                list_fn=client.AppsV1Api().list_stateful_set_for_all_namespaces,
             )
         elif kind == "daemon_set":
             return ResourceProxy(
-                kind="daemon_set", list_fn=client.AppsV1Api().list_daemon_set_for_all_namespaces
+                kind="daemon_set",
+                list_fn=client.AppsV1Api().list_daemon_set_for_all_namespaces,
             )
         elif kind == "replica_set":
             return ResourceProxy(
-                kind="replica_set", list_fn=client.AppsV1Api().list_replica_set_for_all_namespaces
+                kind="replica_set",
+                list_fn=client.AppsV1Api().list_replica_set_for_all_namespaces,
             )
         elif kind == "storage_class":
             return ResourceProxy(
@@ -74,7 +83,8 @@ class ResourceProxyFactory(object):
             )
         elif kind == "persistent_volume":
             return ResourceProxy(
-                kind="persistent_volume", list_fn=client.CoreV1Api().list_persistent_volume
+                kind="persistent_volume",
+                list_fn=client.CoreV1Api().list_persistent_volume,
             )
         elif kind == "persistent_volume_claim":
             return ResourceProxy(
@@ -82,7 +92,9 @@ class ResourceProxyFactory(object):
                 list_fn=client.CoreV1Api().list_persistent_volume_claim_for_all_namespaces,
             )
         elif kind == "namespace":
-            return ResourceProxy(kind="namespace", list_fn=client.CoreV1Api().list_namespace)
+            return ResourceProxy(
+                kind="namespace", list_fn=client.CoreV1Api().list_namespace
+            )
         elif kind == "horizontal_pod_autoscaler":
             return ResourceProxy(
                 kind="horizontal_pod_autoscaler",
@@ -99,7 +111,8 @@ class ResourceProxyFactory(object):
             )
         elif kind == "cron_job":
             return ResourceProxy(
-                kind="cron_job", list_fn=client.BatchV1beta1Api().list_cron_job_for_all_namespaces
+                kind="cron_job",
+                list_fn=client.BatchV1beta1Api().list_cron_job_for_all_namespaces,
             )
         else:
             raise Exception("Unknown kind %s" % kind)
@@ -151,7 +164,9 @@ class CustomResourceProxy(ResourceProxy):
         return [self._extract_item(item) for item in items]
 
     def _watch_resource(self):
-        for event in watch.Watch().stream(self._list_fn, self._group, self._version, self._plural):
+        for event in watch.Watch().stream(
+            self._list_fn, self._group, self._version, self._plural
+        ):
             event["object"] = self._extract_item(event.pop("object"))
             yield event
 

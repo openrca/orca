@@ -37,18 +37,26 @@ class ServiceToVirtualServiceMatcher(Matcher):
 
     def are_linked(self, service, virtual_service):
         namespace = virtual_service.properties.namespace
-        if self._match_route_destination(namespace, virtual_service.properties.http, service):
+        if self._match_route_destination(
+            namespace, virtual_service.properties.http, service
+        ):
             return True
-        if self._match_route_destination(namespace, virtual_service.properties.tls, service):
+        if self._match_route_destination(
+            namespace, virtual_service.properties.tls, service
+        ):
             return True
-        if self._match_route_destination(namespace, virtual_service.properties.tcp, service):
+        if self._match_route_destination(
+            namespace, virtual_service.properties.tcp, service
+        ):
             return True
         return False
 
     def _match_route_destination(self, namespace, routes, service):
         for route in routes:
             for route_dest in route.route:
-                if match_host_to_service(namespace, route_dest.destination.host, service):
+                if match_host_to_service(
+                    namespace, route_dest.destination.host, service
+                ):
                     return True
         return False
 
@@ -59,7 +67,9 @@ class ServiceToDestinationRuleMatcher(Matcher):
 
     def are_linked(self, service, destination_rule):
         return match_host_to_service(
-            destination_rule.properties.namespace, destination_rule.properties.host, service
+            destination_rule.properties.namespace,
+            destination_rule.properties.host,
+            service,
         )
 
 

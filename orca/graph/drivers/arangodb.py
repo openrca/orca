@@ -82,7 +82,9 @@ class ArangoDBDriver(driver.Driver):
 
     def get_nodes(self, time_point, properties, include_deleted):
         query_pattern = "FOR node in nodes " "%(filters)s " "RETURN node"
-        filters = self._build_filters(time_point, properties, include_deleted, handle="node")
+        filters = self._build_filters(
+            time_point, properties, include_deleted, handle="node"
+        )
         documents = self._execute_aql(query_pattern, filters=filters)
         return [self._build_node_obj(document) for document in documents]
 
@@ -115,7 +117,9 @@ class ArangoDBDriver(driver.Driver):
 
     def delete_node(self, node):
         query_pattern = (
-            "FOR node in nodes " 'FILTER node.id == "%(node_id)s" ' "REMOVE node IN nodes"
+            "FOR node in nodes "
+            'FILTER node.id == "%(node_id)s" '
+            "REMOVE node IN nodes"
         )
         self._execute_aql(query_pattern, node_id=node.id)
 
@@ -127,11 +131,15 @@ class ArangoDBDriver(driver.Driver):
             "LET target = DOCUMENT(link._to)"
             "RETURN {link, source, target}"
         )
-        filters = self._build_filters(time_point, properties, include_deleted, handle="link")
+        filters = self._build_filters(
+            time_point, properties, include_deleted, handle="link"
+        )
         documents = self._execute_aql(query_pattern, filters=filters)
         links = []
         for document in documents:
-            link = self._build_link_obj(document["link"], document["source"], document["target"])
+            link = self._build_link_obj(
+                document["link"], document["source"], document["target"]
+            )
             links.append(link)
         return links
 
@@ -149,7 +157,9 @@ class ArangoDBDriver(driver.Driver):
         if not documents:
             return
         document = documents[0]
-        return self._build_link_obj(document["link"], document["source"], document["target"])
+        return self._build_link_obj(
+            document["link"], document["source"], document["target"]
+        )
 
     def add_link(self, link):
         query_pattern = (
@@ -168,7 +178,10 @@ class ArangoDBDriver(driver.Driver):
         )
         document = self._serialize_link(link)
         self._execute_aql(
-            query_pattern, source_id=link.source.id, target_id=link.target.id, document=document
+            query_pattern,
+            source_id=link.source.id,
+            target_id=link.target.id,
+            document=document,
         )
 
     def update_link(self, link):
@@ -183,7 +196,9 @@ class ArangoDBDriver(driver.Driver):
 
     def delete_link(self, link):
         query_pattern = (
-            "FOR link in links " 'FILTER link.id == "%(link_id)s" ' "REMOVE link IN links"
+            "FOR link in links "
+            'FILTER link.id == "%(link_id)s" '
+            "REMOVE link IN links"
         )
         self._execute_aql(query_pattern, link_id=link.id)
 
@@ -203,7 +218,9 @@ class ArangoDBDriver(driver.Driver):
         documents = self._execute_aql(query_pattern, source_id=node.id, filters=filters)
         links = []
         for document in documents:
-            link = self._build_link_obj(document["link"], document["source"], document["target"])
+            link = self._build_link_obj(
+                document["link"], document["source"], document["target"]
+            )
             links.append(link)
         return links
 
@@ -214,7 +231,9 @@ class ArangoDBDriver(driver.Driver):
         return "http://%s:%s" % (self._host, self._port)
 
     def _use_database(self, database):
-        return self._client.db(database, username=self._username, password=self._password)
+        return self._client.db(
+            database, username=self._username, password=self._password
+        )
 
     def _use_graph(self, graph):
         return self._database.graph(graph)
@@ -240,7 +259,8 @@ class ArangoDBDriver(driver.Driver):
         filters = []
         filters.append("FILTER %s.created_at <= %i" % (handle, time_point))
         filters.append(
-            "FILTER %s.deleted_at == null OR %s.deleted_at > %i" % (handle, handle, time_point)
+            "FILTER %s.deleted_at == null OR %s.deleted_at > %i"
+            % (handle, handle, time_point)
         )
         return " ".join(filters)
 

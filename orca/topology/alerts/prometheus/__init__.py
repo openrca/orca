@@ -23,6 +23,8 @@ def get_probes():
 def get_ingestors():
     return [
         bundle.IngestorBundle(
-            name="prometheus", ingestor=ingestor.AlertIngestor, linkers=[linker.AlertLinker]
+            name="prometheus",
+            ingestor=ingestor.AlertIngestor,
+            linkers=[linker.AlertLinker],
         )
     ]
