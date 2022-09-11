@@ -14,4 +14,4 @@
 
 from orca.topology.alerts import elastalert, falco, prometheus, zabbix
 
-__all__ = ['elastalert', 'falco', 'prometheus', 'zabbix']
+__all__ = ["elastalert", "falco", "prometheus", "zabbix"]

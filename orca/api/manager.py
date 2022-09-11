@@ -24,14 +24,12 @@ from orca.graph import graph
 
 
 class Manager(cotyledon.ServiceManager):
-
     def initialize(self):
         graph_lock = multiprocessing.Lock()
         self.add(APIService, workers=1, args=(graph_lock,))
 
 
 class APIService(cotyledon.Service):
-
     def __init__(self, worker_id, graph_lock):
         super().__init__(worker_id)
         self._graph_lock = graph_lock
@@ -47,10 +45,10 @@ class APIService(cotyledon.Service):
         self._set_logging()
         app = self._init_app()
         CORS(app)
-        app.run(host='0.0.0.0')
+        app.run(host="0.0.0.0")
 
     def _set_logging(self):
-        log = logging.getLogger('werkzeug')
+        log = logging.getLogger("werkzeug")
         log.setLevel(logging.ERROR)
 
     def _init_app(self):

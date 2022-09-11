@@ -17,7 +17,6 @@ from orca.topology.alerts.falco import extractor
 
 
 class AlertIngestor(ingestor.Ingestor):
-
     @classmethod
     def get(cls, graph):
         return cls(graph, extractor.AlertExtractor.get())

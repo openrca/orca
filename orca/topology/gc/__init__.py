@@ -42,14 +42,11 @@ class GarabageCollectorService(cotyledon.Service):
 
     def run(self):
         garbage_collectors = [
-            collector.StaleNodeCollector(
-                self._graph, utils.NodeSpec("elastalert", "alert"), 300),
-            collector.StaleNodeCollector(
-                self._graph, utils.NodeSpec("falco", "alert"), 300),
+            collector.StaleNodeCollector(self._graph, utils.NodeSpec("elastalert", "alert"), 300),
+            collector.StaleNodeCollector(self._graph, utils.NodeSpec("falco", "alert"), 300),
         ]
 
-        garbage_remover = remover.Remover(
-            self._graph, garbage_collectors)
+        garbage_remover = remover.Remover(self._graph, garbage_collectors)
 
         gc_interval = CONFIG.topology.gc.interval
 

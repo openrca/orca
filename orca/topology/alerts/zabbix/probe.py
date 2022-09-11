@@ -32,4 +32,5 @@ class AlertProbe(probe.PullProbe):
             upstream_proxy=upstream.UpstreamProxy(zabbix_client),
             extractor=extractor.AlertExtractor.get(),
             synchronizer=utils.NodeSynchronizer(graph),
-            resync_period=CONFIG.probes.zabbix.resync_period)
+            resync_period=CONFIG.probes.zabbix.resync_period,
+        )

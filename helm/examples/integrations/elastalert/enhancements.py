@@ -18,7 +18,6 @@ from elastalert.enhancements import BaseEnhancement
 
 
 class MongoDBHostFailedInReplicaSet(BaseEnhancement):
-
     def process(self, match):
         data = match["log_processed"]
         host = data["attr"]["host"]
@@ -30,7 +29,6 @@ class MongoDBHostFailedInReplicaSet(BaseEnhancement):
 
 
 class MongoDBHeartbeatFailed(BaseEnhancement):
-
     def process(self, match):
         data = match["log_processed"]
         host = data["attr"]["target"]

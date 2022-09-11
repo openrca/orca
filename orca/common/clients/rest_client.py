@@ -5,13 +5,11 @@ from orca.common.clients import exceptions, utils
 
 
 class APIClient(object):
-
     def __init__(self, connector):
         self._connector = connector
 
 
 class APIConnector(object):
-
     def __init__(self, url, api_prefix=None, auth=None, timeout=5):
         self._base_url = utils.join_url_paths(url, api_prefix)
         self._auth = auth

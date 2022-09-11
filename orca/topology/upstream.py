@@ -32,7 +32,6 @@ class UpstreamProxy(abc.ABC):
 
 
 class EventHandler(abc.ABC):
-
     @abc.abstractmethod
     def on_added(self, entity):
         """Callback triggered when entity has been added in the upstream."""

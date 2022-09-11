@@ -17,9 +17,4 @@ from orca.topology.alerts.zabbix import linker, probe
 
 
 def get_probes():
-    return [
-        bundle.ProbeBundle(
-            probe=probe.AlertProbe,
-            linkers=[linker.AlertLinker]
-        )
-    ]
+    return [bundle.ProbeBundle(probe=probe.AlertProbe, linkers=[linker.AlertLinker])]

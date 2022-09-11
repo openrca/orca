@@ -24,8 +24,8 @@ class UpstreamProxy(upstream.UpstreamProxy):
 
     def get_events(self, handler):
         for event in self._client.watch():
-            event_type = event['type']
-            entity = event['object']
+            event_type = event["type"]
+            entity = event["object"]
             if event_type == "ADDED":
                 handler.on_added(entity)
             elif event_type == "MODIFIED":

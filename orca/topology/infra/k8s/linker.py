@@ -29,9 +29,10 @@ class ServiceToPodLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
-            matcher=matcher.ServiceToPodMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="service"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="pod"),
+            matcher=matcher.ServiceToPodMatcher(),
+        )
 
 
 class ReplicaSetToPodLinker(Linker):
@@ -42,9 +43,10 @@ class ReplicaSetToPodLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='replica_set'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
-            matcher=matcher.ReplicaSetToPodMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="replica_set"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="pod"),
+            matcher=matcher.ReplicaSetToPodMatcher(),
+        )
 
 
 class StatefulSetToPodLinker(Linker):
@@ -55,9 +57,10 @@ class StatefulSetToPodLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='stateful_set'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
-            matcher=matcher.StatefulSetToPodMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="stateful_set"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="pod"),
+            matcher=matcher.StatefulSetToPodMatcher(),
+        )
 
 
 class DaemonSetToPodLinker(Linker):
@@ -68,9 +71,10 @@ class DaemonSetToPodLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='daemon_set'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
-            matcher=matcher.DaemonSetToPodMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="daemon_set"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="pod"),
+            matcher=matcher.DaemonSetToPodMatcher(),
+        )
 
 
 class PodToNodeLinker(Linker):
@@ -81,9 +85,10 @@ class PodToNodeLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='node'),
-            matcher=matcher.PodToNodeMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="pod"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="node"),
+            matcher=matcher.PodToNodeMatcher(),
+        )
 
 
 class ServiceToEndpointsLinker(Linker):
@@ -94,9 +99,10 @@ class ServiceToEndpointsLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='endpoints'),
-            matcher=matcher.ServiceToEndpointsMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="service"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="endpoints"),
+            matcher=matcher.ServiceToEndpointsMatcher(),
+        )
 
 
 class HorizontalPodAutoscalerToDeploymentLinker(Linker):
@@ -107,9 +113,10 @@ class HorizontalPodAutoscalerToDeploymentLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='horizontal_pod_autoscaler'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='deployment'),
-            matcher=matcher.HorizontalPodAutoscalerMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="horizontal_pod_autoscaler"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="deployment"),
+            matcher=matcher.HorizontalPodAutoscalerMatcher(),
+        )
 
 
 class DeploymentToReplicaSetLinker(Linker):
@@ -120,9 +127,10 @@ class DeploymentToReplicaSetLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='deployment'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='replica_set'),
-            matcher=matcher.DeploymentToReplicaSetMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="deployment"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="replica_set"),
+            matcher=matcher.DeploymentToReplicaSetMatcher(),
+        )
 
 
 class HorizontalPodAutoscalerToReplicaSetLinker(Linker):
@@ -133,9 +141,10 @@ class HorizontalPodAutoscalerToReplicaSetLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='horizontal_pod_autoscaler'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='replica_set'),
-            matcher=matcher.HorizontalPodAutoscalerMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="horizontal_pod_autoscaler"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="replica_set"),
+            matcher=matcher.HorizontalPodAutoscalerMatcher(),
+        )
 
 
 class HorizontalPodAutoscalerToStatefulSetLinker(Linker):
@@ -146,9 +155,10 @@ class HorizontalPodAutoscalerToStatefulSetLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='horizontal_pod_autoscaler'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='stateful_set'),
-            matcher=matcher.HorizontalPodAutoscalerMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="horizontal_pod_autoscaler"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="stateful_set"),
+            matcher=matcher.HorizontalPodAutoscalerMatcher(),
+        )
 
 
 class PodToConfigMapLinker(Linker):
@@ -159,9 +169,10 @@ class PodToConfigMapLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='config_map'),
-            matcher=matcher.PodToConfigMapMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="pod"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="config_map"),
+            matcher=matcher.PodToConfigMapMatcher(),
+        )
 
 
 class PodToSecretLinker(Linker):
@@ -172,9 +183,10 @@ class PodToSecretLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='secret'),
-            matcher=matcher.PodToSecretMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="pod"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="secret"),
+            matcher=matcher.PodToSecretMatcher(),
+        )
 
 
 class PersistentVolumeToStorageClassLinker(Linker):
@@ -185,9 +197,10 @@ class PersistentVolumeToStorageClassLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='persistent_volume'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='storage_class'),
-            matcher=matcher.PersistentVolumeToStorageClassMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="persistent_volume"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="storage_class"),
+            matcher=matcher.PersistentVolumeToStorageClassMatcher(),
+        )
 
 
 class PersistentVolumeClaimToPersistentVolumeLinker(Linker):
@@ -198,9 +211,10 @@ class PersistentVolumeClaimToPersistentVolumeLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='persistent_volume_claim'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='persistent_volume'),
-            matcher=matcher.PersistentVolumeClaimToPersistentVolumeMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="persistent_volume_claim"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="persistent_volume"),
+            matcher=matcher.PersistentVolumeClaimToPersistentVolumeMatcher(),
+        )
 
 
 class PodToPersistentVolumeClaimLinker(Linker):
@@ -211,9 +225,10 @@ class PodToPersistentVolumeClaimLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='persistent_volume_claim'),
-            matcher=matcher.PodToPersistentVolumeClaimMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="pod"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="persistent_volume_claim"),
+            matcher=matcher.PodToPersistentVolumeClaimMatcher(),
+        )
 
 
 class ClusterToNodeLinker(Linker):
@@ -224,9 +239,10 @@ class ClusterToNodeLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='cluster'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='node'),
-            matcher=matcher.ClusterToNodeMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="cluster"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="node"),
+            matcher=matcher.ClusterToNodeMatcher(),
+        )
 
 
 class IngressToServiceLinker(Linker):
@@ -237,9 +253,10 @@ class IngressToServiceLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='ingress'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
-            matcher=matcher.IngressToServiceMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="ingress"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="service"),
+            matcher=matcher.IngressToServiceMatcher(),
+        )
 
 
 class JobToPodLinker(Linker):
@@ -250,9 +267,10 @@ class JobToPodLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='job'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='pod'),
-            matcher=matcher.JobToPodMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="job"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="pod"),
+            matcher=matcher.JobToPodMatcher(),
+        )
 
 
 class CronJobToJobLinker(Linker):
@@ -263,6 +281,7 @@ class CronJobToJobLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='cron_job'),
-            target_spec=utils.NodeSpec(origin='kubernetes', kind='job'),
-            matcher=matcher.CronJobToJobMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="cron_job"),
+            target_spec=utils.NodeSpec(origin="kubernetes", kind="job"),
+            matcher=matcher.CronJobToJobMatcher(),
+        )

@@ -17,9 +17,8 @@ from orca.topology.alerts.prometheus import extractor
 
 
 class AlertIngestor(ingestor.Ingestor):
-
     def ingest(self, event):
-        for alert in event['alerts']:
+        for alert in event["alerts"]:
             super().ingest(alert)
 
     @classmethod

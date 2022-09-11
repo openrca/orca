@@ -48,29 +48,30 @@ class ServiceGraphProbe(probe.Probe):
         self._synchronize_links(edges, service_mapping)
 
     def _get_namespaces(self):
-        return [namespace['name'] for namespace in self._kiali_client.list_namespaces()]
+        return [namespace["name"] for namespace in self._kiali_client.list_namespaces()]
 
     def _get_service_graph(self, namespaces):
         service_graph = self._kiali_client.graph_namespaces(namespaces)
-        node_elements = service_graph['elements']['nodes']
-        edge_elements = service_graph['elements']['edges']
-        nodes = [element['data'] for element in node_elements]
-        edges = [element['data'] for element in edge_elements]
+        node_elements = service_graph["elements"]["nodes"]
+        edge_elements = service_graph["elements"]["edges"]
+        nodes = [element["data"] for element in node_elements]
+        edges = [element["data"] for element in edge_elements]
         return (nodes, edges)
 
     def _build_service_mapping(self, nodes):
         service_mapping = {}
         for node in nodes:
-            if node['nodeType'] == 'service':
-                service_mapping[node['id']] = {
-                    'name': node['service'],
-                    'namespace': node['namespace']}
+            if node["nodeType"] == "service":
+                service_mapping[node["id"]] = {
+                    "name": node["service"],
+                    "namespace": node["namespace"],
+                }
         return service_mapping
 
     def _synchronize_links(self, edges, service_mapping):
         for edge in edges:
-            source_id = edge['source']
-            target_id = edge['target']
+            source_id = edge["source"]
+            target_id = edge["target"]
             source_mapping = service_mapping.get(source_id)
             target_mapping = service_mapping.get(target_id)
             if source_mapping and target_mapping:
@@ -81,13 +82,13 @@ class ServiceGraphProbe(probe.Probe):
                     self._link_services(source_node, target_node, properties)
 
     def _get_service(self, mapping):
-        properties = {'origin': 'kubernetes', 'kind': 'service', 'properties': mapping}
+        properties = {"origin": "kubernetes", "kind": "service", "properties": mapping}
         matches = self._graph.get_nodes(properties=properties)
         if matches:
             return matches[0]
 
     def _extract_edge_properties(self, edge):
-        return {'protocol': edge['traffic']['protocol']}
+        return {"protocol": edge["traffic"]["protocol"]}
 
     def _link_services(self, source_node, target_node, properties):
         link = graph.Graph.create_link(properties, source_node, target_node)
@@ -101,9 +102,8 @@ class ServiceGraphProbe(probe.Probe):
         kiali_client = kiali.KialiClient.get(
             url=CONFIG.probes.kiali.url,
             username=CONFIG.probes.kiali.username,
-            password=CONFIG.probes.kiali.password)
+            password=CONFIG.probes.kiali.password,
+        )
         return cls(
-            graph=graph,
-            kiali_client=kiali_client,
-            resync_period=CONFIG.probes.kiali.resync_period
+            graph=graph, kiali_client=kiali_client, resync_period=CONFIG.probes.kiali.resync_period
         )

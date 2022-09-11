@@ -27,30 +27,26 @@ LOG = logger.get_logger(__name__)
 
 
 class GraphObject(abc.ABC):
-
     def __init__(self, id, properties, **kwargs):
         super().__init__()
         self.id = id
         self.properties = dictlib.Dict(properties)
-        self.created_at = kwargs.get('created_at')
-        self.updated_at = kwargs.get('updated_at')
-        self.deleted_at = kwargs.get('deleted_at')
+        self.created_at = kwargs.get("created_at")
+        self.updated_at = kwargs.get("updated_at")
+        self.deleted_at = kwargs.get("deleted_at")
 
 
 class Node(GraphObject):
-
     def __init__(self, id, properties, origin, kind, **kwargs):
         super().__init__(id, properties, **kwargs)
         self.origin = origin
         self.kind = kind
 
     def __repr__(self):
-        return "<Node id=%s properties=%s kind=%s>" % (
-            self.id, self.properties, self.kind)
+        return "<Node id=%s properties=%s kind=%s>" % (self.id, self.properties, self.kind)
 
 
 class Link(GraphObject):
-
     def __init__(self, id, properties, source, target, **kwargs):
         super().__init__(id, properties, **kwargs)
         self.source = source
@@ -58,11 +54,14 @@ class Link(GraphObject):
 
     def __repr__(self):
         return "<Link id=%s properties=%s source=%s target=%s>" % (
-            self.id, self.properties, self.source.id, self.target.id)
+            self.id,
+            self.properties,
+            self.source.id,
+            self.target.id,
+        )
 
 
 class Graph(object):
-
     def __init__(self, driver, lock):
         self._driver = driver
         self._lock = lock
@@ -210,7 +209,6 @@ class Graph(object):
 
 
 class EventListener(abc.ABC):
-
     @abc.abstractmethod
     def on_node_added(self, node):
         """Callback triggered when graph node is added."""

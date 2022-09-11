@@ -32,7 +32,8 @@ class PullProbe(probe.PullProbe):
             upstream_proxy=upstream.UpstreamProxy(istio.ResourceProxyFactory.get(kind)),
             extractor=extractor,
             synchronizer=utils.NodeSynchronizer(graph, create=False),
-            resync_period=CONFIG.probes.istio.resync_period)
+            resync_period=CONFIG.probes.istio.resync_period,
+        )
 
 
 class PushProbe(probe.PushProbe):
@@ -44,7 +45,8 @@ class PushProbe(probe.PushProbe):
         return cls(
             graph=graph,
             upstream_proxy=upstream.UpstreamProxy(istio.ResourceProxyFactory.get(kind)),
-            extractor=extractor)
+            extractor=extractor,
+        )
 
 
 class VirtualServicePullProbe(PullProbe):
@@ -53,7 +55,7 @@ class VirtualServicePullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return super().get(graph, 'virtual_service', extractor.VirtualServiceExtractor())
+        return super().get(graph, "virtual_service", extractor.VirtualServiceExtractor())
 
 
 class VirtualServicePushProbe(PushProbe):
@@ -62,7 +64,7 @@ class VirtualServicePushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return super().get(graph, 'virtual_service', extractor.VirtualServiceExtractor())
+        return super().get(graph, "virtual_service", extractor.VirtualServiceExtractor())
 
 
 class DestinationRulePullProbe(PullProbe):
@@ -71,7 +73,7 @@ class DestinationRulePullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return super().get(graph, 'destination_rule', extractor.DestinationRuleExtractor())
+        return super().get(graph, "destination_rule", extractor.DestinationRuleExtractor())
 
 
 class DestinationRulePushProbe(PushProbe):
@@ -80,7 +82,7 @@ class DestinationRulePushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return super().get(graph, 'destination_rule', extractor.DestinationRuleExtractor())
+        return super().get(graph, "destination_rule", extractor.DestinationRuleExtractor())
 
 
 class GatewayPullProbe(PullProbe):
@@ -89,7 +91,7 @@ class GatewayPullProbe(PullProbe):
 
     @classmethod
     def get(cls, graph):
-        return super().get(graph, 'gateway', extractor.GatewayExtractor())
+        return super().get(graph, "gateway", extractor.GatewayExtractor())
 
 
 class GatewayPushProbe(PushProbe):
@@ -98,4 +100,4 @@ class GatewayPushProbe(PushProbe):
 
     @classmethod
     def get(cls, graph):
-        return super().get(graph, 'gateway', extractor.GatewayExtractor())
+        return super().get(graph, "gateway", extractor.GatewayExtractor())

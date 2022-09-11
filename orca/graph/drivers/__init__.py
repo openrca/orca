@@ -19,13 +19,13 @@ CONFIG = config.CONFIG
 
 
 class DriverFactory(object):
-
     @staticmethod
     def get(backend):
-        if backend == 'arangodb':
+        if backend == "arangodb":
             return arangodb.ArangoDBDriver(
                 host=CONFIG.graph.arangodb.host,
                 port=CONFIG.graph.arangodb.port,
                 database=CONFIG.graph.arangodb.database,
                 username=CONFIG.graph.arangodb.username,
-                password=CONFIG.graph.arangodb.password)
+                password=CONFIG.graph.arangodb.password,
+            )

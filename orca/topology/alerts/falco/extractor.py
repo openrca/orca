@@ -23,11 +23,11 @@ class Extractor(extractor.Extractor):
 
     @property
     def origin(self):
-        return 'falco'
+        return "falco"
 
     @classmethod
     def get(cls):
-        return super().get('falco')
+        return super().get("falco")
 
 
 class AlertExtractor(Extractor):
@@ -35,7 +35,7 @@ class AlertExtractor(Extractor):
     """Extractor for Alert entities."""
 
     def _extract_name(self, entity):
-        return entity['rule']
+        return entity["rule"]
 
     def _extract_status(self, entity):
         # TODO: Differentiate UP/DOWN status
@@ -46,11 +46,11 @@ class AlertExtractor(Extractor):
         return utils.get_utc()
 
     def _extract_source_labels(self, entity):
-        return utils.flatten_dict(entity['output_fields'], sep=".")
+        return utils.flatten_dict(entity["output_fields"], sep=".")
 
     def _extract_properties(self, entity):
         properties = {}
-        properties['status'] = 'active'
-        properties['severity'] = entity['priority']
-        properties['message'] = str_utils.escape(entity['output'])
+        properties["status"] = "active"
+        properties["severity"] = entity["priority"]
+        properties["message"] = str_utils.escape(entity["output"])
         return properties

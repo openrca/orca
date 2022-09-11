@@ -102,14 +102,18 @@ class PodToConfigMapMatcher(Matcher):
         for container in pod.properties.containers:
             if container.env:
                 for env_var in container.env:
-                    if env_var.value_from and \
-                       env_var.value_from.config_map_key_ref and \
-                       env_var.value_from.config_map_key_ref.name == config_map.properties.name:
+                    if (
+                        env_var.value_from
+                        and env_var.value_from.config_map_key_ref
+                        and env_var.value_from.config_map_key_ref.name == config_map.properties.name
+                    ):
                         return True
             if container.env_from:
                 for env_from in container.env_from:
-                    if env_from.config_map_ref and \
-                       env_from.config_map_ref.name == config_map.properties.name:
+                    if (
+                        env_from.config_map_ref
+                        and env_from.config_map_ref.name == config_map.properties.name
+                    ):
                         return True
         return False
 
@@ -134,14 +138,15 @@ class PodToSecretMatcher(Matcher):
         for container in pod.properties.containers:
             if container.env:
                 for env_var in container.env:
-                    if env_var.value_from and \
-                       env_var.value_from.secret_key_ref and \
-                       env_var.value_from.secret_key_ref.name == secret.properties.name:
+                    if (
+                        env_var.value_from
+                        and env_var.value_from.secret_key_ref
+                        and env_var.value_from.secret_key_ref.name == secret.properties.name
+                    ):
                         return True
             if container.env_from:
                 for env_from in container.env_from:
-                    if env_from.secret_ref and \
-                       env_from.secret_ref.name == secret.properties.name:
+                    if env_from.secret_ref and env_from.secret_ref.name == secret.properties.name:
                         return True
         return False
 
@@ -162,8 +167,10 @@ class HorizontalPodAutoscalerMatcher(Matcher):
         return matched_namespace and matched_target_ref
 
     def _match_target_ref(self, obj, hpa):
-        return hpa.properties.target_ref.kind == obj.kind and \
-               hpa.properties.target_ref.name == obj.properties.name
+        return (
+            hpa.properties.target_ref.kind == obj.kind
+            and hpa.properties.target_ref.name == obj.properties.name
+        )
 
 
 class PersistentVolumeToStorageClassMatcher(Matcher):
@@ -171,8 +178,10 @@ class PersistentVolumeToStorageClassMatcher(Matcher):
     """Matcher for links between Persistent Volume and Storage Class entities."""
 
     def are_linked(self, persistent_volume, storage_class):
-        if persistent_volume.properties.storage_class and \
-           persistent_volume.properties.storage_class == storage_class.properties.name:
+        if (
+            persistent_volume.properties.storage_class
+            and persistent_volume.properties.storage_class == storage_class.properties.name
+        ):
             return True
         return False
 
@@ -196,8 +205,10 @@ class PodToPersistentVolumeClaimMatcher(Matcher):
 
     def _match_volume(self, pvc, pod):
         for volume in pod.properties.volumes:
-            if volume.persistent_volume_claim and \
-               volume.persistent_volume_claim.claim_name == pvc.properties.name:
+            if (
+                volume.persistent_volume_claim
+                and volume.persistent_volume_claim.claim_name == pvc.properties.name
+            ):
                 return True
         return False
 

@@ -19,7 +19,6 @@ from orca.api.schema import GraphSchema, GraphQuerySchema, DetailedNodeSchema
 
 
 class Graph(Resource):
-
     def __init__(self, api, graph):
         super().__init__()
         self._graph = graph
@@ -27,11 +26,11 @@ class Graph(Resource):
     def get(self):
         query_schema = GraphQuerySchema()
         query = query_schema.load(request.args)
-        timepoint = query['time_point']
-        include_deleted = query['deleted']
+        timepoint = query["time_point"]
+        include_deleted = query["deleted"]
         graph_data = {
-            'nodes': self._graph.get_nodes(time_point=timepoint, include_deleted=include_deleted),
-            'links': self._graph.get_links(time_point=timepoint, include_deleted=include_deleted)
+            "nodes": self._graph.get_nodes(time_point=timepoint, include_deleted=include_deleted),
+            "links": self._graph.get_links(time_point=timepoint, include_deleted=include_deleted),
         }
         graph_schema = GraphSchema()
         result = graph_schema.dump(graph_data)
@@ -39,7 +38,6 @@ class Graph(Resource):
 
 
 class GraphNode(Resource):
-
     def __init__(self, api, graph):
         super().__init__()
         self._graph = graph
@@ -52,7 +50,7 @@ class GraphNode(Resource):
 
 
 def initialize(graph):
-    api = Namespace('graph', description='Graph API')
-    api.add_resource(Graph, '/', resource_class_args=[graph])
-    api.add_resource(GraphNode, '/nodes/<node_id>', resource_class_args=[graph])
+    api = Namespace("graph", description="Graph API")
+    api.add_resource(Graph, "/", resource_class_args=[graph])
+    api.add_resource(GraphNode, "/nodes/<node_id>", resource_class_args=[graph])
     return api

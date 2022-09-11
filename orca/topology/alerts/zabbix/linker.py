@@ -21,4 +21,4 @@ class AlertLinker(linker.AlertLinker):
 
     @classmethod
     def get(cls, graph):
-        return super().get(graph, 'zabbix')
+        return super().get(graph, "zabbix")

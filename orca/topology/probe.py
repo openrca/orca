@@ -111,7 +111,7 @@ class PullProbe(Probe):
         self._synchronizer.synchronize(nodes_in_graph, upstream_nodes)
 
     def _get_nodes_in_graph(self):
-        properties = {'origin': self._extractor.origin, 'kind': self._extractor.kind}
+        properties = {"origin": self._extractor.origin, "kind": self._extractor.kind}
         return self._graph.get_nodes(properties=properties)
 
     def _get_upstream_nodes(self):

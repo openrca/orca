@@ -19,8 +19,6 @@ from orca.topology.alerts.elastalert import linker, ingestor
 def get_ingestors():
     return [
         bundle.IngestorBundle(
-            name='elastalert',
-            ingestor=ingestor.AlertIngestor,
-            linkers=[linker.AlertLinker]
+            name="elastalert", ingestor=ingestor.AlertIngestor, linkers=[linker.AlertLinker]
         )
     ]

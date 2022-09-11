@@ -30,9 +30,10 @@ class GatewayToVirtualServiceLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='istio', kind='gateway'),
-            target_spec=utils.NodeSpec(origin='istio', kind='virtual_service'),
-            matcher=matcher.GatewayToVirtualServiceMatcher())
+            source_spec=utils.NodeSpec(origin="istio", kind="gateway"),
+            target_spec=utils.NodeSpec(origin="istio", kind="virtual_service"),
+            matcher=matcher.GatewayToVirtualServiceMatcher(),
+        )
 
 
 class ServiceToVirtualServiceLinker(Linker):
@@ -43,9 +44,10 @@ class ServiceToVirtualServiceLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
-            target_spec=utils.NodeSpec(origin='istio', kind='virtual_service'),
-            matcher=matcher.ServiceToVirtualServiceMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="service"),
+            target_spec=utils.NodeSpec(origin="istio", kind="virtual_service"),
+            matcher=matcher.ServiceToVirtualServiceMatcher(),
+        )
 
 
 class ServiceToDestinationRuleLinker(Linker):
@@ -56,6 +58,7 @@ class ServiceToDestinationRuleLinker(Linker):
     def get(cls, graph):
         return cls(
             graph=graph,
-            source_spec=utils.NodeSpec(origin='kubernetes', kind='service'),
-            target_spec=utils.NodeSpec(origin='istio', kind='destination_rule'),
-            matcher=matcher.ServiceToDestinationRuleMatcher())
+            source_spec=utils.NodeSpec(origin="kubernetes", kind="service"),
+            target_spec=utils.NodeSpec(origin="istio", kind="destination_rule"),
+            matcher=matcher.ServiceToDestinationRuleMatcher(),
+        )
