@@ -72,8 +72,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Build Docker image
-      run: make docker-build
+    - name: Test Docker version
+      run: |
+        docker version
+        docker scan
 
-    - name: Scan Docker image for vulnerabilities
-      run: make docker-scan
+    # - name: Build Docker image
+    #   run: make docker-build
+
+    # - name: Scan Docker image for vulnerabilities
+    #   run: make docker-scan
