@@ -72,13 +72,18 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Install Docker Scan plugin
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker-scan-plugin
+
     - name: Test Docker version
       run: |
         docker version
         docker scan
 
-    # - name: Build Docker image
-    #   run: make docker-build
+    - name: Build Docker image
+      run: make docker-build
 
-    # - name: Scan Docker image for vulnerabilities
-    #   run: make docker-scan
+    - name: Scan Docker image for vulnerabilities
+      run: make docker-scan
