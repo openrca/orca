@@ -72,6 +72,11 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Inspect hardware architecture
+      run: |
+        uname -m
+        uname -a
+
     - name: Install Docker Scan plugin
       run: |
         sudo apt-get update
