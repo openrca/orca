@@ -67,10 +67,13 @@ jobs:
     - name: Check coverage
       run: make coverage
 
-  test-build:
+  test-docker:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
 
     - name: Build Docker image
       run: make docker-build
+
+    - name: Scan Docker image for vulnerabilities
+      run: make docker-scan
