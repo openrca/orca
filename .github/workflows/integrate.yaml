@@ -72,20 +72,12 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Inspect hardware architecture
+    - name: Install latest Docker
       run: |
-        uname -m
-        uname -a
-
-    - name: Install Docker Scan plugin
-      run: |
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs)  stable"
         sudo apt-get update
-        sudo apt-get install -y docker-scan-plugin
-
-    - name: Test Docker version
-      run: |
-        docker version
-        docker scan
+        sudo apt-get install docker-ce
 
     - name: Build Docker image
       run: make docker-build
