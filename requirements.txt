@@ -10,5 +10,5 @@ kubernetes==12.0.0                  # Apache License 2.0
 marshmallow==3.8.0                  # MIT
 python-arango==5.4.0                # MIT
 pyyaml==5.4                         # MIT
-requests==2.23.0                    # Apache License 2.0
+requests==2.31.0                    # Apache License 2.0
 pyzabbix==0.8.2                     # LGPL 2.1
